@@ -1,11 +1,12 @@
-#include <stdio.h>
+#include <iostream>
+using namespace std;
 
 int add(int x, int y) {
     return x + y;
 }
 
 int main() {
-	printf("%d\n", add(1, 3));
+	cout << add(1, 3) << endl;
 
 	return 0;
 }

@@ -25,5 +25,6 @@ if __name__ == "__main__":
 
     ast = parse_file(filename, use_cpp=True,
                      cpp_path='gcc',
-                     cpp_args=['-E', r'-Iutils/fake_libc_include'])
+                     cpp_args=['-E', '-I utils/fake_libc_include'])
+
     ast.show()
