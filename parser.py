@@ -8,6 +8,7 @@
 # Copyright (C) 2008-2015, Eli Bendersky
 # License: BSD
 # -------------------------------------------------------------------------------
+import os
 import sys
 
 # This is not required if you've installed pycparser into
@@ -21,7 +22,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         filename = sys.argv[1]
     else:
-        filename = 'c_code/main.c'
+        filename = os.path.join(os.getcwd(), 'c_code/main.c')
 
     ast = parse_file(filename, use_cpp=True,
                      cpp_path='gcc',
