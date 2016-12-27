@@ -12,7 +12,8 @@ totalFunctionCount = 0
 totalComplexity = 0
 defaultComplexityCount = 0
 
-def checkIterationComplexity(_iter, count = 0):
+
+def checkIterationComplexity(_iter, count=0):
     global totalComplexity
     global iterationDep
 
@@ -24,6 +25,7 @@ def checkIterationComplexity(_iter, count = 0):
 
     if iterationDep < count:
         iterationDep = count
+
 
 def checkFunctionComplexity(func):
     global defaultComplexityCount
@@ -59,6 +61,7 @@ def checkClassComplexity(cls):
     for innerCls in cls.classes:
         checkClassComplexity(innerCls)
 
+
 def main():
     global totalClassCount
     global totalFunctionCount
@@ -66,9 +69,9 @@ def main():
     global defaultComplexityCount
     global iterationDep
 
-    extension = {'C': '*.c', 'C++':'*.cpp', 'JAVA':'*.java', 'PYTHON':'*.py'}
+    extension = {'C': '*.c', 'C++': '*.cpp', 'JAVA': '*.java', 'PYTHON': '*.py'}
     statsSet = set()
-    
+
     args = sys.argv
     filePath = args[1]
     language = args[2]
@@ -78,7 +81,7 @@ def main():
         for f in glob(os.path.join(filePath, extension[language])):
             if os.path.isfile(f):
                 files.add(os.path.abspath(f))
-    print files
+
     for _file in files:
         fp = open(_file)
         if language == 'PYTHON':
@@ -109,12 +112,13 @@ def main():
         for cls in stat.classes:
             checkClassComplexity(cls)
 
-    funcCount = totalFunctionCount-defaultComplexityCount
+    funcCount = totalFunctionCount - defaultComplexityCount
 
     if funcCount < 1:
         funcCount = 1
 
-    print totalComplexity, (totalComplexity-defaultComplexityCount)/(funcCount), iterationDep
+    print totalComplexity, (totalComplexity - defaultComplexityCount) / (funcCount), iterationDep
+
 
 if __name__ == '__main__':
     main()
