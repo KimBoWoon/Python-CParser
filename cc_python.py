@@ -4,6 +4,7 @@ import compiler
 from compiler.visitor import ASTVisitor
 from cc_stats import Stats, DefStats, ClassStats, IterationStats
 
+
 class CCVisitor(ASTVisitor):
     """Encapsulates the cyclomatic complexity counting."""
 
@@ -21,7 +22,7 @@ class CCVisitor(ASTVisitor):
             self.dispatch(child)
 
     def visitFunction(self, node):
-        if not hasattr(node, 'name'): # lambdas
+        if not hasattr(node, 'name'):  # lambdas
             node.name = '<lambda>'
         stats = DefStats(node.name)
         stats = CCVisitor(node, stats).stats
@@ -44,8 +45,8 @@ class CCVisitor(ASTVisitor):
         self.stats.iterations.append(stats)
 
     visitFor = visitGenExprFor = visitGenExprIf \
-            = visitListCompFor = visitListCompIf \
-            = visitWhile = _visitWith = __processDecisionPoint
+        = visitListCompFor = visitListCompIf \
+        = visitWhile = _visitWith = __processDecisionPoint
 
     def visitAnd(self, node):
         self.dispatchChildren(node)

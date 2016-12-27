@@ -7,6 +7,7 @@ from cc_stats import Stats, DefStats, ClassStats, IterationStats
 fileName = ''
 codeLines = []
 
+
 class CCVisitor(object):
     """Encapsulates the cyclomatic complexity counting."""
 
@@ -19,7 +20,7 @@ class CCVisitor(object):
             for node in child.walk_preorder():
                 if str(node.location.file).find(fileName) != -1:
                     if node.kind == CursorKind.FUNCTION_DECL or node.kind == CursorKind.CXX_METHOD or \
-                        node.kind == CursorKind.CONSTRUCTOR or node.kind == CursorKind.DESTRUCTOR:
+                                    node.kind == CursorKind.CONSTRUCTOR or node.kind == CursorKind.DESTRUCTOR:
                         if node.is_definition():
                             self.visitFunction(node)
                             node._kind_id = 99999
@@ -28,19 +29,19 @@ class CCVisitor(object):
                         self.visitClass(node)
                         node._kind_id = 99999
 
-                    elif node.kind == CursorKind.WHILE_STMT or node.kind == CursorKind.FOR_STMT or\
-                        node.kind == CursorKind.DO_STMT:
+                    elif node.kind == CursorKind.WHILE_STMT or node.kind == CursorKind.FOR_STMT or \
+                                    node.kind == CursorKind.DO_STMT:
                         self.__processDecisionPoint(node)
                         node._kind_id = 99999
 
-                    elif node.kind == CursorKind.IF_STMT or node.kind == CursorKind.SWITCH_STMT or\
-                        node.kind == CursorKind.LINKAGE_SPEC or node.kind == CursorKind.CONDITIONAL_OPERATOR or\
-                        node.kind == CursorKind.GOTO_STMT or node.kind == CursorKind.CONDITIONAL_OPERATOR:
+                    elif node.kind == CursorKind.IF_STMT or node.kind == CursorKind.SWITCH_STMT or \
+                                    node.kind == CursorKind.LINKAGE_SPEC or node.kind == CursorKind.CONDITIONAL_OPERATOR or \
+                                    node.kind == CursorKind.GOTO_STMT or node.kind == CursorKind.CONDITIONAL_OPERATOR:
                         self.stats.complexity += 1
 
                     elif node.kind == CursorKind.BINARY_OPERATOR:
-                        self.stats.complexity += codeLines[node.location.line-1].count('&&')
-                        self.stats.complexity += codeLines[node.location.line-1].count('||')
+                        self.stats.complexity += codeLines[node.location.line - 1].count('&&')
+                        self.stats.complexity += codeLines[node.location.line - 1].count('||')
                         node._kind_id = 99999
 
                     else:
@@ -49,11 +50,13 @@ class CCVisitor(object):
     def visitFunction(self, node):
         stats = DefStats(node.spelling)
         stats = CCVisitor(node, stats).stats
+        print 'Func ' + str(stats)
         self.stats.functions.append(stats)
 
     def visitClass(self, node):
         stats = ClassStats(node.spelling)
         stats = CCVisitor(node, stats).stats
+        print 'Class ' + str(stats)
         self.stats.classes.append(stats)
 
     def __processDecisionPoint(self, node):
