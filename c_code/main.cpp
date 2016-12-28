@@ -1,21 +1,19 @@
 #include <iostream>
 using namespace std;
 
-class a {
-    private:
-        int x, y;
-    public:
-        int sub(int x, int y) {
-            return x - y;
-        }
+class Add {
+private:
+    int x, y;
+public:
+    Add(int _x = 0, int _y = 0) : x(_x), y(_y)  {}
+
+    int add() {
+        return x + y;
+    }
 };
 
-int add(int x, int y) {
-    return x + y;
-}
-
 int main() {
-	cout << add(1, 3) << endl;
+    Add a(3, 3);
 
-	return 0;
+    cout << a.add() << endl;
 }
