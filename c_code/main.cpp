@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 
+namespace ns {
 class Add {
 private:
     int x, y;
@@ -12,8 +13,19 @@ public:
     }
 };
 
+int b = 1;
+double c = 3.4;
+}
+
 int main() {
-    Add a(3, 3);
+    ns::Add a(3, 3);
+
+    if (a.add() == 6) {
+        cout << "O" << endl;
+    }
+    else {
+        cout << "X" << endl;
+    }
 
     cout << a.add() << endl;
 }
