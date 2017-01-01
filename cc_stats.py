@@ -4,6 +4,7 @@ class Stats(object):
         self.classes = []
         self.functions = []
         self.iterations = []
+        self.ifState = []
         self.complexity = 1
 
     def __str__(self):
@@ -32,6 +33,13 @@ class DefStats(Stats):
 class IterationStats(Stats):
     def __str__(self):
         return 'IterationStats: name=%r, iterations=%r, complexity=%r' \
+               % (self.name, self.iterations, self.complexity)
+
+    __repr__ = __str__
+
+class IfStats(Stats):
+    def __str__(self):
+        return 'IfStats: name=%r, iterations=%r, complexity=%r' \
                % (self.name, self.iterations, self.complexity)
 
     __repr__ = __str__

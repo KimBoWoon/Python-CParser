@@ -3,7 +3,6 @@
 import os
 import sys
 from glob import glob
-
 import cc_python, cc_clang
 
 iterationDep = 0
@@ -11,6 +10,10 @@ totalClassCount = 0
 totalFunctionCount = 0
 totalComplexity = 0
 defaultComplexityCount = 0
+
+classSet = []
+functionSet = []
+iterationSet = []
 
 
 def checkIterationComplexity(_iter, count=0):
@@ -73,8 +76,10 @@ def main():
     statsSet = set()
 
     args = sys.argv
-    filePath = args[1]
-    language = args[2]
+    # filePath = args[1]
+    # language = args[2]
+    filePath = os.path.join(os.getcwd(), 'c_code/')
+    language = 'C'
 
     files = set()
     if os.path.isdir(filePath):
@@ -100,6 +105,13 @@ def main():
 
         statsSet.add(stats)
 
+        if len(stats.classes) != 0:
+            classSet.append(stats.classes)
+        if len(stats.functions) != 0:
+            functionSet.append(stats.functions)
+        if len(stats.iterations) != 0:
+            iterationSet.append(stats.iterations)
+
     for stat in statsSet:
         totalComplexity += stats.complexity
 
@@ -122,3 +134,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+    print classSet
+    print functionSet
+    print iterationSet

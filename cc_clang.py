@@ -2,7 +2,7 @@
 
 import clang.cindex
 from clang.cindex import CursorKind
-from cc_stats import Stats, DefStats, ClassStats, IterationStats
+from cc_stats import Stats, DefStats, ClassStats, IterationStats, IfStats
 
 fileName = ''
 codeLines = []
@@ -62,7 +62,19 @@ class CCVisitor(object):
     def __processDecisionPoint(self, node):
         stats = IterationStats(None)
         stats = CCVisitor(node, stats).stats
+        print 'For ' + str(stats)
         self.stats.iterations.append(stats)
+
+    def visitIf(self, node):
+        stats = IfStats(node.spelling)
+        stats = CCVisitor(node, stats).stats
+        print 'If ' + str(stats)
+        self.stats.ifstate.append(stats)
+
+    def printStatus(self):
+        print self.stats.classes
+        print self.stats.functions
+        print self.stats.iterations
 
 
 def measure_complexity(code, module_name):
