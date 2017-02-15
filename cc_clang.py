@@ -50,25 +50,25 @@ class CCVisitor(object):
     def visitFunction(self, node):
         stats = DefStats(node.spelling)
         stats = CCVisitor(node, stats).stats
-        print 'Func ' + str(stats)
+        # print 'Func ' + str(stats)
         self.stats.functions.append(stats)
 
     def visitClass(self, node):
         stats = ClassStats(node.spelling)
         stats = CCVisitor(node, stats).stats
-        print 'Class ' + str(stats)
+        # print 'Class ' + str(stats)
         self.stats.classes.append(stats)
 
     def __processDecisionPoint(self, node):
         stats = IterationStats(None)
         stats = CCVisitor(node, stats).stats
-        print 'For ' + str(stats)
+        # print 'For ' + str(stats)
         self.stats.iterations.append(stats)
 
     def visitIf(self, node):
         stats = IfStats(node.spelling)
         stats = CCVisitor(node, stats).stats
-        print 'If ' + str(stats)
+        # print 'If ' + str(stats)
         self.stats.ifstate.append(stats)
 
     def printStatus(self):

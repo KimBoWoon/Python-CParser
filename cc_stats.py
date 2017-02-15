@@ -37,6 +37,7 @@ class IterationStats(Stats):
 
     __repr__ = __str__
 
+
 class IfStats(Stats):
     def __str__(self):
         return 'IfStats: name=%r, iterations=%r, complexity=%r' \
