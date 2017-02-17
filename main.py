@@ -129,12 +129,12 @@ def main():
     if funcCount < 1:
         funcCount = 1
 
-    print totalComplexity, (totalComplexity - defaultComplexityCount) / (funcCount), iterationDep
+    # print totalComplexity, (totalComplexity - defaultComplexityCount) / (funcCount), iterationDep
 
 
 if __name__ == '__main__':
     main()
 
-    print classSet
-    print functionSet
-    print iterationSet
+    # print classSet
+    # print functionSet
+    # print iterationSet
