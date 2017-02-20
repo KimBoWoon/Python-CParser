@@ -31,7 +31,7 @@ int main() {
 	        printf("Hello\n");
 	}
 
-	if (i > 10) {
+	if (i > 10 && j < 10) {
 	    printf("Big\n");
 	}
 	else {

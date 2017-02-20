@@ -25,7 +25,7 @@ class CCVisitor(object):
                     if node.kind == CursorKind.FUNCTION_DECL or node.kind == CursorKind.CALL_EXPR:
                         keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
                     if node.kind == CursorKind.FOR_STMT or node.kind == CursorKind.WHILE_STMT or node.kind == CursorKind.DO_STMT:
-                        keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
+                        keywordList.append(DataSet(node.display, node.location.line, node.kind))
                     if node.kind == CursorKind.IF_STMT or node.kind == CursorKind.SWITCH_STMT:
                         keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
                     if node.kind == CursorKind.STRUCT_DECL or node.kind == CursorKind.UNION_DECL or \
@@ -34,36 +34,40 @@ class CCVisitor(object):
                     if node.kind == CursorKind.FIELD_DECL or node.kind == CursorKind.VAR_DECL:
                         keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
                     if node.kind == CursorKind.BINARY_OPERATOR:
-                        if codeLines[node.location.line - 1] == '&&':
-                            keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        if codeLines[node.location.line - 1] == '||':
-                            keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        if codeLines[node.location.line - 1] == '&':
-                            keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        if codeLines[node.location.line - 1] == '|':
-                            keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        if codeLines[node.location.line - 1] == '<':
-                            keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        if codeLines[node.location.line - 1] == '>':
-                            keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        if codeLines[node.location.line - 1] == '<=':
-                            keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        if codeLines[node.location.line - 1] == '>=':
-                            keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        if codeLines[node.location.line - 1] == '!':
-                            keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        if codeLines[node.location.line - 1] == '~':
-                            keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        if codeLines[node.location.line - 1] == '^':
-                            keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        if codeLines[node.location.line - 1] == '+':
-                            keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        if codeLines[node.location.line - 1] == '-':
-                            keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        if codeLines[node.location.line - 1] == '*':
-                            keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        if codeLines[node.location.line - 1] == '/':
-                            keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
+                        if '&&' in codeLines[node.location.line - 1]:
+                            keywordList.append(DataSet('&&', node.location.line, node.kind))
+                        if '||' in codeLines[node.location.line - 1]:
+                            keywordList.append(DataSet('||', node.location.line, node.kind))
+                        if '&' in codeLines[node.location.line - 1]:
+                            keywordList.append(DataSet('&', node.location.line, node.kind))
+                        if '|' in codeLines[node.location.line - 1]:
+                            keywordList.append(DataSet('|', node.location.line, node.kind))
+                        if '<' in codeLines[node.location.line - 1]:
+                            keywordList.append(DataSet('<', node.location.line, node.kind))
+                        if '>' in codeLines[node.location.line - 1]:
+                            keywordList.append(DataSet('>', node.location.line, node.kind))
+                        if '<=' in codeLines[node.location.line - 1]:
+                            keywordList.append(DataSet('<=', node.location.line, node.kind))
+                        if '>=' in codeLines[node.location.line - 1]:
+                            keywordList.append(DataSet('>=', node.location.line, node.kind))
+                        if '!' in codeLines[node.location.line - 1]:
+                            keywordList.append(DataSet('!', node.location.line, node.kind))
+                        if '~' in codeLines[node.location.line - 1]:
+                            keywordList.append(DataSet('~', node.location.line, node.kind))
+                        if '^' in codeLines[node.location.line - 1]:
+                            keywordList.append(DataSet('^', node.location.line, node.kind))
+                        if '+' in codeLines[node.location.line - 1]:
+                            keywordList.append(DataSet('+', node.location.line, node.kind))
+                        if '-' in codeLines[node.location.line - 1]:
+                            keywordList.append(DataSet('-', node.location.line, node.kind))
+                        if '*' in codeLines[node.location.line - 1]:
+                            keywordList.append(DataSet('*', node.location.line, node.kind))
+                        if '/' in codeLines[node.location.line - 1]:
+                            keywordList.append(DataSet('/', node.location.line, node.kind))
+                        if '++' in codeLines[node.location.line - 1]:
+                            keywordList.append(DataSet('++', node.location.line, node.kind))
+                        if '--' in codeLines[node.location.line - 1]:
+                            keywordList.append(DataSet('--', node.location.line, node.kind))
 
     def getKeywordList(self):
         return keywordList
