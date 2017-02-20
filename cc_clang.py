@@ -21,11 +21,10 @@ class CCVisitor(object):
         for child in ast.get_children():
             for node in child.walk_preorder():
                 if str(node.location.file).find(fileName) != -1:
-                    # print '{0}\t{1}\t{2}\t{3}'.format(node.kind, node.spelling, node.location.line, node.displayname)
                     if node.kind == CursorKind.FUNCTION_DECL or node.kind == CursorKind.CALL_EXPR:
                         keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
                     if node.kind == CursorKind.FOR_STMT or node.kind == CursorKind.WHILE_STMT or node.kind == CursorKind.DO_STMT:
-                        keywordList.append(DataSet(node.display, node.location.line, node.kind))
+                        keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
                     if node.kind == CursorKind.IF_STMT or node.kind == CursorKind.SWITCH_STMT:
                         keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
                     if node.kind == CursorKind.STRUCT_DECL or node.kind == CursorKind.UNION_DECL or \
