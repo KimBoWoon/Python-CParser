@@ -8,7 +8,7 @@ from cc_stats import Stats, DefStats, ClassStats, IterationStats, IfStats
 fileName = ''
 codeLines = []
 keywordList = []
-usedSet = ()
+usedSet = set()
 
 
 class CCVisitor(object):
@@ -24,20 +24,20 @@ class CCVisitor(object):
                 if str(node.location.file).find(fileName) != -1:
                     if node.kind == CursorKind.FUNCTION_DECL or node.kind == CursorKind.CALL_EXPR:
                         keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        usedSet.append(node.kind)
+                        usedSet.add(node.kind)
                     if node.kind == CursorKind.FOR_STMT or node.kind == CursorKind.WHILE_STMT or node.kind == CursorKind.DO_STMT:
                         keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        usedSet.append(node.kind)
+                        usedSet.add(node.kind)
                     if node.kind == CursorKind.IF_STMT or node.kind == CursorKind.SWITCH_STMT:
                         keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        usedSet.append(node.kind)
+                        usedSet.add(node.kind)
                     if node.kind == CursorKind.STRUCT_DECL or node.kind == CursorKind.UNION_DECL or \
                                     node.kind == CursorKind.UNION_DECL or node.kind == CursorKind.CLASS_DECL or node.kind == CursorKind.ENUM_DECL:
                         keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        usedSet.append(node.kind)
+                        usedSet.add(node.kind)
                     if node.kind == CursorKind.FIELD_DECL or node.kind == CursorKind.VAR_DECL:
                         keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
-                        usedSet.append(node.kind)
+                        usedSet.add(node.kind)
                     if node.kind == CursorKind.BINARY_OPERATOR:
                         if '&&' in codeLines[node.location.line - 1]:
                             keywordList.append(DataSet('&&', node.location.line, node.kind))
@@ -73,7 +73,7 @@ class CCVisitor(object):
                             keywordList.append(DataSet('++', node.location.line, node.kind))
                         if '--' in codeLines[node.location.line - 1]:
                             keywordList.append(DataSet('--', node.location.line, node.kind))
-                        usedSet.append(node.kind)
+                        usedSet.add(node.kind)
 
     def getKeywordList(self):
         return keywordList
@@ -93,6 +93,7 @@ def measure_complexity(code, module_name):
 
     visitor = CCVisitor(ast, description=module_name)
 
-    print visitor.getKeywordList()
+    # print visitor.getKeywordList()
+    print usedSet
 
     return visitor.stats
