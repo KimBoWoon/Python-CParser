@@ -1,0 +1,119 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+int cnt = 0;	
+
+void visit(int i, int j, char matrix[][100]);
+int descending_cnt(int arr[99]);
+
+int main(void)
+{
+	ifstream inStream;
+	int nocases;
+
+	inStream.open("input.txt"); 
+	if (inStream.fail())
+	{
+		cerr << "Input file opening failed.\n";
+		exit(1);
+	}
+	inStream >> nocases; 
+
+	for (int i = 0; i<nocases; i++)
+	{
+		char matrix[100][100] = { 0 };	
+		int roomSize[100] = { 0 };	
+
+
+		int matrix_row, matrix_col;	
+
+		inStream >> matrix_row >> matrix_col;
+		int key = 0, result;
+		int tt = 0;
+
+		for (int j = 0; j<matrix_col; j++)
+			for (int k = 0; k<matrix_row; k++)
+				inStream >> matrix[j][k];		
+		for (int s_i = 0; s_i<matrix_col; s_i++)
+		{
+			for (int s_j = 0; s_j<(matrix_row / 2) + 1; s_j++)    
+			{
+				cnt = 0;
+				if (matrix[s_i][s_j] == '.')
+				{
+					visit(s_i, s_j, matrix); 
+					roomSize[key] = cnt;    
+					key++;                  
+				}
+			}
+		}
+
+		for (int s_i = 0; s_i<matrix_col; s_i++)
+		{
+			for (int s_j = matrix_row / 2; s_j<matrix_row; s_j++)
+			{
+				cnt = 0;                        
+				if (matrix[s_i][s_j] == '.')
+				{
+					visit(s_i, s_j, matrix);
+					roomSize[key] = cnt;             
+					key++;
+				}
+			}
+		}
+
+		result = descending_cnt(roomSize);
+		cout << result << endl;
+
+		result = 0;        
+
+		while (roomSize[result])                          
+		{
+			cout << roomSize[result] << " ";
+			result++;                                       
+		}
+		cout << endl;                                       
+	}
+	inStream.close();
+}
+
+void visit(int i, int j, char matrix[][100])      
+{
+	matrix[i][j] = '+';
+	cnt++;
+	if (matrix[i][j + 1] == '.') visit(i, j + 1, matrix);
+
+	if (matrix[i + 1][j] == '.') visit(i + 1, j, matrix);
+
+	if (matrix[i - 1][j] == '.') visit(i - 1, j, matrix);
+
+	if (matrix[i][j - 1] == '.') visit(i, j - 1, matrix);
+}
+
+int descending_cnt(int arr[99])	
+{
+	int temp;
+	int count = 0;
+	for (int i = 0; i<99; i++)
+	{
+		for (int j = i + 1; j<100; j++)
+		{
+			if (arr[i] < arr[j])
+			{
+				temp = arr[j];
+				arr[j] = arr[i];
+				arr[i] = temp;
+			}
+		}
+	}
+	temp = 0;
+
+	while (arr[temp])   
+	{
+		count++;
+		temp++;
+	}
+	return count;
+}

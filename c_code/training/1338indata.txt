@@ -1,0 +1,54 @@
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int gcd(int a, int b){
+	if (b == 0)
+		return a;
+	else
+		return gcd(b, a%b);
+}
+
+int minusJa(int a, int b,int c, int d){
+	return (a*d)-(c*b);
+}
+int main(void){
+	ifstream in;
+	in.open("input.txt");
+	int testcases;
+	in >> testcases;
+	int Mo, Ja;
+	for (int i = 0; i < testcases; i++){
+		in >> Ja >> Mo;
+		int cnt = 2;
+		if (Ja == 1){
+			cout << Mo << endl;
+		}
+		else{
+			while (true){
+				if (minusJa(Ja, Mo, 1, cnt) >= 0){
+					Ja = minusJa(Ja, Mo, 1, cnt);
+					Mo = cnt*Mo;
+
+					if (gcd(Ja, Mo) != 1){
+						int tmp;
+						tmp = gcd(Ja, Mo);
+						Mo = Mo / tmp;
+						Ja = Ja / tmp;
+					}
+
+					if (Ja == 1){
+						cout << Mo << endl;
+						break;
+					}
+					else
+						cnt++;
+				}
+				else 
+					cnt++;
+			}
+		}
+	}
+}

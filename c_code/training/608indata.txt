@@ -1,0 +1,34 @@
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+int factorial(int n){
+	
+	if(n<=1)	
+		return 1;
+	else		
+		return n*factorial(n-1);
+}
+
+void main(void){
+	FILE *in_file;
+
+	int no_case;
+	int num;
+	int i;
+	
+	in_file = fopen("input.txt" , "r");		
+	if(in_file == NULL) exit(1);
+
+	fscanf(in_file , "%d", &no_case);
+
+	for(i=0; i<no_case; i++)
+	{
+		fscanf(in_file , "%d", &num);
+
+		printf("%d\n",factorial(num));	
+	}
+
+	fclose(in_file);
+}

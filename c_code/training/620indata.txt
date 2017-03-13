@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int factorial(int n){
+    if( n==0 ) return 1;
+    else           return factorial(n-1)*n;
+}
+
+int main(void){
+    FILE* file;
+    file = fopen("input.txt","r");
+    
+    int cases;
+    fscanf(file, "%d", &cases);
+    while(cases--){
+        int n;
+        fscanf(file, "%d", &n);
+        printf("%d\n", factorial(n));
+    }
+    return 0;
+}

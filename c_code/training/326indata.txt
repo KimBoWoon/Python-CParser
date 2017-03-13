@@ -1,0 +1,45 @@
+
+#include<iostream>
+#include<fstream>
+#include<algorithm>
+using namespace std;
+void setRoom(int x,int y,int w,int h,int no,char room[][100],int RS[])
+{
+	RS[no-1]++;
+	room[x][y]='+';
+	if(x-1>=0&&room[x-1][y]=='.')setRoom(x-1,y,w,h,no,room,RS);
+	if(x+1<h&&room[x+1][y]=='.')setRoom(x+1,y,w,h,no,room,RS);
+	if(y-1>=0&&room[x][y-1]=='.')setRoom(x,y-1,w,h,no,room,RS);
+	if(y+1<w&&room[x][y+1]=='.')setRoom(x,y+1,w,h,no,room,RS);
+}
+int main()
+{
+	ifstream fs;
+	int n;
+	fs.open("input.txt");
+	fs>>n;
+	while(n--)
+	{
+		int w,h,no=0,roomSize[1000]={0};
+		char room[100][100]={0};
+		fs>>w>>h;
+		for(int i=0;i<h;i++)
+			fs>>room[i];
+		for(int i=0;i<h;i++)
+		{
+			for(int j=0;j<w;j++)
+			{
+				if(room[i][j]=='.')
+				{
+					no++;
+					setRoom(i,j,w,h,no,room,roomSize);
+				}
+			}
+		}
+		cout<<no<<"\n";
+		sort(roomSize,roomSize+no);
+		for(int i=no-1;i>=0;i--)
+			cout<<roomSize[i]<<" ";
+		cout<<"\n";
+	}
+}

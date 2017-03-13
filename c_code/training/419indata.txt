@@ -1,0 +1,36 @@
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#pragma warning(disable : 4996)
+int uclid(int num1, int num2); 
+
+void main(void)
+{
+	FILE* inFile;
+	int testCase = 0, num1 = 0, num2=0;
+	int i = 0;
+	inFile = fopen("input.txt", "r"); 
+	if (inFile == NULL) exit(1);
+	fscanf(inFile, "%d", &testCase); 
+
+	for (i = 0; i < testCase; i++)
+	{
+		fscanf(inFile, "%d %d", &num1, &num2);
+		printf("%d\n", uclid(num1, num2));
+	}
+	fclose(inFile);
+}
+
+int uclid(int num1, int num2)
+{
+	if (num2==0) 
+	{
+		return num1;
+	}
+	else 
+	{
+		return uclid(num2, num1%num2);
+	}
+}

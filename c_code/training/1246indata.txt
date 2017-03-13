@@ -1,0 +1,51 @@
+
+
+
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+
+#define MAX 168
+
+int makePrime(int data){
+	int i,cnt=0;
+	data = (double)data;
+	for(i=2; i<=sqrt(data); i++){
+		if(data%i==0)
+			cnt++;
+	}
+	if(cnt==0) return 1; 
+	else return 0; 
+}
+
+void Goldbach(int num){
+	int prime[MAX],i,j,n=0,check[2];
+
+	for(i=2;i<num;i++)
+		if(makePrime(i)==1) prime[n++]=i; 
+
+	for(i=0;i<n;i++){
+		if(prime[i]>num/2) break; 
+		for(j=0;j<n;j++){
+			if(num == prime[i]+prime[j]){
+				check[0]=prime[i]; 
+				check[1]=prime[j]; 
+			}
+		}
+	}
+	printf("%d %d\n",check[0],check[1]);
+}
+
+int main(){
+	int cases,num,i;
+
+	FILE *infile=fopen("input.txt","r");
+	fscanf(infile,"%d",&cases);
+
+	for(i=0;i<cases;i++){
+		fscanf(infile,"%d",&num);
+		Goldbach(num);
+	}
+	fclose(infile);
+	return 0;
+}

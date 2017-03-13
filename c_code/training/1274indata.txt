@@ -1,0 +1,80 @@
+
+
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int checkPrime(int n);
+void swap(int *str1, int *str2);
+
+int main()
+{
+	ifstream infile;
+	int testCase;
+	int n; 
+	int arr[1000];
+	int a = 0;
+	infile.open("input.txt");
+	
+	infile >> testCase;
+
+	for (int i = 0; i < testCase; i++)
+	{
+		infile >> n;
+		a = 0;
+
+		for (int j = 0; j < a; j++)	arr[j] = 0;
+		
+		for (int j = 2; j < n; j++)
+		{
+			for (int k = 2; k < n; k++)
+			{
+				if (checkPrime(j) && checkPrime(k) && j + k == n)
+				{
+					arr[a] = j;
+					arr[++a] = k;
+					a++;
+				}
+			}
+
+		}
+		for (int j = 0; j < a; j++) 
+		{
+			for (int k = j + 1; k < a; k++)
+			{
+				if (arr[j] > arr[k])
+					swap(&arr[j], &arr[k]);
+			}
+		}
+
+		cout << arr[a/2-1] << " " << arr[a/2] << endl;
+
+
+	}
+	infile.close();
+
+	return 0;
+}
+
+int checkPrime(int n)
+{
+	int check = 1;
+	for (int div = 2; div*div <= n; div++)
+	{
+		if (n%div == 0)
+		{
+			check = 0;
+			break;
+		}
+	}
+	return check;
+}
+void swap(int *str1, int *str2)
+{
+	int tmp;
+
+	tmp = *str1;
+	*str1 = *str2;
+	*str2 = tmp;
+}

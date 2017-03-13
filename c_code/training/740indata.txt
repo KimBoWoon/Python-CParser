@@ -1,0 +1,24 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+bool pal(string a, int index, int length){
+	if (index > length / 2){ return true; }
+	else if (a[index] == a[length - index]){ return pal(a, ++index, length); }
+	else return false;
+}
+
+int main(void){
+	ifstream in;
+	in.open("input.txt");
+	int testcases;
+	in >> testcases;
+	string value;
+	for (int i = 0; i < testcases; i++){
+		in >> value;
+		cout << pal(value, 0, value.length() - 1) << endl;
+		
+	}
+}

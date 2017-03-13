@@ -1,0 +1,48 @@
+#include<iostream>
+#include<fstream>
+#include<algorithm>
+
+using namespace std;
+int main(){
+	ifstream file("input.txt");
+	int T;
+	file >> T;
+
+	while (T--){
+		int length, target;
+		int* bottom, *top;
+		int distance, count;
+
+		file >> length >> target;
+		
+		int* numArray = new int[length];
+		
+		for (int i = 0; i < length; i++)
+			file >> numArray[i];
+		
+		sort(numArray, numArray + length);
+		
+		bottom = numArray;
+		top = numArray + length - 1;
+		distance = abs(*bottom + *top - target);
+		count = 0;
+
+		while (top != bottom){
+			int sum = *bottom + *top;
+
+			if (abs(sum - target) <= distance){
+				if (abs(sum - target) < distance)
+					count = 0;
+				distance = abs(sum - target);
+				count++;
+			}
+			if (sum > target){
+				top--;
+			}
+			else{
+				bottom++;
+			}
+		}
+		cout << count << endl;
+	}
+}

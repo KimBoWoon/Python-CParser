@@ -1,0 +1,52 @@
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	ifstream instream;
+	instream.open("input.txt");
+
+	int testcase;
+	instream >> testcase;
+	for (int i = 0; i < testcase; i++)
+	{
+		int teamnum, gamenum;
+		instream >> teamnum >> gamenum;
+		int scores[1000] = { 0 };		
+		int scorea[1000] = { 0 };		
+		int *res = new int[teamnum];
+
+		for (int j = 0; j < gamenum; j++)
+		{
+			int a, b, c, d;
+			instream >> a >> b >> c >> d;
+			scores[a - 1] += c;
+			scores[b - 1] += d;
+
+			scorea[a - 1] += d;
+			scorea[b - 1] += c;
+		
+		}
+		for (int k = 0; k < teamnum; k++)
+		{
+			res[k] = ( scores[k] * scores[k] * 1000 )/ (scores[k] * scores[k] + scorea[k] * scorea[k]);
+		}
+
+		for (int a = 0; a < teamnum-1; a++)
+		{
+			for (int b = 0; b < teamnum - 1 - a; b++)
+			{
+				if (res[b] > res[b + 1])
+				{
+					int tmp = res[b];
+					res[b] = res[b + 1];
+					res[b + 1] = tmp;
+				}
+			}
+		}
+		cout << res[teamnum - 1] << endl;
+		cout << res[0] << endl;
+	}
+}

@@ -1,0 +1,50 @@
+
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int cnt;
+
+void Rec_Parenthesis(string str, int n){
+    if(cnt < 0){
+        cout << "NO" << endl;
+        return;
+    }
+    else if(n==0){
+        if(cnt==0)
+            cout << "YES" << endl;
+        else
+            cout << "NO" << endl;
+        return;
+    }
+    else if(str[0] == '('){
+        cnt++;
+        str.erase(0, 1);
+        return Rec_Parenthesis(str, n-1);
+    }
+    else{
+        cnt--;
+        str.erase(0, 1);
+        return Rec_Parenthesis(str, n-1);
+    }
+}
+
+void ParenthesisRecursion(ifstream &inStream){
+    string str;
+    inStream >> str;
+    
+    return Rec_Parenthesis(str, str.size());
+}
+
+int main(){
+    ifstream inStream;
+    inStream.open("input.txt");
+    int test_case;
+    inStream >> test_case;
+
+    for(int t=0; t<test_case; t++){
+        cnt = 0;
+        ParenthesisRecursion(inStream);
+    }
+}

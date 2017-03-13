@@ -1,0 +1,39 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void assign(int *data);
+
+void main(void) {
+	FILE *input;
+	int no_cases;
+	int data[3];
+	int i, j;
+
+	input = fopen("input.txt", "r");
+	if (input == NULL) exit(1);
+
+	fscanf(input, "%d", &no_cases);
+
+	for (i = 0; i < no_cases; i++) {
+		for (j = 0; j < 3; j++) fscanf(input, "%d", &data[j]);
+		assign(data);
+	}
+
+	fclose(input);
+}
+
+void assign(int *data) {
+	int w = 0, h = 0;
+
+	if(data[2] % data[0] == 0) {
+		h = data[0];
+		w = data[2] / data[0];
+	}
+	else {
+		h = data[2] % data[0];
+		w = data[2] / data[0] + 1;
+	}
+	printf("%d%02d\n", h, w);
+}

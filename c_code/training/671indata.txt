@@ -1,0 +1,57 @@
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int factorial(int n);
+
+void main(void)
+{
+	FILE *inFile;
+	int i,j;
+	int numCases;
+	int count =0;
+	int num;
+
+
+	inFile = fopen("input.txt","r"); 
+	if(inFile ==NULL) exit(1);
+
+	fscanf(inFile, "%d", &numCases);
+
+	for(i=0;i<numCases;i++)
+	{
+		
+		fscanf(inFile, "%d ",&num );
+		printf("%d\n",factorial(num));
+	}
+
+		
+
+	
+	
+	fclose(inFile); 
+
+}
+
+int factorial(int n)
+{
+	int x;
+	int sum=1;
+
+	if(n==1 || n==0)
+		return 1;
+	else
+	{
+		for(x=1;x<=n; x++)
+		{
+			sum *=x;		
+		}
+
+		return sum;
+	}
+		
+}

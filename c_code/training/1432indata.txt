@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main()
+{
+	FILE * in_file;
+    int numcase,i;
+    int H, W, person;
+    int person_H, person_W;
+ 
+	in_file = fopen("input.txt", "r");
+	if(in_file == NULL)
+		exit(1);
+
+    fscanf(in_file, "%d", &numcase);
+    for(i=0; i<numcase; i++)
+    {
+        fscanf(in_file, "%d %d %d", &H, &W, &person);
+ 
+        person_H = person % H;						
+        if(person_H == 0)							
+            person_H = H;
+        person_W = person / H + 1;					
+        if(person % H ==0)							
+            person_W = person_W - 1;
+ 
+        if(person_W <=9)							
+            printf("%d0%d\n",person_H, person_W);
+        else
+            printf("%d%d\n",person_H, person_W);
+    }   
+	fclose(in_file);
+}

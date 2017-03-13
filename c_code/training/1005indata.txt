@@ -1,0 +1,78 @@
+
+#include <iostream>
+#include <fstream>
+
+#define LIMIT 1000	
+#define LENGTH 15	
+#define ZERO 0
+#define LOOP 1
+
+
+using namespace std;
+
+void input_data(ifstream& ifs, int num_array[], int num_int);	
+int find_ducci(int num_array[], int num_int);	
+
+int main()
+{
+	ifstream inFile;
+	inFile.open("input.txt");
+
+	int numTestCase;
+	inFile >> numTestCase;
+
+	while (numTestCase--)
+	{
+		int num_int;	
+		inFile >> num_int;
+
+		int num_array[LENGTH];	
+		input_data(inFile, num_array, num_int);	
+
+		if (find_ducci(num_array, num_int))	
+			cout << "LOOP" << endl;
+		else
+			cout << "ZERO" << endl;
+	}
+
+	return 0;
+}
+
+void input_data(ifstream& ifs, int num_array[], int num_int)
+{
+	for (int i = 0; i < num_int; i++)
+		ifs >> num_array[i];
+}
+
+int find_ducci(int num_array[], int num_int)
+{
+	int temp[LENGTH];
+	int logic_index;
+
+	for (int i = 0; i < LIMIT; i++)	
+	{
+		for (int j = 0; j < num_int; j++)	
+		{
+			
+			
+
+			if ((j + 1) % num_int == 0)
+				temp[j] = num_array[j] - num_array[0] >= 0 ? num_array[j] - num_array[0] : -(num_array[j] - num_array[0]);
+			else
+				temp[j] = num_array[j] - num_array[j + 1] >= 0 ? num_array[j] - num_array[j + 1] : -(num_array[j] - num_array[j + 1]);
+		}
+
+		for (int check = 0; check < num_int; check++)
+		{
+			if (temp[check])	
+				break;
+			if (check == num_int - 1)	
+				return ZERO;	
+		}
+
+		for (int i = 0; i < num_int; i++)
+			num_array[i] = temp[i];
+
+	}
+	return LOOP;	
+}

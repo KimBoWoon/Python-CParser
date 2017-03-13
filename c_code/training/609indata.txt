@@ -1,0 +1,34 @@
+
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int fac(int n);
+
+void main(void) {
+	FILE *inFile;
+	int caseNum;
+
+	int i;
+	int n;
+
+	inFile = fopen("input.txt", "r");
+	fscanf(inFile, "%d", &caseNum);
+
+	for (i = 0; i < caseNum; i++) {
+		fscanf(inFile, "%d", &n);
+		
+		printf("%d\n", fac(n));
+	}
+}
+
+int fac(int n) {
+	if (n == 0) {
+		return 1;
+	}
+
+	return n*fac(n - 1);
+}

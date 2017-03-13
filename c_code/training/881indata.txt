@@ -1,0 +1,37 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+int fib(int n);
+
+int main(){
+	ifstream inStream;
+	int numTestCases;	
+
+	inStream.open("input.txt");
+	if (inStream.fail()){
+		cerr << "Input file opening failed.\n";
+		exit(1);
+	}
+
+	inStream >> numTestCases;	
+
+	for (int i = 0; i < numTestCases; i++){
+		int num;
+
+		inStream >> num;
+
+		cout << fib(num) << endl;
+	}
+
+	inStream.close();
+	return 0;
+}
+
+int fib(int n) {
+	if (n <= 1) 
+		return n;
+	else        
+		return fib(n - 1) + fib(n - 2);
+}

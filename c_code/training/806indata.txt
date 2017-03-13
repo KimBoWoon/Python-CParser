@@ -1,0 +1,28 @@
+
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+int fibo(int n){
+	if (n == 0)
+		return 0;
+	if (n == 1)
+		return 1;
+	else
+		return fibo(n-1) + fibo(n-2);
+}
+
+int main(){
+	ifstream File;
+	int numCase = 0;
+	int num = 0;
+	File.open("input.txt");
+	File >> numCase;
+	for (int iter = 0; iter < numCase; iter++){
+		File >> num;
+		int ans = fibo(num);
+		cout << ans << endl;
+	}
+	File.close();
+	return 0;
+}

@@ -1,0 +1,65 @@
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+
+int Tsum(int n)
+{    
+   return n*(n+1)/2;
+}
+int Tmax(int i)
+{
+   int max=1;
+   if(i!=1){
+   while(i>Tsum(max))
+   {
+      max++;
+   }
+   max-=1;
+   }
+   else
+      max=1;
+   return max;
+}
+int ureka(int i)
+{
+   int Num; 
+   Num=i;
+   int Tnum=0;
+   int max = Tmax(Num);
+   int all[100] = { 0 };
+   
+   for(int j=1;j<=max;j++)
+      all[j]=Tsum(j);
+
+      for (int a = 1; a <= max; a++)
+         for (int b = 1; b <= max; b++)
+            for (int c = 1; c <= max; c++)
+               if (all[a] + all[b] + all[c] == Num)
+                     Tnum=1;
+   
+   return Tnum;
+}
+
+int main()
+{
+   ifstream in_file;
+
+   in_file.open("input.txt");
+   if(in_file.fail())
+   {
+      cerr << "error"<<endl;
+      exit(1);
+   }
+   int num;
+   int a;
+   int i;
+
+   in_file >> num;
+   for(i=0;i<num;i++){
+      in_file >> a;
+      cout << ureka(a) << endl;
+   }
+
+   return 0;
+}

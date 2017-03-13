@@ -1,0 +1,28 @@
+
+#include<iostream>
+#include<fstream>
+#include<cstring>
+
+using namespace std;
+
+int gcd(int a, int b) {
+	if (b == 0)
+		return a;
+	else
+		return gcd(b, a%b);
+}
+
+int main()
+{
+	int testCase, result_chid , result_pare, a, b, c, d = 0;
+	fstream instream("input.txt", ios::in);
+	instream >> testCase;
+	for (int q = 0; q < testCase; q++)
+	{
+		instream >> a >> b >> c >> d;
+		result_chid = (a*d) + (c*b);
+		result_pare = (d*b);
+		cout << result_chid/(gcd(result_chid, result_pare)) <<" "<< result_pare/ (gcd(result_chid, result_pare)) << endl;
+	}
+}
+

@@ -1,0 +1,34 @@
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void main(void){
+	FILE *inFile;
+	int i;
+	int testCase=0;      
+	int value;           
+	int primeCheck = 1;  
+	int divisor;  
+	inFile=fopen("input.txt", "r"); 
+	if (inFile == NULL)	exit(1);
+
+	fscanf(inFile, "%d", &testCase); 
+
+	for (i = 0; i < testCase; i++){
+		fscanf(inFile, "%d", &value);  
+		for (divisor = 2; divisor*divisor <= value; divisor++) 
+		{
+			if ((value%divisor) == 0) 
+			{
+				primeCheck = 0;      
+				break;
+			}
+		}
+		printf("%d\n", primeCheck);
+		primeCheck = 1;
+	}
+	fclose(inFile);
+}

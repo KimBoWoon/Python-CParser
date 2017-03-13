@@ -1,0 +1,38 @@
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int palindrome(string test, int i, int j){			
+
+	if( i< j )			
+	{
+		if( test.at(i) == test.at(j) )
+			return palindrome(test, i+1, j-1);		
+		else
+			return 0;
+	}
+	return 1;
+}
+
+
+int main(){
+
+	ifstream inStream;
+	inStream.open("input.txt");		
+
+	int num_case;	
+
+	inStream >> num_case;
+
+	for(int i=0; i< num_case ; i++){
+
+		string test;
+		inStream >> test;
+
+		cout<<palindrome(test,0, test.size()-1)<<endl;
+	
+	}
+}

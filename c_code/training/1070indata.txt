@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#define MAX 16
+void DucciSequence(FILE *file,int n){
+	int i,j,result=0;
+	int arr[MAX];
+	for(i=0; i<n; i++){
+			fscanf(file,"%d", &arr[i]);
+		}
+	arr[n] = arr[0];
+	for(i=0; i<1000; i++){ 
+		for(j=0; j<n; j++){
+			arr[j] = abs(arr[j]-arr[j+1]); 
+		}
+		arr[n] = arr[0];
+	}
+	for(j=0; j<n; j++){
+		result += arr[j];
+	}
+	if(result==0)
+		printf("ZERO\n"); 
+	else
+		printf("LOOP\n");
+}
+void main()
+{
+	FILE *file;
+	int testcase,n;
+	int i=0;
+
+	file = fopen("input.txt","r");
+	if(file ==NULL)
+		exit(1);
+	fscanf(file, "%d", &testcase);
+	for(i=0; i<testcase; i++)
+	{
+		fscanf(file,"%d", &n);
+		DucciSequence(file,n);
+	}
+	fclose(file);
+}

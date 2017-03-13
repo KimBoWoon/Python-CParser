@@ -1,0 +1,41 @@
+#include<iostream>
+#include<fstream>
+#include<algorithm>
+#include<vector>
+using namespace std;
+bool isP(vector<int> v)
+{
+    for (int i = 0, j = v.size() - 1; i <= j; i++, j--)
+        if (v[i] != v[j])return false;
+    return true;
+}
+int main()
+{
+	ifstream fs;
+	fs.open("input.txt");
+    int n;
+	fs >> n;
+    while (n--)
+    {
+        int k,r=0;
+        vector<int> v;
+        v.clear();
+        fs >> k;
+        for (int i = 2; i <= 64; i++)
+        {
+            int t = k;
+            while (t)
+            {
+                v.push_back(t%i);
+                t /= i;
+            }
+            if (isP(v))
+            {
+                r = 1;
+                break;
+            }
+            v.clear();
+        }
+        cout << r << "\n";
+    }
+}

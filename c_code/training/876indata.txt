@@ -1,0 +1,26 @@
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+int fibo(int n)
+{
+	if (n == 0) return 0;
+	else if (n == 1) return 1;
+	else return fibo(n - 1)+fibo(n-2);
+}
+int main()
+{
+	ifstream in;
+	in.open("input.txt");
+	int t;
+	in >> t;
+	while(t--)
+	{
+		int n;
+		in >> n;
+		cout<<fibo(n)<<endl;
+	}
+	in.close();
+}

@@ -1,0 +1,117 @@
+
+#include <iostream>
+#include <fstream>
+
+int **Right, **Down, ****C;	
+
+void Driving(int M, int N, int L, int G , int MAX_P) {		
+	
+	for (int i = 0; i < M; i++) {					
+		for (int j = 0; j < N; j++) {
+			for (int r = 0; r < 2; r++) {
+				for (int l = 0; l < MAX_P ; l++) {
+					C[i][j][r][l] = G + 1;			
+				}
+			}
+		}
+	}
+
+	C[0][0][0][0] = C[0][0][1][0] = 0; 
+	
+	int short_time = MAX_P + 1;
+
+	for (int i = 0; i < M; i++) {
+		for (int j = 0; j < N; j++) {
+			for (int r = 0; r < 2; r++) {
+				for (int l = 0; l < MAX_P ; l++) {
+					
+					if (C[i][j][r][l] < G + 1) {	
+						
+						if (i == M - 1 && j == N - 1) {	
+							if (short_time > l)	short_time = l;
+						}
+						
+						if (r == 1) {	
+							if (j < N - 1 && C[i][j + 1][r][l] >= C[i][j][r][l] + Right[i][j]) {
+								C[i][j + 1][r][l] = C[i][j][r][l] + Right[i][j];
+							}
+							if (j != 0 && i < M - 1 && C[i + 1][j][!r][l + 1] >= C[i][j][r][l] + Down[i][j]) {
+								C[i + 1][j][!r][l + 1] = C[i][j][r][l] + Down[i][j];
+							}
+						}
+						else {	
+							if (i < M - 1 && C[i + 1][j][r][l] >= C[i][j][r][l] + Down[i][j]) {
+								C[i + 1][j][r][l] = C[i][j][r][l] + Down[i][j];
+							}
+							if (i != 0 && j < N - 1 && C[i][j + 1][!r][l] >= C[i][j][r][l] + Right[i][j]) {
+								C[i][j + 1][!r][l + 1] = C[i][j][r][l] + Right[i][j];
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	if (short_time < MAX_P + 1)	std::cout << ( M + N - 2) * L + short_time << std::endl;		
+	else std::cout << -1 << std::endl;
+}
+
+int main(void)
+{
+	std::ifstream fin;
+	int numcases;
+
+	fin.open("input.txt");
+	fin >> numcases;
+
+	while (numcases--) {
+		int m, n, L, G;
+		fin >> m >> n >> L >> G;
+
+		int MAX_P;
+		if (m == n) {
+			MAX_P = 2 * m - 3;
+		}
+		else {
+			if (m > n) {
+				MAX_P = 2 * n - 2;
+			}
+			else {
+				MAX_P = 2 * m - 2;
+			}
+		}
+
+		Right = new int*[m];
+		Down = new int*[m - 1];
+
+		for (int i = 0; i < m; i++) {
+			Right[i] = new int[n - 1];
+			Down[i] = new int[n];
+		}
+
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n - 1; j++) {
+				fin >> Right[i][j];
+			}
+		}
+
+		for (int i = 0; i < m - 1; i++) {
+			for (int j = 0; j < n; j++) {
+				fin >> Down[i][j];		
+			}
+		}
+
+		C = new int***[m];
+		for (int i = 0; i < m; i++) {
+			C[i] = new int**[n];
+			for (int j = 0; j < n; j++) {
+				C[i][j] = new int*[2];
+				for (int k = 0; k < 2; k++) {
+					C[i][j][k] = new int[MAX_P + 1];
+				}
+			}
+		}
+		
+		Driving(m, n, L, G, MAX_P + 1);		
+	}
+}

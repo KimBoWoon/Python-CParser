@@ -1,0 +1,42 @@
+
+
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+
+int factorial(int n)
+{
+    if(n<=1)
+        return 1;
+    else
+        return n*factorial(n-1);
+}
+
+int main()
+{
+
+    ifstream file;
+    
+    file.open("input.txt");
+    
+    if(file.is_open()==false) 
+        cout<<"입력파일이 없습니다."<<endl;
+    
+    else
+    {	
+        int case_num;
+        file>>case_num;
+        
+        for(int i=0; i<case_num; i++)
+        {	
+            int n;
+            file>>n; 
+            cout<<factorial(n)<<endl;
+        }
+    }
+
+        file.close();
+
+}

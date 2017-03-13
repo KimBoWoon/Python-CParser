@@ -4,6 +4,7 @@ import os
 import sys
 from glob import glob
 import cc_python, cc_clang
+import re
 
 iterationDep = 0
 totalClassCount = 0
@@ -72,14 +73,21 @@ def main():
     global defaultComplexityCount
     global iterationDep
 
-    extension = {'C': '*.c', 'C++': '*.cpp', 'JAVA': '*.java', 'PYTHON': '*.py'}
+    extension = {'C': '*.c', 'C++': '*.cpp', 'JAVA': '*.java', 'PYTHON': '*.py', 'TXT': '*indata.txt'}
     statsSet = set()
 
     args = sys.argv
     # filePath = args[1]
     # language = args[2]
-    filePath = os.path.join(os.getcwd(), 'c_code/')
-    language = 'C'
+    filePath = os.path.join(os.getcwd(), 'c_code/test')
+    language = 'C++'
+
+    for file in glob(os.path.join(filePath, extension['TXT'])):
+        old = file
+        f = file
+        p = re.compile('txt')
+        f = p.sub('cpp', f)
+        os.rename(old, f)
 
     files = set()
     if os.path.isdir(filePath):

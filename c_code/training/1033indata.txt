@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+#define max 15
+
+void main()
+{
+	FILE *f;
+	int count;
+	int i,j,k,l;
+	int numCount;
+	int check=0;
+	
+	f = fopen("input.txt", "r");
+	if(f==NULL) exit(1);
+
+	fscanf(f, "%d", &count);
+
+	for(i=0; i<count; i++)
+	{
+		int numArr[max]={0};
+		fscanf(f, "%d", &numCount);		
+
+		for(j=0; j<numCount; j++)
+			fscanf(f, "%d", &numArr[j]);	
+
+		for(j=0; j<1000; j++)
+		{
+			int sum = 0;			
+			int temp = numArr[0];	
+			check = 0;				
+
+			for(k=0; k<numCount; k++)
+				sum += numArr[k];	
+			if(sum == 0)			
+			{
+				check = 1;			
+				break;				
+			}
+			else					
+			{
+				for(l=0; l<numCount; l++)	
+				{
+					if(l == numCount-1)
+						numArr[l] = abs(numArr[l] - temp);
+					else
+						numArr[l] = abs(numArr[l] - numArr[l+1]);
+				}
+			}
+		}
+		if(check == 1)
+			printf("ZERO\n");
+		else
+			printf("LOOP\n");
+	}
+	fclose(f);
+}

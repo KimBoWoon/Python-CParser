@@ -1,0 +1,70 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int sum(int n, int m);
+int gcd(int a, int b);
+
+int main(void)
+{
+	FILE *f = fopen("input.txt", "r");
+	if (f == NULL) {
+		printf("ERROR\n");
+		exit(1);
+	}
+
+	int testCase = 0; 
+	int inputa = 0; 
+	int inputA = 0; 
+	int inputb = 0; 
+	int inputB = 0; 
+
+	int inputn = 0; 
+	int inputm = 0; 
+
+	fscanf(f, "%d", &testCase); 
+
+	while (testCase--) {
+
+		inputn = 0;
+		inputm = 0; 
+
+		fscanf(f, "%d %d %d %d", &inputa, &inputA, &inputb, &inputB); 
+
+		if (inputA == inputB) {
+			inputn = inputa + inputb;
+			inputm = inputA;
+		}
+		else {
+			inputm = inputA*inputB;
+			inputn = inputa*inputB + inputb*inputA;
+		}
+		
+		sum(inputn, inputm);
+
+	}
+
+	fclose(f);
+	return 0;
+}
+
+
+int sum(int n, int m) {
+	if (gcd(n, m) == 1)
+	{
+		printf("%d %d\n", n, m);
+		return 0;
+	}
+	else
+		return sum(n / gcd(n, m), m / gcd(n, m));
+}
+
+int gcd(int a, int b) { 
+	if (b == 0) 
+		return a;
+	else 
+	{
+		return gcd(b, a%b);
+	}
+}

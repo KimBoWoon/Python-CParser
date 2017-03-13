@@ -1,0 +1,54 @@
+
+#pragma warning(disable:4996)
+
+#include <iostream>
+#include <cstdio>
+
+#define MAX_SIZE 1001
+
+int card[MAX_SIZE];
+int dynamicArray[MAX_SIZE][MAX_SIZE];
+int sumArray[MAX_SIZE][MAX_SIZE];
+
+int main(int argc, char* argv[]){
+
+	FILE* readStream = 0x00L;
+	readStream = fopen("input.txt", "r");
+
+	if (readStream == 0x00L){
+		fprintf(stderr, "Don't open the file.\n");
+		return 2;
+	}
+
+	int testCases = 0,
+		cardNumber = 0;
+
+	fscanf(readStream, "%d", &testCases);
+
+	while (testCases--){
+		fscanf(readStream, "%d", &cardNumber);
+		
+		for (int i = 1; i <= cardNumber; ++i){
+			fscanf(readStream, "%d", &card[i]);
+			sumArray[i][i] = dynamicArray[i][i] = card[i];
+		}
+	
+		for(int i = 1; i < cardNumber; ++i){
+			sumArray[i][i+1] = sumArray[i][i] + card[i+1];
+			dynamicArray[i][i+1] = (card[i] > card[i+1]) ? card[i] : card[i+1];
+		}
+		int plus = 2,
+			maxValue = 0;
+		for(int total = (cardNumber -1); total >= 1; --total){
+			for(int i = 1; i <= total; ++i){
+				maxValue = 0;
+				sumArray[i][i + plus] = sumArray[i][i + plus -1] + card[i + plus];				
+				dynamicArray[i][i + plus] = sumArray[i][i + plus] - ((dynamicArray[i][i + plus -1] < dynamicArray[i+1][i+plus]) ? dynamicArray[i][i + plus -1] : dynamicArray[i+1][i+plus]);
+			}
+			++plus;
+		}
+		std::cout << dynamicArray[1][cardNumber] << std::endl;
+	}
+	fclose(readStream);
+	return 0;
+}

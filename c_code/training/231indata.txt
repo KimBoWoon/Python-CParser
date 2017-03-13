@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int gcd(int a,int b);
+
+int main()
+{
+	FILE *fp;
+	int i,numTestCases;
+	fp=fopen("input.txt","r");
+	if(fp==NULL) exit(1);
+
+	fscanf(fp,"%d",&numTestCases);
+	for(i=0; i<numTestCases; i++){
+		int FS,FM,SS,SM;
+		int resultS,resultM;
+		fscanf(fp,"%d %d %d %d",&FS,&FM,&SS,&SM);
+
+		resultS=FS*SM+SS*FM;
+		resultM=FM*SM;
+
+		printf("%d %d\n",resultS/gcd(resultS,resultM),resultM/gcd(resultS,resultM));
+		
+	}
+	return 0;
+	fclose(fp);
+}
+
+int gcd(int a,int b)
+{
+	if(b==0)
+		return a;
+	else
+		return gcd(b,a%b);
+}

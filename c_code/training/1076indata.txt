@@ -1,0 +1,62 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+int main(){
+	ifstream inStream;
+	int numTestCases;	
+
+	inStream.open("input.txt");
+	if (inStream.fail()){
+		cerr << "Input file opening failed.\n";
+		exit(1);
+	}
+
+	inStream >> numTestCases;	
+
+	for (int i = 0; i < numTestCases; i++){
+		int A[20];
+		int num;
+
+		inStream >> num;
+
+		for (int a = 0; a < num; a++){
+			inStream >> A[a];
+		}
+
+		int T = 0;
+		int R = 0;
+		while (T<1000){
+			int B[20];
+
+			for (int a = 0; a < num; a++){
+				if (a == num - 1)
+					B[a] = abs(A[a] - A[0]);
+				else
+					B[a] = abs(A[a] - A[a + 1]);
+			}
+
+			int sum = 0;
+			for (int a = 0; a < num; a++){
+				A[a] = B[a];
+				sum += A[a];
+			}
+			++T;
+			if (sum == 0){
+				R = -1;
+				break;
+			}
+		
+			
+		}
+		if (R == -1)
+			cout << "ZERO" << endl;
+
+		else
+			cout << "LOOP" << endl;
+	}
+
+	inStream.close();
+	return 0;
+}

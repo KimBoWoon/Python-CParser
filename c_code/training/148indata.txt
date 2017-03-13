@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int MC(int n)			
+{
+	if(n > 100)
+		return n -= 10;
+	if(n <= 100)
+		MC(MC(n + 11));
+}
+
+int main()
+{
+	int testcase, i;
+	int n;
+
+	FILE * in_file;
+	in_file = fopen("input.txt", "r");
+
+	fscanf(in_file, "%d", &testcase);
+
+	for (i = 0; i < testcase; i++)
+	{
+		fscanf(in_file, "%d", &n);
+		printf("%d\n", MC(n));
+	}
+	fclose(in_file);
+}

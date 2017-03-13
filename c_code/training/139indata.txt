@@ -1,0 +1,28 @@
+  
+
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+int mcCarthy(int n);
+int main()
+{
+	ifstream inFile("input.txt");  
+	int no_cases=0;
+	inFile>> no_cases;
+	for(int l =0; l < no_cases; l++){
+		int num=0;
+		inFile>>num;
+		cout<<mcCarthy(num)<<endl;
+	}
+	return 0;
+}
+int mcCarthy(int n) 
+{
+	if(n>100) 
+		return n-10; 
+	else
+		return mcCarthy(mcCarthy(n+11));
+
+}

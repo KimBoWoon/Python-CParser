@@ -1,0 +1,105 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_CARD 1000
+
+void doGame(int* arr, int* sumarr, int cardNum);
+
+
+void main()
+{
+	FILE* fileDes;
+	int trialNum;
+	int i, j;
+
+	int cardNum;		
+	int* arr = NULL;	
+	int* sumarr = NULL;	
+
+
+	if((fileDes = fopen("input.txt", "r")) == NULL)
+		exit(1);
+
+	fscanf(fileDes, "%d", &trialNum);
+
+	for(i = 0; i < trialNum; i++)
+	{
+
+		fscanf(fileDes, "%d", &cardNum);	
+		arr = (int*)calloc(cardNum, sizeof(int));
+		sumarr = (int*)calloc(cardNum, sizeof(int));
+
+		for(j = 0; j < cardNum; j++)
+		{
+			fscanf(fileDes, "%d", (arr + j));
+			
+			if(j == 0) sumarr[j] = arr[j];
+
+			if(j != 0) sumarr[j] = sumarr[j-1] + arr[j];
+
+		}
+
+		doGame(arr, sumarr, cardNum);
+
+		free(sumarr);
+		free(arr);
+
+	}
+	
+	fclose(fileDes);
+	
+}
+
+void doGame(int* arr, int* sumarr, int cardNum)
+{
+
+	
+	int** T = NULL;
+	int* T2 = NULL;
+	
+	int i, j, diag, k;
+	
+
+	
+	int sum;		
+	int Fchosen;	
+	int Bchosen;	
+
+
+	T = (int**)malloc(sizeof(int*)*cardNum);
+	T[0] = (int*)malloc(sizeof(int)*cardNum*cardNum);
+
+	for(i = 0; i < cardNum; i++)
+		T[i] = (*T + (i * cardNum));
+
+	for(diag = 0; diag < cardNum; diag++)
+	{
+		for(i = 0; i < cardNum - diag; i++)
+		{
+			j = i + diag;
+
+
+			if(i == j)
+				T[i][j] = arr[i];
+
+			else {
+				
+				sum = ((i == 0)? sumarr[j] : (sumarr[j] - sumarr[i-1]));
+
+
+				Fchosen = T[i+1][j];	Bchosen = T[i][j-1];
+				T[i][j] = -((Fchosen < Bchosen)? Fchosen : Bchosen) + sum;
+				
+
+			}
+
+		}
+
+	}
+
+
+	printf("%d\n", T[0][cardNum-1]);
+
+	free(T[0]);
+	free(T);
+}

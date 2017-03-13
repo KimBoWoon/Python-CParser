@@ -1,0 +1,57 @@
+
+#include<iostream>
+#include<fstream>
+#include<cstring>
+
+using namespace std;
+
+void change(char *a, char *b) {
+	*a = *b;
+}
+void processing(int *arr, int sig) {
+	int index_a;
+	char strArr[] = "abcdefghijkl";
+
+	for (int i = 0; i<sig; i++) {
+		cout << strArr[arr[i]];
+		index_a = arr[i];
+		for (int j = i; j<sig; j++) {
+			change(&strArr[index_a], &strArr[index_a + 1]);
+			index_a++;
+			if (index_a>12)
+				break;
+		}
+	}
+	cout << endl;
+}
+int Fac(int num) {
+	if (num == 0)
+		return 1;
+	else
+		return num * Fac(num - 1);
+}
+
+
+void Permutation(int sig, int seq) {
+	int num = sig;
+	int arr[12] = {0};
+
+	for (int i = 0; i<sig; i++) {
+		arr[i] = seq / Fac(--num);
+		seq = seq%Fac(num);
+	}
+	processing(arr, sig);
+}
+
+int main() {
+	int cases, amount, seq, i;
+
+	fstream instream("input.txt", ios::in);
+	instream >> cases;
+
+	for (i = 0; i<cases; i++) {
+		instream >> amount >> seq;
+		Permutation(amount, seq - 1);
+	}
+	return 0;
+}

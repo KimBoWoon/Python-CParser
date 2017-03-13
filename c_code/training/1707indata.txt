@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int checkMirror(int* number, int num)
+{
+	int right = num;
+	int check = 1;
+	int left = 0;
+	while (right > left)
+	{
+		if (number[right] != number[left])
+		{
+			check = 0;
+			break;
+		}
+		right--;
+		left++;
+	}
+	return check;
+}
+void main()
+{
+	FILE* inFile;
+	int i, testCase, num, realNum=0, k=0, check, j;
+	int changeNum[32]={0};
+	inFile=fopen("input.txt", "r");
+	if(inFile==NULL)
+	{
+		exit(1);
+	}
+	fscanf(inFile, "%d", &testCase);
+	for(i=0; i<testCase; i++)
+	{
+		fscanf(inFile, "%d", &num);
+		for(j=2; j< 65; j++)
+		{
+			realNum=num;
+			while(realNum)
+			{
+				changeNum[k++]=realNum%j;
+				realNum/=j;
+			}
+			check=checkMirror(changeNum, k-1);
+			k=0;
+			if(check)
+				break;
+			
+		}
+		printf("%d\n", check);
+	}
+}

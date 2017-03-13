@@ -1,0 +1,45 @@
+
+
+#include <iostream>
+#include <algorithm>
+#include <cmath>
+#include <fstream>
+
+using namespace std;
+
+int main()
+{
+	int test, n, m;
+	
+	ifstream file;
+	file.open("input.txt"); 
+	file >> test;
+
+	for (int i = 0; i < test; i++)
+	{
+		int arr[1000][4] = { 0 };
+		int team[1000][2] = { 0 };
+
+		file >> n >> m;
+		int *w = new int[n];
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < 4; j++) {
+				file >> arr[i][j];
+			}
+		}
+		for (int i = 0; i < m; i++) {
+			int a, b;
+			a = arr[i][0]; b = arr[i][1];
+			team[a][0] += arr[i][2];
+			team[a][1] += arr[i][3];
+			team[b][0] += arr[i][3];
+			team[b][1] += arr[i][2];
+		}
+		for (int i = 1; i < n + 1; i++) {
+			w[i - 1] = pow(team[i][0], 2) / (pow(team[i][0], 2) + pow(team[i][1], 2)) * 1000;
+		}
+		sort(w, w + n);
+		cout << w[n - 1] << endl << w[0] << endl;
+	}
+
+}

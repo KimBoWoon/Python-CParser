@@ -1,0 +1,67 @@
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <algorithm>
+#include <memory.h>
+using namespace std;
+ 
+struct Pair {
+    int x;
+    int y;
+};
+ 
+struct Pair arr[100000];    
+ 
+bool compare(const Pair &a, const Pair &b)      
+{
+    return a.x != b.x ? a.x < b.x : a.y < b.y;
+}
+  
+int compare2(const void *a, const void *b)  
+{
+    int y1, y2;
+    y1 = ((Pair*)a)->y;
+    y2 = ((Pair*)b)->y;
+    if (y1 > y2) return -1;
+    else return 1;
+}
+  
+int main()
+{
+	FILE *in = fopen("input.txt", "r");
+    int t;
+    fscanf(in,"%d", &t);
+    while (t--)
+    {
+        memset(arr,0,sizeof(arr));
+        int n, K;
+        fscanf(in,"%d", &n);
+        for (int i = 0; i < n; i++) fscanf(in,"%d %d", &arr[i].x, &arr[i].y);
+        sort(arr, arr+n,compare);
+        for (int i = 0; i < n;)
+        {
+            int tmp = i, m = 0;
+            for (int j = i + 1; j < n; j++)
+            {
+                if (arr[j].x == arr[i].x) tmp = j;
+                else break;
+            }
+            m = tmp - i;
+  
+            if (m != 0 && (arr[i - 1].y > arr[i].y))
+            {
+               qsort(&arr[i], m+1, sizeof(Pair), compare2);
+               i = tmp + 1;
+            }
+            else i++;
+        }
+        fscanf(in,"%d", &K);
+        for (int i = 0; i < K; i++)
+        {
+            int num;
+            fscanf(in,"%d", &num);
+            printf("%d %d\n", arr[num - 1].x, arr[num - 1].y);
+        }
+    }
+}
+

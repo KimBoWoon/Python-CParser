@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+ 
+int main()
+{
+	int numcase;
+	int i;
+	int factorial[13] = {0,};			
+	char alpabet[17] = {0,};			
+	int N, K;
+	int location = 1;					
+	int location_end = 0;				
+ 
+	FILE * in_file;
+	in_file = fopen("input.txt", "r");
+	fscanf(in_file, "%d", &numcase);
+ 
+	factorial[0] = 1;					
+ 
+	for(i=1; i<=12; i++)				
+	{
+		factorial[i] = factorial[i-1] * i;
+	}
+ 
+	while(numcase--)
+	{	
+		for(i=1; i<=12; i++)			
+		{
+			alpabet[i] = i + 96;
+		}
+ 
+		fscanf(in_file, "%d %d", &N, &K);
+		location_end = N-1;
+		
+		if(N==1)						
+			printf("a");
+		else							
+		{
+			while(K > 0)			
+			{
+				if(N==2 && K==1)							
+				{
+					for(i=1; i<=2; i++)
+					{
+						printf("%c", alpabet[i]);
+					}
+					K=0;									
+				}			
+				else if(N==2 && K==2)						
+				{
+					for(i=2; i>=1; i--)
+					{ 
+						printf("%c", alpabet[i]);
+					}
+					K=0;									
+				}
+				else if(K <= factorial[N-1])					
+				{
+					printf("%c", alpabet[location]);		
+					for(i=location; i<=location_end; i++)	
+					{
+						alpabet[i] = alpabet[i + 1];
+					}
+					N--;
+					location = 1;							
+					location_end--;							
+				}		
+				else										
+				{
+					K -= factorial[N-1];
+					location++;
+				}
+			}
+			
+		}
+		printf("\n");
+	}	
+	fclose(in_file);
+}

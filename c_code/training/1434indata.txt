@@ -1,0 +1,27 @@
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main(void)
+{
+	fstream in;
+	in.open("input.txt");
+	int numcases;
+	int roomNumber;
+	in>>numcases;
+	for(int i=0;i<numcases; i++)
+	{
+		int H, W, N;
+		in>>H>>W>>N;
+		if(N%H==0)		
+		{
+			roomNumber=100*H+(N/H);
+		}
+		else           
+	    {		roomNumber=100*(N%H)+(N/H)+1;
+		}
+		cout<<roomNumber<<endl;
+	}
+}

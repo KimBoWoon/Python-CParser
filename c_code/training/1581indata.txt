@@ -1,0 +1,59 @@
+#include <cstdio>
+
+int n, m;
+int map[10][10];
+
+struct Point {
+	int x;
+	int y;
+};
+
+Point direction[8] = { { 1, -2 },{ 2, -1 },{ 2, 1 },{ 1, 2 },
+{ -1, 2 },{ -2, 1 },{ -2, -1 },{ -1, -2 } };
+
+bool tour(int x, int y, int cnt) {
+	if (x < 1 || x > n || y < 1 || y > m) return false;
+	map[x][y] = cnt;
+	if (cnt == n*m) 
+		return true;
+	for (int i = 0; i < 8; i++) {
+		if (!map[x + direction[i].y][y + direction[i].x] && tour(x + direction[i].y, y + direction[i].x, cnt + 1)) return true;
+	}
+	map[x][y] = 0;
+	
+	return false;
+}
+int main(void) {
+	freopen("input.txt", "r", stdin);
+	int t;
+	scanf("%d", &t);
+
+	while (t--) {
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				map[i][j] = 0;
+			}
+		}
+		int x, y;
+
+		scanf("%d %d", &n, &m);
+		scanf("%d %d", &x, &y);
+
+		bool flag = tour(x, y, 1);
+
+		if (flag) {
+			printf("1\n");
+			for (int i = 1; i <= n; i++) {
+				for (int j = 1; j <= m; j++) {
+					printf("%d ", map[i][j]);
+				}
+				printf("\n");
+			}
+		}
+		else {
+			printf("0\n");
+		}
+	}
+
+	return 0;
+}

@@ -1,0 +1,33 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+int palind(char* inputStr,int i,int j)
+{
+	if (i < j)
+	{
+		if (*(inputStr+i) != *(inputStr+j))
+			return false;
+		if(!palind(inputStr, i+1, j-1))
+			return false;
+	}
+	return true;
+}
+
+int main()
+{
+	std::ifstream file("input.txt");
+	int testCase = 0;
+	file >> testCase;
+	while (testCase--)
+	{
+		std::string inputStr;
+		file >> inputStr;
+		int i = 0, j = 0;
+		j = inputStr.size()-1;
+		if (palind(&inputStr[0], i, j) == true)
+			std::cout << "1" << std::endl;
+		else
+			std::cout << "0" << std::endl;
+	}
+}

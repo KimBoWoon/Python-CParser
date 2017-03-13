@@ -1,0 +1,149 @@
+#include <stdio.h>
+#include <stdlib.h>
+#pragma warning(disable:4996);
+
+typedef struct Point   {   
+   int x;
+   int y;
+}point;
+
+int compareX(const void *first, const void *second)   
+{
+   point *f = (point *)first;
+   point *s = (point *)second;
+
+   if (f->x > s->x)
+      return 1;
+   else if (f->x < s->x)
+      return -1;
+   else   {
+      if (f->y > s->y)
+         return 1;
+      else if (f->y < s->y)
+         return -1;
+   }
+}
+
+int reverseCompareY(const void *first, const void *second)   
+{
+   point *f = (point *)first;
+   point *s = (point *)second;
+
+   if (f->y > s->y)
+      return -1;
+   else if (f->y < s->y)
+      return 1;
+}
+
+void main()
+{
+   FILE *f;
+   int i;
+   int count;
+
+   f = fopen("input.txt", "r");
+   if (f == NULL) exit(1);
+
+   fscanf(f, "%d", &count);
+
+   for (i = 0; i<count; i++)   {
+      int posCnt;      
+      point *position;   
+      int j, k, l;   
+      int indexCnt;   
+      int *index;      
+      int count = 0;
+
+      fscanf(f, "%d", &posCnt);   
+
+      position = (point *)malloc(sizeof(point) * posCnt);   
+
+      for (j = 0; j<posCnt; j++)
+         fscanf(f, "%d %d", &position[j].x, &position[j].y);   
+
+      fscanf(f, "%d", &indexCnt);   
+      index = (int *)malloc(sizeof(int) * indexCnt);   
+
+      for (j = 0; j<indexCnt; j++)   {   
+         fscanf(f, "%d", &index[j]);
+      }
+      qsort((void *)position, posCnt, sizeof(point), compareX);   
+
+      if (position[0].y == 0)   {      
+         for (j = 1; j<posCnt; j++)   {
+            if (position[j].x == position[j - 1].x)
+               continue;
+            else   {
+               if (position[j].y == position[j - 1].y)
+                  continue;
+               else   {
+                  for (k = j; k<posCnt; k++)   {   
+                     if (position[k].x == position[k + 1].x)
+                        count++;      
+                     else   {
+                        count++;
+                        qsort((void *)(position + j), count, sizeof(point), reverseCompareY);   
+                        count = 0;
+                        break;
+                     }
+                     if (k == posCnt - 1) {
+                        qsort((void *)(position + j), count, sizeof(point), reverseCompareY);   
+                        count = 0;
+                        break;
+                     }
+                  }
+               }
+            }
+         }
+      }
+
+      else   {   
+         for (j = 0; j<posCnt; j++)   {      
+            if (position[j].x == position[j + 1].x)   {
+               count++;
+            }
+            else   {
+               qsort((void *)position, count + 1, sizeof(point), reverseCompareY);
+               count = 0;
+               break;
+            }
+            if (j == posCnt - 1) {
+               qsort((void *)position, count, sizeof(point), reverseCompareY);
+               count = 0;
+               break;
+            }
+         }
+         for (k = j + 1; k<posCnt; k++)   {   
+            if (position[k].x == position[k - 1].x)
+               continue;
+            else   {
+               if (position[k].y == position[k - 1].y)
+                  continue;
+               else   {
+                  for (l = k; l<posCnt; l++)   {
+                     if (position[l].x == position[l + 1].x)
+                        count++;
+                     else   {
+                        count++;
+                        qsort((void *)(position + k), count, sizeof(point), reverseCompareY);
+                        count = 0;
+                        break;
+                     }
+                     if (l == posCnt - 1) {
+                        qsort((void *)(position + k), count, sizeof(point), reverseCompareY);
+                        count = 0;
+                        break;
+                     }
+                  }
+               }
+            }
+         }
+      }
+
+      for (j = 0; j<indexCnt; j++)   
+         printf("%d %d\n", position[index[j] - 1].x, position[index[j] - 1].y);
+      free(position);
+      free(index);
+   }
+   fclose(f);
+}

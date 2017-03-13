@@ -1,0 +1,85 @@
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+short horizon[101][101] = {0,}, vertical[101][101] = {0,}, direct[101][101][2][198] = {0,}; 
+
+int main(){
+	ifstream inStream;
+
+	inStream.open("input.txt");
+	if(inStream.fail()){
+		cerr<<"input.txt파일을 열 수 없음.\n";
+		exit(1);
+	}
+
+	short numTestCases;
+	inStream>>numTestCases; 
+
+	while(numTestCases--) 
+	{
+		short M, N, L;
+		int G;
+		inStream>>M>>N>>L>>G; 
+
+		for(short i=1; i<=M; i++){
+			for(short j=1; j<N; j++){
+				inStream>>horizon[i][j];
+			}
+		}
+
+		for(short i=1; i<M; i++){
+			for(short j=1; j<=N; j++){
+				inStream>>vertical[i][j];
+			}
+		}
+		
+		for (short i=1;i<=M;i++) 
+			for (short j=1;j<=N;j++) 
+				for (short k=0;k<2;k++) 
+					for (short l=0;l<198;l++) 
+						direct[i][j][k][l] = G+1; 
+						
+		direct[1][1][0][0] = direct[1][1][1][0] = 0; 
+
+		int cnt = 1000000; 
+
+		for (short i=1; i<=M;i++) 
+			for (short j=1;j<=N;j++) 
+				for (short l=0;l<198;l++)
+					for (short k=0;k<2;k++) 
+
+						if (direct[i][j][k][l] <= G) 
+						{
+
+							if (i == M && j == N) 
+							{
+								if (cnt > l) cnt = l; 
+							}
+
+							if (l < 197 && direct[i][j][!k][l+1] > direct[i][j][k][l]) 
+								direct[i][j][!k][l+1] = direct[i][j][k][l];
+
+							if(!k)
+							{
+								if (i < M && direct[i+1][j][k][l] > direct[i][j][k][l] + vertical[i][j])
+									direct[i+1][j][k][l] = direct[i][j][k][l] + vertical[i][j];
+							}
+
+							else
+							{
+								if (j < N && direct[i][j+1][k][l] > direct[i][j][k][l]+horizon[i][j])
+									direct[i][j+1][k][l] = direct[i][j][k][l]+horizon[i][j]; 
+							}
+
+						}
+
+						if (cnt < 1000000) 
+							cout<<(N+M-2)*L+cnt<<endl;
+						else 
+							cout<<-1<<endl;  
+	}
+	inStream.close(); 
+}

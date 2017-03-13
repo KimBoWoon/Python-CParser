@@ -1,0 +1,26 @@
+
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+int mac(int n){
+	if (n > 100)
+		return n-10;
+	else
+		return mac(mac(n+11));
+}
+
+int main(){
+	ifstream File;
+	int numCase = 0;
+	int num = 0;
+	File.open("input.txt");
+	File >> numCase;
+	for (int iter = 0; iter < numCase; iter++){
+		File >> num;
+		int ans = mac(num);
+		cout << ans << endl;
+	}
+	File.close();
+	return 0;
+}

@@ -1,0 +1,21 @@
+
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+int makegcd( int k,  int l){ return l ? makegcd(l, k%l) : k; }
+int henry(int s, int m){
+	int	gcd = makegcd(s, m);
+	return s / gcd == 1 ? m / gcd : henry((s*(m / s + 1) - m), m*(m / s + 1));
+}
+int main(){
+	ifstream inFile("input.txt");
+	int cases;
+	inFile >> cases;
+	while (cases--){
+		int son, mom;
+		inFile >> son>> mom;
+		cout << henry(son, mom) << endl;
+	}
+	return 1;
+}

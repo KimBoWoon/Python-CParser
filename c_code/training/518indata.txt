@@ -1,0 +1,46 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#pragma warning(disable : 4996)
+int factorial(int number)
+{
+	if (number <= 1) 
+	{
+		return 1;
+	}
+	else 
+	{
+		return number*factorial(number - 1);
+	}
+}
+void main()
+{
+	FILE* inFile;
+	int i,j,k,l=0, testCase = 0, numOfString, numOfPerm;
+	char string[13] = "abcdefghijkl";
+	char temp[13];
+	inFile = fopen("input.txt", "r");
+	fscanf(inFile, "%d", &testCase);
+	for (i = 0; i < testCase; i++)
+	{
+		fscanf(inFile, "%d %d", &numOfString, &numOfPerm);
+		strcpy(temp, string);
+		j = numOfPerm - 1;
+		while (numOfString)
+		{
+			printf("%c", temp[j / factorial(numOfString - 1)]);
+			for (k = 0; k < numOfString; k++)
+			{
+				if (temp[k] != temp[j / factorial(numOfString - 1)])
+				{
+					temp[l++] = temp[k];
+				}
+			}
+			l = 0;
+			j %= factorial(numOfString - 1);
+			numOfString--;
+		}
+		printf("\n");
+	}
+}

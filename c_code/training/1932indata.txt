@@ -1,0 +1,66 @@
+
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+
+#define MAX_TEAM 1001
+
+typedef struct __team{
+	int win;
+	int lose;
+}Team;
+
+Team team[MAX_TEAM];
+double expectation[MAX_TEAM];
+int compare(const void* num1, const void* num2){
+	return *(double*)num1 - *(double*)num2;
+}
+int main(int argc, char* argv[]){
+
+	FILE* readStream = 0x00L;
+	readStream = fopen("input.txt", "r");
+
+	if(readStream == 0x00L){
+		fprintf(stderr, "Don`t open the file.\n");
+		return 2;
+	}
+
+	int testCase = 0,
+		teamNumber = 0,
+		playCount = 0,
+		firstTeam = 0,
+		secondTeam = 0,
+		firstWin = 0,
+		secondWin = 0;
+
+	fscanf(readStream, "%d", &testCase);
+
+	while(testCase--){
+
+		fscanf(readStream, "%d %d", &teamNumber, &playCount);
+	
+		for(int i = 1; i <= teamNumber; ++i){
+			team[i].win = 0;
+			team[i].lose = 0;
+		}
+	
+		for(int i = 0; i < playCount; ++i){
+			fscanf(readStream, "%d %d %d %d", &firstTeam, &secondTeam, &firstWin, &secondWin);  
+	
+			team[firstTeam].win += firstWin;
+			team[firstTeam].lose += secondWin;
+			team[secondTeam].win += secondWin;
+			team[secondTeam].lose += firstWin;
+	
+		}
+		for(int i = 1; i <= teamNumber; ++i){
+			double S = ((double)(team[i].win) * (double)team[i].win);
+			double A = ((double)(team[i].lose) * (double)team[i].lose);
+			expectation[i-1] = (S / (S + A))*1000;
+		}
+		qsort(expectation, teamNumber, sizeof(Team), compare);
+		
+		printf("%d\n%d\n", (int)expectation[teamNumber-1], (int)expectation[0]);
+	}
+	return 0;
+}

@@ -1,0 +1,50 @@
+#include <cstdio>
+#include <cstring>
+#include <climits>
+#include <cmath>
+
+struct Team {
+	int win, lose;
+};
+
+Team t[1010];
+
+int main() {
+	freopen("input.txt", "r", stdin);
+	int nCase;
+	scanf("%d", &nCase);
+
+	int t1, t2, w, l;
+
+	while (nCase--) {
+		memset(t, 0, sizeof(t));
+
+		int n, m;
+		scanf("%d %d", &n, &m);
+
+		while (m--) {
+			scanf("%d %d %d %d", &t1, &t2, &w, &l);
+			t[t1].win += w;
+			t[t1].lose += l;
+			t[t2].win += l;
+			t[t2].lose += w;
+		}
+
+		int min = INT_MAX, max = INT_MIN;
+		for (int i = 1, s = 0; i <= n; ++i) {
+			if (t[i].win == 0 && t[i].lose == 0) {
+				s = 0LL;
+			}
+			else {
+				s = (t[i].win * t[i].win * 1000LL) / (double)(t[i].win * t[i].win + t[i].lose * t[i].lose);
+			}
+			
+			max = (max < s) ? s : max;
+			min = (min > s) ? s : min;
+		}
+
+		printf("%d\n%d\n", max, min);
+	}
+
+	return 0;
+}

@@ -1,0 +1,36 @@
+
+
+
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+using namespace std;
+
+int Mc(int n)
+{
+	if (n > 100)
+		return n - 10;
+	else
+		return Mc(Mc(n+11));
+}
+int main(void)
+{
+	ifstream inStream;
+	int numTestCases = 0;
+	int num = 0;
+
+	inStream.open("input.txt");
+	if (inStream.fail())
+	{
+		cerr << "Input file opening failed. \n";
+		exit(1);
+	}
+	inStream >> numTestCases;
+	for (int i = 0; i < numTestCases; i++)
+	{
+		inStream >> num; 
+		cout << Mc(num) << endl; 
+	}
+	inStream.close();
+	return 0;
+}

@@ -1,0 +1,35 @@
+#include <iostream>
+#include <fstream>
+
+void returnRowCol(int h,int w, int n);
+
+
+int main()
+{
+	std::ifstream file("input.txt");
+	int testCase = 0, h = 0, w = 0, n = 0;
+	file >> testCase;
+	while (testCase--)
+	{
+		file >> h >> w >> n;
+		returnRowCol(h, w, n);
+	}	
+}
+
+
+void returnRowCol(int h, int w, int n)
+{
+	int row = 0, col = 0;
+	row = n / h;
+	col = n % h;
+	if (col == 0){
+		std::cout << h;
+		row--;
+	}
+	else
+		std::cout << col;
+	if (row <10)
+		std::cout <<"0"<< row+1<<std::endl;
+	else
+		std::cout <<row + 1 << std::endl;
+}

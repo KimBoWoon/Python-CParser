@@ -1,0 +1,64 @@
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+
+int main()
+{
+	std::ifstream infile("input.txt");
+
+	int numCase;
+	infile >> numCase;
+
+	for(int i=0; i<numCase; i++)
+	{
+
+		std::string str ="abcdefghijkl";
+		int m, n;
+		infile >> m >> n;	
+		int p=1;
+		int cnt =0;
+		char a = 'a';
+		std::string res;
+
+		int temp = m;
+		for( int j =1 ; j<m; j++)
+		{
+			p *=j;	
+		}	
+
+		temp--;
+		for( int j =0; j<m; j++) 
+		{
+			if(  n %p == 0 )
+			{
+				res.push_back( str.at(n/p-1));
+				str.erase(n/p-1,1);
+
+				n = p;
+				if(temp !=0)
+					p/=temp;
+				temp--;
+			}			
+			else
+			{
+				res.push_back(str.at(n/p));
+				str.erase(n/p,1);
+
+				n %=p;
+
+				if(temp !=0)
+					p/=temp;
+
+				temp--;
+
+
+			}
+		}
+
+		std::cout<<res<<std::endl;
+		res.clear();
+	} 
+}
+

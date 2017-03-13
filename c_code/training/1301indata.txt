@@ -1,0 +1,64 @@
+
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int henry(int numerator, int denominator);
+bool find_fraction(int& n1, int& d1, int n2, int d2);
+int gcd(int a, int b);
+
+int main()
+{
+	ifstream inFile;
+	inFile.open("input.txt");
+
+	int numTestCase;
+	inFile >> numTestCase;
+
+	while (numTestCase--)
+	{
+		int numerator, denominator;	
+		inFile >> numerator >> denominator;
+		cout << henry(numerator, denominator) << endl;	
+	}
+	return 0;
+}
+
+int henry(int numerator, int denominator)
+{
+	if (numerator == 1)	
+		return denominator;	
+
+	for (int i = 2; i < denominator; i++)	
+		if (find_fraction(numerator, denominator, 1, i)) break;	
+
+	return henry(numerator, denominator);
+}
+
+bool find_fraction(int& n1, int& d1, int n2, int d2)
+{
+	if (n1 * d2 > d1)	
+	{
+		int tempN1 = n1, tempD1 = d1;
+		
+		tempN1 *= d2;
+		n2 *= tempD1;
+
+		n1 = (tempN1 - n2) / gcd((tempN1 - n2), (tempD1 * d2));
+		d1 = (tempD1 * d2) / gcd((tempN1 - n2), (tempD1 * d2));
+	}
+	else
+		return false;
+}
+
+int gcd(int a, int b)
+{
+	if (b == 0)
+		return a;
+	else
+		return gcd(b, a % b);
+}
+
+
+

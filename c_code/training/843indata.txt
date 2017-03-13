@@ -1,0 +1,37 @@
+#include <iostream>
+#include <fstream>
+#include <cstring>
+
+int Fibonacci(int n)
+{
+	static int FibonacciArr[31] = { 0, 1 };
+	if (n == 0 || n == 1)
+		return n;
+	
+	if (FibonacciArr[n] == 0)
+		FibonacciArr[n] = Fibonacci(n - 1) + Fibonacci(n - 2);
+
+	return FibonacciArr[n]; 
+}
+
+int main()
+{
+	std::ifstream input;
+	input.open("input.txt");
+	if (input.fail())
+	{
+		std::cerr << "file open err" ;
+		return 1;
+	}
+
+	int caseNum;
+	input >> caseNum;
+	for (int i = 0; i < caseNum; i++)
+	{
+		int n;
+		input >> n;
+		std::cout << Fibonacci(n) << std::endl;
+	}
+	
+	return 0;
+}

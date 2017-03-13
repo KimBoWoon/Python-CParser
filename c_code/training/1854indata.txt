@@ -1,0 +1,56 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <algorithm>
+#include <cstring>
+using namespace std;
+int VPS(char data[], int n)
+{
+	int count1 = 0, count2 = 0;
+	int length = strlen(data);
+		if ((length % 2) != 0)
+			return false;
+		else if (data[0] == ')' || data[length-1] =='(')
+			return false;
+		else if (data[n] == ')' && data[n + 1] == 0)
+			return true;
+		else if ((length % 2) == 0)
+		{
+			for (int i = n; i < length; i++){
+				if (data[i] == '(')
+					count1++;
+				else if (data[i] == ')')
+					count2++;
+			}
+			if (count1 != count2)
+				return false;
+			else
+				return true;
+		}
+		else if (data[n] == ')')
+			return true;
+		else if (data[n] == '(')
+			return VPS(data, n + 1);
+		
+}
+int main()
+{
+	ifstream instream("input.txt");
+	int numtestcases, index = 0;
+	char data[50] = { 0 };
+	int a = 0;
+	instream >> numtestcases;
+	for (int i = 0; i < numtestcases; i++){
+		instream >> data;
+		a = 0;
+		a=VPS(data, 0);
+
+		if (a == 1)
+			cout << "YES" << endl;
+		else
+			cout << "NO" << endl;
+	}
+	instream.close();
+}

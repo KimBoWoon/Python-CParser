@@ -1,0 +1,65 @@
+
+#include <iostream>
+#include <fstream>
+
+class Fraction
+{
+private:
+	int mother; 
+	int son;   
+	int gcm(int a, int b); 
+	void rFrac(); 
+
+public:
+	Fraction(int s, int m):mother(m),son(s){} 
+	Fraction operator+(const Fraction& f);	 
+	friend std::ostream& operator<<(std::ostream& out,const Fraction& f);
+	
+};
+void Fraction::rFrac()
+{
+	int div = gcm(mother,son);
+	mother /= div;
+	son /= div;
+}
+int Fraction::gcm(int a, int b)
+{
+	if(b ==0)
+		return a;
+	else
+		return gcm(b, a%b);
+}
+
+Fraction Fraction::operator+(const Fraction& f)
+{
+	int t_m, t_s;
+	t_m = mother*f.mother;
+	t_s = son*f.mother + f.son*mother;
+	Fraction temp(t_s,t_m);
+	temp.rFrac();
+	return temp;
+}
+
+std::ostream& operator<<(std::ostream& out,const Fraction& f)
+{
+	out<<f.son <<' '<<f.mother<<std::endl;
+	return out;
+}
+
+int main()
+{
+	std::ifstream infile("input.txt");
+	int numCases;
+	infile >> numCases;
+
+	for(int i =0 ; i<numCases; i++)
+	{
+		int a, b, c, d;	
+		infile >> a >> b >> c >>d;
+		Fraction A(a,b);
+		Fraction B(c,d);
+		std::cout<<A+B;
+	}
+}
+
+

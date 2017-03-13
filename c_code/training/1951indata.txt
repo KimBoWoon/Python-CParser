@@ -1,0 +1,44 @@
+
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <cmath>
+using namespace std;
+int main()
+{
+	FILE *fp;
+	fp=fopen("input.txt","r");
+	int t;
+	fscanf(fp,"%d",&t);
+	for(int i=0; i<t; i++)
+	{
+		int n,m;
+		int a,b,p,q;
+		double W,S,A;
+		fscanf(fp,"%d %d",&n, &m);
+		vector<pair<double, double > > v; 
+		vector<double> ans_w;
+		v.push_back(make_pair(0,0));
+		v.resize(n+1);
+		for(int j=0; j<m; j++)
+		{
+			fscanf(fp,"%d %d %d %d",&a,&b,&p,&q);
+			v[a].first+=p, v[b].first+=q;
+			v[a].second+=q, v[b].second+=p;
+		}
+		for(int j=1; j<=n; j++)
+		{
+			S=v[j].first;
+			A=v[j].second;
+			if(S==0 && A==0)
+				W=0;
+			else
+				W=(S*S)/((S*S)+(A*A));
+			ans_w.push_back(W);
+		}
+		sort(ans_w.begin(), ans_w.end());
+        cout<<floor((*(--ans_w.end()))*1000)<<endl;
+		cout<<floor((*ans_w.begin())*1000)<<endl;
+	}
+}

@@ -1,0 +1,143 @@
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void inputNum(FILE** inFile, int num);			
+int cha(const void* val1, const void* val2);	
+int comp(int start, int end, int key);			
+int cnCount(int value, int tNum);		
+
+int* s;
+int max_idx;
+char dC = 0;
+
+int main()
+{
+	FILE* inFile = fopen("input.txt", "r");
+	int numTestCases;
+
+
+	if (inFile == NULL)
+	{
+		printf("cannot open the file\n");
+		exit(1);
+	}
+
+	fscanf(inFile, "%d", &numTestCases);
+	while (numTestCases--)
+	{
+		int value;
+		int k;
+		int num_count;
+
+		fscanf(inFile, "%d %d", &value, &k);
+		inputNum(&inFile, value);
+
+		qsort(s, value, sizeof(s[0]), cha);
+
+		num_count = cnCount(value, k);
+		printf("%d\n", num_count);
+
+		free(s);
+	}
+	fclose(inFile);
+
+	return 0;
+}
+
+int cha(const void* val1, const void* val2)
+{
+	return *(int*)val1 - *(int*)val2;
+}
+
+void inputNum(FILE** inFile, int num)
+{
+	int i;
+
+	s = (int*)malloc(sizeof(int) * num);
+	max_idx = num - 1;
+
+	for (i = 0; i<num; i++)
+		fscanf(*inFile, "%d", s + i);
+}
+
+int cnCount(int value, int tNum)
+{
+	int tC = 0;		
+	int nCha = 0;		
+	int nC = 0;			
+	int key;
+	int absVal;
+	int i;
+
+	for (i = 0; i<value - 1; i++)
+	{
+		key = tNum - s[i];
+
+		dC = 0;
+		if (i + 1 == value - 1)
+			absVal = abs(key - s[value - 1]);
+		else
+			absVal = comp(i + 2, value - 1, key);
+
+		if (absVal == 0)
+			tC++;
+		else if (absVal == nCha)
+		{
+			nC += 1 + dC;
+		}
+		else if (nCha == 0 || absVal < nCha)
+		{
+			nCha = absVal;
+			nC = 1 + dC;
+		}
+	}
+
+	if (tC != 0)
+	{
+		return tC;
+	}
+	else
+	{
+		return nC;
+	}
+}
+
+int comp(int start, int end, int key)
+{
+	int mid = (end + start) / 2;
+
+	if (start == end)
+	{
+		int aCurr = abs(key - s[start]);
+		int aPrev = abs(key - s[start - 1]);
+
+		if (aCurr == aPrev)
+			dC = 1;
+
+		return (aCurr < aPrev) ? aCurr : aPrev;
+	}
+
+	if (key < s[start])
+	{
+		int aCurr = abs(key - s[start]);
+		int aPrev = abs(key - s[start - 1]);
+
+		if (aCurr == aPrev)
+		{
+			dC = 1;
+		}
+		return (aCurr < aPrev) ? aCurr : aPrev;
+	}
+
+	else if (key > s[end])
+		return abs(key - s[end]);
+
+	else if (key >= s[start] && key <= s[mid])
+		return comp(start, mid, key);
+
+	else if (key > s[mid] && key <= s[end])
+		return comp(mid + 1, end, key);
+}

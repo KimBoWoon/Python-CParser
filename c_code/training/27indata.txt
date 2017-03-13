@@ -1,0 +1,58 @@
+
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+void sosu(int value);		
+
+int main()
+{
+	ifstream inStream;
+	int numTestCases;		
+	int val;				
+
+	inStream.open("input.txt");
+
+	if (inStream.fail())
+	{
+		cerr << "Input file opening failed.\n";
+		exit(1);
+	}
+
+	inStream >> numTestCases;	
+
+	for (int i = 0; i < numTestCases; i++)
+	{
+		inStream >> val;		
+		sosu(val);
+	}
+
+	inStream.close();
+	return 0;
+}
+
+void sosu(int value)
+{
+	bool isPrime = true;	
+	int nam;				
+	
+	for (int j = 2; j < value; j++)
+	{
+		nam = value % j;
+
+		if (nam == 0)
+		{
+			isPrime = false;
+			break;
+		}
+
+		else
+			isPrime = true;
+	}
+
+		cout << isPrime << endl;
+}

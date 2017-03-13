@@ -1,0 +1,39 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+
+using namespace std;
+
+class Palindrome{
+private :
+	string data;
+	int size;
+public : 
+	Palindrome(string d){
+		data = d;
+		size = d.size();
+	}
+ 	bool check(int c){
+		if (size / 2 != c){
+			if (!check(c+1)){
+				return false;
+			}
+		}
+		if (data[c] == data[size - 1 - c]){
+			return true;
+		}
+		return false;
+	}
+};
+int main(){
+	int cases;
+	ifstream inFile("input.txt");
+	inFile >> cases;
+	while (cases--){
+		string d;
+		inFile >> d;
+		Palindrome p(d);
+		cout<< p.check(0) << endl;
+	}
+	return 1;
+}

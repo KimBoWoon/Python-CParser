@@ -1,0 +1,35 @@
+
+
+#pragma warning(disable : 4996) 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int RecursiveGreatestCommonDivision(int a, int b); 
+
+void main(void)
+{
+	FILE *inFile;
+	int i;
+	int numCases, numData1, numData2;
+
+	inFile = fopen("input.txt", "r"); 
+
+	if (inFile == NULL) exit(1);
+	fscanf(inFile, "%d", &numCases); 
+	for (i = 0; i<numCases; i++)
+	{
+		fscanf(inFile, "%d %d", &numData1, &numData2); 
+
+		printf("%d\n", RecursiveGreatestCommonDivision(numData1, numData2)); 
+	}
+
+	fclose(inFile); 
+}
+
+int RecursiveGreatestCommonDivision(int a, int b)
+{
+	if (b == 0) return a; 
+
+	return RecursiveGreatestCommonDivision(b, a%b);
+}

@@ -1,0 +1,117 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void EnterBoard(FILE** in_file, int* startRow, int* startCol); 
+int Tour(int nextlow, int nextcol, int check, int goal);	   
+void printBoard(); 
+void boardfree();  
+
+int** board; 
+int direction[8][2] = {{1, -2}, {2, -1}, {2, 1}, {1, 2}, {-1, 2}, {-2, 1}, {-2, -1}, {-1, -2}}; 
+
+int boardRow, boardCol; 
+int main()
+{
+	FILE* in_file; 
+	int test_case; 
+	
+	in_file = fopen("input.txt","r"); 
+	
+	if(in_file == NULL) {
+		printf("cannot open the file\n");
+		exit(1);
+	}
+
+	fscanf(in_file, "%d", &test_case); 
+	while(test_case--) {
+		int startRow, startCol; 
+
+		EnterBoard(&in_file, &startRow, &startCol); 
+
+		
+		if(Tour(startRow-1, startCol-1, 0, boardRow*boardCol)==0)
+		{
+			printf("1\n");
+			printBoard(); 
+		}
+		else
+			printf("0\n");
+
+		boardfree(); 
+	}
+	fclose(in_file);
+
+	return 0;
+}
+
+void EnterBoard(FILE** in_file, int* startRow, int* startCol)
+{
+	int i, j;
+	
+	fscanf(*in_file, "%d %d ", &boardRow, &boardCol); 
+	fscanf(*in_file, "%d %d ", startRow, startCol);   
+
+	
+	board = (int**) malloc (sizeof(int*)*(boardRow)); 
+	for(i=0; i<boardRow; i++)
+	{
+		board[i] = (int*) malloc(sizeof(int)*(boardCol)); 
+		
+		for(j=0; j<boardCol; j++)
+			board[i][j] = 0;
+	}
+}
+
+int Tour(int row, int col, int check, int goal)
+{
+	int i;
+
+	
+	if(board[row][col] != 0)
+			return -1;
+
+	board[row][col] = ++check; 
+	if(check == goal) 
+		return 0;
+	
+	
+	for(i=0; i<8; i++)
+	{
+		int nextrow = row + direction[i][1]; 
+		int nextcol = col + direction[i][0]; 
+
+		
+		if(nextrow < 0 || nextrow > boardRow-1 || nextcol < 0 || nextcol > boardCol-1)
+			continue;
+
+		
+		if(Tour(nextrow, nextcol, check, goal)==0)
+			return 0;
+	}
+
+	
+	board[row][col] = 0;
+	return -1;
+}
+
+void printBoard() 
+{
+	int i, j;
+
+	for(i=0; i<boardRow; i++)
+	{
+		
+		for(j=0; j<boardCol; j++)
+			printf("%d ", board[i][j]);
+		printf("\n"); 
+	}
+}
+
+void boardfree() 
+{
+	int i;
+
+	for(i=0; i<boardRow; i++)
+		free(board[i]); 
+	free(board); 
+}

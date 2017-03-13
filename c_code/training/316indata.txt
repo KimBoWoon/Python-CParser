@@ -1,0 +1,113 @@
+ 
+
+ 
+#include <stdio.h>
+#include <stdlib.h>
+
+void floodfill(char **mat,int i, int j);
+void insertionSort(int *room,int k);
+void insert(int *room, int k, int value);
+static int size=0;
+int main()
+{
+    int test;
+    FILE *fp;
+    fp = fopen("input.txt","r"); 
+    fscanf(fp,"%d",&test);
+    while(test--) 
+    {
+        int m,n,i=0,j=0,k=0;
+        char **mat; 
+        int room[100] = {0,};
+        fscanf(fp,"%d %d\n",&n,&m);
+        mat = (char**)malloc(sizeof(char*)*m); 
+        for(i=0;i<m;i++)
+        {
+            mat[i] = (char*)malloc(sizeof(char)*n);
+        }
+        
+        for(i=0;i<m;i++) 
+        {
+            char blank;
+            for(j=0;j<n;j++)
+            {
+                char tmp;
+                fscanf(fp,"%c",&tmp);
+                while(tmp != '+' && tmp != '.')
+                {
+                    fscanf(fp,"%c",&tmp);
+                }
+                mat[i][j] = tmp;
+            }
+        }
+        
+        for(i=1;i<m-1;i++)
+        {
+            for(j=1;j<n-1;j++)
+            {
+                if(mat[i][j] == '.')
+                {
+                    floodfill(mat,i,j); 
+                    room[k++] = size; 
+                    size=0;
+                }
+            }
+        }
+        insertionSort(room,k); 
+        printf("%d\n",k);
+        for(i=0;i<k;i++)
+        {
+            printf("%d ",room[i]);
+        }
+        printf("\n");
+        
+        for(i=0;i<m;i++) 
+        {
+            free(mat[i]);
+        }
+        free(mat);
+    }
+    fclose(fp);
+    return 0;
+}
+void floodfill(char **mat,int i, int j) 
+{
+    if(mat[i][j] == '+') 
+        return ;
+    else 
+    {
+        mat[i][j] = '+';
+        size++;
+        floodfill(mat,i+1,j);
+        floodfill(mat,i,j+1);
+        floodfill(mat,i-1,j);
+        floodfill(mat,i,j-1);
+    }
+}
+void insertionSort(int *room,int k) 
+{
+    if(k==0) 
+        return ;
+    else 
+    {
+        insertionSort(room,k-1);
+        insert(room,k-1,room[k-1]);
+    }
+}
+void insert(int *room, int k, int value) 
+{
+    if(k==0) 
+        room[k] = value;
+    else 
+    {
+        if(room[k-1] >= value)
+        {
+            room[k] = value;    
+        }
+        else 
+        {
+            room[k] = room[k-1];
+            insert(room,k-1,value);
+        }
+    }
+}

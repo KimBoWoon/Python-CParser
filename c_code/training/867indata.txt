@@ -1,0 +1,36 @@
+
+#pragma warning(disable:4996)
+#include <stdio.h>
+#include <stdlib.h>
+
+int fibo(int n){
+	if(n==0) 
+		return 0;
+	else if(n==1)
+		return 1;
+	else
+		return fibo(n-1)+fibo(n-2);
+}
+
+int main(){
+	FILE *fp;
+	int i;
+	int numcases;
+
+	fp=fopen("input.txt","r"); 
+	if(fp==NULL) exit(1);
+
+	fscanf(fp,"%d",&numcases);
+	
+	for(i=0;i<numcases;i++){
+		int n;
+		int result=0;
+
+		fscanf(fp,"%d",&n);
+		result=fibo(n);
+
+		printf("%d\n",result);
+		
+	}
+	fclose(fp);
+}

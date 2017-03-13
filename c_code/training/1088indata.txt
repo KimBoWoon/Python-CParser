@@ -1,0 +1,45 @@
+
+#include <cstdio>
+
+using namespace std;
+
+int abs(int a) {
+	return (a < 0) ? -a : a;
+}
+int main(void) {
+	FILE *ip = fopen("input.txt", "r");
+
+	int t;
+
+	fscanf(ip, "%d", &t);
+
+	for (int testcase = 0; testcase < t; testcase++) {
+		int n, arr[1001][16] = { 0 };
+
+
+		fscanf(ip, "%d", &n);
+		for (int i = 0; i < n; i++) {
+			fscanf(ip, "%d", &arr[0][i]);
+		}
+		arr[0][n] = arr[0][0];
+
+		for (int i = 1; i <= 1000; i++) {
+			for (int j = 0; j < n; j++) {
+				arr[i][j] = abs(arr[i - 1][j] - arr[i - 1][j + 1]);
+			}
+			arr[i][n] = arr[i][0];
+		}
+
+
+		int r;
+		for (r = 0; r < n; r++) {
+			if (arr[1000][r] != 0) {
+				break;
+			}
+		}
+
+		printf("%s\n", r == n ? "ZERO" : "LOOP");
+	}
+
+	return 0;
+}

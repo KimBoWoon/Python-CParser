@@ -1,0 +1,43 @@
+
+
+#include <stdio.h> 
+#include <stdlib.h>
+
+void main()
+{
+	FILE *file;
+	int i;
+	int test;
+	int h, w, n;
+	int a=0, b=0;
+	int floor=0, num=0; 
+
+	file = fopen("input.txt","r"); 
+	if(file==NULL) exit(1); 
+
+	fscanf(file, "%d", &test); 
+	for(i=0; i<test; i++)
+	{
+		fscanf(file,"%d %d %d", &h, &w, &n);
+		
+		a=n/h; 
+		b=n%h; 
+
+		if(n%h==0){ 
+			floor=h;
+			num=a;
+		}
+		else{ 
+			floor=b;
+			num=a+1;
+		}
+	if(num<=10)	
+		printf("%d0%d\n", floor, num); 
+	else
+		printf("%d%d\n", floor, num);
+	}	
+	fclose(file); 
+}
+
+
+

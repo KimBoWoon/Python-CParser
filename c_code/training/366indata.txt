@@ -1,0 +1,74 @@
+
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+
+#define WALL 43
+
+char room[100][100];
+bool isCheck[100][100];
+short lengthOfRoom[100];
+short lengthFlag, count;
+
+int sizeOfRoom(int xCoordinate, int yCoordinate);
+
+int main(int argc, char* argv[]){
+
+	FILE* readStream = 0x00L;
+	readStream = fopen("input.txt", "r");
+
+	if(readStream == 0x00L){
+		fprintf(stderr, "Don`t open the file.\n");
+		return 2;
+	}
+
+	int testCases = 0,
+		row = 0, col = 0;
+
+	fscanf(readStream, "%d", &testCases);
+
+	while(testCases--){
+		lengthFlag = count = 0;		
+		fscanf(readStream, "%d %d", &col, &row);
+
+		for(int i = 0; i < row; ++i){
+			memset(isCheck[i], false, col);
+			fscanf(readStream, "%s", room[i]);
+		}
+
+		for(int i = 1; i < (row-1); ++i){
+			for(int j = 1; j < (col-1); ++j){
+				count = 0;
+				sizeOfRoom(i, j);
+				if(count) lengthOfRoom[lengthFlag++] = count;
+			}
+		}
+		printf("%d\n", lengthFlag);
+
+		for(int i = 0; i < (lengthFlag-1); ++i){
+			for(int j = 0; j < (lengthFlag-1-i); j++){
+				if(lengthOfRoom[j] < lengthOfRoom[j+1]){ 
+					lengthOfRoom[j] ^= lengthOfRoom[j+1];
+					lengthOfRoom[j+1] ^= lengthOfRoom[j];
+					lengthOfRoom[j] ^= lengthOfRoom[j+1];
+				}
+			}
+		}
+		for(int i = 0; i < lengthFlag; ++i)
+			printf("%d%c", lengthOfRoom[i], (i == (lengthFlag-1)) ? '\n' : ' ');
+	}
+	fclose(readStream);
+}
+int sizeOfRoom(int xCoordinate, int yCoordinate){
+
+	if(room[xCoordinate][yCoordinate] == WALL || isCheck[xCoordinate][yCoordinate] == true) return 0;
+	else{
+		isCheck[xCoordinate][yCoordinate] = true;
+		++count;
+		sizeOfRoom(xCoordinate - 1, yCoordinate);
+		sizeOfRoom(xCoordinate + 1, yCoordinate);
+		sizeOfRoom(xCoordinate, yCoordinate - 1);
+		sizeOfRoom(xCoordinate, yCoordinate + 1);
+	}
+	return 1;
+}

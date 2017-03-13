@@ -1,0 +1,21 @@
+
+#include<stdio.h>
+
+int recursion(int a, int b){
+	if (b== 0) return a;
+	else return recursion(b, a%b);
+}
+
+int main(){
+
+	FILE *inFile;
+	int circle, a, b;
+	inFile = fopen("input.txt", "r");
+	fscanf(inFile, "%d", &circle);
+	while (circle--)
+	{
+		fscanf(inFile, "%d %d", &a, &b);
+		printf("%d\n", a > b ? recursion(a, b) : recursion(b, a));
+	}
+	return 0;
+}

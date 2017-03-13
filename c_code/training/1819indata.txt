@@ -1,0 +1,50 @@
+
+#include<iostream>
+#include<fstream>
+#include<string>
+
+using namespace std;
+ifstream inFile("input.txt");
+class Ps{
+private :
+	int counter;
+	int n;
+	string ps;
+public : 
+	Ps(){
+		n = 0;
+		counter = 0;
+		inFile >> ps;
+		check();
+		print();
+	}
+	void check(){
+		if (counter < 0){
+			return;
+		}
+		switch (ps[n++]){
+		case '(' : 
+			counter++;
+			check();
+			break;
+		case ')' : 
+			counter--;
+			check();
+		}
+	}
+	void print(){
+		if (counter == 0)
+			cout << "YES" << endl;
+		else
+			cout << "NO" << endl;
+	}
+};
+
+int main(){
+	int cases;
+	inFile >> cases;
+	while (cases--){
+		Ps p;		
+	}
+	return 1;
+}

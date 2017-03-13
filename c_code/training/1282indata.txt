@@ -1,0 +1,49 @@
+
+#include <stdio.h>
+#define TRUE 1
+#define FALSE 0
+
+int goldbach_conjecture(int a, int b);
+int number_discrimination(int x);
+
+int main() {
+	FILE *fp = fopen("input.txt", "r");
+	int testCaseNumber = 0, testCase = 0, idx = 0;
+	int a = 0;
+
+	fscanf(fp, "%d", &testCaseNumber);
+	while (testCaseNumber--) {
+		fscanf(fp, "%d", &testCase);
+		
+		a = goldbach_conjecture(testCase / 2, testCase / 2);
+		printf("%d %d\n", a, testCase - a);
+	}
+	fclose(fp);
+}
+
+int goldbach_conjecture(int a, int b) {
+	int t = 2 * a;
+	int x = a, y = b;
+	int i = 0;
+
+	while (t--) {
+		number_discrimination(x - i) == TRUE && number_discrimination(y + i) == TRUE ?
+			t = 0 : i++; 
+	}
+	return x - i;
+}
+
+int number_discrimination(int x) {
+	int i = 0;
+	if (x == 2 || x == 3) {
+		return TRUE; 
+	}
+	else {
+		for (i = 2; i * i <= x; i++) { 
+			if (x % i == 0) {
+				return FALSE;
+			}
+		}
+		return TRUE;
+	}
+}

@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+int main(void)
+{
+	FILE *fp;
+	
+	int i,a,j,arr[4],*score,*xscore;
+	int numcases;
+
+	fp = fopen("input.txt", "r");
+	if (fp == NULL) exit(1);
+
+	fscanf(fp, "%d", &numcases);
+	
+	for (i = 0; i < numcases; i++)
+	{
+		int min=0,max=0,W=0;
+		int m,n;
+		fscanf(fp, "%d %d", &n, &m);
+		
+		score = (int*)malloc(sizeof(int)*(n));
+		xscore = (int*)malloc(sizeof(int)*(n));
+		for (a = 0; a < n; a++)
+		{
+			score[a] = 0;
+			xscore[a] = 0;
+		}
+
+		for (a = 0; a < m; a++) {
+				int num, num1;
+				for (j = 0; j < 4; j++)
+				{
+					fscanf(fp, "%d", &arr[j]);
+				}
+
+				num = arr[0] - 1; num1 = arr[1] - 1;
+				
+				score[num] += arr[2]; 
+				score[num1] += arr[3];
+
+				xscore[num] += arr[3];
+				xscore[num1] += arr[2];
+		}
+		for(a=0;a<n;a++)
+		{
+			W = (double)(score[a]*score[a])/(double)(score[a]*score[a]+xscore[a]*xscore[a])*1000;
+			if(a==0){
+				min=W;max=W;}
+			else
+			{
+					if(W<min)
+						min=W;
+					if(W>max)
+						max=W;
+			}
+		}
+		printf("%d\n%d\n", max,min);
+	}
+	fclose(fp); 
+
+	return 0;
+}
+

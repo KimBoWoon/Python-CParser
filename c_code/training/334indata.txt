@@ -1,0 +1,102 @@
+
+
+#include<stdio.h>
+
+int count; 
+void floodFill(char fig[101][101], int x, int y){
+	if (fig[x][y] == fig[0][0]) return;
+	else
+	{
+		fig[x][y] = fig[0][0];
+		count++;
+
+		floodFill(fig, x - 1, y);
+		floodFill(fig, x + 1, y);
+		floodFill(fig, x, y - 1);
+		floodFill(fig, x, y + 1);
+	}
+
+}
+
+void q_sort(int numbers[], int left, int right)
+{
+	if (left == right) return;
+	int pivot, l_hold, r_hold;
+	l_hold = left;
+	r_hold = right;
+	pivot = numbers[left];
+
+	while (left < right)
+	{
+		while ((numbers[right] >= pivot) && (left < right))
+			right--;
+
+		if (left != right)
+		{
+			numbers[left] = numbers[right];
+			left++;
+		}
+
+		while ((numbers[left] <= pivot) && (left < right))
+			left++;
+
+		if (left != right)
+		{
+			numbers[right] = numbers[left];
+			right--;
+		}
+	}
+
+	numbers[left] = pivot;
+	pivot = left;
+	left = l_hold;
+	right = r_hold;
+
+	if (left < pivot)
+		q_sort(numbers, left, pivot - 1);
+	if (right > pivot)
+		q_sort(numbers, pivot + 1, right);
+}
+
+
+int main(){
+
+	FILE *inFile;
+	int circle, i, j, m, n, temp; 
+	inFile = fopen("input.txt", "r"); 
+	fscanf(inFile, "%d", &circle);
+	while (circle--)
+	{
+		char room[101][101]; 
+		int number[101]; 
+		int check = 0; 
+		fscanf(inFile, "%d%d", &m, &n);
+
+		for (i = 0; i < n; i++){
+			fscanf(inFile, "%c", &temp);
+			for (j = 0; j < m; j++){
+				fscanf(inFile, "%c", &room[i][j]);
+			}
+		}
+
+		for (i = 0; i < n; i++){
+			for (j = 0; j < m; j++){
+				count = 0;
+				floodFill(room, i, j);
+				if(count!=NULL && count>0 ) number[check++]=count;
+			}
+		}
+		number[check] = '\0';
+		q_sort(number, 0, check-1); 
+
+		printf("%d\n", check); 
+		for (i = check-1; i >=0; i--) printf("%d ", number[i]); 
+		printf("\n");
+
+
+
+
+	}
+	return 0;
+}
+

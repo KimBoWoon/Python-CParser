@@ -1,0 +1,63 @@
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+int answer(int a[], int num);
+
+int main()
+{
+	ifstream inStream;
+	int B_num;
+	int num;
+	int check;
+	int testcase;
+	int B_rem[31];
+	int k = 0; 
+
+	inStream.open("input.txt");
+
+	inStream >> testcase;
+
+	for (int i = 0; i < testcase; i++)
+	{
+		inStream >> B_num;
+
+		for (int j = 2; j < 65; j++)
+		{
+			num = B_num;
+			while (B_num)
+			{
+				B_rem[k++] = B_num % j; 
+				B_num /= j;
+			}
+			check = answer(B_rem, k - 1); 
+			if (check)
+				break;
+			B_num = num;
+			k = 0;
+		}
+		cout << check << endl; 
+		k = 0;
+	}
+	inStream.close();
+}
+
+int answer(int a[], int num) 
+{
+	int right = 0;
+	int check = 1;
+	int left = num;
+	while (right < left)
+	{
+		if (a[right] != a[left]) 
+		{
+			check = 0;
+			break;
+		}
+		right++;
+		left--;
+	}
+	return check;
+}

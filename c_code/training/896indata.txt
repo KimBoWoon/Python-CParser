@@ -1,0 +1,29 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int fibo(int n, int * dp) {
+	if (n <= 1)
+		return dp[n] = n;
+	else if (dp[n])
+		return dp[n];
+	else
+		return dp[n] = fibo(n - 1, dp) + fibo(n - 2, dp);
+}
+
+int main(void) {
+	ifstream fin("input.txt");
+
+	int nCase; fin >> nCase;
+	int dp[31] = { 0 };
+	fibo(30, dp);
+	
+	while (nCase--) {
+		int num; fin >> num;
+		cout << dp[num] << endl;
+	}
+
+	fin.close();
+	return 0;
+}

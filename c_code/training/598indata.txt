@@ -1,0 +1,22 @@
+
+#include<iostream>
+#include<fstream>
+using namespace std;
+int fact(int n)
+{
+	if(n<=1)return 1;
+	return n*fact(n-1);
+}
+int main()
+{
+	ifstream fs;
+	int n;
+	fs.open("input.txt");
+	fs>>n;
+	while(n--)
+	{
+		int a;
+		fs>>a;
+		cout<<fact(a)<<"\n";
+	}
+}

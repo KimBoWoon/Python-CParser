@@ -1,0 +1,24 @@
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+int maCarthy(int n){
+	if (n > 100) return n - 10;
+	else return maCarthy(maCarthy(n + 11));
+}
+
+int main(){
+
+	int testCase;
+	int data;
+
+	ifstream file;
+	file.open("input.txt");
+
+	file >> testCase;
+	for (int tCase = 0; tCase < testCase; tCase++){
+		file >> data;
+		cout << maCarthy(data) << endl;
+	}
+}

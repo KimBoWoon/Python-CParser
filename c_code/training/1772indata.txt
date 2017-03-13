@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MIN_SYSTEM 2
+#define MAX_SYSTEM 64
+
+#define true 1
+#define false 0
+
+typedef int Boolean;
+
+Boolean isPalindrome(int value);
+
+void main()
+{
+	FILE* fileDes;
+	int trialNum;
+	int i;
+	int value;
+
+
+	if((fileDes = fopen("input.txt", "r")) == NULL)
+		exit(1);
+
+	fscanf(fileDes, "%d", &trialNum);
+
+	for(i = 0; i < trialNum; i++)
+	{
+		fscanf(fileDes, "%d", &value);
+		printf("%d\n", isPalindrome(value));
+	}
+	
+
+}
+
+
+Boolean isPalindrome(int value)
+{
+	Boolean isPalin = false;		
+
+	int i, j;
+	int arrIdx;			
+	int* arr = (int*)malloc(sizeof(int)*10000000);	
+
+	int copyvalue;		
+
+	for(i = MIN_SYSTEM; i <= MAX_SYSTEM; i++)
+	{
+		arrIdx = 0;		
+		copyvalue = value;
+
+		while(copyvalue != 0)
+		{
+			arr[arrIdx] = copyvalue%i;		
+			copyvalue /= i;				
+			arrIdx++;					
+		}
+
+
+
+		
+		for(j = 0; j < arrIdx/2; j++)
+		{
+			if(arr[j] != arr[(arrIdx - 1) - j])
+				break;
+		}
+		
+		if(j == arrIdx/2)
+		{
+			isPalin = true;
+			break;
+		}
+
+	}
+
+	free(arr);
+	return isPalin;
+}

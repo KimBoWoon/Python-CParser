@@ -1,0 +1,87 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+char str[15]={'0','a','b','c','d','e','f','g','h','i','j','k','l','0'};
+int strNum=1;
+int Factorial(int n)
+{
+	int number=1;
+	for(int i=1; i<=n; i++) 
+		number*=i;
+	return number;
+}
+int main()
+{
+	fstream instream;
+	instream.open("input.txt");
+	int testcase;
+	instream >> testcase;
+	for(int i=0; i<testcase; i++)
+	{
+		int n,m;     
+		int count=0; 
+		instream >> n >> m;
+		int num=m;
+		int test;
+		int k=1;
+		int CountStr=n;
+		int NewCase;
+		while(CountStr!=0)
+		{
+			for(int i=0; i<10000; i++)
+			{
+				test=Factorial(n-k);
+				count+=test;
+				if(count>=num)
+				{
+
+					while(str[strNum]=='0')
+					{
+						strNum++;
+						if(strNum>n)
+						{
+							strNum=1;
+						}  
+					}
+					cout<<str[strNum];
+					str[strNum]='0';
+					strNum=1;
+					while(str[strNum]=='0')
+						strNum++;
+					NewCase=(count-test);
+					CountStr--;
+					k++;
+					num-=NewCase;
+					count=0;
+					break;
+				}
+				else
+				{ 
+					strNum++;
+					if(str[strNum]=='0')
+					{
+						strNum++;
+						while(str[strNum]=='0')
+						{
+							strNum++;
+							if(strNum>n)
+								strNum=1;
+						}
+
+					}
+				}
+			}
+
+		}
+		cout<<endl;
+		strNum=1;
+		char str1[15]={'0','a','b','c','d','e','f','g','h','i','j','k','l','0'};
+		for(int i=0; i<14; i++)
+		{
+			str[i] = str1[i];
+		}
+	}
+}
+
+

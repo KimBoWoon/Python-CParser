@@ -1,0 +1,133 @@
+
+
+#include <stdio.h>
+#define MAX 100000
+
+
+
+int tmp;
+struct cafe{
+	int x;
+	int y;
+};
+int compareX(const void *A, const void  *B) {
+
+	struct cafe* ptrA = (struct cafe*)A;
+	struct cafe* ptrB = (struct cafe*)B;
+
+	if (ptrA->x < ptrB->x) {
+		return -1;
+	}
+	else if (ptrA->x == ptrB->x) {
+		return 0;
+	}
+	else {
+		return 1;
+	}
+}
+int compareY2(const void *A, const void  *B) {
+
+	struct cafe* ptrA = (struct cafe*)A;
+	struct cafe* ptrB = (struct cafe*)B;
+
+
+	if (ptrA->y > ptrB->y) {
+		return -1;
+	}
+	else if (ptrA->y == ptrB->y) {
+		return 0;
+	}
+	else {
+		return 1;
+	}
+}
+int compareY1(const void *A, const void  *B) {
+
+	struct cafe* ptrA = (struct cafe*)A;
+	struct cafe* ptrB = (struct cafe*)B;
+
+	if (ptrA->y < ptrB->y) {
+		return -1;
+	}
+	else if (ptrA->y == ptrB->y) {
+		return 0;
+	}
+	else {
+		return 1;
+	}
+}
+
+int main() {
+	int testCase;
+	int i,j,k,n,m,x,y,mm,cnt,a ;
+	int ascending;
+	int descending;
+	FILE *fp = fopen("input.txt", "r");
+	fscanf(fp, "%d", &testCase);
+
+	for (j = 0; j < testCase; j++) {
+		cnt = 0;
+		ascending=0;
+		descending = 0;
+
+		fscanf(fp, "%d", &n);
+		struct cafe *arr;
+		struct cafe *startPtr;
+		arr = (struct cafe*)malloc(sizeof(struct cafe)*(n+1));
+		for (i = 0; i < n; i++) {
+			fscanf(fp, "%d %d", &x, &y);
+			arr[i].x = x;
+			arr[i].y = y;
+		}
+		arr[n].x = 100003;
+		arr[n].y = 100003;
+		qsort(arr, n, sizeof(struct cafe), compareX);
+
+		cnt = 1;
+		for (i = 0; i < n; i++) {
+			if (arr[i].x < arr[i + 1].x) {
+				if(cnt==1)
+					tmp = arr[i].y;
+				else {
+					if (ascending == 1) {
+						qsort(startPtr, cnt, sizeof(struct cafe), compareY1);
+						cnt = 1;
+						tmp = arr[i].y;
+						ascending = 0;
+					}
+					else if (descending == 1) {
+						qsort(startPtr, cnt, sizeof(struct cafe), compareY2);
+						cnt = 1;
+						tmp = arr[i].y;
+						descending = 0;
+					}
+				}
+			}
+			 else if (arr[i].x == arr[i + 1].x) {
+				if (cnt == 1) {
+					if (tmp > arr[i].y) {
+						startPtr = arr+i;
+						descending = 1;
+						cnt++;
+					}
+					else if (tmp < arr[i].y) {
+						startPtr = arr+i;
+						ascending = 1;
+						cnt++;
+					}
+				}
+				else
+					cnt++;
+			}
+		} 
+		fscanf(fp, "%d", &m);
+		for (k = 0; k < m; k++) {
+			fscanf(fp, "%d", &mm);
+			printf("%d %d\n", arr[mm - 1].x, arr[mm - 1].y);
+		}
+		free(arr);
+
+	} 
+	
+	return 0;
+}

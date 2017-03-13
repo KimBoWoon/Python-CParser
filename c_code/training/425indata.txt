@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int gcd(int a, int b);
+
+int main()
+{
+	FILE *fp;
+	int numTestCases,i;
+	fp=fopen("input.txt","r");
+	if (fp==NULL) exit(1);
+
+	fscanf(fp,"%d",&numTestCases);
+
+	for(i=0; i<numTestCases; i++){
+		int num1,num2;
+		fscanf(fp,"%d %d",&num1,&num2);
+
+		printf("%d\n",gcd(num1, num2));
+	}
+
+	return 0;
+	fclose(fp);
+}
+
+int gcd(int a,int b)
+{
+	if(b==0)
+		return a;
+	else
+		return gcd(b,a%b);
+}

@@ -1,0 +1,45 @@
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void main(void)
+{
+	FILE *file;
+	int i, test;
+
+	file=fopen("input.txt","r"); 
+	if(file==NULL) exit(1);
+	
+	fscanf(file,"%d", &test); 
+
+	for(i=0; i<test; i++)
+	{
+		int num=0,result=0,i,j,k;
+		int trinum[3];
+		fscanf(file,"%d", &num); 
+
+		for(i=1;i<45;i++)
+		{
+			trinum[0]=(i*(i+1))/2;
+			for(j=1;j<45;j++)
+			{
+				trinum[1]=(j*(j+1))/2;
+				for(k=1;k<45;k++)
+				{
+					trinum[2]=(k*(k+1))/2;
+					if(num==(trinum[0]+trinum[1]+trinum[2])){
+						result=1;
+						break;}
+				}
+				if(num==(trinum[0]+trinum[1]+trinum[2]))
+					break;
+			}
+			if(num==(trinum[0]+trinum[1]+trinum[2]))
+				break;
+		}
+		printf("%d\n",result);
+	}
+	fclose(file); 
+}

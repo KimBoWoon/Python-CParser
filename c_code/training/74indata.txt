@@ -1,0 +1,32 @@
+
+#pragma warning(disable:4996)
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+	FILE *fp;
+	int i;
+	int numcases;
+
+	fp=fopen("input.txt","r"); 
+	if(fp==NULL) exit(1);
+
+	fscanf(fp,"%d",&numcases);
+
+	for(i=0;i<numcases;i++){
+		int num; 
+		int divi;
+		int flag=1;
+
+		fscanf(fp,"%d",&num);
+
+		for(divi=2;divi*divi<=num;divi++){
+			if(num%divi==0){
+				flag=0;
+				break;
+			}
+		}
+		printf("%d\n",flag);
+	}
+	fclose(fp);
+}

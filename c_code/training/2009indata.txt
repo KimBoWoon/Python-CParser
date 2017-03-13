@@ -1,0 +1,50 @@
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 1000000
+int cmpfunc (const void * a, const void * b) { return ( *(int*)a - *(int*)b ); } 
+
+int find(int *near, int temp,int cnt){
+	if(*near==temp) cnt++; 
+	else if(*near>temp){ 
+		cnt=1;
+		*near=temp;
+	}
+	return cnt;
+}
+
+void TwoNumbers(int *arr,int end, int target){
+	int sum,near=100000000,temp,cnt=0,start=0;
+	qsort(arr, end--, sizeof(int), cmpfunc); 
+
+	while(start<end){ 
+		sum=arr[start]+arr[end]; 
+		temp=abs(target-sum); 
+		cnt=find(&near,temp,cnt); 
+		if(target>sum) start++; 
+		else if(target<sum) end--; 
+		else{ 
+			start++;
+			end--;
+		}
+	}
+	printf("%d\n", cnt);
+}
+
+int main(){
+	int cases,i,j,set,target;
+	int arr[MAX];
+	FILE *fin=fopen("input.txt","r");
+	fscanf(fin,"%d",&cases);
+
+	for(i=0;i<cases;i++){
+		fscanf(fin,"%d %d",&set,&target);
+		for(j=0;j<set;j++)
+			fscanf(fin,"%d", &arr[j]);
+		TwoNumbers(arr,set,target);
+	}
+	fclose(fin);
+}

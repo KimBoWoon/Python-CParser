@@ -1,0 +1,39 @@
+
+
+#include <stdio.h>
+
+int factorial(int n);
+
+int main(void)
+{
+	FILE *f = fopen("input.txt", "r");
+	if (f == NULL) {
+		printf("ERROR\n");
+		exit(1);
+	}
+
+	int testCase = 0; 
+	int inputNum = 0; 
+	
+	fscanf(f, "%d", &testCase); 
+
+	while (testCase--) {
+
+		fscanf(f, "%d", &inputNum); 
+
+		printf("%d\n", factorial(inputNum));
+
+	}
+
+	fclose(f);
+	return 0;
+}
+
+int factorial(int n) {
+	if (n <= 1) 
+		return 1;
+	else 
+	{
+		return n*factorial(n - 1);
+	}
+}

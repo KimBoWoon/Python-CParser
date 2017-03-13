@@ -1,0 +1,51 @@
+
+
+
+
+
+#include<iostream>
+#include<fstream>
+#include<string>
+
+
+int main(int argc, char* argv[]) {
+
+
+	std::ifstream is;
+	is.open("input.txt"); 
+
+	int times; 
+	is >> times;
+
+	for (int i = 0; i < times; i++) {
+
+		std::string str;
+		is >> str;
+
+		int len = str.length();
+		int p = 0;
+
+		for (int i = 0; i < len; i++) {
+
+			if (str[i] == '(')
+				p++;
+			else {
+				if (p == 0) {
+					p--;
+				
+				break;
+				}
+				p--;
+				
+			}
+
+		}
+
+		if (p == 0)
+			std::cout << "YES" << std::endl;
+		else
+			std::cout << "NO" << std::endl;
+
+	}
+
+}

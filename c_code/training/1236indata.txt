@@ -1,0 +1,59 @@
+
+
+
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+bool checkPrimer(int n)
+{
+	bool primer=true;
+	for(int j=2; j<n; j++)
+	{
+			if(n%j==0)
+				primer=false;
+
+			if(!primer)
+			{	
+				break;
+			}
+			
+	}
+	return primer;
+}
+
+int main(void)
+{
+	fstream a;
+	int numcases;
+	int num;
+	bool primer1=true;
+	bool primer2=true;
+	int num1, num2;
+	a.open("input.txt");
+	a>>numcases;
+	for(int i=0; i<numcases; i++)
+	{
+		a>>num;
+		num1=num/2;
+		num2=num/2;
+		while(1)
+		{
+			primer1=checkPrimer(num1);
+			primer2=checkPrimer(num2);
+			if(!primer1 || !primer2)
+			{
+				num1--;
+				num2++;
+			}
+			else
+			{
+				cout<<num1<<" "<<num2<<endl;
+				break;
+			}
+
+		}
+		
+	}
+	return 0;
+}

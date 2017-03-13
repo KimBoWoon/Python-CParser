@@ -1,0 +1,24 @@
+
+
+#include <iostream>
+#include <fstream>
+	
+using namespace std;
+int mcCarthy(int k){
+	return (k>100)? k-10: mcCarthy(mcCarthy(k+11));
+}
+int main(){
+	ifstream instream;
+	int no_cases;
+
+	instream.open("input.txt");
+
+	instream>>no_cases;
+
+	while(no_cases--){
+		int k;
+		instream>>k;
+		cout<<mcCarthy(k)<<endl;
+	}
+	instream.close();
+}

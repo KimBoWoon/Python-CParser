@@ -1,0 +1,40 @@
+
+
+
+
+#include<stdio.h>
+
+int fibonacci(int _n)   
+{
+	if(_n == 0)
+	{
+		return 0;
+	}
+	else if(_n == 1)
+	{
+		return 1;
+	}
+	else
+	{
+		return fibonacci(_n-1) + fibonacci(_n-2);
+	}
+}
+
+int main(void)
+{
+	FILE *fp = NULL;
+	int testCase;
+
+	fp = fopen("input.txt", "r");   
+	fscanf(fp, "%d", &testCase);    
+	while(testCase--)
+	{
+		int n, result;
+		fscanf(fp, "%d", &n);       
+		result = fibonacci(n);      
+		printf("%d\n", result);     
+	}
+
+	fclose(fp);
+	return 0;
+}

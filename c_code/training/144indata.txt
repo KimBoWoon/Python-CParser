@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+int recursiveMcCarthy(int num);
+
+void main()
+{
+	FILE *f;
+	int count;	
+	int i;		
+	int number;	
+
+	f = fopen("input.txt", "r");
+	if(f==NULL) exit(1);
+
+	fscanf(f, "%d", &count);	
+	for(i=0; i<count; i++)
+	{
+		int result;	
+		fscanf(f, "%d", &number);	
+		result = recursiveMcCarthy(number);	
+		printf("%d\n", result);	
+	}
+}
+int recursiveMcCarthy(int num)
+{
+	if(num>100)
+		return num-10;
+	else
+		return recursiveMcCarthy(recursiveMcCarthy(num+11));
+}

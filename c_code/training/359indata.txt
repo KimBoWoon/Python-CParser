@@ -1,0 +1,71 @@
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+int compare (const void * a, const void * b)
+{
+  return ( *(int*)b - *(int*)a );
+}
+
+void floodFill(char room[100][100], int x, int y, int& size, const int& countOfRoom)
+{
+	if ( room[y][x] != '.')
+		return;
+	else
+	{
+		room[y][x] = countOfRoom;
+		size ++;
+
+		floodFill(room, x - 1, y    , size, countOfRoom);
+		floodFill(room, x    , y + 1, size, countOfRoom);
+		floodFill(room, x + 1, y    , size, countOfRoom);
+		floodFill(room, x    , y - 1, size, countOfRoom);
+	}
+}
+
+void GettingSizeOfRoom(char room[100][100], int xSize, int ySize)
+{
+	int size[100] = {0};
+	int countOfRoom = 0;
+	for ( int y = 1 ; y < ySize ; y ++)
+		for ( int x = 0 ; x < xSize ; x ++)
+		{
+			if ( room[y][x] == '.')
+			{
+				countOfRoom ++;
+				floodFill(room, x, y, size[countOfRoom-1], countOfRoom);
+			}
+		}
+	std::cout << countOfRoom << std::endl;
+	qsort(size, countOfRoom, sizeof(int), compare);
+	for ( int i = 0 ; i < countOfRoom ; i ++)
+		std::cout << size[i] << " ";
+	std::cout << std::endl;
+
+
+}
+
+int main()
+{
+	std::ifstream input;
+	input.open("input.txt");
+	if ( input.fail())
+	{
+		std::cerr << "file open err";
+		return 0;
+	}
+	int caseNum;
+	input >> caseNum;
+	for ( int i = 0 ; i < caseNum ; i ++)
+	{
+		char room[100][100];
+		int xSize, ySize;
+		input >> xSize >> ySize;
+		for ( int y = 0 ; y < ySize ; y ++)
+			for ( int x = 0; x < xSize; x ++)
+				input >> room[y][x];
+		GettingSizeOfRoom(room, xSize, ySize);
+	}
+	return 0;
+}

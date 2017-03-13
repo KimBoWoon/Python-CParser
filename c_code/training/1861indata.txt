@@ -1,0 +1,49 @@
+
+#include <iostream>
+#include <fstream>
+#include <stack>
+#include <string>
+using namespace std;
+
+string st;
+int remain;
+int Parenthesis_check(int index)
+{
+	if(index==st.length())
+	{
+		if(remain==0)
+			return true;
+		else 
+			return false;
+	}
+	if(st[index]=='(')
+	{
+		remain++;
+		return Parenthesis_check(++index);
+	}
+	if(st[index]==')')
+	{
+		if(remain<=0)
+			return false;
+		else
+		{
+			remain--;
+			return Parenthesis_check(++index);
+		}
+	}
+}
+int main()
+{
+	int t;
+	ifstream inStream;
+	inStream.open("input.txt");
+	inStream>>t;
+	while(t--)
+	{
+		inStream>>st;
+		remain=0;
+		if(Parenthesis_check(0)==true)
+			cout<<"YES"<<endl;
+		else cout<<"NO"<<endl;
+	}
+}

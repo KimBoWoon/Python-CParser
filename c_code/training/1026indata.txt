@@ -1,0 +1,44 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int ducci[17]={0,};
+
+int main(){
+
+	ifstream in;
+	in.open("input.txt");
+
+	short t,i,j;
+	in>>t;
+
+	while(t--)
+	{
+		short n;
+		in>>n;
+
+		for(i=0; i<n; i++) in>>ducci[i]; 
+
+		ducci[n] = ducci[0]; 
+
+		for(i=0;i<1000;i++) 
+		{  
+			for(j=0;j<n;j++){  
+				ducci[j] = ducci[j] - ducci[j+1];   
+				if(ducci[j] < 0) ducci[j] = -ducci[j];  
+			}  
+			ducci[n] = ducci[0]; 
+		}  
+
+		for(j=0;j<n;j++)  
+			ducci[n+1] += ducci[j];
+
+		if(ducci[n+1] == 0)   
+			cout<<"ZERO"<<endl;  
+		else 
+			cout<<"LOOP"<<endl;  
+	}
+	in.close();
+	return 0;
+}

@@ -1,0 +1,60 @@
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+using namespace std;
+int compare(const void *first,const void *second)
+{
+	return ((*(int*)first) - (*(int*)second));
+}
+int main(void)
+{
+	ifstream inStream;
+	int numTestCases = 0;
+	int team = 0, play = 0;
+	int a, b, p, q;
+	int * arr, *arr2;
+	int *arr3;
+
+	inStream.open("input.txt");
+	if (inStream.fail())
+	{
+		cerr << "Input file opening failed. \n";
+		exit(1);
+	}
+	inStream >> numTestCases;
+	for (int i = 0; i < numTestCases; i++)
+	{
+		inStream >> team >> play; 
+		arr = (int*)malloc(sizeof(int)*team); 
+		arr2 = (int*)malloc(sizeof(int)*team); 
+		arr3 = (int*)malloc(sizeof(int)*team); 
+		
+		for (int j = 0; j < team; j++)
+		{
+			arr[j] = 0;
+			arr2[j] = 0;
+			arr3[j] = 0;
+		}
+
+		for (int j = 0; j < play; j++)
+		{
+			inStream >> a >> b >> p >> q; 
+			arr[a - 1] += p;
+			arr[b - 1] += q;
+			arr2[a - 1] += q;
+			arr2[b - 1] += p;
+		}
+		for (int j = 0; j < team; j++)
+		{
+			arr3[j] = ((double)(arr[j] * arr[j]) / (double)((arr[j] * arr[j]) + (arr2[j] * arr2[j]))* 1000);
+		}
+		qsort(arr3,team,sizeof(int),compare);
+		cout << arr3[team - 1] << endl;
+		cout << arr3[0] << endl;
+		free(arr); 
+		free(arr2); 
+		free(arr3); 
+	}
+	inStream.close();
+	return 0;
+}

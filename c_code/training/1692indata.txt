@@ -1,0 +1,169 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+#define MAX_CAFE 100000
+#define MAX_X 100000
+#define MAX_Y (MAX_X)
+#define MIN_Y (-MAX_Y)
+#define MAX_M 10
+
+#define ABS(a) ((a)<0?-(a):a)
+
+int compareX(const void* a, const void* b);
+int compareYascending(const void* a, const void* b);
+int compareYdescending(const void* a, const void* b);
+
+typedef struct Point
+{
+	int x;
+	int y;
+} Point;
+
+class monotone
+{
+private:
+	int N;						
+	Point cafes[MAX_CAFE];		
+	int maximumX;				
+	int* cafesInSameX;	
+
+	int M;						
+	int cafeNums[MAX_M];		
+
+	int currentY;				
+public:
+	monotone(const int n) : N(n)
+	{
+		currentY = 0;
+
+	}
+	void inputCafe(std::ifstream& fileDes)
+	{
+		for(int i = 0; i < N; i++)
+			fileDes>>cafes[i].x>>cafes[i].y;
+
+		fileDes>>M;
+		
+		for(int i = 0; i < M; i++)
+			fileDes>>cafeNums[i];
+
+		qsort(cafes, N, sizeof(Point), compareX);
+
+		maximumX = cafes[N-1].x;
+
+		cafesInSameX = new int[maximumX + 1];
+
+		for(int i = 0; i <= maximumX; i++)
+			cafesInSameX[i] = 0;
+
+		for(int i = 0; i < N; i++)
+			cafesInSameX[ cafes[i].x ]++;
+		
+
+	}
+	void travel()
+	{
+
+
+	
+
+		for(int i = 0; i < N; i++)
+		{
+
+			if(cafesInSameX[ cafes[i].x ] == 1)
+				currentY = cafes[i].y;
+	
+
+			else
+			{
+				
+				int MaxYNextCafe = MIN_Y-1;		
+				int MinYNextCafe = MAX_Y+1;		
+
+
+				for(int j = 0; j < cafesInSameX[ cafes[i].x ]; j++)
+				{
+
+					MaxYNextCafe = ((MaxYNextCafe > cafes[i + j].y)? MaxYNextCafe : (cafes[i + j].y));
+					MinYNextCafe = ((MinYNextCafe < cafes[i + j].y)? MinYNextCafe : (cafes[i + j].y));
+				}
+
+
+				int MaxDistance = ABS(currentY - MaxYNextCafe);
+				int MinDistance = ABS(currentY - MinYNextCafe);
+
+
+				if(MaxDistance < MinDistance)
+				{
+					qsort(cafes + i, (cafesInSameX[ cafes[i].x ]), sizeof(Point), compareYdescending);
+					currentY = MinYNextCafe;
+				}
+
+				else
+				{
+					qsort(cafes + i, (cafesInSameX[ cafes[i].x ]), sizeof(Point), compareYascending);
+					currentY = MaxYNextCafe;
+				}
+
+				i += (cafesInSameX[ cafes[i].x ] - 1);
+			}
+		}
+
+
+	}
+	void printCafes()
+	{
+
+
+		for(int i = 0; i < M; i++)
+			std::cout<<cafes[ cafeNums[i] - 1 ].x<<' '<<cafes[ cafeNums[i] - 1 ].y<<std::endl;
+
+
+	}
+	~monotone()
+	{
+		delete[] cafesInSameX;
+	}
+};
+
+int main()
+{
+	int trialNum;				
+
+	std::ifstream fileDes;		
+	fileDes.open("input.txt");
+
+
+	fileDes>>trialNum;			
+
+	
+	for(int i = 0; i < trialNum; i++)
+	{
+		int N;
+
+		fileDes>>N;
+		monotone KIM_DOO_HAN_EE_BAN_DONG_NO_MU_SAE_GGI(N);
+		KIM_DOO_HAN_EE_BAN_DONG_NO_MU_SAE_GGI.inputCafe(fileDes);
+		KIM_DOO_HAN_EE_BAN_DONG_NO_MU_SAE_GGI.travel();
+		KIM_DOO_HAN_EE_BAN_DONG_NO_MU_SAE_GGI.printCafes();
+	}
+
+
+	fileDes.close();
+}
+
+int compareX(const void* a, const void* b)
+{
+	return ((Point*)a)->x - ((Point*)b)->x;
+}
+
+int compareYascending(const void* a, const void* b)
+{
+	return ((Point*)a)->y - ((Point*)b)->y;
+}
+
+int compareYdescending(const void* a, const void* b)
+{
+	return ((Point*)b)->y - ((Point*)a)->y;
+}

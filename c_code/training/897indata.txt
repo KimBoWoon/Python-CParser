@@ -1,0 +1,54 @@
+#include <iostream>
+#include <fstream>
+#define max(a, b) (a > b)?a:b;
+using namespace std;
+ 
+int *arr, *p;
+int **m;
+ 
+int play(int start, int end)
+{
+    if (start > end) return 0;
+    if (start == end) return arr[start];
+    int &ret = m[start][end];
+    if (ret >= 0) return ret;
+    ret = max(p[end] - p[start-1] - play(start+1, end), p[end] - p[start-1] - play(start, end-1));
+    return ret;
+}
+ 
+int main()
+{
+	int caseNum;
+	ifstream inputFile;
+	inputFile.open("input.txt");
+
+	inputFile >> caseNum;
+
+    for (int i = 0; i < caseNum; i++){
+        int testNum;
+		inputFile >> testNum;
+		arr = new int[testNum + 1];
+		p = new int[testNum + 1];
+		m = new int*[testNum + 1];
+		for(int j = 0; j <= testNum; j++){
+			m[j] = new int[testNum + 1];
+			p[j] = arr[j] = 0;
+		}
+
+        for (int j=1;j<=testNum;j++){
+			inputFile >> arr[j]; 
+			p[j] = p[j-1] + arr[j];
+		}
+
+        for (int j=1;j<=testNum;j++) 
+			for (int k=j;k<=testNum;k++) 
+				m[j][k] = -1;
+        cout << play(1, testNum)<< endl;
+
+		for(int j = 0; j <= testNum; j++)
+			delete m[j];
+		delete[] m;
+		delete p;
+		delete arr;
+    }
+}

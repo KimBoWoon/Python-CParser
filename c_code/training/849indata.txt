@@ -1,0 +1,27 @@
+
+
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+int fibonacci(int t){
+	if (t <= 1) return t;
+	return fibonacci(t - 1) + fibonacci(t - 2);
+}
+
+int main(){
+	ifstream in;
+	in.open("input.txt");
+	if (!in) return 1;
+
+	int n;
+	in >> n;
+	for (int i = 0; i < n; i++){
+		int t;
+		in >> t;
+		cout << fibonacci(t) << endl;
+	}
+	in.close();
+	return 0;
+}

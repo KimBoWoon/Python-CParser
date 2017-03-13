@@ -1,0 +1,68 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int numOfCase[12];
+char str[][13]={
+	"a",
+	"ab",
+	"abc",
+	"abcd",
+	"abcde",
+	"abcdef",
+	"abcdefg",
+	"abcdefgh",
+	"abcdefghi",
+	"abcdefghij",
+	"abcdefghijk",
+	"abcdefghijkl"
+};
+
+void findString(char* str, int n,int idx){
+	char str1[13];
+	strcpy(str1, str);
+	int len = strlen(str)-1;
+
+	while( n > 1 ){
+		for(int i=len-idx; i<len; i++){
+			if( str1[len-idx] < str1[i+1]){
+				char tmp = str1[len-idx];
+				str1[len-idx] = str1[i+1];
+				str1[i+1] = tmp;
+				break;
+			}
+		}
+		n-=numOfCase[idx-1];
+		while( n<= numOfCase[idx-1] ) idx--;
+	}
+	puts(str1);
+}
+
+int main(void){
+	FILE* file;
+	file = fopen("input.txt","r");
+
+	int cases;
+	fscanf(file, "%d", &cases);
+
+	for(int i=1; i<=12; i++){
+		if( i!=1 )
+			numOfCase[i-1] = i * numOfCase[i-2]; 
+		else
+			numOfCase[i-1] = i;
+	}
+
+	while(cases--){
+		int leng,n;
+		fscanf(file, "%d%d",  &leng,&n);
+
+		for(int i=0; i<12; i++){
+			if( n<= numOfCase[i] ){
+				findString(str[leng-1], n, i );
+				break;
+			}
+		}
+	}
+	return 0;
+}

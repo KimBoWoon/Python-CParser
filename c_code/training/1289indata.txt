@@ -1,0 +1,57 @@
+#include <iostream>
+#include <fstream>
+
+int findPri(int inputNum)
+{
+	int sw = 0;
+	for (int i = 2; i < inputNum; i++)
+	{
+		if (inputNum%i == 0)
+		{
+			sw = 1;
+			break;
+		}
+	}
+	if (sw == 0)
+		return inputNum;
+	else
+		return findPri(inputNum - 1);
+}
+
+bool isPri(int inputNum)
+{
+
+	int sw = 1;
+	for (int i = 2; i < inputNum; i++)
+	{
+		if (inputNum%i == 0)
+		{
+			sw = 0;
+			break;
+		}
+	}
+	return sw;
+}
+
+int main()
+{
+	std::ifstream file("input.txt");
+	int testCase = 0;
+	file >> testCase;
+	while (testCase--)
+	{
+		int inputNum = 0;
+		file >> inputNum;
+		int priNum1 = findPri(inputNum/2);
+		int priNum2 = inputNum - priNum1;
+		while (!isPri(priNum2))
+		{
+			priNum1 = findPri(priNum1 - 1);
+			priNum2 = inputNum - priNum1;
+		}
+		if (priNum1 > priNum2)
+			std::cout << priNum2 << " " << priNum1 << std::endl;
+		else
+			std::cout << priNum1 << " " << priNum2 << std::endl;
+	}
+}

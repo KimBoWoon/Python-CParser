@@ -1,0 +1,63 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int factorial(int n) 
+{
+    if(n<=1) return 1;
+    else return n*factorial(n-1);
+}
+
+string select_alphabet(string str,int n) 
+{
+    for(int i=n; i<12; i++)
+        str[i]=str[i+1];
+    return str;
+}
+
+void permutation_string(int n,int k)  
+{   
+    string alphabet="abcdefghijkl";
+
+    for(int i=1; i<=n; i++) 
+        {   int selected_num=k/factorial(n-i);
+            cout<<alphabet[selected_num]; alphabet=select_alphabet(alphabet,selected_num);  
+            k=k%factorial(n-i);  
+        }
+
+    cout<<endl;
+}
+
+int main()
+{
+
+    ifstream file;
+
+    file.open("input.txt");
+    
+    if(file.is_open()==false) 
+        cout<<"입력파일이 없습니다."<<endl;
+    
+    else
+    {	
+        int case_num;
+        file>>case_num;
+        
+        for(int i=0; i<case_num; i++)
+        {   
+            int n,k;
+            file>>n>>k;
+
+            permutation_string(n,k-1); 
+
+        }
+
+    }
+
+        file.close();
+
+}

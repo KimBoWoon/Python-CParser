@@ -1,0 +1,74 @@
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+void numcal(int num, int Eur[]);
+
+int main()
+{
+   ifstream inFile;
+
+   int numcases;
+   int Eur[46];
+   
+   int n;
+
+   inFile.open("input.txt");
+   if (inFile == NULL) exit(1);
+
+   if(inFile.fail())
+	{
+		exit(1);
+	}
+
+   for (int e = 1; e < 46; e++)
+   {
+      Eur[e] =  e*(e + 1)/2;
+   }
+
+   inFile >> numcases;
+
+   for (int h = 0; h < numcases; h++)
+   {
+      inFile >> n;
+
+	  numcal(n,Eur);
+
+   }
+   return 0;
+}
+
+void numcal(int num, int Eur[])
+{
+	int c = 0;
+	int a[91125];
+	int result = 0;
+
+	for (int i = 0; i < 45; i++)
+      {
+         for (int j = 0; j < 45; j++)
+         {
+            for (int k = 0; k < 45; k++)
+            {
+				if(Eur[i] + Eur[j] + Eur[k] <= 1000)
+				{
+					a[c] = Eur[i] + Eur[j] + Eur[k];
+					c++;
+				}
+            }
+         }
+      }
+
+      for (int i = 0; i < c; i++)
+      {
+         if (num == a[i])
+         {
+            result = 1;
+         }
+      }
+   
+	cout << result << endl;
+}

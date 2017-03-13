@@ -1,0 +1,87 @@
+
+
+
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+
+double calW(double s, double a)
+{
+	return (s*s)/(s*s+a*a)*1000;
+}
+
+int main(){
+
+	int num_case;
+	ifstream inStream;
+	inStream.open("input.txt");
+	inStream >> num_case;
+		
+	for(int i = 0; i<num_case; i++)
+	{
+		int teamNum;
+		int gameNum;
+
+		inStream>>teamNum>>gameNum;
+
+		double *teamWin = new double[teamNum];
+		double *teamLose = new double[teamNum];
+		int *teamW = new int[teamNum];
+		for(int j = 0; j <teamNum; j++)
+		{
+			teamWin[j] = 0.0;
+			teamLose[j] = 0.0; 
+			teamW[j] = 0.0;
+		}
+
+		for(int k=0; k<gameNum; k++)
+		{
+			
+			int number1, number2;
+			inStream>>number1>>number2;
+
+			int score1, score2;
+			inStream>>score1>>score2;
+
+			teamWin[number1-1] += score1;
+			teamWin[number2-1] += score2;
+			teamLose[number1-1] += score2;
+			teamLose[number2-1] += score1;
+
+		}
+		
+		for(int num=0; num<teamNum; num++){
+			
+			teamW[num] = calW(teamWin[num],teamLose[num]);
+		}
+
+
+		int max = 0;
+		int min = teamW[0];
+		for(int a =0; a<teamNum; a++){
+
+			if(max<teamW[a]){
+				max = teamW[a];
+			}
+		}
+
+		for(int b= 1; b<teamNum; b++)
+		{
+			if(min>teamW[b])
+				min=teamW[b];
+		}
+
+		delete teamWin;
+		delete teamLose;
+		delete teamW;
+
+		cout<<max<<endl<<min<<endl;
+	}
+}
+
+
+
+
+

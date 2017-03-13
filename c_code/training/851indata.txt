@@ -1,0 +1,23 @@
+
+#include <iostream>
+#include <fstream>
+#include <cstring>
+using namespace std;
+
+int fibo(int n){
+	if (n <= 1)
+		return n;
+	else
+		return fibo(n - 2) + fibo(n - 1);
+}
+int main(){
+	ifstream in;
+	in.open("input.txt");
+	int n,count;
+	in >> n;
+	for (int i = 0; i < n; i++){
+		in >> count;
+		cout << fibo(count) << endl;
+	}
+	return 0;
+}

@@ -1,0 +1,43 @@
+
+#include<iostream>
+#include<string>
+#include<fstream>
+
+using namespace std;
+
+bool checkPrime(int i, int inputNum){
+	if (inputNum == i){
+		return true;
+	}
+	else if (inputNum % i == 0){
+		return false;
+	}
+	else{
+		i++;
+		checkPrime(i, inputNum);
+	}
+}
+
+int main(){
+	ifstream f;
+	f.open("input.txt");
+	int numCount = 0, sumNum = 0, firstNum = 2, secondNum = 2, halfNum  = 0;
+	bool check;
+	f >> numCount;
+	for (int i = 0;i<numCount;i++){
+		f >> sumNum;
+		if (sumNum == 4){ 
+			cout << 2 << " " << 2 << endl;
+			continue;
+		}
+		halfNum = sumNum / 2; 
+		for (int j = halfNum;j>2;j--){
+			check = checkPrime(firstNum, j); 
+			if (check && checkPrime(secondNum, sumNum-j)){ 
+				cout << j << " " << sumNum-j << endl;
+				break;
+			}
+		}
+	}
+	return 0;
+}

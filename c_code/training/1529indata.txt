@@ -1,0 +1,108 @@
+#include <iostream>
+#include <fstream>
+
+#define MOVE 8
+
+struct pos{
+	int x;
+	int y;
+};
+
+
+typedef struct pos Pos; 
+
+Pos move_p[8] = { { 1, -2 }, { 2, -1 }, { 2, 1 }, { 1, 2 },
+					{ -1, 2 }, { -2, 1 }, { -2, -1 }, { -1, -2 } };
+int **board = NULL;
+int **path = NULL;
+
+int knights_tour_game(const int height, const int width, Pos p, int count);
+
+int main(void){
+
+	std::fstream inFile("input.txt");
+	if (inFile.fail()){
+		std::cout << "not file" << std::endl;
+	}
+
+	int testcases = 0;
+	inFile >> testcases;
+
+	for (int i = 0; i < testcases; i++){
+		int width = 0;
+		int height = 0;
+		board = NULL;
+		path = NULL;
+
+		inFile >> height >> width;
+
+		board = new int*[height];
+		path = new int*[height];
+		for (int j = 0; j < height; j++){
+			board[j] = new int[width];
+			path[j] = new int[width];
+			for (int k = 0; k < width; k++){
+				board[j][k] = 0;
+				path[j][k] = 0;
+			}
+		}
+		
+		Pos p = { 0, 0 };
+		inFile >> p.y >> p.x;
+		p.y--;	p.x--;
+
+		board[p.y][p.x] = -1;
+		path[p.y][p.x] = 1;
+		
+		if (knights_tour_game(height, width, p, 1)){
+			std::cout << 1 << std::endl;
+			for (int j = 0; j < height; j++){
+				for (int k = 0; k < width; k++){
+					std::cout << path[j][k] << " ";
+				}
+				std::cout << std::endl;
+			}
+		}
+		else{
+			std::cout << 0 << std::endl;
+		}
+		for (int j = 0; j < height; j++){
+			delete[] board[j];
+			delete[] path[j];
+		}
+		delete[] board;
+		delete[] path;
+		
+	}
+
+	return 0;
+}
+
+
+int knights_tour_game(const int height, const int width, Pos p, int count){
+	
+	
+	Pos part_p = { 0, 0 };
+
+	if (count == height * width){
+		return 1;
+	}
+	
+	for (int i = 0; i < MOVE; i++){
+		part_p.x = p.x + move_p[i].x;
+		part_p.y = p.y + move_p[i].y;
+
+		if (0 <= part_p.y && part_p.y < height && 0 <= part_p.x && part_p.x < width 
+				&& board[part_p.y][part_p.x] == 0){
+			board[part_p.y][part_p.x] = -1;
+			path[part_p.y][part_p.x] = count + 1;
+
+			if (knights_tour_game(height, width, part_p, count + 1)){
+				return 1;
+			}
+			board[part_p.y][part_p.x] = 0;
+		}
+	}
+	return 0;
+}
+

@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX 1000000
+
+int Palindrome(char str[], int first, int last) { 
+	int result;
+	while(last >= first){
+		if(str[first++] != str[last--])
+			return 0;
+	}
+	return 1;
+} 
+void BaseConversation(int num) {
+	int a, b, j, i;
+	char arr[MAX];
+	for(i=2; i<64;i++){
+		a=num;
+		j=0;
+		while(a!=0) {
+			arr[j++] = a%i;
+			a/=i;
+		}
+		if(Palindrome(arr, 0, j-1)) {
+			printf("1\n");
+			return;
+		}
+	}
+	printf("0\n");
+}
+int main(){
+	int testcase,i;
+	int num;
+	FILE *file = fopen("input.txt","r");
+	if(file ==NULL)
+		exit(1);
+	fscanf(file, "%d", &testcase);
+	for(i=0; i<testcase; i++)
+	{
+		fscanf(file, "%d", &num);
+		BaseConversation(num);
+	}
+
+}
+
+

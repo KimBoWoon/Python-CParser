@@ -1,0 +1,67 @@
+
+
+
+
+#include <cstdio>
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+
+
+int main(int argc, char** argv) {
+
+
+	freopen("input.txt", "r", stdin);
+
+	setbuf(stdout, NULL);
+
+	int T;
+	int test_num;
+    
+	scanf("%d", &T);	
+	
+	for(test_num = 1; test_num <= T; ++test_num) {
+		
+    	int first;
+
+    	scanf("%d", &first);
+
+    	for(int i=2; i<=64; i++)
+    	{
+    		vector<int> v;
+    		int num=first;
+    		bool flag=true;
+
+    		while(num!=0)		
+    		{
+    			v.push_back(num%i);
+    			num /= i;
+    		}
+
+    		for(int i=0; i<v.size()/2; i++)   
+			{
+				if(v.at(i)!=v.at(v.size()-1-i))
+					{ 
+                        flag=false;
+                         break; 
+                    }
+			}	
+
+    		if(flag)
+    			{ 
+                    printf("%d\n",1); 
+
+                    break;
+                 }
+    		if(i==8*8)
+    			printf("%d\n",0); 
+
+    	}
+        
+	}
+
+	return 0;
+}
+

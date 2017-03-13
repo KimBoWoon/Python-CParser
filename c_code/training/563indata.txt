@@ -1,0 +1,65 @@
+
+
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+int factorial(int num);
+
+int main()
+{
+	int count = 0;
+	ifstream file;
+	file.open("input.txt");
+	file >> count;
+
+	int n, k; 
+
+	for (int i = 0; i < count; i++)
+	{
+		file >> n >> k;
+
+		char Alpha[12] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l' }; 
+		
+		char first;
+		int fac = 0, f = 0;
+
+		for (int j = 0; j < n; j++)
+		{
+			fac = factorial(n - (j + 1));
+
+			f = k / fac;
+			if (k % fac == 0)
+				f--;
+			for (int k = j + f; k>j; k--)
+			{
+				first = Alpha[k - 1];
+				Alpha[k - 1] = Alpha[k];
+				Alpha[k] = first;
+			}
+
+			k = k - (fac*f);
+		}
+
+		if (k == 2)
+		{
+			first = Alpha[n - 2];
+			Alpha[n - 2] = Alpha[n - 1];
+			Alpha[n - 1] = first;
+		}
+
+		for (int l = 0; l<n; l++)
+			cout << Alpha[l];
+		cout << endl;
+
+	}
+   return 0;
+}
+
+int factorial(int num)
+{
+	if (num == 0)
+		return 1;
+	else
+		return num*factorial(num - 1);
+}

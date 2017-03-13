@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+int TestCases, A[45], D[1001];
+
+int main()
+{
+	FILE *in_file;
+
+	in_file = fopen("input.txt", "r");
+	if (in_file == NULL) exit(1);
+
+	int i, j, k;
+
+	for (i = 1; i<45; i++) A[i] = i*(i + 1) / 2;
+	for (i = 1; i<45; i++) 
+		for (j = i; j<45; j++) 
+			for (k = j; k<45; k++) 
+				if (A[i] + A[j] + A[k] < 1001) D[A[i] + A[j] + A[k]] = 1;
+	for ( fscanf(in_file, "%d", &TestCases); TestCases--;){
+		fscanf(in_file, "%d", &k);
+		printf("%d\n", D[k]);
+	}
+}

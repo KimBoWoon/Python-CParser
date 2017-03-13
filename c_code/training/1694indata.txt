@@ -1,0 +1,85 @@
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+
+struct Point {
+	int x, y;
+};
+
+Point p[100010];
+int n;
+
+int cmp(const void * a, const void * b) {
+	return ((*((Point*)a)).x != (*((Point*)b)).x)
+		? (*((Point*)a)).x - (*((Point*)b)).x
+		: (*((Point*)a)).y - (*((Point*)b)).y;
+}
+
+void rev(int start, int end) {
+	int mid = (start + end) / 2, i = start, j = end;
+	for (; i <= mid; ++i, --j) {
+		Point temp = p[i];
+		p[i] = p[j];
+		p[j] = temp;
+	}
+}
+
+int getLastIndex(int idx, int x) {
+	for (int i = idx; i < n; i++) {
+		if (p[i].x != x) {
+			return i - 1;
+		}
+	}
+	return n - 1;
+}
+
+int main() {
+	freopen("input.txt", "r", stdin);
+
+	int nCase; 
+	scanf("%d", &nCase);
+
+	while (nCase--) {
+		memset(p, 0, sizeof(p));
+		scanf("%d", &n);
+		
+		for (int i = 0; i < n; i++) {
+			scanf("%d %d", &p[i].x, &p[i].y);
+		}
+
+		qsort(p, n, sizeof(Point), cmp);
+
+		Point prev = { 0, 0 };
+
+		int i = 0;
+		for (; i < n; ++i) {
+			if (p[i].x != 0) {
+				prev = p[i - 1];
+				break;
+			}
+		}
+
+		if (prev.y == 0) {
+			prev = p[0];
+			rev(0, i - 1);
+		}
+
+		for (int j = i; j < n; ++j) {
+			int idx = getLastIndex(j, p[j].x);
+			if (prev.y != p[j].y) {
+				rev(j, idx);
+			}
+			j = idx;
+			prev = p[j];
+		}
+
+		int m;
+		scanf("%d", &m);
+		while (m--) {
+			scanf("%d", &i);
+			printf("%d %d\n", p[i - 1].x, p[i - 1].y);
+		}
+	}
+
+	return 0;
+}

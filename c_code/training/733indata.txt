@@ -1,0 +1,28 @@
+#include <stdio.h>
+#define MAX 1001
+
+int CheckPalindrome(char *input, int start, int last);
+
+void main() {
+	int numTestCases = 0;
+	char *input = (char *)malloc(MAX);
+	int i = 0;
+	FILE *f;
+	f = fopen("input.txt", "r");
+	fscanf(f, "%d", &numTestCases);
+
+	for (i = 0; i < numTestCases; i++) {
+		
+		fscanf(f, "%s", input);
+		printf("%d\n", CheckPalindrome(input, 0, strlen(input) - 1));
+	}
+}
+
+int CheckPalindrome(char *input, int start, int last) {
+	if (start >= last)
+		return 1;
+	else if (input[start] != input[last])
+		return 0;
+	else
+		return CheckPalindrome(input, start + 1, last - 1);
+}

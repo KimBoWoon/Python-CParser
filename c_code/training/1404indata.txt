@@ -1,0 +1,24 @@
+
+#include<iostream>
+#include<fstream>
+#include<cstdio>
+using namespace std;
+
+int main(){
+	ifstream File;
+	int numCase = 0;
+	int height = 0, width = 0, num = 0;
+	bool flag = true;
+
+	File.open("input.txt");
+	File >> numCase;
+	for (int iter = 0; iter < numCase; iter++){
+		File >> height >> width >> num;
+		num--;
+		int col = num / height + 1;
+		int floor = num % height + 1;
+		printf("%d%02d\n", floor, col);
+	}
+	File.close();
+	return 0;
+}

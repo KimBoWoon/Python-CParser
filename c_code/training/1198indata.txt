@@ -1,0 +1,57 @@
+#include <iostream>
+#include <fstream>
+#include <list>
+using namespace std;
+
+
+bool isPrime(int n){
+    for(int i=2; i<n; i++){
+        if(n%i == 0)
+            return false;
+    }
+    return true;
+}
+
+void GoldbachRecursion(list<int> lst, int num, list<int>::reverse_iterator ptr, list<int>::reverse_iterator end){
+    if(isPrime(num-(*ptr))){
+        cout << *ptr << " " << num-(*ptr) << endl;
+        return;
+    }
+    return GoldbachRecursion(lst, num, ++ptr, end);
+}
+
+void GoldbachConjecture(list<int> lst, int num){
+    for(int i=3; i<num/2+1; i++){
+        list<int>::iterator j;
+        for(j=lst.begin(); j != lst.end(); j++){
+            if(i % (*j) ==0)
+                break;
+        }
+        if(j==lst.end()){
+            lst.push_back(i);
+        }
+    }
+    
+    list<int>::reverse_iterator ptr = lst.rbegin();
+    list<int>::reverse_iterator end = lst.rend();
+    
+    return GoldbachRecursion(lst, num, ptr, end);
+}
+
+int main(){
+    ifstream inStream;
+    inStream.open("input.txt");
+    int test_case;
+    inStream >> test_case;
+
+    for(int t=0; t<test_case; t++){
+        int num;
+        inStream >> num;
+        list<int> lst;
+        lst.push_back(2);
+        GoldbachConjecture(lst, num);
+        lst.clear();
+    }
+    inStream.close();
+    return 0;
+}

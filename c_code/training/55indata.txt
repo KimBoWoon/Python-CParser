@@ -1,0 +1,30 @@
+
+#include <iostream>
+#include <fstream>
+#include <cmath>
+
+int main(int argc, char* argv[]){
+
+	std::ifstream readStream("input.txt");
+
+	int testCase = 0,
+		primeNumber = 0;
+
+	readStream >> testCase;
+
+	while(testCase--){
+
+		readStream >> primeNumber;
+
+		register int divisor = 0;
+		register bool isPrime = true;
+
+		for(divisor = 2; divisor <= (int)sqrt(primeNumber);  ++divisor)
+			if(!(primeNumber % divisor)){ 
+				isPrime = false;
+				break;
+			}
+		std::cout << ((isPrime) ? 1 : 0) << std::endl;
+	}
+	readStream.close();
+}

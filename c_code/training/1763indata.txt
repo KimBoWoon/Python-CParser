@@ -1,0 +1,47 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int num;
+int A[30];
+
+bool ispal(int A[], int length) {
+
+	for (int i = length / 2; i<length; i++) 
+	{
+		if (A[i] != A[length - 1 - i]) return false;
+	}
+	return true;
+}
+
+int main() {
+	ifstream in;
+	in.open("input.txt");
+	int T;
+	in >> T;
+
+	while (T--) {
+		in >> num;
+		int ret = 0;
+		for (int i = 2; i <= 64; i++) {
+
+			int index = 0;
+			int number = num;
+
+			while (number >= 0) {
+
+				A[index] = number%i;
+				number = number / i;
+
+				index++;
+				if (number == 0) break;
+			}
+			
+			if (ispal(A, index) == true) {
+				ret = 1;
+				break;
+			}
+		}
+		cout << ret << endl;
+	}
+}

@@ -1,0 +1,25 @@
+#include<iostream>
+#include<fstream>
+#include<math.h>
+using namespace std;
+int prime(int num);
+int main(){
+	ifstream fin;
+	fin.open("input.txt");
+	if (!fin) {
+		cout << "file error" << endl;
+		return 0;
+	}
+	int num, T;
+	fin >> num;
+	for (int cnt = 0; cnt < num; cnt++){	
+		fin >> T;
+		cout << prime(T) << endl;
+	}
+}
+int prime(int num){		
+	for (int cnt = 2; cnt <= (int)sqrt(num); cnt++){
+		if (num%cnt == 0) return 0;
+	}
+	return 1;
+}

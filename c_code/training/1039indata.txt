@@ -1,0 +1,86 @@
+
+#include <iostream>
+#include <cstdlib>
+#include <cmath>
+#include <fstream>
+using namespace std;
+bool checkLoop(int ducci[1001][15],int length,int arrLength)
+{
+	bool t=true;
+	int countStr=0;
+		for(int j=0; j<arrLength; j++)
+		{
+			for(int k=0; k<length; k++)
+			{
+		
+				if(ducci[arrLength][k]==ducci[j][k]) countStr++;
+
+			}
+			if(countStr==length){ t=true; break;}
+			else {t=false; countStr=0;}
+		}
+	
+	return t;
+}
+
+int main()
+{
+	fstream in;
+	in.open("input.txt");
+	int numcases;
+	in>>numcases;
+	for(int i=0;i<numcases; i++)
+	{
+		int ducci[1001][15];
+		int length;
+		in>>length;
+		for(int j=0; j<length; j++)
+		{
+			in>>ducci[0][j];
+		}
+		
+		
+		int p=1;
+		
+		int arrLength=0;
+		while(1)
+		{
+			bool loop=false;
+			
+			int countZero=0;
+			for(int n=0; n<length;n++)
+			{
+				if(n==length-1)
+				{
+					ducci[p][n]=abs(ducci[p-1][n]-ducci[p-1][0]);
+					if(ducci[p][n]==0) {  countZero++; }
+
+				}
+				else
+				{
+					ducci[p][n]=abs(ducci[p-1][n]-ducci[p-1][n+1]);
+					if(ducci[p][n]==0) {  countZero++; }
+
+				}
+			}
+		
+			if(countZero==length) {
+				cout<<"ZERO"<<endl;
+				break;
+				
+			}
+			
+			loop=checkLoop(ducci,length,p);
+			if(loop)
+			{
+				cout<<"LOOP"<<endl;
+				break;
+				
+			}
+		
+			
+			p++;
+		 }
+		
+	}
+}

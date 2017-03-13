@@ -1,0 +1,29 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int fac(int n){				
+
+	if(n==0)
+		return 1;
+	else
+		return n*fac(n-1);		
+
+}
+
+int main(){
+	FILE *inFile;
+	int i;
+	int testCase;
+	inFile=fopen("input.txt", "r");						
+	fscanf(inFile, "%d", &testCase);
+
+	for(i=0; i<testCase; i++){						
+		int n;
+		int f;
+		fscanf(inFile, "%d", &n);
+		
+		printf("%d\n", fac(n));
+	}
+	return 0;
+}

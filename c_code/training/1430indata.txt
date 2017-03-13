@@ -1,0 +1,35 @@
+#include <iostream>
+#include <fstream>
+
+int main(void){
+
+	std::ifstream inFile("input.txt");
+
+	if (inFile.fail()){
+		std::cout << "input file opening fail\n" << std::endl;
+		return 0;
+	}
+
+	int testCases = 0;
+	int width = 0;
+	int height = 0;
+	int count = 0;
+
+	int room = 0;
+	
+	inFile >> testCases;
+
+	for (int i = 0; i < testCases; i++){
+		inFile >> height;
+		inFile >> width;
+		inFile >> count;
+		
+		(count % height == 0) ? room = count / height : room = count / height + 1;
+
+		(count % height == 0) ? room += height * 100 : room += (count % height) * 100;
+
+		std::cout << room << std::endl;
+		
+	}
+	return 0;
+}

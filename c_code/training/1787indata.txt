@@ -1,0 +1,66 @@
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+void main(void)
+{
+	FILE *inFile;
+	int j;
+	int numCases;
+
+	inFile = fopen("input.txt", "r");									
+	if(inFile == NULL) exit(1);
+
+	fscanf(inFile, "%d", &numCases);									
+
+	for(j=0; j<numCases; j++)
+	{
+		int i,k;														
+		int n;
+		int a = 0;
+		char s[50] = {0,};
+
+		fscanf(inFile, "%s", &s);		
+
+		for(i=0; i<50; i++)
+		{
+			if(s[i] == 0)
+			{
+				n=i;
+				break;
+			}
+		}
+
+		for(i=0; i<n; i++)
+		{
+			if( s[i] == '(' )
+			{
+				for(k=i; k<n; k++)
+					if(s[k]==')')
+					{
+						a=0;
+						s[k] = 0;
+						break;
+					}
+					else
+						a=1;			
+			}
+			else if( s[i] == ')')
+			{
+				a=1;
+				break;
+			}
+		}
+		
+		if(a==0)
+			printf("YES\n");
+		else
+			printf("NO\n");
+
+	}
+
+	fclose(inFile);														
+}

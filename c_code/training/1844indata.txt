@@ -1,0 +1,79 @@
+
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+void checkVPS(char parenthesis, int& count);
+
+int main() 
+{
+	ifstream instream;
+	instream.open("input.txt");
+	if (instream.fail())
+	{
+		cerr << "Error";
+		exit(1);
+	}
+
+	int t;
+	instream >> t;
+
+	char parenthesis; 
+	int count; 
+
+	instream.get();	
+
+	for (int i = 0; i < t; i++)
+	{
+		count = 0; 
+
+
+		while ((parenthesis = instream.get()) != '\n')
+		{	
+			if (parenthesis == EOF)
+			{
+				break;
+			}
+			else
+			{
+				checkVPS(parenthesis, count);
+			}
+		}
+
+
+		if (count != 0)
+		{
+			cout << "NO" << endl;
+		}
+		else
+		{
+			cout << "YES" << endl;
+		}
+
+	}
+
+	return 0;
+}
+
+void checkVPS(char parenthesis, int& count) 
+{
+	if (count < 0)
+	{
+		return; 
+
+	}
+
+	if (parenthesis == '(')
+	{
+		count += 1;
+	}
+	else
+	{
+		count -= 1; 
+	}
+}
+

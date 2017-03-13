@@ -1,0 +1,58 @@
+
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+
+int getGCD(int e, int f)
+{
+	int gcd;
+
+	if (f == 0)
+		return e;
+	else
+		return getGCD(f, e%f);
+
+	return gcd;
+}
+
+int main()
+{
+	ifstream instream;
+	instream.open("input.txt");
+	if (instream.fail())
+	{
+		cerr << "Error";
+		exit(1);
+	}
+
+	int no_cases;
+	instream >> no_cases;
+
+	for (int i = 0; i < no_cases; i++)
+	{
+		int a, b, c, d;
+		instream >> a >> b >> c >> d; 
+
+		int e, f;
+
+		e = a * d + b * c;
+		f = b * d;
+		
+		int gcd;
+		gcd = getGCD(e, f);
+
+		e /= gcd;
+		f /= gcd;
+
+		cout << e << " " << f << endl; 
+
+	}
+
+	return 0;
+}
+

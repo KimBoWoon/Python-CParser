@@ -1,0 +1,52 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+
+using namespace std;
+
+int main()
+{
+	int test_case;
+	
+	ifstream file("input.txt");
+	
+	if(!file)
+	{
+		cout<<"wrong file!"<<endl;
+	
+	}
+	
+	file>>test_case;
+
+	while(test_case--)
+	{
+		int h,w,n;
+		int level,room_num;
+
+		file >> h;
+		file >> w;
+		file >> n;
+
+		if(n%h==0)
+		{
+			level = h;
+		}
+		else
+		{
+			level = n%h;
+		}
+
+		room_num = ceil(((double)n/h));
+
+		if(room_num<10)
+			cout<<level<<"0"<<room_num<<endl;
+		else
+			cout<<level<<room_num<<endl;
+
+
+
+		
+	}
+
+	return 0;
+}

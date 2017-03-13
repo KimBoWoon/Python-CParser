@@ -1,0 +1,32 @@
+
+
+#include <fstream>
+#include <iostream>
+using namespace std;
+
+int main(){
+
+	int caseNum = 0, height = 0, width = 0;
+
+	ifstream inputFile("input.txt");
+	inputFile >> caseNum;
+	for (int i = 0; i < caseNum; i++){
+		inputFile >> height;
+		inputFile >> width;
+		
+		int checkHeight;
+		inputFile >> checkHeight;
+		int returnNum = 101;
+
+		while (height < checkHeight){
+			checkHeight -= height;
+			returnNum += 1;
+		}
+
+		returnNum += (checkHeight - 1) * 100;
+
+		cout << returnNum << endl;
+	}
+
+	return 0;
+}

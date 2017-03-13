@@ -1,0 +1,49 @@
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+#include<functional>
+using namespace std;
+
+int cnt;
+int roomcheck(char room[][100],int i,int j,int roomnum){
+	if(room[i][j]=='.'){ 
+		room[i][j]='*';
+		cnt++; 
+		roomcheck(room,i-1,j,roomnum);
+		roomcheck(room,i+1,j,roomnum);
+		roomcheck(room,i,j-1,roomnum);
+		roomcheck(room,i,j+1,roomnum);
+	} 
+	return cnt;
+}
+
+int main(void)
+{
+	ifstream in;
+	int cases,width,height;
+
+	in.open("input.txt");
+	in>>cases;
+
+	while(cases--){
+		char room[100][100];
+		int roomsize[100];
+		int roomnum=0;
+		in>>width>>height;
+		for(int i=0;i<height;i++){ in>>room[i]; }
+		for(int i=1;i<height-1;i++) for(int j=1;j<width-1;j++){
+			if(room[i][j]=='.'){
+				cnt=0;
+				roomnum++;
+				roomcheck(room,i,j,roomnum);
+				roomsize[roomnum-1]=cnt;
+			}
+		}
+		sort(roomsize,roomsize+roomnum,greater<int>());
+		cout<<roomnum<<endl;
+		for(int i=0;i<roomnum;i++)
+			cout<<roomsize[i]<<' ';
+		cout<<endl;
+	}
+	in.close();
+}

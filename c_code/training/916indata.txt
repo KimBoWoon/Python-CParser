@@ -1,0 +1,62 @@
+
+#include <iostream>
+#include <fstream>
+#define MIN(A,B) (((A) < (B)) ? (A) : (B))
+using namespace std;
+
+int sum[1003] = {0,};
+int arr[1003] = { 0, };
+int D[1003][1003] = { 0, };
+
+int cardGame(int start, int end)
+{
+
+	for (int i = 1; i <= end - start; i++)
+	{
+		for (int j = 1; j<end; j++)
+		{
+			int k = j + i;
+			D[j][k] = sum[k] - sum[j - 1] - MIN(D[j][k - 1], D[j + 1][k]);
+		}
+	}
+	return D[start][end];
+
+}
+
+int main() {
+	fstream inFile;
+	inFile .open("input.txt");
+	int numcases;
+	inFile >> numcases;
+
+	for (int test = 0; test<numcases; test++)
+	{
+		int num;
+		inFile >> num;
+
+		for (int j = 1; j <= num; j++)
+		{
+			inFile >> arr[j];
+			sum[j] = sum[j - 1] + arr[j];
+		}
+		for (int j = 1; j <= num; j++)
+		{
+			D[j][j] = arr[j];
+		}
+
+		for (int i = 1; i < num; i++)
+		{
+			for (int j = 1; j<num; j++)
+			{
+				int k = j + i;
+				D[j][k] = sum[k] - sum[j - 1] - MIN(D[j][k - 1], D[j + 1][k]);
+			}
+		}
+
+
+		cout << D[1][num] << endl;
+
+
+	}
+	return 0;
+}

@@ -1,0 +1,28 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int fn(int a, int b){
+	if (b == 0)
+		return a;
+	else
+		return fn(b, a % b);
+}
+
+int main(){
+	ifstream fin("input.txt");
+
+	int nCase;
+	fin >> nCase;
+
+	for (int ci = 0; ci < nCase; ++ci)
+	{
+		int a1, b1, a2, b2;
+		fin >> a1 >> b1 >> a2 >> b2;
+		int n = a1*b2 + a2*b1;
+		int m = b1*b2;
+		int gcd = fn(n > m ? n : m, n > m ? m : n);
+		cout << n/gcd << " " << m/gcd << endl;
+	}
+}

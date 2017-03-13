@@ -1,0 +1,67 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char result[1000];
+int m=0, j=2, k=0, n=0;
+void baseConversion(int n, int base)
+{
+	static char baseTable[] = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p',
+								'q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
+								'Q','R','S','T','U','V','W','X','Y','Z','#','@'};
+	if (n >= base) 
+		baseConversion(n/base, base);
+	
+	result[m] = baseTable[n%base];
+	m++;
+} 
+
+int palin(char str[], int first, int last)
+{
+	if (last <= first){
+		n=1;
+		printf("1\n");
+		return;
+	}
+	
+	
+	else if (str[first] != str[last])
+	{
+		if(j==64){
+			n=1;
+			printf("0\n");
+			return;
+		}
+	}
+	else
+		return palin(str, first+1, last-1);
+}
+
+void main()
+{
+	FILE *file;
+	int i;
+	int test;
+	int str;
+
+	file = fopen("input.txt", "r");
+	if(file==NULL) exit(1);
+	
+	fscanf(file, "%d", &test);
+	for (i = 0; i < test; i++)
+	{
+		fscanf(file, "%d", &str); 
+		
+		for(j=2; j<65; j++){
+		baseConversion(str, j);
+		k=m, m=0;
+		palin(result, 0, k-1);
+		if(n==1)
+			break;
+		}
+		j=0, n=0;
+	}
+	fclose(file);
+}

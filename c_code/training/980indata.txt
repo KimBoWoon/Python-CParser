@@ -1,0 +1,62 @@
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int rowArr[101][101], colArr[101][101], Director[101][101][2][201];
+
+int main(void){
+	ifstream in;
+	in.open("input.txt");
+	int testcases;
+	in >> testcases;
+	int row, col, L, G;
+	for (int z = 0; z < testcases; z++){
+		in >> row >> col >> L >> G;
+
+		for (int j = 1; j <= row; j++){
+			for (int k = 1; k <= col - 1; k++)
+				in >> rowArr[j][k];
+		}
+		for (int j = 1; j <= row - 1; j++){
+			for (int k = 1; k <= col; k++)
+				in >> colArr[j][k];
+		}
+
+		for (int q = 1; q <= row; q++) {
+			for (int j = 1; j <= col; j++){
+				for (int k = 0; k < 2; k++){
+					for (int l = 0; l < 201; l++)
+						Director[q][j][k][l] = G + 1;
+				}
+			}
+		}
+		Director[1][1][0][0] = Director[1][1][1][0] = 0; 
+		int ans = 2e9;
+
+		for (int i = 1; i <= row; i++)
+			for (int j = 1; j <= col; j++)
+				for (int l = 0; l < 201; l++)
+					for (int k = 0; k<2; k++)
+						if (Director[i][j][k][l] <= G){
+							if (i == row && j == col){
+								if (ans > l) ans = l;
+							}
+							if (l < 200 && Director[i][j][!k][l + 1] > Director[i][j][k][l])
+								Director[i][j][!k][l + 1] = Director[i][j][k][l];
+							if (k){
+								if (j < col && Director[i][j + 1][k][l] > Director[i][j][k][l] + rowArr[i][j])
+									Director[i][j + 1][k][l] = Director[i][j][k][l] + rowArr[i][j];
+							}
+							else{
+								if (i < row && Director[i + 1][j][k][l] > Director[i][j][k][l] + colArr[i][j])
+									Director[i + 1][j][k][l] = Director[i][j][k][l] + colArr[i][j];
+							}
+						}
+		if (ans < 2e9)
+			cout << ((row + col - 2)*L + ans) << endl;
+		else
+			cout << "-1" << endl;
+	}
+}

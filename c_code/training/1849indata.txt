@@ -1,0 +1,51 @@
+
+
+#include<stdio.h> 
+#include<stdlib.h> 
+ 
+ 
+int paren(char* p,int i,int count); 
+ 
+ void main() { 
+ 	int numCases; 	
+	int i, j; 	
+	char pa[51]; 
+ 
+ 
+ 	FILE *file; 
+ 	file = fopen("input.txt", "r"); 	
+	
+	if (file == NULL) exit(1); 
+ 	
+	fscanf(file, "%d", &numCases); 
+ 
+ 	for (i = 0; i < numCases; i++) { 
+ 		fscanf(file, "%s", pa); 
+ 
+ 		if (paren(pa, 0, 0) == 1) 			
+			printf("YES\n"); 		
+		else 			
+			printf("NO\n"); 		 	
+	} 
+ 
+ 	fclose(file); 
+ } 
+ 
+
+ int paren(char* p, int i, int count) { 
+ 	if (p[i] == '(') 		
+		count++; 	
+	else if (p[i] == ')') 	
+		count--; 	
+	else { 		
+		if (count == 0) 			
+			return 1; 		
+		else 			
+			return 0; 	} 
+ 
+ 	if (count == -1) 		
+		return 0; 	 
+ 
+ 	paren(p, ++i, count); 
+ } 	
+ 

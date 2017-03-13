@@ -1,0 +1,36 @@
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+int primeNumber(int num){
+	for(int i=2; i<1000; i++){
+		if(num % i == 0 && i != num){ 
+			return 0;
+			break;
+		}
+	}
+	return 1;
+}
+
+int main(){
+	ifstream inStream;
+	int numCases;
+	int num;
+	
+	inStream.open("input.txt");
+
+	inStream >> numCases;
+
+	for (int i = 0; i<numCases; i++){
+		inStream >> num;
+
+		for(int i= num/2 ; i< num; i++){
+			if( primeNumber(i) == 1 && primeNumber(num-i) == 1){
+				cout  << num-i << " " << i << endl;
+				break;
+			}
+		}
+
+	}
+	inStream.close();
+} 

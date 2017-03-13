@@ -1,0 +1,74 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+void genPrime(int prime[]);
+void calGoldbach(int data, int prime[]);
+int calIndex(int data, int prime[]);
+
+void main(void) {
+	FILE *input;
+	int no_cases;
+	int i, j, k, data;
+	int prime[168];
+
+	input = fopen("input.txt", "r");
+	if (input == NULL)
+		exit(1);
+
+	genPrime(prime);
+	fscanf(input, "%d", &no_cases);
+
+	for (i = 0; i < no_cases; i++) {
+		fscanf(input, "%d", &data);
+		calGoldbach(data, prime);
+	}
+
+	fclose(input);
+}
+
+void genPrime(int prime[]) {
+	int i, j, k = 0;
+	int primeCheck;
+	prime[k++] = 2;
+	for (i = 3; i < 1000; i++) {
+		primeCheck = 1;
+		for (j = 2; j <= (int) sqrt(i); j++) {
+			if (i % j == 0) {
+				primeCheck = 0;
+				break;
+			}
+		}
+		if (primeCheck) {
+			prime[k++] = i;
+		}
+	}
+}
+
+void calGoldbach(int data, int prime[]) {
+	int i, j;
+	int index = calIndex(data, prime);
+	int print = 0;
+	for (i = index; i >= 0; i--) {
+		if (print)
+			break;
+		for (j = 0; j < 168; j++) {
+			if (prime[i] + prime[j] == data) {
+				printf("%d %d\n", prime[i], prime[j]);
+				print = 1;
+				break;
+			}
+		}
+	}
+}
+
+int calIndex(int data, int prime[]) {
+	int i;
+	for (i = 0; i < 168; i++) {
+		if (data / 2 < prime[i]) {
+			return i - 1;
+		}
+	}
+}

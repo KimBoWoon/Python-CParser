@@ -1,0 +1,121 @@
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+void calculatePermutate(char abcString[13], int sNum, int pNum, int start);
+void bubbleSort(char abcString[13], int start);
+void bubbleSort1(char abcString[13], int start);
+
+int factorial(int sNum);
+char abcString[13];			
+
+int main()
+{
+	ifstream inFile("input.txt");
+	if (inFile.fail()){
+		return 0;
+	}
+	int testCases;
+	inFile >> testCases;
+	for (int i = 0; i < testCases; i++)
+	{
+		int sNum, pNum = 0; 
+		inFile >> sNum >> pNum;
+		for (int j = 0; j < 13; j++){
+			abcString[j] = 0;				
+		} 
+		char a = 'a';	
+		for (int k = 0; k < sNum; k++){		
+			abcString[k] = a++;
+		}
+		calculatePermutate(abcString, sNum, pNum, 0);
+
+		cout << endl;
+	}
+	return 0;
+}
+void calculatePermutate(char abcString[13], int sNum, int pNum, int start){
+	int quo;	
+	int mod;	
+	char tmp;	
+	if (pNum == 1){
+		for (int i = 0; i<12; i++){
+			if (abcString[i]!=0)
+			cout << abcString[i];
+		}
+	}
+
+	 else if (pNum == 0){
+		 bubbleSort1(abcString, start);
+		 for (int i = 0; i<12; i++){
+			 if (abcString[i] != 0)
+				 cout << abcString[i];
+		 }
+	 }
+	else{
+
+		if (pNum >factorial(sNum - 1)){
+			quo = pNum / factorial(sNum - 1);	
+			mod = pNum % factorial(sNum - 1);
+			if (mod == 0){
+				--quo;
+			}
+			tmp = abcString[start];
+			abcString[start] = abcString[start + quo];
+			abcString[start + quo] = tmp;			
+			bubbleSort(abcString, start+1);
+			calculatePermutate(abcString, sNum - 1, mod, start + 1);	
+		}
+		else {
+			calculatePermutate(abcString, sNum - 1, pNum, start + 1);
+		}
+	}
+}
+
+
+int factorial(int sNum){
+	if (sNum == 1)
+		return 1;
+	else
+	return sNum*factorial(sNum-1);
+}
+
+void bubbleSort(char abcString[13], int start){
+	int tmp;
+	int cnt=0;
+	for (int i = 0; i < 12; i++){
+		if (abcString[i] != 0) cnt++;
+	}
+	for (int i = start; i < cnt-1; i++){
+		for (int j = start; j < cnt-1; j++){
+			if (abcString[j] != 0){	
+				if (abcString[j] > abcString[j + 1]){
+					tmp = abcString[j];
+					abcString[j] = abcString[j + 1];
+					abcString[j + 1] = tmp;
+				}
+			}
+			else break;
+		}
+	}
+}
+void bubbleSort1(char abcString[13], int start){
+	int tmp;
+	int cnt = 0;
+	for (int i = 0; i < 12; i++){
+		if (abcString[i] != 0) cnt++;
+	}
+	for (int i = start; i < cnt - 1; i++){
+		for (int j = start; j < cnt - 1; j++){
+			if (abcString[j] != 0){	
+				if (abcString[j] < abcString[j + 1]){
+					tmp = abcString[j];
+					abcString[j] = abcString[j + 1];
+					abcString[j + 1] = tmp;
+				}
+			}
+			else break;
+		}
+	}
+}

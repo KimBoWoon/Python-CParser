@@ -1,0 +1,94 @@
+
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <string.h>
+
+using namespace std;
+
+void permutation(char *str, int cnt, int sunseo);
+int Facto(int val);
+
+int main()
+{
+	ifstream inStream;
+	int numTestCases;					
+	char str[] = "abcdefghijkl";		
+	char real[13];						
+	int alphabet;						
+	int count;							
+
+	inStream.open("input.txt");
+
+	if (inStream.fail())
+	{
+		cerr << "Input file opening failed.\n";
+		exit(1);
+	}
+
+	inStream >> numTestCases;	
+
+	for (int i = 0; i < numTestCases; i++)
+	{
+		inStream >> alphabet >> count;
+		for (int j = 0; j < alphabet; j++)	
+		{
+			real[j] = str[j];
+		}
+
+		real[alphabet] = NULL;
+		permutation(real, alphabet, count);
+	}
+
+	inStream.close();
+	return 0;
+}
+
+void permutation(char *str, int cnt, int sunseo)
+{
+	int count = Facto(cnt);		
+	int nanum = 0;				
+	int nameo = 0;				
+	nanum = sunseo / (count / cnt);
+	nameo = sunseo % (count / cnt);
+
+	if (cnt == 1)				
+	{
+		cout << str << endl;
+	}
+	else
+	{
+		if (nameo == 0)
+		{
+			nanum--;
+			cout << str[nanum];
+			}
+		else
+			cout << str[nanum];
+
+		for (int i = nanum; i < cnt - 1; i++)
+		{
+			str[i] = str[i + 1];
+		}
+		str[cnt - 1] = NULL;
+
+		if (nameo == 0)
+			permutation(str, cnt - 1, sunseo - nanum * (count / cnt));		
+		else
+			permutation(str, cnt - 1, sunseo % (count / cnt));				
+	}
+}
+
+int Facto(int val)
+{
+	if (val <= 1)
+	{
+		return 1;
+	}
+	else
+	{
+		return val * Facto(val - 1);
+	}
+}

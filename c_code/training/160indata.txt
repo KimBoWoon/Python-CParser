@@ -1,0 +1,25 @@
+
+
+
+#include <stdio.h>
+
+int McCarthy(int num){
+	if(num>100) return num-10;	
+	else return McCarthy(McCarthy(num+11));	
+}
+
+int main(){
+	int cases,data,i;
+
+	FILE *infile;
+	infile = fopen("input.txt","r");
+	fscanf(infile,"%d",&cases);
+
+	for(i=0;i<cases;i++){
+		fscanf(infile,"%d",&data);
+		printf("%d\n", McCarthy(data));
+	}
+
+	fclose(infile);
+	return 0;
+}

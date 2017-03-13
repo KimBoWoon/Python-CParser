@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int partition(int *array, int left, int right);
+void QuickSort(int *array, int left, int right);
+void swap(int * array, int index1, int index2);
+
+void main()
+{
+	FILE *f;
+	int i,j;
+	int count;
+	int targetNumber;
+	int arrCnt;
+	int *arr = NULL;
+
+	f = fopen("input.txt", "r");
+	if(f==NULL) exit(1);
+
+	fscanf(f, "%d", &count);
+	for(i=0; i<count; i++)	{
+		int start=1, end=0;	
+		int closed, temp;
+		int cnt=1;
+
+		fscanf(f, "%d %d", &arrCnt, &targetNumber);
+		arr = (int*)malloc(sizeof(int)*arrCnt);	
+		for(j=0; j<arrCnt; j++)	{
+			fscanf(f, "%d", &arr[j]);
+		}
+		QuickSort(arr, 0, arrCnt-1);	
+		end=arrCnt-1;	
+		closed = abs(targetNumber-(arr[0]+arr[arrCnt-1]));	
+		while(start!=end)	{	
+			temp = abs(targetNumber-(arr[start]+arr[end]));
+			if(closed > temp)	{
+				closed = temp;
+				cnt=0;
+				cnt++;
+			}
+			else if(closed == temp)
+				cnt++;
+			if(arr[start]+arr[end] > targetNumber)
+				end--;
+			else
+				start++;
+		}
+		printf("%d\n", cnt);
+		free(arr);
+	}
+	fclose(f);
+}
+int partition(int *array, int left, int right)
+{
+	int pivot = array[left];
+	int bottom = left+1;
+	int top = right;
+
+	while(bottom<=top)	{
+		while(pivot>array[bottom])
+			bottom++;
+		while(pivot<array[top])
+			top--;
+		if(bottom<=top)
+			swap(array, bottom, top);
+	}
+	swap(array, left, top);
+	return top;
+}
+void QuickSort(int *array, int left, int right)
+{
+	if(left<=right)	{
+		int pivot = partition(array, left, right);
+		QuickSort(array, left, pivot-1);
+		QuickSort(array, pivot+1, right);
+	}
+}
+void swap(int *array, int index1, int index2)
+{
+	int temp;
+	temp = array[index1];
+	array[index1] = array[index2];
+	array[index2] = temp;
+}

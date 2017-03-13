@@ -1,0 +1,68 @@
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <string.h>
+
+int page[503];
+int maxpage[503][503];
+int pagesum[503][503];
+int create(int pagenum);
+
+int main()
+{
+	std::fstream infile;
+	infile.open("input.txt");
+	
+	int testcase;
+	infile >> testcase;
+	for (int i = 0; i < testcase; i++)
+	{
+		int pagenum;
+		infile >> pagenum;
+		for (int j = 1; j <= pagenum; j++)
+		{
+			infile >> page[j];
+		}
+		std::cout << create(pagenum)<< std::endl;
+		memset(pagesum, 0, sizeof(int) * 503 * 503);
+		memset(maxpage, 0, sizeof(int) * 503 * 503);
+	}
+	return 0;
+}
+int create(int pagenum)
+{
+	for (int j = 1; j <= pagenum; j++)
+	{
+		for (int k = j; k <= pagenum; k++)
+		{
+			pagesum[j][k] = pagesum[j][k - 1] + page[k];
+			maxpage[j][k] = 2e9;
+		}
+	}
+	maxpage[pagenum][pagenum] = 0;
+	int temp = 0;
+	int currentmin = 0;
+	for (int n = 0; n < pagenum; n++)
+	{
+		for (int i = 1; i <= pagenum - n; i++)
+		{
+			if (n == 0)
+			{
+				maxpage[i][i] = 0;
+			}
+			else
+			{
+				currentmin = maxpage[i][i + n];
+				for (int j = i; j <= i + n-1; j++)
+				{
+					temp = maxpage[i][j] + maxpage[j + 1][i + n] + pagesum[i][i + n];
+					if (temp < currentmin)
+						currentmin = temp;
+				}
+				maxpage[i][i + n] = currentmin;
+			}
+		}
+	}
+	return maxpage[1][pagenum];
+}

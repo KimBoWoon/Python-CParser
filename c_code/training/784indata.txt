@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_LEN 1000
+
+#define true 1
+#define false 0
+
+typedef int boolean;
+
+boolean palindrm_test(char* str, int start, int end);
+
+void main()
+{
+	FILE* fileDes = NULL;			
+	int trialNum;					
+
+	char a_word[MAX_LEN] = {0, };		
+	int i = 0;							
+
+
+
+	fileDes = fopen("input.txt", "r");
+
+	if(fileDes == NULL)
+		exit(1);
+
+	fscanf(fileDes, "%d", &trialNum);
+
+	for(i = 0; i < trialNum; i++)
+	{
+		fscanf(fileDes, "%s", a_word);
+
+		printf("%d\n", (palindrm_test(a_word, 0, strlen(a_word) - 1) == true)? 1 : 0);
+	}
+
+	fclose(fileDes);
+}
+
+boolean palindrm_test(char* str, int start, int end)
+{
+
+	if(str[start] != str[end]) return false;
+
+	if(start >= end) return true;
+
+	else
+		return palindrm_test(str, (start+1), (end-1));
+}

@@ -1,0 +1,38 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int main(){
+
+	ifstream inStream;
+	int num_cases = 0;
+	int start = 0;
+	int test = 0;
+
+	inStream.open("input.txt");
+
+	inStream >> num_cases;
+
+	for(int i=0;i<num_cases;i++)
+
+	{
+		int confirm = 1;		
+
+		inStream >> test;
+		for(start = 2; start<test; start++){
+
+			if(test % start == 0)	
+			{
+				confirm = 0;
+				break;
+			}
+			
+		}
+		
+		cout<<confirm<<endl;
+
+	}
+
+	inStream.close();
+}

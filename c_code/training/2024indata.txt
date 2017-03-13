@@ -1,0 +1,116 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int Ascenint(const void *x, const void *y) 
+{ 
+	return *(int*)x - *(int*)y; 
+}
+
+
+int binarySearch(int a[], int left, int right, int value, int i)
+{
+	int mid;
+	if (left > right)
+	{
+		if((abs(value-a[left]) < abs(value-a[right])))
+          return left;
+		else
+          return right;
+   }
+
+   else
+   {
+      mid = (left+right)/2;
+      if (a[mid] == value)
+	  {
+         if(mid != i)
+            return mid;
+         else
+		 {
+			if((abs(value-a[left]) <= abs(value-a[right])))
+				return left;
+            else
+				return right;
+         }
+      }
+      else if (a[mid] > value)
+         return binarySearch(a, left, mid-1, value, i);
+      else
+         return binarySearch(a, mid+1, right, value, i);
+   }
+}
+
+int two_numbers(int *s, int n, int k)
+{
+	int i;
+	int result;
+	int min = 200000000;
+	int a = 0, num = 0;
+
+	qsort(s, n, sizeof(s[0]), Ascenint);
+	for(i=0; i<n-1; i++)
+	{
+		result = binarySearch(s, i+2, n-1, k-s[i], i);
+		
+		if(result<=i)
+			continue;
+		if(min>abs(k-(s[i]+s[result])) )
+		{ 
+			min = abs(k-(s[i]+s[result]));
+			num=1;
+			
+		}
+		else if(min==abs(k-(s[i]+s[result])))
+			num++;
+			
+		
+		if(s[i]>0 && abs(k-(s[i]+s[result])) > min)
+			break;
+		if(s[i]<0)
+		{
+			a=result;
+			result = binarySearch(s, a+2, n-1, k-s[i], i);
+
+			if(i>=result)
+				continue;
+			if(min>abs(k-(s[i]+s[result])))
+			{
+				min = abs(k-(s[i]+s[result]));
+				num = 1;
+			}
+			else if(min == abs(k-(s[i]+s[result])) && a!=result)
+				num++;
+		}
+		
+	}
+	return printf("%d\n", num);
+}
+
+void main()
+{
+	FILE *file;
+	int i, j;
+	int test;
+	int n, k;
+	int *s;
+
+	file = fopen("input.txt", "r");
+	if(file == NULL) exit(1);
+
+	fscanf(file, "%d", &test);
+	for(i=0; i<test; i++)
+	{
+		fscanf(file, "%d %d", &n, &k);
+		s = (int*)malloc(sizeof(int)*n);
+		for(j=0; j<n; j++)
+		{
+			fscanf(file, "%d", &s[j]);
+		}
+		two_numbers(s, n, k);
+	}
+	fclose(file);
+	free(s);
+} 

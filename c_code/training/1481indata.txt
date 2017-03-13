@@ -1,0 +1,40 @@
+
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+
+int hotel(int i, int j, int k);
+int main(void){
+	ifstream infile;
+
+	infile.open("input.txt");
+	if(infile.fail()){
+		cerr << "input file error"<<endl;
+		exit(1);
+	}
+	int num;
+	int h; 
+	int w; 
+	int x; 
+	
+	infile >> num ;
+	for(int i=0;i<num;i++){
+		infile >> h;
+		infile >> w;
+		infile >> x;
+		cout << hotel(h,w,x)<<endl;
+	}
+	return 0;
+}
+int hotel(int i, int j, int k){
+	int room; 
+	int c = k%i; 
+	int d = k/i;  
+	if(c==0)
+		room = i*100 + d ; 
+	else
+		room = c*100 + d + 1;
+	
+	return room;
+}

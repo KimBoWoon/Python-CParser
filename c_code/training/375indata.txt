@@ -1,0 +1,103 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+void floodFill(char fig[100][100], int x, int y, char plus, char room_no);	
+void sort(int* arr, int a);			
+
+int main()
+{
+	ifstream instream;
+	instream.open("input.txt");
+
+	if (instream.fail())
+	{
+		cerr << "Error" << endl;
+		exit(1);
+	}
+
+	int no_case;
+	instream >> no_case;
+
+	for (int i = 0; i<no_case; i++)		
+	{
+		int row, col;
+		instream >> row >> col;
+		char field[100][100];
+
+		for (int j = 0; j<col; j++)			
+			for (int k = 0; k<row; k++)
+				instream >> field[j][k];
+
+		char char_room_no = '1';
+		int room[100] = { 0 };
+
+		for (int j = 0; j < col; j++)		 
+		{			
+			for (int k = 0; k < row; k++) {
+				if (field[j][k] == '.')
+				{
+					floodFill(field, j, k, '+', char_room_no);
+					char_room_no++;
+				}
+			}
+		}
+
+		for (int j = 0; j < col; j++) {				
+			for (int k = 0; k < row; k++)
+			{
+				if (field[j][k] != '+')
+					room[field[j][k] - '1']++;
+			}
+		}
+
+
+		int room_no = char_room_no - '1';			
+		cout << room_no << endl;				
+
+		sort(room, room_no);
+		for (int j = 0; j < room_no; j++)
+		{
+			cout << room[j] << " ";
+		}
+		cout << endl;
+	}
+}
+
+void floodFill(char fig[100][100], int x, int y, char plus, char room_no)
+{
+	if (fig[x][y] != '.')
+		return;
+	else
+	{
+		fig[x][y] = room_no;
+
+		floodFill(fig, x - 1, y, plus, room_no);
+		floodFill(fig, x + 1, y, plus, room_no);
+		floodFill(fig, x, y - 1, plus, room_no);
+		floodFill(fig, x, y + 1, plus, room_no);
+	}
+}
+void sort(int* arr, int a)
+{
+	int flag;
+	for (int i = 0; i < a; i++)
+	{
+		flag = 0;
+		for (int j = 0; j < a - 1; j++)
+		{
+			if (arr[j] < arr[j + 1])
+			{
+				swap(arr[j], arr[j + 1]);
+				flag = 1;
+			}
+		}
+		if (flag == 0)
+			break;
+	}
+}
+

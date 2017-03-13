@@ -1,0 +1,65 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int euclid(int a, int b){
+
+	if(b==0)
+		return a;
+	else
+		return euclid(b, a%b);
+}
+
+
+void cal(int num1, int num2, int num3, int num4){
+		
+	int share;			
+	int sum_up;			
+	int devide;			
+
+	if( num2 == 0 || num4 == 0 )
+		cerr <<"error"<<endl;
+	else
+	{
+		if(num2 != num4)		
+		{
+			share = num2 * num4;
+			num1 *= num4;
+			num3 *= num2;
+		
+			sum_up = num1+num3;
+		}
+		else					
+		{
+			share = num2; sum_up = num1+num3;
+		}
+		devide = euclid(sum_up, share);
+		sum_up/=devide;
+		share/=devide;
+		
+		cout << sum_up <<" "<<share<<endl;
+	}
+	
+
+}
+
+int main(){
+
+	ifstream inStream;
+	inStream.open("input.txt");		
+
+	int num_case;	
+
+	inStream >> num_case;
+
+	for(int i=0; i< num_case ; i++){
+
+		int num1, num2, num3, num4;
+
+		inStream >> num1>> num2>>num3 >>num4;
+
+		cal(num1,num2,num3,num4);
+
+	}
+}

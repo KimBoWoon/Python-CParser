@@ -1,0 +1,71 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+void cal(int a, int b);
+
+int main()
+{
+	int nocases;
+	int a,b;
+
+	fstream infile;
+	
+	infile.open("input.txt");
+
+	if(infile.fail())
+	{
+		cerr << "파일열기 오류" << endl;
+		exit(1);
+	}
+
+	infile >> nocases;
+
+	for(int i = 0; i<nocases; i++)
+	{
+		infile >> a;
+		infile >> b;
+		cal(a,b);
+	}
+
+	return 0;
+}
+
+void cal(int a, int b)
+{
+	int c=1,d=2;
+	int num;
+	int cal1,cal2;
+
+	if(a != 1)
+	{
+		for(int i = 2; i<10000; i++)
+		{
+			num = b*i;
+			cal1 = a*i;
+			cal2 = c*b;
+
+			if(b%a == 0)
+			{
+				b = b/a;
+				break;
+			}
+
+			if(cal1-cal2 > 1)
+			{
+				a = cal1 - cal2;
+				b = num;
+			}
+
+			else if(cal1-cal2 == 1)
+			{
+				b = num;
+				break;
+			}
+		}
+	}
+
+	cout << b << endl;
+}

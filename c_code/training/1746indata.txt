@@ -1,0 +1,56 @@
+
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+bool P(int number, int cN);
+
+int main(void){
+	
+	ifstream inStream;
+	inStream.open("input.txt");
+
+	int numTestCases;
+	inStream >> numTestCases;
+
+	while (numTestCases--){
+
+		int number;
+		inStream >> number;
+		int ok = 0;
+
+		for (int i = 2; i <= 64; i++){
+			if (P(number, i) == true){
+				ok = 1;
+				break;
+			}
+		}
+		cout << ok << endl;
+
+	}
+	return 0;
+}
+
+bool P(int number, int cN){
+
+	bool ok = true;
+	int change[20];
+	int sum = 0;
+	while (number > 0){
+		change[sum] = number%cN;
+		number = number / cN;
+		sum++;
+	}
+	int start = 0;
+	int end = sum - 1;
+
+	while (start < end){
+		
+		if (change[start] != change[end])
+			ok = false;
+		start++;
+		end--;
+	}
+	return ok;
+}

@@ -1,0 +1,57 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+int A[1003], S[1003];
+int D[1003][1003];
+
+int max(int a, int b){
+	if (a < b)
+		return b;
+	else
+		return a;
+}
+
+int fun(int s, int e){
+	if (s > e) return 0;
+	if (s == e) return A[s];
+	int &ret = D[s][e];
+	if (ret >= 0) return ret;
+	ret = max(S[e] - S[s - 1] - fun(s + 1, e), S[e] - S[s - 1] - fun(s, e - 1));
+	return ret;
+}
+
+
+int main(){
+	ifstream inStream;
+	int numTestCases;	
+
+	inStream.open("input.txt");
+
+	inStream >> numTestCases;	
+
+	for (int i = 0; i < numTestCases; i++){
+		int num;
+		inStream >> num;
+
+		
+
+		S[0] = 0;
+		for (int j = 1; j <= num; j++){
+			inStream >> A[j];
+			S[j] = S[j - 1] + A[j];
+		}
+
+		for (int j = 1; j <= num; j++){
+			for (int k = 1; k <= num; k++)
+				D[j][k] = -1;
+		}
+
+		cout << fun(1, num)<<endl;
+	}
+
+	inStream.close();
+	return 0;
+}
+

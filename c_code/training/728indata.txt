@@ -1,0 +1,32 @@
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+bool pel(std::string s, int first, int last);
+
+int main()
+{
+	std::ifstream infile("input.txt");
+
+	int numCases;
+	
+	infile >> numCases;
+
+	for(int i =0 ; i<numCases; i++)
+	{
+		std::string s;
+		infile >> s;
+		std::cout<<pel(s,0,s.length()-1)<<std::endl;
+	}
+}
+
+bool pel(std::string s, int first, int last)
+{
+	if( last <= first)
+		return true;
+	else if ( s.at(first) != s.at(last) )
+		return false;
+	else
+		return pel(s,first+1,last-1);
+}

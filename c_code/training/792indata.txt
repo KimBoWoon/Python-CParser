@@ -1,0 +1,27 @@
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+int fib(int n){
+	if (n <= 1)
+		return n;
+	else
+		return fib(n - 1) + fib(n - 2);
+}
+
+int main(){
+
+	int testCase;
+	int data;
+	ifstream file;
+	file.open("input.txt");
+
+	file >> testCase;
+	for(int tCase = 0; tCase < testCase; tCase++){
+		file >> data;
+		cout << fib(data) << endl;
+	}
+
+	return 0;
+}

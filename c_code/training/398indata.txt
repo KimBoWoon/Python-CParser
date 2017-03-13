@@ -1,0 +1,75 @@
+
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+int totalRoomNumber(char fig[][101], int row, int col, int& roomNumber, int roomSize[10]);
+int floodFill(char fig[][101],int i, int j, int roomNumber);
+int compare(const void *arg1, const void *arge);
+int main(void)
+{
+   ifstream inStream;
+   int cases;
+   int row,col;
+   char fig[101][101];
+   int roomNumber = 0;
+   int roomSize[100] = {0};
+
+   inStream.open("input.txt");
+   if(inStream.fail())
+   {
+      cerr<<"Input file opening failed./n";
+      exit(1);
+   }
+
+   inStream>>cases;
+   for(int i=0; i<cases; i++)
+   {
+      inStream >> col >> row;
+	  for(int j=0; j<row; j++) 
+		  inStream >> fig[j];
+
+	  cout << totalRoomNumber(fig, row, col, roomNumber, roomSize) << endl;
+	  qsort((void*)roomSize, roomNumber, sizeof(int), &compare);
+	  for(int i=0; i<roomNumber; i++)
+		  cout << roomSize[i] << " ";
+	  cout << endl;
+
+   roomNumber = 0;
+   for(int i=0; i<100; i++)
+   {roomSize[i] = NULL; }
+   }
+}
+
+int floodFill(char fig[][101],int i, int j, int roomNumber)
+{
+		if(fig[i][j] != '.') 
+			return 0; 
+		else{
+			fig[i][j] = roomNumber;
+			return 1 + floodFill(fig, i-1, j, roomNumber) + floodFill(fig, i+1, j, roomNumber)
+				+ floodFill(fig, i, j-1, roomNumber) + floodFill(fig, i, j+1, roomNumber);
+	}
+}
+int totalRoomNumber(char fig[][101],int row, int col, int& roomNumber, int roomSize[10])
+{
+	for(int i=1; i<row; i++)
+		for(int j=1; j<col; j++)
+		{
+			if(i==(row-1) && j==(col-1))
+				return roomNumber;
+			if(fig[i][j] == '.') {
+				roomSize[roomNumber++]=floodFill(fig, i, j, roomNumber);
+				}
+		}
+}
+
+int  compare(const void *arg1, const void *arg2)
+{
+	return *(int*)arg2 - *(int*)arg1;
+}
+

@@ -1,0 +1,25 @@
+
+#include <fstream>
+#include <iostream>
+using namespace std;
+int gcd(int a, int b){
+	if (b == 0) return a;
+	else return gcd(b, a % b);
+}
+
+
+int main(){
+
+	int caseNum = 0;
+	ifstream inputFile("input.txt");
+
+	inputFile >> caseNum;
+	for (int i = 0; i < caseNum; i++){
+		int testNum1 = 0, testNum2;
+		inputFile >> testNum1 >> testNum2;
+
+		cout << gcd(testNum1, testNum2) << endl;
+	}
+
+	return 0;
+}

@@ -1,0 +1,38 @@
+
+
+#include <stdio.h>
+
+void main(void) {
+	FILE *input;
+	int no_cases;
+	int data;
+	int num_tri[45];
+	int check[1001] = {0};
+	int i, j, k;
+
+	input = fopen("input.txt", "r");
+	if (input == NULL)
+		exit(1);
+
+	for (i = 1; i < 45; i++) {
+		num_tri[i] = i * (i + 1) / 2;
+	}
+
+	for (i = 1; i < 45; i++) {
+		for (j = 1; j < 45; j++) {
+			for (k = 1; k < 45; k++) {
+				if (num_tri[i] + num_tri[j] + num_tri[k] <= 1000)
+					check[num_tri[i] + num_tri[j] + num_tri[k]] = 1;
+			}
+		}
+	}
+
+	fscanf(input, "%d", &no_cases);
+
+	for (i = 0; i < no_cases; i++) {
+		fscanf(input, "%d", &data);
+		printf("%d\n", check[data]);
+	}
+
+	fclose(input);
+}

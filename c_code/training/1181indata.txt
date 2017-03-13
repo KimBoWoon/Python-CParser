@@ -1,0 +1,49 @@
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+class Eureka{
+public:
+	void calcNum(int number);
+};
+
+void Eureka::calcNum(int number){
+	int Tl = 1;
+	int Tm = 1;
+	int Tn = 1;
+
+	for(int n=1; n<50 ; n++){
+		for(int m=n; m<50 ; m++){
+			for(int l=m; l<50; l++){
+				Tn = n*(n+1)/2;
+				Tm = m*(m+1)/2;
+				Tl = l*(l+1)/2;
+				
+				int result = Tl + Tm + Tn;
+
+				if( number == result){ 
+					cout << "1" << endl; 
+					return;
+				}
+			}
+		}
+	}
+	cout << "0" << endl; 
+}
+
+int main(){
+	ifstream inStream;
+	int numCases;
+	int number;
+
+	Eureka Eu;
+	inStream.open("input.txt");
+
+	inStream >> numCases;
+
+	for(int i=0; i<numCases; i++){
+		inStream >> number;
+		Eu.calcNum(number);
+	}
+	inStream.close();
+}

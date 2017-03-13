@@ -1,0 +1,76 @@
+
+#include<iostream>
+#include<string>
+#include<fstream>
+
+using namespace std;
+
+int blockCount = 0, sizeCount = 0;
+
+void floodFill(char **blockArr, int x, int y, char oldColor, char newColor){ 
+	if (blockArr[x][y] != oldColor){
+		return;
+	}
+	else{
+		blockArr[x][y] = newColor;
+		sizeCount++;   
+		floodFill(blockArr, x - 1, y, oldColor, newColor);
+		floodFill(blockArr, x + 1, y, oldColor, newColor);
+		floodFill(blockArr, x, y - 1, oldColor, newColor);
+		floodFill(blockArr, x, y + 1, oldColor, newColor);
+	}
+}
+
+int main(){
+	ifstream f;
+	f.open("input.txt");
+	int numCount = 0, lineSize = 0, heightSize = 0;
+	int blockSizeArr[100] = { 0 }; 
+
+	f >> numCount;
+	for (int i = 0;i<numCount;i++){
+		f >> lineSize >> heightSize;
+		char **blockArr = new char*[heightSize]; 
+		for (int i = 0; i < heightSize; ++i) {
+			blockArr[i] = new char[lineSize];  
+		}
+		for (int j = 0; j<heightSize; j++){
+			for (int k = 0; k < lineSize; k++){
+				f >> blockArr[j][k];  
+			}
+		}
+		for (int j = 1;j<heightSize;j++){
+			for (int k = 1;k<lineSize;k++){
+				floodFill(blockArr, j, k, '.', '+'); 
+				if (sizeCount > 0){
+					blockSizeArr[blockCount] = sizeCount; 
+					sizeCount = 0;
+					blockCount++; 
+				}
+			}
+		}
+		int buff = 0;
+		for (int j = 0;j<blockCount;j++){
+			for (int k = 0;k<blockCount;k++){
+				if (blockSizeArr[j] > blockSizeArr[k]){ 
+					buff = blockSizeArr[j];
+					blockSizeArr[j] = blockSizeArr[k];
+					blockSizeArr[k] = buff;
+				}
+			}
+		}
+		cout << blockCount << endl;
+		for (int j = 0; j<blockCount; j++){
+			cout << blockSizeArr[j] << " ";
+		}
+		cout << endl;
+		blockCount = 0;
+
+		for (int i = 0; i < heightSize; ++i) { 
+			delete[] blockArr[i];
+		}
+		delete[] blockArr;
+	}
+
+	return 0;
+}

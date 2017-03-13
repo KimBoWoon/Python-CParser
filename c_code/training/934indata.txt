@@ -1,0 +1,63 @@
+
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+int cardGame(int start, int end);
+
+int Sum[1002];
+int number[1002];
+int game[1002][1002];
+
+
+int main(void){
+
+	ifstream inStream;
+	inStream.open("input.txt");
+
+	int numTestCases;
+	inStream >> numTestCases;
+
+	while (numTestCases--){
+
+		int count;
+		inStream >> count;
+
+		for (int i = 1; i <= count; i++){
+			inStream >> number[i];
+			Sum[i] = Sum[i - 1] + number[i];
+		}
+
+		for (int i = 1; i <= count; i++){
+			for (int j = 1; j <= count; j++)
+				game[i][j] = 0;  
+		}
+
+		cout << cardGame(1, count) << endl;
+
+	}
+	return 0;
+}
+
+int cardGame(int start, int end){
+		
+	for (int i = 1; i <= end; i++)
+		game[i][i] = number[i];
+
+	for (int k = 2; k <= end; k++){
+		int j = k;
+		int i = 1;
+		while (j <= end){
+			int value;
+			if (game[i + 1][j] < game[i][j - 1])
+				value = game[i + 1][j];
+			else value = game[i][j - 1];
+			game[i][j] = Sum[j] - Sum[i-1] - value;
+			i++; j++;
+		}
+	}
+	return game[start][end];
+}
+
+

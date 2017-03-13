@@ -1,0 +1,41 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+string s;
+int result = 0,set=0;
+int Ptest(int count) {		
+
+	if (result >= 0) {		
+		if (s[set] == NULL) {		
+			if (result == 0) return 1;		
+			else return 0;		
+		}
+		else if (s[set] == '(') {		
+			set += 1;
+			result += 1;
+			Ptest(set);
+		}
+		else if (s[set] == ')') {		
+			set += 1;
+			result -= 1;
+			Ptest(set);
+		}
+	}
+	else return 0;
+	
+}
+int main() {
+	ifstream fin;
+	fin.open("input.txt");
+	int num, a = 0;
+	fin >> num;
+	getline(fin, s);
+	for (int cnt = 0;cnt < num;cnt++) {
+		getline(fin, s);		
+		if (Ptest(0) == 1) { cout << "YES" << endl; }
+		else { cout << "NO" << endl; }
+		result = 0;
+		set = 0;
+	}
+}

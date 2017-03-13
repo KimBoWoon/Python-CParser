@@ -1,0 +1,39 @@
+
+
+
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+using namespace std;
+
+int main(void)
+{
+	ifstream inStream;
+	int numTestCases = 0;
+	int	level = 0;
+	int roomNum = 0;
+	int number = 0;
+	int portion = 0; 
+	int remnant = 0; 
+
+
+	inStream.open("input.txt");
+	if (inStream.fail())
+	{
+		cerr << "Input file opening failed. \n";
+		exit(1);
+	}
+	inStream >> numTestCases;
+	for (int i = 0; i < numTestCases; i++)
+	{
+		inStream >> level >> roomNum >> number; 
+		portion = (number - 1) / level; 
+		if ((number - (level*portion)) % level == 0)
+			remnant = level;
+		else
+			remnant = (number - (level*portion)) % level;
+		cout << remnant * 100 + (portion+1) << endl;
+	}
+	inStream.close();
+	return 0;
+}

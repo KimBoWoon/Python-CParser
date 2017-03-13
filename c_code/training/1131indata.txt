@@ -1,0 +1,81 @@
+
+#include<stdio.h>
+#include<stdlib.h>
+
+#define true 1
+#define false 0
+
+int main(void)
+{
+	FILE * in_file;
+	int num;
+	int data;
+	int data_temp1, data_temp2, data_temp3, data_temp4;
+	int i, j, k, m;
+	int T[45] = {0,};
+	int max = 0;
+	int zeroFlag = true;
+
+	in_file = fopen("input.txt", "r");
+	if(in_file == NULL)
+		exit(1);
+
+	for (i = 1; i <= 44; i++)		
+		T[i] = i*(i + 1) / 2;
+
+	fscanf(in_file, "%d", &num);
+
+	for (i = 0; i < num; i++)
+	{
+		fscanf(in_file, "%d", &data);
+		data_temp1 = data;
+
+		for (j = 44; j >= 1; j--)	
+		{							
+			data = data_temp1;
+			if (T[j] < data)
+			{
+				max = j;
+				data_temp2 = data;
+				data = data - T[max];
+
+				for (k = max; k >= 1; k--)	
+				{							
+					if (T[k] < data)
+					{
+						max = k;
+						data_temp3 = data;
+						data = data - T[max];
+
+						for (m = max; m >= 1; m--)	
+						{
+							if (T[m] <= data)
+							{
+								max = m;
+								data_temp4 = data;
+								data = data - T[max];
+
+								if (data == 0)		
+								{
+									printf("1\n");
+									j = k = 1;
+									zeroFlag = false;
+									break;
+								}
+								data = data_temp4;
+							}
+						}
+						data = data_temp3;
+					}
+				}
+				data = data_temp2;
+			}
+		}
+		if (zeroFlag)								
+		{
+			printf("0\n");  
+		}
+		zeroFlag = true;
+	}
+	fclose(in_file);
+}

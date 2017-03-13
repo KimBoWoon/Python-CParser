@@ -1,0 +1,102 @@
+
+
+
+
+
+
+
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+
+using namespace std;
+
+typedef struct 
+{
+	int x;
+	int y;
+}coordinate; 
+
+coordinate cArr[100002]; 
+int before; 
+
+int cmpfuncx(const void * a, const void * b)
+{
+	coordinate *m, *n;
+	m = (coordinate*)a;
+	n = (coordinate*)b;
+	return (m->x) - (n->x);
+}
+int cmpfuncy(const void *a, const void * b)
+{
+	coordinate *m, *n;
+	m = (coordinate*)a;
+	n = (coordinate*)b;
+	
+	
+	return abs(cArr[before].y - m->y) - abs(cArr[before].y - n->y);
+}
+
+int main()
+{
+	fstream instream("input.txt", ios::in);
+	int testcase, testNum;
+	
+	instream >> testcase;
+
+	for (int i = 0; i<testcase; i++)
+	{
+		instream >> testNum;
+		int j, cnt=0,cntZero=0, outNumcase, output,tmp;
+
+		coordinate* Map = new coordinate[testNum];
+
+
+		for (j = 0; j < testNum; j++)
+			instream >> Map[j].x >> Map[j].y;
+		
+		qsort(Map, testNum, sizeof(coordinate), cmpfuncx); 
+
+		for (j = 0; j < testNum; j++) 
+		{
+			if (Map[j].x == 0)
+				cntZero++;
+			if (Map[j].y == 0) { 
+				tmp = Map[0].y; Map[0].y = Map[j].y; Map[j].y = tmp;
+			}
+				
+		}
+		
+		qsort(Map, cntZero, sizeof(coordinate), cmpfuncy);
+		
+
+		for (j = 0; j < testNum; j++) {
+			cArr[j].x = Map[j].x; cArr[j].y = Map[j].y; 
+		}
+
+		for (j = cntZero; j < testNum; j++) {
+			if (cArr[j].x==cArr[j+1].x) { 
+				cnt++;
+			}
+			else { 
+				before = j-cnt-1;
+				qsort(&cArr[before+1], cnt+1, sizeof(coordinate), cmpfuncy);
+				cnt = 0;
+			}
+		}
+		instream >> outNumcase;
+		for (j = 0; j < outNumcase; j++) { 
+			instream >> output;
+			cout << cArr[output-1].x <<" "<<cArr[output-1].y << endl;
+		}
+
+		delete[] Map; 
+		for (j = 0; j < testNum; j++) { 
+			cArr[j].x = 0; cArr[j].y = 0;
+		}
+
+	
+	}
+
+	return 0;
+}

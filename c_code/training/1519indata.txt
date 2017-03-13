@@ -1,0 +1,84 @@
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+
+bool nightToor(int** chassBoard, int x, int y, int row, int col);
+bool findPath(int** chassBoard, int x, int y, int chassCounter, int n, int m);
+
+int direction[8][2] = { { -2, -1 }, { -2, 1 }, { -1, -2 }, { -1, 2 }, { 1, -2 }, { 1, 2 }, { 2, -1 }, { 2, 1 } };
+
+int main()
+{
+	ifstream inStream;
+	inStream.open("input.txt");
+	if (inStream.fail()) exit(1);
+	int numTest;
+	inStream >> numTest;
+	for (int k = 0; k < numTest; k++)
+	{
+		int n, m;
+		bool result;
+		inStream >> n >> m;
+		int** chassBoard = new int*[n+1];
+		for(int j = 0; j<=n; j++)
+			chassBoard[j] = new int[m + 1];
+		for (int i = 0; i <= n; i++)
+		{
+			for (int j = 0; j <= m; j++)
+			{ 
+				chassBoard[i][j] = 0;
+			}
+		}
+		int x, y;
+		inStream >> x >> y;
+
+		result = nightToor(chassBoard, x, y, n, m);
+		
+		if (result == true){
+			cout << 1 << endl;
+			for (int i = 1; i <= n; i++)
+			{
+				for (int j = 1; j <= m; j++)
+				{
+					if (chassBoard[i][j] < 10) cout << " ";
+					cout << chassBoard[i][j] << " ";
+				}
+				cout << endl;
+			}
+		}
+		else cout << 0 << endl;
+	}
+}
+
+bool nightToor(int** chassBoard, int x, int y, int row, int col)
+{
+	int counter = 1;
+	chassBoard[x][y] = 1; 
+	if (findPath(chassBoard, x, y, counter, row, col)) 
+	{
+		return true;
+	}
+	else return false;
+}
+bool findPath(int** chassBoard, int x, int y, int chassCounter, int n, int m)
+{
+	int nextRow; 
+	int nextCol; 
+	if (chassCounter == n*m) return true; 
+
+	for (int i = 0; i < 8; i++)
+	{
+		nextRow = x + direction[i][0]; 
+		nextCol = y + direction[i][1];
+		if (nextRow > 0 && nextCol > 0 && nextRow <= n && nextCol <= m && chassBoard[nextRow][nextCol] == 0) 
+		{
+			chassBoard[nextRow][nextCol] = chassCounter + 1;
+			if (findPath(chassBoard, nextRow, nextCol, chassCounter + 1, n, m)) 
+				return true;
+			chassBoard[nextRow][nextCol] = 0; 
+		}
+	}
+	return false;
+
+}

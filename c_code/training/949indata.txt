@@ -1,0 +1,47 @@
+
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+
+using namespace std;
+ 
+int t, n;
+int A[1003], S[1003];
+int D[1003][1003];
+ 
+int f(int s, int e);
+
+int main()
+{
+   fstream infile;
+   infile.open("input.txt");
+
+   if(infile.fail())
+   {
+      cerr << "¿À·ù" << endl;
+      exit(1);
+   }
+
+    for (infile >> t;t--;){
+       infile >> n;
+
+        for (int i=1;i<=n;i++) infile >> A[i], S[i] = S[i-1] + A[i];
+        for (int i=1;i<=n;i++) for (int j=i;j<=n;j++) D[i][j] = -1;
+
+        cout << f(1, n) << endl;
+    }
+    return 0;
+}
+
+int f(int s, int e)
+{
+    if (s > e) return 0;
+    if (s == e) return A[s];
+
+    int &ret = D[s][e];
+
+    if (ret >= 0) return ret;
+    ret = max(S[e] - S[s-1] - f(s+1, e), S[e] - S[s-1] - f(s, e-1));
+
+    return ret;
+}

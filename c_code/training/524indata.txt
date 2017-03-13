@@ -1,0 +1,41 @@
+
+#include<stdio.h>
+
+void recursion(char str[], int n, int k){
+	int temp;
+	if (n == 1) printf("%c", str[0]);
+	else if (n == 2){
+		if (k % 2 != 0) printf("%c%c", str[0], str[1]);
+		else printf("%c%c", str[1], str[0]);
+	}
+	else{
+		temp = (k%fac(n - 1) == 0) ? k / fac(n - 1) - 1 : k / fac(n - 1);
+		printf("%c", str[temp]);
+		for (;; temp++){
+			if (str[temp + 1] == '\0') { str[temp] = '\0'; break; }
+			str[temp] = str[temp + 1];
+		}
+		recursion(str, n - 1, (k%fac(n - 1) == 0) ? (fac(n - 1)) : (k%fac(n - 1)));
+	}
+}
+
+int fac(int n){
+	if (n == 1) return 1;
+	return n*fac(n - 1);
+}
+
+ int main(){
+	FILE *inFile;
+	int circle, n, k;
+	inFile = fopen("input.txt", "r");
+	fscanf(inFile, "%d", &circle);
+	while (circle--)
+	{
+		char str[13] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', '\0' };
+		fscanf(inFile, "%d %d", &n, &k);
+		str[n] = '\0'; 
+		recursion(str, n, k);
+		printf("\n");
+	}
+	return 0;
+}

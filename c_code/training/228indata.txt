@@ -1,0 +1,35 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+int gcd(int p, int q)
+{
+	if(q == 0)
+		return p;
+	else
+		return gcd(q, p%q);
+
+}
+
+void main(void)
+{
+	FILE *inFile;
+	int i;
+	int numCases;
+	int a,b,c,d;
+
+	inFile = fopen("input.txt", "r");
+	if(inFile == NULL) exit(1);
+
+	fscanf(inFile, "%d", &numCases);
+
+	for(i=0; i<numCases; i++)
+	{
+		fscanf(inFile, "%d%d%d%d", &a, &b, &c, &d);
+
+		printf("%d %d\n", ((a*d)+(b*c))/gcd((a*d)+(b*c),b*d), b*d/gcd((a*d)+(b*c),b*d));
+
+	}
+
+	fclose(inFile);
+}
+

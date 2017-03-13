@@ -1,0 +1,75 @@
+
+
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+class Eureka
+{
+	int posit_Int; 
+	int endOfTn; 
+	int T[60]; 
+	int result; 
+	int b1; 
+	public:
+		Eureka(int posit_Int)
+		{
+			this->posit_Int = posit_Int;
+			this->T[1] = 1;
+			b1 = 2;
+			result = 0;
+		}
+
+		void triangleNumber();
+		~Eureka(){}
+
+};
+
+
+void Eureka::triangleNumber()
+{
+	for(int i = 1; T[i]<=1000; i++)
+	{
+		T[i+1] = T[i] + b1;
+		b1++;
+	}
+	 endOfTn = b1;
+
+	
+	for(int i = 1; T[i] < posit_Int; i++){
+		for(int j = 1; T[j] < posit_Int; j++){
+			for(int k = 1; T[k] < posit_Int; k++){
+				if( (posit_Int - T[k] - T[j] - T[i]) == 0 )
+				 {
+				  result = 1; 
+				  break;
+				 }
+			}
+		}
+	}
+
+	cout << result << endl;
+}
+
+int main()
+{
+	int numTestCases;
+	int testCase;
+
+	ifstream inFile;
+	inFile.open("input.txt");
+	inFile >> numTestCases; 
+
+	if(inFile.is_open() == false) {cout << "파일을 열 수 없습니다" <<endl;}
+
+
+	for(int i = 0 ; i < numTestCases ; i++) {
+	
+		inFile >> testCase;
+
+		Eureka eureka(testCase);
+		eureka.triangleNumber();
+		
+	}	
+}

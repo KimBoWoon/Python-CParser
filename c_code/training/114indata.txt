@@ -1,0 +1,30 @@
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+
+using namespace std;
+std::ifstream inStream;
+
+int fibo(int num){
+	return num > 100 ? num - 10 : fibo(fibo(num + 11));
+}
+
+int main() {
+	
+	int cases, num;
+	inStream.open("input.txt");
+	if (inStream.fail()) {		
+		std::cerr << "input file opening failed. \n";
+		return -1; 
+	}
+
+	inStream >> cases;
+	
+	for (int i = 0; i < cases; i++) {
+		inStream >> num;
+		cout << fibo(num) << endl;
+
+	}
+	inStream.close();		
+	return 0;
+}

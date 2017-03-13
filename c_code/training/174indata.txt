@@ -1,0 +1,23 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int mc(int num) {
+	if (num > 100) return num-10;
+	else if(num <= 100) return mc(mc(num + 11));
+}
+void main()
+{
+	int test_case, num, i;
+	FILE *file = fopen("input.txt", "r");
+
+	fscanf(file, "%d", &test_case);
+
+	for (i = 0; i < test_case; i++) {
+		fscanf(file, "%d", &num);
+
+		printf("%d\n", mc(num));
+	}
+	fclose(file);
+}

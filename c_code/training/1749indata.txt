@@ -1,0 +1,51 @@
+#include <iostream>
+#include <fstream>
+
+int num[65][20];
+
+int palindromic(int B,int n){	
+	int j = n - 1;
+	for (int i = 0; i < n/2; i++) {
+		if (num[B][i] != num[B][j]) return 0;
+		j--;
+	}
+	return 1;
+}
+
+int palindromicNumbers(int n) {
+	int i, p = 0;
+	
+
+	for (i = 2; i <= 64; i++) {		
+		int tmp = n;
+		p = 0;
+		while (tmp / i != 0) {
+				num[i][p++] = tmp % i;
+				tmp = tmp / i;
+			}
+		num[i][p] = tmp;
+		if (palindromic(i, p + 1)) return 1;	
+	}
+	return 0;		
+}
+
+
+int main() {
+	
+	int numcase, n;
+
+	std::ifstream f;
+	f.open("input.txt");
+	
+	if (f.is_open() == false) {
+		std::cout << "파일 열기 실패" << std::endl;
+		return -1;
+	}
+
+	f >> numcase;
+	int p = 0;
+	while (numcase--) {
+		f >> n;
+		std::cout << palindromicNumbers(n) << std::endl;
+	}
+}

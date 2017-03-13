@@ -1,0 +1,37 @@
+
+
+#include<iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+bool parenthesis(string p){
+	int cnt=0;
+	for( int i=0;i< p.length();i++){
+		if(p[i] == '(' ) cnt++;
+		else if (p[i] == ')') cnt--;
+		if( cnt<0) return false;
+	}
+	return (cnt == 0) ? true: false;
+
+}
+
+int main(){
+	ifstream instream;
+	int no_cases;
+
+	instream.open("input.txt");
+
+	instream>>no_cases;
+	instream.get();
+	while(no_cases--){
+		
+		string p;
+		getline(instream,p,'\n');
+
+		(parenthesis(p)) ? cout<<"YES"<<endl: cout<<"NO"<<endl;
+	
+	}
+	instream.close();
+	return 0;
+}

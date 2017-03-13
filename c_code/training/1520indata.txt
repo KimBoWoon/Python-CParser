@@ -1,0 +1,90 @@
+
+#include <iostream>
+#include <fstream>
+#define MAX_SIZE 9
+#define MARK 1
+#define UNMARK 0
+
+using namespace std;
+
+typedef struct pos{
+	int x;
+	int y;
+}Point;
+Point direction[8] = {{1, -2}, {2, -1}, {2, 1}, {1, 2},
+{-1, 2}, {-2, 1}, {-2, -1}, {-1, -2}};
+
+int markBoard[MAX_SIZE][MAX_SIZE], cntPath[MAX_SIZE][MAX_SIZE];
+
+bool knightTour(int m, int n, Point current, int counter);
+
+int main(){
+	ifstream in;
+	in.open("input.txt");
+
+	int test_case;
+	in>>test_case;
+
+	while(test_case--){
+		int m,n;
+		in>>m>>n; 
+
+		Point start;
+		in>>start.x>>start.y;
+
+		for(int i=1; i<=m; i++){
+			for(int j=1; j<=n; j++){
+				markBoard[i][j] = UNMARK;
+			}
+		}
+
+		markBoard[start.x][start.y] = MARK;
+		cntPath[start.x][start.y] = 1;
+
+		if( knightTour(m, n, start, 1) )
+		{
+			cout<<true<<endl;
+
+			for(int i=1; i<=m; i++){
+				for(int j=1; j<=n; j++){
+					cout<<cntPath[i][j]<<" ";
+				}
+				cout<<endl;
+			}
+		}
+		else
+			cout<<false<<endl;
+
+	}
+	in.close();
+	return 0;
+}
+
+bool knightTour(int m, int n, Point current, int counter){
+	
+	Point next;
+
+	if(counter == m * n) return 1; 
+
+	for(int i=0; i<8; i++)
+	{
+		next.x = current.x + direction[i].x;
+		next.y = current.y + direction[i].y;
+
+		if( next.x > 0 && next.x <= m &&
+			next.y > 0 && next.y <= n &&
+			markBoard[next.x][next.y] != MARK )
+		{
+			markBoard[next.x][next.y] = MARK;
+			cntPath[next.x][next.y] = counter+1;
+
+			if( knightTour(m, n, next, counter+1) )
+				return 1; 
+
+			markBoard[next.x][next.y] = UNMARK; 
+		}
+
+	}
+
+	return 0; 
+}

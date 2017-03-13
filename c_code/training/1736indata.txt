@@ -1,0 +1,42 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+char strSol[10000] = "";
+int cnt = 0;
+void con(int n, int base) {
+	string str = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@?";
+	if (n >= base)
+		con(n / base, base);
+	strSol[cnt++] = str[n%base];
+}
+bool pal(string a, int index, int length) {
+	if (index > length / 2) { return true; }
+	else if (a[index] == a[length - index]) { return pal(a, ++index, length); }
+	else return false;
+}
+int main(void) {
+	ifstream in;
+	in.open("input.txt");
+	int testcases;
+	in >> testcases;
+	int value;
+	for (int i = 0; i < testcases; i++) {
+		in >> value;
+		for (int j = 2; j <= 64; j++) {
+			con(value, j);
+			if (pal(strSol, 0, cnt - 1)) {
+				cout << 1 << endl;
+				break;
+			}
+			else if (j == 64) {
+				cout << 0 << endl;
+				break;
+			}
+			strSol[0] = { 0 };
+			cnt = 0;
+		}
+		strSol[0] = { 0 };
+		cnt = 0;
+	}
+}

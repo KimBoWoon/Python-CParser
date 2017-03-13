@@ -1,0 +1,47 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+char input[1001];
+bool checkPalindrone(char *str,int first,int last)		
+{
+	if(first>=last)
+	{
+		return 1;
+	}
+	else if(str[first] != str[last])
+	{
+		return 0;
+	}
+	else
+	{
+		return checkPalindrone(str,first+1,last-1);
+	}
+}
+int main()
+{
+   fstream in;
+   in.open("input.txt");
+   int numcases;
+   in>> numcases;
+   bool pallin=false;
+   
+   for(int i =0; i<numcases; i++){
+	   int strSize=0;
+	   in>>input;
+	   int j=0;
+	   while(input[j]!='\0')
+	   {
+
+	      j++;
+		   strSize++;
+	   }
+	   pallin=checkPalindrone(input,0,strSize-1);
+	   if(pallin) cout<<"1"<<endl;
+	   else cout<<"0"<<endl;
+     
+   }
+
+   return 0;
+}

@@ -1,0 +1,206 @@
+
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+class Cafe {
+public:
+	int x;
+	int y;
+	int cafeNum;
+
+	Cafe() {
+		this->x = 0;
+		this->y = 0;
+		this->cafeNum = 0;
+	}
+	Cafe(int x, int y) {
+		this->x = x;
+		this->y = y;
+		this->cafeNum = 0;
+	}
+};
+
+Cafe cafes[100000];
+Cafe finalCafes[100000];
+int cafeXrange[100000];
+int k;
+
+void firstSortCafe(Cafe arr[100000], int left, int right);
+void secondSortCafe(Cafe arr[100000], int left, int right);
+void sortY(Cafe arr[100000], int left, int right);
+void sortYDown(Cafe arr[100000], int left, int right);
+void thirdSortCafe(Cafe arr[100000], int left, int right);
+
+
+int main() {
+
+	ifstream dataFile("input.txt");
+	int dataCount;
+	dataFile >> dataCount;
+
+	for (int i = 0; i < dataCount; i++) {
+		int cafeCount;
+		dataFile >> cafeCount;
+
+		for (int j = 0; j < cafeCount; j++) {
+			int x, y;
+			dataFile >> x >> y;
+			Cafe tempCafe = Cafe(x, y);
+			cafes[j] = tempCafe;
+		}
+
+		firstSortCafe(cafes, 0, cafeCount - 1);
+		secondSortCafe(cafes, 0, cafeCount - 1);
+		thirdSortCafe(cafes, 0, cafeCount - 1);		
+
+		int sortedCafeNums;
+		dataFile >> sortedCafeNums;
+		
+
+		for (int k = 0; k < sortedCafeNums; k++) {
+			int tempCafeNum;
+			dataFile >> tempCafeNum;
+			cout << cafes[tempCafeNum - 1].x << " " << cafes[tempCafeNum - 1].y << endl;			
+		}
+	}
+	getchar();
+	return 0;
+}
+
+void firstSortCafe(Cafe arr[100000], int left, int right) {
+	int i = left;
+	int j = right;
+	Cafe tmp;
+	Cafe pivot = arr[(left + right) / 2];
+
+	while (i <= j) {
+		while (arr[i].x < pivot.x) {
+			i++;
+		}
+		while (arr[j].x > pivot.x) {
+			j--;
+		}		
+
+		if (i <= j) {
+			tmp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = tmp;
+			i++;
+			j--;
+		}
+	};
+
+	if (left < j) {
+		firstSortCafe(arr, left, j);
+	}
+	if (i < right) {
+		firstSortCafe(arr, i, right);
+	}
+}
+
+void secondSortCafe(Cafe arr[100000], int left, int right) {	
+	k = 0;
+	for (int i = left; i <= right;) {		
+		
+		int count = i;
+
+		while (true) {
+			if (count + 1 == right+1) {
+				break;
+			}
+
+			if (arr[count].x == arr[count + 1].x) {
+				count++;
+			}
+			else {
+				break;
+			}
+		}
+		cafeXrange[k] = count;
+		k++;
+		sortY(arr, i, count);
+		i = count + 1;
+	}
+}
+
+void sortY(Cafe arr[100000], int left, int right) {
+
+	int i = left;
+	int j = right;
+	Cafe tmp;
+	Cafe pivot = arr[(left + right) / 2];
+
+	while (i <= j) {
+		while (arr[i].y < pivot.y) {
+			i++;
+		}
+		while (arr[j].y > pivot.y) {
+			j--;
+		}
+
+		if (i <= j) {
+			tmp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = tmp;
+			i++;
+			j--;
+		}
+	};
+
+	if (left < j) {
+		sortY(arr, left, j);
+	}
+	if (i < right) {
+		sortY(arr, i, right);
+	}
+}
+
+void sortYDown(Cafe arr[100000], int left, int right) {
+
+	int i = left;
+	int j = right;
+	Cafe tmp;
+	Cafe pivot = arr[(left + right) / 2];
+
+	while (i <= j) {
+		while (arr[i].y > pivot.y) {
+			i++;
+		}
+		while (arr[j].y < pivot.y) {
+			j--;
+		}
+
+		if (i <= j) {
+			tmp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = tmp;
+			i++;
+			j--;
+		}
+	};
+
+	if (left < j) {
+		sortYDown(arr, left, j);
+	}
+	if (i < right) {
+		sortYDown(arr, i, right);
+	}
+}
+
+void thirdSortCafe(Cafe arr[100000], int left, int right) {
+	if (arr[0].y < 0) {
+		sortYDown(arr, 0, cafeXrange[0]);
+	}
+	int i = 0;
+	while (i < k-1) {
+		if (arr[cafeXrange[i]].y != arr[cafeXrange[i]+1].y) {
+			sortYDown(arr, cafeXrange[i] + 1, cafeXrange[i + 1]);
+		}
+		i++;
+	}
+}

@@ -1,0 +1,103 @@
+
+
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+int D[101][101][2][202];
+void resetD(int G, int N, int M);
+int main()
+{
+	ifstream inStream;
+	int numTest;
+	inStream.open("input.txt");
+	if (inStream.fail()) exit(1);
+	int  M, N, L, G, i, j, k,l;
+	inStream >> numTest;
+
+	for (int p = 0; p < numTest; p++)
+	{
+		inStream >> N >> M >> L >> G;
+		int** H = new int*[N];
+		for (k = 0; k <= N; k++) H[k] = new int[M];
+
+		int** V = new int*[N];
+		for (k = 0; k <= N; k++) V[k] = new int[M];
+
+		for (int i = 1; i <= N; i++)
+		{
+			for (int j = 1; j < M; j++)	{ inStream >> H[i][j]; }
+		}
+		for (int i = 1; i < N; i++)
+		{
+			for (int j = 1; j <= M; j++){ inStream >> V[i][j]; }
+		}
+		resetD(G, N, M);
+		
+		int result = 202;
+		D[1][1][0][0] = D[1][1][1][0] = 0; 
+		for (i = 1; i <= N; i++)
+		{
+			for (j = 1; j <= M; j++) 
+			{
+				for (l = 0; l < 201; l++)
+				{
+					for (k = 0; k < 2; k++)
+					{
+						if (D[i][j][k][l] <= G)
+						{ 
+							if (i == N && j == M) 
+							{
+								if (result  > l) result = l;
+								
+							}
+
+							if ((D[i][j][!k][l + 1] > D[i][j][k][l]))
+							{
+								D[i][j][!k][l + 1] = D[i][j][k][l];
+							}
+							
+							if (k==1)
+							{
+								if (j < M && (D[i][j + 1][k][l] > D[i][j][k][l] + H[i][j]))
+								{
+									D[i][j + 1][k][l] = D[i][j][k][l] + H[i][j];
+
+									
+								}
+							}
+							else if (i < N && (D[i + 1][j][k][l] > D[i][j][k][l] + V[i][j]))
+							{
+								D[i + 1][j][k][l] = D[i][j][k][l] + V[i][j];
+							}
+
+						}
+					}
+				}
+			}
+		}
+
+		if (result  < 202) cout << (N + M - 2)*L+result << endl; 
+		else cout << -1 << endl;
+	
+	
+	}
+
+	inStream.close();
+}
+
+void resetD(int G, int N, int M)
+{
+	for (int i = 1; i <= N; i++)
+	{
+		for (int j = 1; j <= M; j++)
+		{
+			for (int k = 0; k < 2; k++)
+			{
+				for (int l = 0; l < 201; l++)
+				{ D[i][j][k][l] = G + 1; }
+			}
+		}
+	}
+}
+

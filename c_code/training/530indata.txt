@@ -1,0 +1,58 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int factorial(int n)
+{
+	if(n <= 1) return 1; 
+	else return n*factorial(n-1); 
+}
+
+int main(){
+
+	ifstream in;
+	in.open("input.txt");
+
+	unsigned short t; 
+	in>>t;
+
+	while(t--)
+	{
+		int n, Kth, check=0, position=0, Nminus1=0;
+		char temp;
+		char alphabet[12] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l'};
+
+		in>>n>>Kth;
+		check=n-1;
+
+		for (int i=0; i<n; i++)
+		{
+			Nminus1 = factorial(check); 
+
+			position = Kth / Nminus1;     
+			if (Kth % Nminus1 == 0) position--; 
+
+			for (int j=position+i; j>i; j--) 
+			{ 
+				temp=alphabet[j-1];
+				alphabet[j-1]=alphabet[j];
+				alphabet[j]=temp;
+			}
+
+			Kth -= position * Nminus1; 
+			check--; 
+		}
+
+		if (Kth==2)
+		{
+			temp=alphabet[n-2];
+			alphabet[n-2]=alphabet[n-1];
+			alphabet[n-1]=temp;
+		}
+		for (int i=0; i<n; i++)
+			cout<<alphabet[i];
+		cout<<endl;  
+	}
+	in.close();      
+}

@@ -1,0 +1,52 @@
+
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+#define max(x,y) ((x) > (y) ? (x) : (y))
+#define min(x,y) ((x) < (y) ? (x) : (y))
+
+int main()
+{
+   FILE * inFile;
+   int N,M;
+   int testCases;
+   int n, m;
+   int A[1004], B[1004];
+
+   inFile = fopen("input.txt", "r");
+
+   fscanf(inFile, "%d", &testCases);
+
+   for (n = 0; n < testCases; n++)
+   {
+	   fscanf(inFile, "%d%d", &N, &M);
+	   for(int i=1; i<=N; i++)
+		   A[i] = B[i] = 0;
+	   for(int i=1; i<=M; i++)
+	   {
+		   int a,b,p,q;
+		   fscanf(inFile, "%d%d%d%d", &a, &b, &p, &q);
+		   A[a] += p;
+		   B[a] += q;
+		   A[b] += q;
+		   B[b] += p;
+		
+	   }
+
+	   double mx = 0;
+	   double mn = 2e9;
+
+	   for(int i=1; i<=N; i++)
+	   {
+		   double v = A[i] + B[i] ? ((double)(A[i]*A[i]) / (A[i]*A[i] + B[i]*B[i])) : 0;
+		   mx = max(mx, v);
+		   mn = min(mn, v);
+
+	   }
+
+	   printf("%d\n%d\n", (int)(mx * 1000), (int)(mn * 1000));
+   }
+}

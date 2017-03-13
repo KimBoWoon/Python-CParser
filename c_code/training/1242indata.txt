@@ -1,0 +1,60 @@
+
+
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+#include<cmath>
+using namespace std;
+
+int prime(double num) 
+{
+	double rootNum = sqrt(num);
+	int count=0;
+	int tempNum = (int)num;
+	for(int i=2;i<=rootNum;i++)
+		if(tempNum%i==0)
+			count++;
+	if(count>0)
+		return 0;
+	else return 1;
+}
+
+void primeCheck(int num)
+{
+	int tempArr[1][3]={0};
+	tempArr[0][2]=999;
+	
+	for(int i=2;i<num;i++)
+	{	
+		if(prime(i)==1)     
+			if(prime(num-i)==1)  
+			{	
+				int temp=abs(i-(num-i));
+				if(tempArr[0][2]>temp) 
+				{
+					tempArr[0][0]=i;
+					tempArr[0][1]=num-i;
+					tempArr[0][2]=temp;
+				}
+			}
+
+	}
+	if(tempArr[0][0]>tempArr[0][1])
+		cout<<tempArr[0][1]<<" "<<tempArr[0][0]<<endl;
+	else
+		cout<<tempArr[0][0]<<" "<<tempArr[0][1]<<endl;
+}
+
+int main()
+{
+	ifstream instream("input.txt",ios::in);
+	int testCase;
+	instream>>testCase;
+	
+	while(testCase--)
+	{
+		int num;
+		instream>>num;
+		primeCheck(num);
+	}
+}

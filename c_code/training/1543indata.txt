@@ -1,0 +1,55 @@
+
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+typedef struct Point { int x, y; } point;
+point direction[8] = { { 1, -2 }, { 2, -1 }, { 2, 1 }, { 1, 2 },
+{ -1, 2 }, { -2, 1 }, { -2, -1 }, { -1, -2 } };
+
+int knightTour(int n,int m,int **map,point pos, int cnt = 2){
+	if (cnt == n*m + 1) 
+		return 1;
+	for (int i = 0; i < 8; i++){
+		point next = { pos.x + direction[i].x, pos.y + direction[i].y };
+		if (next.x < m && next.y < n && next.x >= 0 && next.y >= 0 && map[next.y][next.x] == 0){
+			map[next.y][next.x] = cnt;
+			if(knightTour(n, m, map, next, cnt + 1)) return 1;
+			map[next.y][next.x] = 0;
+		}
+	}
+	return 0;
+}
+
+int main(){
+	ifstream in;
+	in.open("input.txt");
+	if (!in) return 1;
+
+	int test_case;
+	in >> test_case;
+	while (test_case--){
+		int n, m;
+		in >> n >> m;
+		point start;
+		in >> start.y >> start.x;
+		int **map = new int*[n];
+		for (int i = 0; i < n; i++) map[i] = new int[m]; 
+		for (int i = 0; i < n; i++) for (int j = 0; j < m; j++) map[i][j] = 0;
+		map[--start.y][--start.x] = 1;
+		if (knightTour(n, m, map, start)){
+			cout << "1" << endl;
+			for (int i = 0; i < n; i++){
+				for (int j = 0; j < m; j++){ cout << map[i][j] << " "; }
+				cout << endl;
+			}
+		}
+		else cout << "0" << endl;
+		for (int i = 0; i < n; i++) delete map[i]; 
+		delete map;
+	}
+
+	in.close();
+	return 0;
+}

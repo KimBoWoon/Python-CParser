@@ -1,0 +1,37 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#pragma warning(disable : 4996)
+
+int f(int n);
+
+int main()
+{
+	FILE *in_file;
+
+	in_file = fopen("input.txt", "r");
+	if (in_file == NULL) exit(1);
+
+	int n, TestCases,i=0;
+
+	fscanf(in_file, "%d", &TestCases);
+	
+	for (i = 0; i < TestCases; i++){
+
+		fscanf(in_file, "%d", &n);
+		printf("%d\n", f(n));
+	}
+	
+
+}
+
+int f(int n)
+{
+	if (n <= 1) 
+		return 1;
+	else 
+		return n*f(n - 1);
+}
+
+

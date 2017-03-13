@@ -1,0 +1,100 @@
+#include <iostream>
+#include <fstream>
+
+const int MAX_GAS = 1000001;
+const int MAX_CURVE = 205;
+const int MAX_SIZE = 105;
+
+using namespace std;
+
+int d[2][MAX_CURVE][MAX_SIZE][MAX_SIZE] = { 0 };
+int maxCurve[MAX_SIZE][MAX_SIZE] = { 0 };
+int gasMap[2][MAX_SIZE][MAX_SIZE], n, m, L, G;
+int main(void) {
+	ifstream in("input.txt");
+
+	int t;
+
+	in >> t;
+
+	for (int p = 0; p < t; p++) {
+		
+		in >> n >> m >> L >> G;
+		
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m-1; j++) {
+				in >> gasMap[1][i][j];
+			}
+		}
+
+		for (int i = 0; i < n-1; i++) {
+			for (int j = 0; j < m; j++) {
+				in >> gasMap[0][i][j];
+			}
+		}
+
+		for (int i = 0; i < MAX_CURVE; i++) {
+			for (int j = 0; j < MAX_SIZE; j++) {
+				for (int k = 0; k < MAX_SIZE; k++) {
+					maxCurve[j][k] = 0;
+					d[0][i][j][k] = d[1][i][j][k] = MAX_GAS;
+				}
+			}
+		}
+		d[0][0][0][0] = d[1][0][0][0] = 0;
+		
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {	
+				if (i != 0) {
+					for (int k = 0; k <= maxCurve[i - 1][j]; k++) {
+						d[0][k][i][j] = d[0][k][i - 1][j] + gasMap[0][i - 1][j];
+					}
+
+					for (int k = 1; k <= maxCurve[i - 1][j] + 1; k++) {
+						int temp = d[1][k - 1][i - 1][j] + gasMap[0][i - 1][j];
+
+						if (d[0][k][i][j] > temp) d[0][k][i][j] = temp;
+					}
+
+					maxCurve[i][j] = maxCurve[i - 1][j] + 1;
+				}
+
+				if (j != 0) {
+					for (int k = 0; k <= maxCurve[i][j-1]; k++) {
+						d[1][k][i][j] = d[1][k][i][j-1] + gasMap[1][i][j-1];
+					}
+
+					for (int k = 1; k <= maxCurve[i][j-1] + 1; k++) {
+						int temp = d[0][k - 1][i][j-1] + gasMap[1][i][j-1];
+
+						if (d[1][k][i][j] > temp) d[1][k][i][j] = temp;
+					}
+
+					maxCurve[i][j] = maxCurve[i][j - 1] + 1;
+				}
+
+				for (int k = 0; k <= maxCurve[i][j]; k++) {
+					if (d[0][k][i][j] >= MAX_GAS) d[0][k][i][j] = MAX_GAS;
+					if (d[1][k][i][j] >= MAX_GAS) d[1][k][i][j] = MAX_GAS;
+				}
+			}
+		}
+		
+		int min = 30000;
+		for (int i = 1; i <= maxCurve[n-1][m-1]; i++) {
+			if (d[0][i][n-1][m-1] <= G || d[1][i][n-1][m-1] <= G) {
+				min = i;
+				break;
+			}
+		}
+
+		if (min == 30000) {
+			cout << -1 << endl;
+		}
+		else {
+			cout << L * (n+m-2) + min << endl;
+		}
+	}
+
+	return 0;
+}

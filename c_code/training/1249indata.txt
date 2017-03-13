@@ -1,0 +1,29 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int findPrime(int num){
+	for (int i = 2; i < num; i++){
+		if (num%i == 0)
+			return 0;
+	}
+	return num;
+}
+int main(){
+	ifstream in;
+	in.open("input.txt");
+	int n,count,subNum[2];
+	in >> n;
+	for (int i = 0; i < n; i++){
+		in >> count;
+		for (int j = 2; j <= count / 2; j++){
+			if ((findPrime(j) == j)&&(findPrime(count - j) == count - j)){
+				subNum[0] = j;
+				subNum[1] = count - j;
+			}
+		}
+		cout << subNum[0] << " " << subNum[1] << endl;
+	}
+	return 0;
+}

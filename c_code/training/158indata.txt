@@ -1,0 +1,27 @@
+
+#include <stdio.h>
+
+int McCarthy(int n){
+    if(n > 100) return n-10;
+    else return McCarthy(McCarthy(n+11));
+}
+
+void getMcc(FILE *fin){
+    int n=0;
+    fscanf(fin, "%d", &n);
+    printf("%d\n", McCarthy(n));
+}
+
+int main(){
+    int testCases, cases;
+    FILE* fin = fopen("input.txt", "r");    
+    
+    fscanf(fin, "%d", &testCases);      
+    
+    for(cases=0; cases<testCases; cases++)
+        getMcc(fin);        
+    
+    fclose(fin);            
+    
+    return 0;           
+}

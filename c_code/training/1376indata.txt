@@ -1,0 +1,62 @@
+
+
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+
+int gcd(int a, int b){
+	if(a==0)
+		return b;
+	else if(b==0)
+		return a;
+	else if(a>=b)
+		return gcd(b,a%b);
+	else if(b>=a)
+		return gcd(a,b%a);
+	else
+		return 1;
+}
+
+int main(void){
+	fstream infile;
+
+	infile.open("input.txt");
+	if(infile.fail()){
+		cerr << "input file error"<<endl;
+		exit(1);
+	}
+	
+	int num;
+	int son,mom;
+	infile >> num;
+	for(int i=0;i<num;i++){
+		infile >> son >> mom;
+		int son_c, mom_c; 
+		for(int j=2;j<10001;j++){
+			int g=1;
+			int c=1;
+			mom_c = mom*j;
+			son_c = son*j - c*mom;
+
+			if(son_c==0){
+				cout<<j<<endl;
+				j=10003;	
+			}
+			else if(son_c>0){
+				g = gcd(son_c,mom_c);
+				mom_c/=g;
+				son_c/=g;
+				son = son_c;
+				mom = mom_c;
+				if(son_c==1){
+					cout<<mom_c<<endl;
+					j=10003;
+				}
+			}
+		}
+	
+	}
+
+	return 0;
+}

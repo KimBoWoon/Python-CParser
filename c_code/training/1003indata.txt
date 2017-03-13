@@ -1,0 +1,74 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <string>
+
+using namespace std;
+
+void Ducci(int arr[], int ducciGatsu)
+{
+	int temp = 0;
+	int temparr[1000] ;
+
+	for (int i = 0; i < ducciGatsu; i++)
+	{
+		temparr[i] = arr[i];
+	}
+
+	for (int i = 0; i < 1001; i++)
+	{
+		for (int j = 0; j < ducciGatsu; j++)
+		{
+			if (j == ducciGatsu - 1)
+			{
+				temparr[ducciGatsu - 1] = abs(arr[0] - arr[ducciGatsu - 1]);
+			}
+			else
+				temparr[j] = abs(arr[j] - arr[j + 1]);
+		}
+		for (int i = 0; i < ducciGatsu; i++)
+		{
+			arr[i] = temparr[i];
+		}
+	}
+	for (int i = 0; i < ducciGatsu; i++)
+	{
+		temp = temp + temparr[i];
+	}
+	if (temp == 0)
+		cout << "ZERO" << endl;
+	else
+		cout << "LOOP" << endl;
+
+
+}
+
+int main()
+{
+	int gatsu = 0;	
+	int ducciGatsu = 0;	
+	int countnum = 1;
+	int arr[1000];
+	ifstream inStream;
+
+	inStream.open("input.txt");
+	if (inStream.fail())
+	{
+		cerr << "Input file opening failed.\n";
+		exit(1);
+	}
+
+	inStream >> gatsu;
+	for (int i = 0; i < gatsu; i++)
+	{
+		inStream >> ducciGatsu;
+
+		for (int i = 0; i < ducciGatsu; i++)
+		{
+			inStream >> arr[i];
+		}
+		Ducci(arr,  ducciGatsu);
+	}
+	inStream.close();
+	return 0;
+}

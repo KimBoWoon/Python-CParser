@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define min(X,Y) ((X) < (Y) ? (X) : (Y)) 
+
+int card[1003];						
+int card_sum[1003];					
+int dp[1003][1003];					
+
+int card_game(int start, int end)
+{
+	int *result = &dp[start][end];	
+
+	if(start > end)					
+		return 0;
+	else if(start == end)			
+		return card[start];
+
+	if(*result > -1)					
+		return *result; 
+	*result = card_sum[end] - card_sum[start-1] - min(card_game(start+1, end), card_game(start, end-1));		
+	return *result;
+}
+int main()
+{
+	int numcase;
+	int N;  
+	int i, j;
+	FILE * in_file;
+	in_file = fopen("input.txt", "r");
+
+	fscanf(in_file, "%d", &numcase);
+	while(numcase--)
+	{
+		fscanf(in_file, "%d", &N);
+
+		card_sum[0] = 0;						
+		for(i=1; i<=N; i++) 
+		{
+			fscanf(in_file, "%d", &card[i]);
+			card_sum[i] = card_sum[i-1] + card[i];
+		}
+		for (i=1; i<=N; i++)					
+		{
+			for (j=i; j<=N; j++) 
+			{
+				dp[i][j] = -1;
+			}
+		}
+		printf("%d\n", card_game(1, N));
+	}
+}

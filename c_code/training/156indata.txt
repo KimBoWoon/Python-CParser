@@ -1,0 +1,29 @@
+
+
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+int mccarthy(int num)
+{
+	if(num>100)  
+		return num-10;
+	else         
+		return mccarthy(mccarthy(num+11));
+}
+
+int main()
+{
+	fstream instream("input.txt",ios::in);
+	int test;
+	instream>>test;
+	
+	while(test--)
+	{
+		int num;
+		instream>>num;
+		cout<<mccarthy(num)<<endl;
+	}
+
+	return 0;
+}

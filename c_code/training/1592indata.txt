@@ -1,0 +1,55 @@
+
+ 
+
+ 
+#include<stdio.h>
+#include<stdlib.h>
+ 
+ 
+#define max(x,y) ((x) > (y) ? (x) : (y)) 
+#define min(x,y) ((x) < (y) ? (x) : (y))
+ 
+ 
+ 
+int main()
+{
+	int i,x,y,k;
+	int	file[501] ={0};
+	int S[501] = {0};
+	int D[501][501] = {0};
+	FILE * inFile;
+	int testCases;
+	int r;
+ 
+	inFile = fopen("input.txt", "r");
+ 
+	fscanf(inFile, "%d", &testCases);
+ 
+	for (r = 0; r < testCases; r++)
+	{
+		fscanf(inFile, "%d", &k);
+ 
+		for (int i = 0; i < k; i++)
+		{
+			fscanf(inFile, "%d", file + i);
+			S[i+1] = S[i] + file[i];
+
+		}
+
+		 for (int x = 1; x < k; x++) 
+		 {
+			 for (int y = 1; y <= k - x; y++) 
+			 {
+            
+				 int j = y + x;
+				 D[y][j] = 2e9;
+                 for (int k = y; k < j; k++)
+                 D[y][j] = min(D[y][j], D[y][k] +D[k + 1][j] + S[j] - S[y - 1]);
+			 }
+		 }
+ 
+		printf("%d\n", D[1][k]);
+	}
+ 
+	fclose(inFile);
+}

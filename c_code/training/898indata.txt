@@ -1,0 +1,36 @@
+#include <cstdio>
+using namespace std;
+
+#define MAX(x,y) (x>y)?x:y
+
+int T, N, z;
+int C[1003], S[1003], G[1003][1003];
+
+int main()
+{
+    FILE* inFile;
+    inFile = fopen("input.txt", "r");
+    for (fscanf(inFile, "%d", &T);T--;){
+
+        fscanf(inFile, "%d", &N);
+
+        for (int i=0;i<N;i++)
+            fscanf(inFile, "%d", &C[i]);
+
+        for (int i=0;i<N;i++) {
+            G[i][i] = C[i];
+            S[i] = S[i-1] + C[i];
+        }
+
+        for (int i=0; i<N; ++i)
+        {
+            for(int j=0; j<N-i; ++j)
+            {
+                z = i+j;
+                G[j][z] = MAX(S[z]-S[j-1]-G[j+1][z], S[z]-S[j-1]-G[j][z-1]);
+            }
+        }
+        printf("%d\n", G[0][N-1]);
+    }
+    fclose(inFile);
+}

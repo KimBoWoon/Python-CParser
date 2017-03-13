@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define true 1
+#define false 0
+
+typedef int boolean;
+
+unsigned long gcd(unsigned long a, unsigned long b);
+
+void main()
+{
+	FILE* fileDes = NULL;				
+	int trialNum;						
+
+	unsigned long a, b;					
+	int i = 0;							
+	
+
+	fileDes = fopen("input.txt", "r");
+
+	if(fileDes == NULL)
+		exit(1);
+
+	fscanf(fileDes, "%d", &trialNum);
+
+	for(i = 0; i < trialNum; i++)
+	{
+		fscanf(fileDes, "%lu %lu", &a, &b);
+
+		printf("%d\n", gcd(a, b));
+	}
+
+	fclose(fileDes);
+}
+
+unsigned long gcd(unsigned long a, unsigned long b)
+{
+	if(b == 0)
+		return a;
+	else
+		return gcd(b, a%b);
+}

@@ -1,0 +1,51 @@
+
+#include <iostream>
+#include <fstream>
+#include <cstring>
+using namespace std;
+
+int isPrime(int num){
+	for (int i = 2; i < num; i++){
+		if (num % i == 0)
+			return 0;
+	}
+	return 1;
+}
+
+void isGC(int& small, int& big){
+
+	if (isPrime(small) && isPrime(big))
+		return;
+	else{
+		small--;
+		big++;
+		isGC(small, big);
+	}
+}
+
+
+int main(){
+
+	int caseNum = 0;
+
+	ifstream inputFile("input.txt");
+
+	inputFile >> caseNum;
+
+	for (int i = 0; i < caseNum; i++){
+
+
+		int index = 0, testNum = 0;
+
+		inputFile >> testNum;
+
+		int small = testNum/2, big = testNum/2;
+		isGC(small, big);
+		cout << small << " " << big << endl;
+
+		
+		
+	}
+	
+	return 0;
+}

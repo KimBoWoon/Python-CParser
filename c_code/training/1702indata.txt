@@ -1,0 +1,53 @@
+#include <iostream>
+#include <fstream>
+
+
+using namespace std;
+
+bool check(int str[], int begin, int end){
+	if(end <= begin)	return true;
+	else if( (str[begin] != str[end])) return false;
+	else	return check(str, begin + 1, end - 1);
+}
+
+
+bool compute(int number , int var){
+	int count = 0;
+	int temp[1000] = {0};
+	while(1){
+		if(number == 0) break;
+		temp[count++] = number%var;
+		number /= var;
+	}
+	return check(temp, 0, count-1);
+	
+}
+
+int main(){
+	
+	ifstream file;
+	file.open("input.txt");
+	
+	int cases;
+	file >> cases;
+	
+	while(cases--){
+		int number;
+		int cur = 0;
+		file >> number;
+		for(int i = 2; i <= 64; i++){
+			if(compute(number, i) == true){
+				cout << 1 << endl;
+				break;
+			}
+			if(i == 64) cout << 0 << endl;
+		}
+		
+		
+	}
+	
+	
+	file.close();
+	
+	return 0;
+}

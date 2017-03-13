@@ -1,0 +1,99 @@
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+#define MAX 100
+
+
+void floodfill(char map[][100], int x, int y, char oldthing, char newthing, int roomNum)
+{
+	 if (map[x][y] != oldthing)	return;
+    else { 	
+        map[x][y] = roomNum;
+        floodfill(map, x-1, y, oldthing, newthing, roomNum);
+        floodfill(map, x+1, y, oldthing, newthing, roomNum);
+        floodfill(map, x, y-1, oldthing, newthing, roomNum);
+        floodfill(map, x, y+1, oldthing, newthing, roomNum);
+	 }
+}
+void sort(int* arr, int size)
+{
+	 int i=0, j=0, temp=0;
+     for(j=0;j<size;j++)
+     {
+          for(i=0;i<size-1;i++)
+          {
+               if(arr[i]<arr[i+1])
+               {
+                    temp=arr[i];
+                    arr[i]=arr[i+1];
+                    arr[i+1]=temp;
+               }
+          }
+     }
+}
+int main()
+{
+	int numTestCases;
+	char map[MAX][MAX]={0};
+	int row, col;
+	int cnt = 0; 
+
+	ifstream inFile;
+	inFile.open("input.txt");
+	inFile >> numTestCases; 
+
+	if(inFile.is_open() == false) {cout << "파일을 열 수 없습니다" <<endl;}
+
+		for(int i = 0 ; i < numTestCases ; i++) {
+			
+			int numOfRooms[100]={0};
+			int result = 0; 
+			int roomNum = 1; 
+			int test = roomNum; 
+
+		inFile >> row >> col; 
+			
+		for(int m = 0 ; m < col ; m++){
+			for(int n = 0 ; n < row ; n++){
+				inFile >> map[m][n]; 
+			}
+		}
+
+		for(int m = 0; m < col ; m++){
+			for(int n = 0; n < row; n++){
+				if(map[m][n] == '.'){
+						floodfill(map, m, n, '.', '+', roomNum+48);
+					roomNum++;
+					
+	 		}
+
+			}
+		}
+
+
+					while(1){
+						cnt = 0;
+					for(int m = 0; m < col ; m++){
+						for(int n = 0; n < row; n++){
+							if(map[m][n] == test+48){
+								cnt++;
+							}
+						}
+					}
+						if(cnt == 0) break;
+						test++;
+						numOfRooms[result] = cnt;
+						result++;
+						cnt = 0;
+					}
+		sort(numOfRooms, result);
+		
+		cout<<result<<endl;
+		for(int q = 0; q < result; q++){
+			cout << numOfRooms[q] << " ";
+		}	
+		cout << endl;
+	}
+}

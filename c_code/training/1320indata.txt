@@ -1,0 +1,49 @@
+#include<iostream>
+#include<fstream>
+#include<math.h>
+using namespace std;
+double a, b;
+int unitfraction() {  
+	double count = b;
+	while (1) {
+		if ((a / b) >= (1 / count)) {
+			count -= 1;
+		}
+		else {
+			count += 1;
+			break;
+		}
+	}
+	return count;
+}
+int calGcd(int c, int d) {  
+	if (d == 0) return c;
+	else calGcd(d, c%d);
+}
+void sub(int unit, int gcd) {   
+	int val1 = b / gcd;
+	int val2 = unit / gcd;
+	int numerator = fabs(val1*1 - val2 * a);
+	int denominator = val2*b;
+	int gcd1 = calGcd(denominator, numerator);
+	a = fabs(numerator / gcd1); 
+	b = fabs(denominator / gcd1);
+}
+int main() {
+	ifstream fin;
+	fin.open("input.txt");
+	int num, unit, gcd;
+	fin >> num;
+	for (int cnt = 0;cnt < num;cnt++) {
+		fin >> a >> b;
+		while (1) {
+			if(1 == a) {		
+				cout << (int)b << endl;
+				break;
+			}
+			unit = unitfraction();		
+			gcd = calGcd(b,unit);		
+			sub(unit, gcd);				
+		}
+	}
+}

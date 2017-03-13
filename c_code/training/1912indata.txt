@@ -1,0 +1,44 @@
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
+#include <algorithm>
+#include <functional>
+
+using namespace std;
+
+int winScore[1001];
+int loseScore[1001];
+
+int main(void){
+	FILE* file;
+	int cases;
+	file = fopen("input.txt","r");
+
+	fscanf(file, "%d", &cases);
+
+	while(cases--){
+		int teamNum, matchNum;
+		fscanf(file,"%d%d", &teamNum, &matchNum);
+
+		for(int i=0; i<teamNum; i++){
+			winScore[i] = loseScore[i] = 0;
+		}
+
+		for(int i=0; i<matchNum; i++){
+			int a,b,p,q;
+			fscanf(file, "%d%d%d%d", &a,&b,&p,&q);
+			winScore[a-1] += p, loseScore[a-1] += q;
+			winScore[b-1] += q, loseScore[b-1] += p;
+		}
+
+		double maxN = 0, minN = 2e9;
+		for(int i=0; i<teamNum; i++){
+		   double val = ((double)(winScore[i]*winScore[i]) / (winScore[i]*winScore[i] + loseScore[i]*loseScore[i]));
+		   maxN = maxN>val ? maxN:val;
+		   minN = minN>val ? val:minN;
+		 }
+
+		printf("%d\n%d\n", (int)(maxN * 1000 + 1e-8), (int)(minN * 1000 + 1e-8));
+	}
+	return 0;
+}

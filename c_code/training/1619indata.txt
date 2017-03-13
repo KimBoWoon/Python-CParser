@@ -1,0 +1,68 @@
+
+#pragma warning(disable:4996)
+
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+
+#define MAX_SIZE 501
+
+int fileArray[MAX_SIZE];
+int dynamicArray[MAX_SIZE][MAX_SIZE];
+int sumArray[MAX_SIZE][MAX_SIZE];
+
+void readData(FILE** readStream, int* fileNumber){
+	
+	fscanf(*readStream, "%d", fileNumber);
+	
+	for(int i = 1; i <= *fileNumber; ++i){
+		fscanf(*readStream, "%d", &fileArray[i]);
+		sumArray[i][i] = fileArray[i];
+		dynamicArray[i][i] = 0;
+	}
+	for(int i = 1; i < *fileNumber; ++i){
+		sumArray[i][i+1] = sumArray[i][i] + fileArray[i+1];
+		dynamicArray[i][i+1] = fileArray[i] + fileArray[i+1];
+	}
+}
+
+int main(int argc, char* argv[]){
+
+	FILE* readStream = 0x00L;
+	readStream = fopen("input.txt", "r");
+
+	if(readStream == 0x00L){
+		fprintf(stderr, "Don`t open the file.\n");
+		return 2;
+	}
+
+	int testCases = 0,
+		fileNumber;
+
+	fscanf(readStream, "%d", &testCases);
+
+	while(testCases--){
+		readData(&readStream, &fileNumber);
+		int plus = 2,
+			minValue = 0;
+		for(int total = (fileNumber-1); total >= 1; --total){
+			for(int i = 1; i <= total; ++i){
+				minValue = 0;
+				sumArray[i][i + plus] = sumArray[i][i + plus - 1] + fileArray[i + plus]; 
+				for(int k = i; k <= (i + plus - 1); ++k){
+					int value = dynamicArray[i][k] + dynamicArray[k+1][i+plus] + sumArray[i][i+plus];
+					
+					if(minValue == 0)
+						minValue = value;
+					else if(minValue > value) minValue = value;
+
+				}
+				dynamicArray[i][i+plus] = minValue;
+			}
+			++plus;
+		}
+		std::cout << dynamicArray[1][fileNumber] << std::endl;
+	}
+	fclose(readStream);
+	return 0;
+}

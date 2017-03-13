@@ -1,0 +1,102 @@
+
+#pragma warning(disable:4996)
+
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+
+typedef struct __point{
+	int x;
+	int y;
+}POINT;
+
+POINT point[100001];
+
+int compare(const void* num1, const void* num2){
+	POINT *first = (POINT*)num1;
+	POINT *second = (POINT*)num2;
+
+	if(first->x == second->x) return first->y - second->y;
+	else return first->x - second->x;
+}
+int compareX(const void* num1, const void* num2){
+
+	POINT* first = (POINT*)num1;
+	POINT* second = (POINT*)num2;
+
+	return second->y - first->y;
+}
+int main(int argc, char* argv[]){
+
+	FILE* readStream = 0x00L;
+	readStream = fopen("input.txt", "r");
+
+	if(readStream == 0x00L){
+		fprintf(stderr, "Don`t open the file.\n");
+		return 2;
+	}
+
+	int testCases = 0,
+		pointCases = 0,
+		testPoint = 0;
+	int testArray[11];
+
+	fscanf(readStream, "%d", &testCases);
+
+	while(testCases--){
+		fscanf(readStream, "%d", & pointCases);
+		bool isDown = false;
+
+		for(int i = 0; i < pointCases; ++i){ 
+			fscanf(readStream, "%d %d", &point[i].x, &point[i].y);
+			if((point[i].x == 0) && (point[i].y < 0)) isDown = true;
+		}
+
+		fscanf(readStream, "%d", &testPoint);
+		for(int i = 0; i < testPoint; ++i) fscanf(readStream, "%d", &testArray[i]);
+
+		qsort(point, pointCases, sizeof(POINT), compare);
+		
+		int zeroCount = 0;
+		while(point[zeroCount].x == point[zeroCount+1].x){
+			++zeroCount;
+			if(zeroCount == (pointCases-1)) break;
+		}
+
+		if(isDown) qsort(point, zeroCount + 1, sizeof(POINT), compareX);
+
+		int lastYcoordinate = point[zeroCount].y;
+		int lastXcoordinate = point[zeroCount].x;
+		for(int i = zeroCount + 1; i < (pointCases-1); ++i){
+			if(point[i].y != lastYcoordinate){
+				if(lastXcoordinate != point[i].x){
+					int count = 0;
+					bool isUp = false;
+					while(point[i + count].x == point[i + 1 + count].x){
+						if(point[i + count].y > lastYcoordinate) isUp = true;
+						++count;
+						if(i + 1 + count >= pointCases) break;
+					}
+					if(!isUp){
+						int loopCount = (count/2);
+						if(count <= 1) ++loopCount;
+						
+						for(int j = 0; j < loopCount; ++j){
+							POINT temp = point[i + j];
+							point[i + j] = point[i + count - j];
+							point[i + count - j] = temp;
+						}
+					}
+					i += (count);
+				}
+			}
+			if(i < pointCases){
+				lastYcoordinate = point[i].y;
+				lastXcoordinate = point[i].x;
+			}
+		}
+		for(int i = 0; i < testPoint; ++i) printf("%d %d\n", point[testArray[i]-1].x, point[testArray[i]-1].y); 
+	}
+	fclose(readStream);
+}

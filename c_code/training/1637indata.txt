@@ -1,0 +1,133 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+typedef struct Point{
+	int x, y;
+}point;
+
+int compareX(const void* a, const void* b){
+	point i = *(point*)a;
+	point j = *(point*)b;
+
+	return i.x - j.x;
+}
+
+int compareY(const void* a, const void* b){
+	point i = *(point*)a;
+	point j = *(point*)b;
+
+	return i.y - j.y;
+}
+
+int compare_Y(const void* a, const void* b){
+	return -(compareY(a, b));
+}
+
+void sel_sort(point* arr, int n, int m){
+	point min;
+	int minindex;
+
+	for (int i = n; i < m - 1; i++){
+		minindex = i;
+		min = arr[i];
+
+		for (int j = i + 1; j < m; j++){
+			if (min.y > arr[j].y){
+				min = arr[j];
+				minindex = j;
+			}
+		}
+		arr[minindex] = arr[i];
+		arr[i] = min;
+	}
+}
+
+void sel_sort2(point* arr, int n, int m){
+	point min;
+	int minindex;
+
+	for (int i = n; i < m - 1; i++){
+		minindex = i;
+		min = arr[i];
+
+		for (int j = i + 1; j < m; j++){
+			if (min.y < arr[j].y){
+				min = arr[j];
+				minindex = j;
+			}
+		}
+		arr[minindex] = arr[i];
+		arr[i] = min;
+	}
+}
+
+int main(){
+	int caseNum;
+	ifstream inputFile;
+	inputFile.open("input.txt");
+
+	inputFile >> caseNum;
+
+	for (int i = 0; i < caseNum; i++){
+		int cafeNum = 0;
+		int prevY = 0, cnt = 0, otherY = 0;
+		int indexI = 0, indexJ = 0;
+		bool isChange = false;
+		point* arr;
+		inputFile >> cafeNum;
+
+		arr = new point[cafeNum];
+
+		for (int i = 0; i < cafeNum; i++){
+			inputFile >> arr[i].x >> arr[i].y;
+		}
+
+		qsort(arr, cafeNum, sizeof(point), compareX);
+		
+
+		for (indexI = 0, indexJ = 1; indexJ < cafeNum; indexJ++){
+			if (arr[indexI].x == arr[indexJ].x){
+				isChange = true;
+				if (prevY != arr[indexJ].y)
+					otherY = arr[indexJ].y;
+				else if (prevY != arr[indexI].y)
+					otherY = arr[indexI].y;
+			}
+			else{
+				if (isChange){
+					if (prevY > otherY)
+						qsort(arr + indexI, indexJ - indexI, sizeof(point), compare_Y);
+					else
+						qsort(arr + indexI, indexJ - indexI, sizeof(point), compareY);
+
+					isChange = false;
+				}
+				prevY = arr[indexJ - 1].y;
+				indexI = indexJ;
+				
+			}
+		}
+		if (isChange){
+			if (prevY > otherY)
+				qsort(arr + indexI, indexJ - indexI, sizeof(point), compare_Y);
+			else
+				qsort(arr + indexI, indexJ - indexI, sizeof(point), compareY);
+
+			isChange = false;
+		}
+
+		int numofFind = 0;
+		inputFile >> numofFind;
+
+		for (int i = 0; i < numofFind; i++){
+			int findNum = 0;
+			inputFile >> findNum;
+
+			cout << arr[findNum - 1].x << " " << arr[findNum - 1].y << endl;
+		}
+
+		delete arr;
+	}
+}

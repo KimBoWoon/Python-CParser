@@ -1,0 +1,64 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+void main(void){
+
+	FILE *in_file;
+	int i,j,k;
+	int no_case,data;
+	int num[168];
+	int count=1;
+
+	in_file = fopen("input.txt","r");
+	if(in_file == NULL) exit(1);
+
+	fscanf(in_file , "%d", &no_case);
+	num[0]=2;
+	
+	for(j=3; j<1000; j++)
+	{ 
+		for(k=2; k<1000; k++){
+			if(j%k==0 &&j!=k)	
+			{
+				break;
+			}
+			if(j==k)
+				num[count++]=j;
+		}
+	}
+
+	for(i=0; i<no_case; i++)
+	{
+		int b=0,c=0;
+		int check=0;
+		fscanf(in_file , "%d", &data);
+		
+		for(j=0; j<168; j++)
+		{
+			if(num[j]>data)
+				break;
+			for(k=0; k<168; k++){
+				if(data==num[j]+num[k])
+				{
+					if(check==1 && abs(b-c) > abs(num[j]-num[k]))
+						b=num[j],c=num[k];
+					else if(check==0){
+						b=num[j],c=num[k];
+						check++;
+					}
+					break;
+				}
+ 				else if(data <num[j]+num[k])
+					break;
+			}
+		}
+		if(b>c){
+			int temp;
+			temp=b;
+			b=c;
+			c=temp;
+		}
+		printf("%d %d\n",b,c);
+	}
+	fclose(in_file);
+}

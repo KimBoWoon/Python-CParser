@@ -1,0 +1,78 @@
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+#include <string.h>
+using namespace std;
+
+#define MAX 100001
+
+typedef struct position {
+   int x, y, n;
+} Position;
+
+int compareLocation(const void *x, const void *y) {
+   return ((*(Position *) x).x != (*(Position *) y).x) ?
+          (*(Position *) x).x - (*(Position *) y).x :
+          (*(Position *) x).y - (*(Position *) y).y;
+}
+
+int compareLocationNumber(const void *x, const void *y) {
+   return (*(Position *) x).n - (*(Position *) y).n;
+}
+
+Position pos[MAX];
+
+int main() {
+   int testCaseNum;
+   ifstream inFile;
+
+   inFile.open("input.txt");
+
+   inFile >> testCaseNum;
+
+   while (testCaseNum--) {
+       int totalCafeNum;
+
+       inFile >> totalCafeNum;
+       memset(pos, 0, sizeof(Position) * MAX);
+
+       for (int i = 0; i < totalCafeNum; i++)
+           inFile >> pos[i].x >> pos[i].y;
+
+       qsort(pos, totalCafeNum, sizeof(Position), compareLocation);
+
+       int position_y = 0;
+       int n = 1;
+       
+       for (int i = 0; i < totalCafeNum; i++) {
+           int end = i;
+           for (int x = i + 1; x <= totalCafeNum; x++) {
+               if (pos[i].x == pos[x].x)
+                   end = x;
+               else
+                   break;
+           }
+           if (pos[i].y >= position_y) {
+               for (int x = i; x <= end; x++)
+                   pos[x].n = n++;
+               position_y = pos[end].y;
+           }
+           else {
+               for (int x = end; x >= i; x--)
+                   pos[x].n = n++;
+               position_y = pos[i].y;
+           }
+           i = end;
+       }
+
+       qsort(pos, totalCafeNum, sizeof(Position), compareLocationNumber);
+
+       int searchCafeNum;
+       inFile >> searchCafeNum;
+       for (int i = 0; i < searchCafeNum; i++) {
+           int cafeLocation;
+           inFile >> cafeLocation;
+           cout << pos[cafeLocation - 1].x << " " << pos[cafeLocation - 1].y << endl;
+       }
+   }
+}

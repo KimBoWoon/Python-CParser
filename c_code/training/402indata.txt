@@ -1,0 +1,26 @@
+#include<stdio.h>
+
+int gcd(int B, int S)
+{
+	if(S==0)		return B;
+	return gcd(S, B%S);
+}
+
+void main()
+{
+	FILE*inFile = fopen("input.txt", "r");
+	int testcase, num1, num2;
+	int i;
+
+	fscanf(inFile, "%d", &testcase);
+	for(i=0; i<testcase; ++i){
+		fscanf(inFile, "%d %d", &num1, &num2);
+		if(num1>=num2)
+			printf("%d\n", gcd(num1, num2));
+		else
+			printf("%d\n", gcd(num2, num1));
+
+	}
+
+	fclose(inFile);
+}

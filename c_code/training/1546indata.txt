@@ -1,0 +1,92 @@
+
+
+#include<iostream>
+#include<fstream>
+
+#define MAXSIZE 8
+#define MARK 1
+#define UNMARK 0
+using namespace std;
+
+typedef struct Point {
+	int x, y;
+} point;
+
+point direction[8] = { { -2, 1 }, { -1,2 }, { 1, 2 }, { 2, 1 },
+{ 2, -1 }, { 1, -2 }, { -1, -2 }, { -2, -1 } };
+
+int knightTour(int** board, int **path, int m, int n, point pos, int counter)
+{
+	int i;
+	point next; 
+
+	if (counter == m * n){
+		return 1;
+	}
+		
+	for (i = 0; i<8; i++)
+	{
+		{
+			next.x = pos.x + direction[i].x;
+			next.y = pos.y + direction[i].y;
+			if (next.x > 0 && next.x <= m && next.y > 0 && next.y <= n && board[next.x-1][next.y-1] != MARK){
+				board[next.x-1][next.y-1] = MARK;
+				path[next.x-1][next.y-1] = counter + 1;
+				if (knightTour(board, path, m, n, next, counter + 1))
+					return 1;
+				board[next.x-1][next.y-1] = UNMARK;
+			}
+		}
+	}
+	return 0;
+}
+
+int main(void)
+{
+	ifstream inStream;
+	inStream.open("input.txt");
+
+	int numTestCases;
+
+	inStream >> numTestCases;
+
+	for (int i = 0; i < numTestCases; i++) {
+
+		int m, n;
+		point pos;
+		inStream >> m >> n >> pos.x >> pos.y;
+
+		int** path = new int*[m];
+		int** board = new int*[m];
+		for (int j = 0; j < m; j++){
+			path[j] = new int[n];
+			board[j] = new int[n];
+			for (int k = 0; k < n; k++){
+				path[j][k] = UNMARK;
+				board[j][k] = UNMARK;
+			}
+		}
+		path[pos.x - 1][pos.y - 1] = 1;
+		board[pos.x - 1][pos.y - 1] = 1;
+
+		bool ok = true;
+		knightTour(board, path, m, n, pos, 1);
+
+		for(int j = 0; j < m; j++){
+			for (int k = 0; k < n; k++){
+				if (board[j][k] == UNMARK)
+					ok = false;
+			}
+		}
+		if (ok == false) cout << "0" << endl;
+		else{
+			cout << "1" << endl;
+			for (int j = 0; j < m; j++){
+				for (int k = 0; k < n; k++){
+					cout << path[j][k] << " ";
+				}
+				cout << endl;
+			}
+		}
+	}
+}

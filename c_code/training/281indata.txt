@@ -1,0 +1,74 @@
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+
+int findGCD(int larger, int smaller);
+void cal(int value1,int value2,int value3,int value4);
+void makingIrreducible(int rat3, int lcddeno);
+int main(void)
+{
+	ifstream inStream;
+	int no_cases,value1,value2,value3,value4;
+
+	inStream.open("input.txt");
+	if(inStream.fail())
+	{
+		cerr<<"Input file openning failed.\n";
+		exit(1);
+	}
+	inStream>>no_cases;
+	for(int i=0; i<no_cases; i++)
+	{
+		inStream>>value1;
+		inStream>>value2;
+		inStream>>value3;
+		inStream>>value4;
+		cal(value1,value2,value3,value4);
+	    
+	}
+	return 0;
+}
+int findGCD(int larger, int smaller)
+{
+	int remainder = 0;
+	int devider = 0;
+	if(0== smaller)
+		return larger;
+	while(1){
+		remainder = larger % smaller;
+		if(0 == remainder){
+			return smaller;
+		}
+		else {
+			larger = smaller;
+			smaller = remainder;
+		}
+	    
+	}
+
+	return smaller;
+}
+void cal(int value1,int value2,int value3,int value4)
+{
+	int lcddeno;
+	int ret3;
+	lcddeno=value2 * value4;
+	ret3 =value4*value1 + value2*value3;
+	makingIrreducible(ret3,lcddeno);
+
+}
+void makingIrreducible(int rat3, int deno)
+{
+	int temp;
+	int rerat=rat3;
+	int redeno=deno;
+	if(rat3<deno){
+		temp=rat3;
+		rat3=deno;
+		deno=temp;
+	}
+	rerat= rerat/findGCD(rat3,deno);
+	redeno=redeno/findGCD(rat3,deno);
+	cout << rerat <<" "<< redeno << endl; 
+}

@@ -1,0 +1,52 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+	FILE *inFile;
+	int i;
+	int testCase;
+	inFile=fopen("input.txt", "r");				
+	fscanf(inFile, "%d", &testCase);
+
+	for(i=0; i<testCase; i++){					
+		int number, n=1, sum1=0, sum2=0, sum3=0;
+		int eureka=0;
+		int a, b, c;
+		fscanf(inFile, "%d", &number);		
+
+		while( (n*(n+1))/2 <= number ){		
+			n++;
+		}
+
+		for(a=1; a<=n; a++){					
+			sum1=(a*(a+1))/2;					
+			
+			for(b=1; b<=n; b++){		
+				sum2=(b*(b+1))/2;				
+				
+				for(c=1; c<=n; c++){
+					sum3=(c*(c+1))/2;			
+					if(sum1+sum2+sum3==number){		
+						eureka=1;								
+						break;
+					}
+				}
+
+				if(sum1+sum2+sum3==number){			
+					eureka=1;									
+					break;
+				}
+			}
+
+			if(sum1+sum2+sum3==number){				
+				eureka=1;										
+				break; 
+			}
+		}
+								
+		printf("%d\n", eureka);
+	}
+	return 0;
+}

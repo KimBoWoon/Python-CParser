@@ -1,0 +1,78 @@
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+#include <algorithm>
+
+using namespace std;
+int _row, _col, _count;
+
+std::ifstream inStream;
+#define SIZE 101
+
+char room[SIZE][SIZE];
+
+void floodFill(int x, int y, char oldColor, char newColor)
+{
+	if (room[x][y] != oldColor)
+		return;
+	else
+	{
+		room[x][y] = newColor;
+		_count++;
+		floodFill( x - 1, y, oldColor, newColor);
+		floodFill( x + 1, y, oldColor, newColor);
+		floodFill( x, y - 1, oldColor, newColor);
+		floodFill( x, y + 1, oldColor, newColor);
+	}
+}
+
+void check(){
+	int rooms = 0;
+	int roomSize[100];
+	for (int i = 0; i < _col; i++){
+		for (int j = 0; j < _row; j++){
+			_count = 0;
+			if (room[i][j] == '.') {
+				floodFill(i, j, '.', '+');
+				roomSize[rooms] = _count;
+				rooms++;
+			}
+			
+	}
+	}
+	sort(roomSize, roomSize + rooms);
+	cout << rooms << endl;
+	for (int k = rooms -1 ; k >= 0 ; k--)
+		cout << roomSize[k] << " ";
+	cout << endl;
+
+}
+
+int main() {
+	
+	int cases;
+	inStream.open("input.txt");
+	if (inStream.fail()) {		
+		std::cerr << "input file opening failed. \n";
+		return -1; 
+	}
+
+	inStream >> cases;
+	
+	for (int i = 0; i < cases; i++) {
+		
+		for (int j = 0; j < SIZE; j++)
+		for (int k = 0; k < SIZE; k++)
+			room[j][k] = '+';
+
+		inStream >> _row >> _col;
+		for (int j = 0; j < _col; j++)
+		for (int k = 0; k < _row; k++)
+		inStream >> room[j][k];
+
+		check();
+
+	}
+	inStream.close();		
+	return 0;
+}

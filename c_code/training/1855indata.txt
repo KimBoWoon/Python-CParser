@@ -1,0 +1,60 @@
+
+#pragma warning(disable:4996)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int VPS(char *input){
+	int flag = 0; 
+	int i;
+
+	for (i = 0; i<strlen(input); i++){
+		if (input[i] == '(')
+			flag++;
+		else
+			flag--;
+
+		if (flag < 0) 
+			return 0;
+		
+		if (i==(strlen(input)-1) ){ 
+			if (flag != 0)
+				return 0;
+			else 
+				return 1;
+		}
+	}
+}
+int main(){
+
+	FILE *fp;
+	int numcases;
+	int i;
+	int result = 0;
+
+	fp = fopen("input.txt", "r");
+	if (fp == NULL) exit(1);
+
+	fscanf(fp, "%d", &numcases);
+
+
+	for (i = 0; i<numcases; i++){
+		char input[50] = { 0 };
+
+		fscanf(fp, "%s", &input);
+
+		result = VPS(input);
+
+		if (result == 1)
+			printf("YES\n");
+		else
+			printf("NO\n");
+
+
+	}
+	fclose(fp);
+}
+
+
+
+

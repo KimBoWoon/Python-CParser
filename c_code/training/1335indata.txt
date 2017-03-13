@@ -1,0 +1,41 @@
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+void henry(int numerator, int denominator);
+int main()
+{
+	int numTestCases;
+	int numerator; 
+	int denominator; 
+	
+	ifstream inFile;
+	inFile.open("input.txt");
+	inFile >> numTestCases; 
+
+	if(inFile.is_open() == false) {cout << "파일을 열 수 없습니다" <<endl;}
+
+		for(int i = 0 ; i < numTestCases ; i++) {
+			inFile >> numerator >> denominator;
+			henry(numerator, denominator);
+			}
+}
+
+void henry(int numerator, int denominator)
+{
+	int arr[32] = {0}; 
+	int x = 2;
+	int i = 0;
+	while(1)
+	{    	
+		if( numerator*x >= denominator ){
+			arr[i] = x;
+			i++;
+			numerator = numerator*x - denominator;
+			denominator = denominator*x;			
+			if(numerator == 0) {cout << arr[i-1] << endl; break;}
+		}
+		x++;
+	}
+}

@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+#define TRUE 1
+#define FALSE 0
+
+void twoNumber(int a[],int num);
+
+int main(void)
+{
+	FILE *fp;
+	int p,numTestCases;
+	int i,j,k=0,cnt=0;
+	int prime[168]={0,};
+	fp=fopen("input.txt","r");
+	if(fp==NULL) return ;
+
+	fscanf(fp,"%d",&numTestCases);
+
+	for(i=2; i<=1000; i++){
+		for(j=2; j<=i; j++){
+			if(i%j==0){
+				if(j==i)
+					prime[k++]=i;
+				else
+					break;
+			}
+		}
+	}
+	for(p=0; p<numTestCases; p++){
+		int number;
+		fscanf(fp,"%d",&number);
+
+		twoNumber(prime,number);
+	}
+    return 0;
+}
+
+void twoNumber(int a[], int num)
+{
+	int i,j,k=0,l,result,p,q,r,index;
+	int minusIndex[168][2];
+	int min=9999;
+	int temp;
+	int minus[168];
+	for(l=0; l<168; l++)
+		minus[l]=1000;
+	for(i=0; i<168; i++){
+		for(j=0; j<168; j++){
+			if(num==a[i]+a[j]){
+				minusIndex[k][0]=a[i];
+				minusIndex[k][1]=a[j];
+				minus[k++]=abs(a[i]-a[j]);
+			}
+		}
+	}
+	for(p=0; p<168; p++){
+		if(minus[p]<min){
+			min=minus[p];
+			index=p;
+		}
+	}
+	printf("%d %d\n",minusIndex[index][0],minusIndex[index][1]);
+	
+
+}

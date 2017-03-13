@@ -1,0 +1,42 @@
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+#define max(a,b) (((a)>(b) )? (a) : (b)) 
+int card[1001], sumCard[1001],D[1001][1001];
+
+int cardGame(int start, int end)
+{
+	if (start > end) return 0; 
+	if (start == end) return card[start]; 
+	if (D[start][end] >= 0) return D[start][end];
+	D[start][end] = max(sumCard[end] - sumCard[start - 1] - cardGame(start + 1, end), sumCard[end] - sumCard[start - 1] - cardGame(start, end - 1));
+	
+
+	return D[start][end];
+}
+
+
+int main()
+{
+	ifstream inStream;
+	inStream.open("input.txt");
+	if (inStream.fail()) exit(1);
+	int numTest;
+	inStream >> numTest;
+	for (int k = 0; k < numTest; k++)
+	{
+		int n;
+		inStream >> n;
+		for (int i = 1; i <= n; i++){
+			inStream >> card[i];
+			sumCard[i] = sumCard[i - 1] + card[i];
+		}
+		for (int i = 1; i <= n; i++)
+		{
+			for (int j = i; j <= n; j++) D[i][j] = -1;
+		} 
+
+		cout << cardGame(1, n) << endl;
+	}
+}

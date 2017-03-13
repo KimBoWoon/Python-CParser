@@ -1,0 +1,66 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+#define SWAP(x,y,z) ((z)=(x), (x)=(y), (y)=(z))
+char list[12] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l' };			
+
+int facTo(int n)				
+{
+	int number=1;
+	for(int i=1; i<=n; i++) number*=i;
+
+	return number;
+}
+
+int main(){
+	ifstream infile;
+	int i, testCase;
+	infile.open("input.txt");
+	infile>>testCase;
+
+	for(i=0; i<testCase; i++){		
+		int start,last,test,div;
+		char temp=0;
+		int k=0;
+		infile >> start >> last;
+		int range = start - 1; 
+
+		while(k<start){
+			test = facTo(range);					
+			div = last / test;
+			if (last % test==0)
+				div--;
+			for (int j = div +k; j > k; j--){
+				SWAP(list[j-1],list[j], temp);	
+			}
+			last -= div*test;
+			range--;
+			k++;
+		}
+		if (last==2){
+			SWAP(list[start-2],list[start-1], temp); 
+		}
+		for (int j = 0; j < start; j++){
+			cout << list[j];
+		}
+		cout << endl;
+
+		list[0]='a';					
+		list[1]='b';
+		list[2]='c';
+		list[3]='d';
+		list[4]='e';
+		list[5]='f';
+		list[6]='g';
+		list[7]='h';
+		list[8]='i';
+		list[9]='j';
+		list[10]='k';
+		list[11]='l';
+	}
+	return 0;
+}

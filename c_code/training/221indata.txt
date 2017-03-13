@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <string.h> 
+#include <stdlib.h>
+
+int gcd(int a, int b);
+
+void main(void)
+ {
+	FILE *in_file;
+
+	int no_cases; 
+	int i,temp;
+	int up1, up2, down1, down2;
+	int upside, downside;
+	in_file = fopen("input.txt","r");
+	fscanf(in_file,"%d",&no_cases);
+	for(i=0; i<no_cases; i++){
+		fscanf(in_file,"%d %d %d %d",&up1,&down1,&up2,&down2);
+		upside = up1 * down2 + up2 * down1;
+		downside = down1 * down2;
+		gcd(upside,downside);
+		temp=gcd(upside,downside);
+		if(temp==1)
+			printf("%d %d\n",upside,downside);
+		else
+			printf("%d %d\n",upside/temp,downside/temp);
+		
+	}
+}
+
+
+int gcd(int a, int b)
+{
+	if (b == 0) return a;
+	else return gcd(b, a%b);
+}

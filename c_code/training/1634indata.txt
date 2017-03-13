@@ -1,0 +1,90 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 100010
+
+typedef struct pair Pair;
+
+struct pair 
+{
+	long int x;
+	long int y;
+
+};
+
+Pair CD[MAX]; 
+
+int CompareDsc_y(const void* src, const void* dsc)
+{
+	Pair *s1, *s2;
+	s1 = (Pair*)src; s2 = (Pair*)dsc;
+
+	if (s1->y < s2->y) return 1;
+	else return -1;
+}
+int CompareAsc_y(const void* src, const void* dsc)
+{
+	Pair *s1, *s2;
+	s1 = (Pair*)src; s2 = (Pair*)dsc;
+
+	if (s1->y > s2->y) return 1;
+	else return -1;
+}
+int CompareAsc_x(const void* src, const void* dsc)
+{
+	Pair *s1, *s2;
+	s1 = (Pair*)src; s2 = (Pair*)dsc;
+
+	if (s1->x > s2->x) return 1;
+	else return -1;
+}
+
+int main()
+{
+	FILE* fp;
+	long int t, n, i, m, tmp, j;
+	fp = fopen("input.txt", "r");
+	if (fp == NULL) return 0; 
+	fscanf(fp, "%ld ", &t); 
+	while (t--) {
+		fscanf(fp, "%ld", &n);
+		for (i = 1; i <= n; i++)
+		{
+			fscanf(fp, "%ld%ld", &CD[i].x, &CD[i].y); 
+		}
+		qsort(CD + 1, n, sizeof(Pair), CompareAsc_x); 
+		
+		for (i = 1; i <= n; i++) 
+		{
+			if (CD[i].x == CD[i + 1].x) 
+			{
+				j = i;
+				while (CD[j].x == CD[i].x) 
+				{
+					j++;
+				}
+				if (CD[i - 1].y < CD[i].y) 
+					qsort(CD + i, j - i, sizeof(Pair), CompareAsc_y);
+				else if (CD[i - 1].y == CD[i].y) 
+				{
+					if (CD[i - 1].y > CD[i + 1].y) 
+						qsort(CD + i + 1, j - (i + 1), sizeof(Pair), CompareDsc_y);
+					else
+						qsort(CD + i + 1, j - (i + 1), sizeof(Pair), CompareAsc_y);
+				}
+				else
+					qsort(CD + i, j - i, sizeof(Pair), CompareDsc_y);
+			}
+		}
+
+		fscanf(fp, "%ld", &m); 
+		for (i = 0; i < m; i++) 
+		{
+			fscanf(fp, "%ld", &tmp);
+			printf("%ld %ld\n", CD[tmp].x, CD[tmp].y);
+		}
+	}
+	fclose(fp); 
+	return 1;
+}

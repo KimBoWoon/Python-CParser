@@ -1,0 +1,99 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int num=0,cnt=0;
+
+void floodFill(char **fig,int x, int y, char oldColor,char newColor)
+{
+	int i,j;
+	if (fig[x][y] != oldColor)
+		return;
+	else
+	{
+		fig[x][y] = newColor;
+		num++;
+		floodFill(fig, x-1, y, oldColor, newColor);
+		floodFill(fig,x+1, y, oldColor, newColor);
+		floodFill(fig,x, y-1, oldColor, newColor);
+		floodFill(fig,x, y+1, oldColor, newColor);	
+	}
+}
+
+void selectionsort(int *data,int size)
+{
+	int i,j;
+	int index;
+	int max;
+	int tmp;
+
+	for(i=0;i<size;i++)
+	{
+		index = i;
+		max = data[i];
+		for(j=i+1;j<size;j++)
+		{
+			if(max<data[j])
+			{
+				max = data[j];
+				index=j;
+			}
+		}
+		tmp=data[i];
+		data[i]=data[index];
+		data[index]=tmp;
+	}
+	printf("%d\n",size);
+
+	for(i=0;i<size;i++){
+		printf("%d ",data[i]);
+	}
+}
+
+void main(void)
+{
+	FILE *file;
+	int i, test;
+	int arr[100]={0};
+	file=fopen("input.txt","r"); 
+	if(file==NULL) exit(1);
+	
+	fscanf(file,"%d", &test); 
+
+	for(i=0; i<test; i++)
+	{
+		int j,k,m,l,n;
+		char **fig ;
+		int width,height;
+		int max,count[100]={0},cou=0,recount[100]={0};
+		fscanf(file,"%d %d",&height,&width); 
+
+		fig= (char**)malloc(sizeof(char*)*(width)); 
+
+		for(j=0;j<width;j++)
+			fig[j] = (char*)malloc(sizeof(char)*(height));
+		
+		for(k=0;k<width;k++)
+		{
+				fscanf(file,"%s",fig[k]);
+		}
+
+		for(k=0;k<width;k++)
+	    {
+			for(j=0;j<height;j++)
+			{
+				floodFill(fig,k,j, '.', '+');
+				if(num!=0){
+					count[cnt]=num;
+					cnt++;
+					num=0;}
+			}
+		}
+		selectionsort(count,cnt);
+	
+		printf("\n");
+		cnt=0;
+	}
+	fclose(file); 
+}

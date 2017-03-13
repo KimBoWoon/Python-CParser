@@ -1,0 +1,110 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+void cal(fstream &infile, int num); 
+
+int main()
+{
+	int nocases;
+	int num;
+
+	fstream infile;
+
+	infile.open("input.txt");
+
+	if(infile.fail())
+	{
+		cerr << "파일열기 오류" << endl;
+		exit(1);
+	}
+
+	infile >> nocases;
+
+	for(int i = 0; i < nocases; i++)
+	{
+		infile >> num;
+		cal(infile,num);
+	}
+
+	return 0;
+}
+
+void cal(fstream &infile, int num)
+{
+	int snum[1000][15];
+	int count = 0;
+	int count1 = 0;
+	int count2 = 0;
+	int count3 = 0;
+	int num2 = 0;
+
+	for(int i = 0; i<num; i++)
+	{
+		infile >> snum[0][i];
+	}
+
+	while(1)
+	{
+		if(count1 < num-1)
+		{
+			snum[count+1][count1] = snum[count][count1] > snum[count][count1+1] ? (snum[count][count1]-snum[count][count1+1])%10 : (snum[count][count1+1]-snum[count][count1])%10;
+			count1 ++;
+		}
+
+		else if(count1 == num-1)
+		{
+			snum[count+1][count1] = snum[count][count1] > snum[count][0] ? (snum[count][count1]-snum[count][0])%10 : (snum[count][0] - snum[count][count1])%10;
+
+			for(int i = 0; i<num; i++)
+			{
+				if(snum[count+1][i] == 0)
+				{
+					count2 ++;
+				}
+			}
+
+			if(count2 == num)
+			{
+				cout << "ZERO" << endl;
+				break;
+			}
+
+			else
+			{
+				count2 = 0;
+			}
+
+			for(int i = 0; i < count; i++)
+			{
+				for(int j = 0; j < num; j++)
+				{
+					if(snum[i][j] == snum[count+1][j])
+					{
+						count3 ++;
+					}
+				}
+
+				if(count3 == num)
+				{
+					cout << "LOOP" << endl;
+					num = 1;
+					break;
+				}
+
+				else
+					count3 = 0;
+			}
+
+			if(num == 1)
+			{
+				break;
+			}
+
+			count1 = 0;
+			count++;
+		}
+	}
+}

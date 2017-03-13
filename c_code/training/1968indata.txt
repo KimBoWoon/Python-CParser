@@ -1,0 +1,94 @@
+
+
+#include <stdio.h>
+#define MAX 10000000
+long int data_arr[MAX];
+void Swap(long int *src, long int *dst) 
+{
+	long int temp;
+	temp = *src;
+	*src = *dst;
+	*dst = temp;
+}
+void dscSort(long int *dataSet, const int posLeft, const int posRight) 
+{
+	int i = posLeft, j = posRight;
+	long int x = dataSet[(posLeft + posRight) / 2];
+
+	do{
+		while (dataSet[i] < x) i++;
+		while (dataSet[j] > x) j--;
+		if (i <= j)
+		{
+			Swap(dataSet + i, dataSet + j);
+			i++; j--;
+		}
+	} while (i <= j);
+	if (posLeft < j) dscSort(dataSet, posLeft, j);
+	if (i < posRight) dscSort(dataSet, i, posRight);
+}
+int SearchBinary(int posLeft, int posRight, int key) 
+{
+	int low = posLeft;
+	int high = posRight - 1;
+	int mid;
+	while (low <= high)
+	{
+		mid = (low + high) / 2;
+		if (data_arr[mid] > key) high = mid - 1;
+		else if (data_arr[mid] < key) low = mid + 1;
+		else return mid;
+	}
+	return -1;
+}
+int checkTwoNumbers(long int length,long int target)
+{
+	int i, j, count = 0, sw = 0;
+	long int temp, x; 
+	x = target; 
+	dscSort(data_arr, 0, length - 1); 
+	
+	if (target > (data_arr[length - 1] + data_arr[length - 2])) return 1; 
+	else if (target < (data_arr[0] + data_arr[1])) return 1; 
+	else 
+	{
+		while (1) 
+		{
+			for (i = 0; i < length; i++) 
+			{
+				temp = x - data_arr[i]; 
+				j = SearchBinary(i + 1, length, temp); 
+				if (j > 0){ 
+					count++; 
+					j = 0; 
+				}
+				else j = 0; 
+			}
+			if ((count != 0) && (x == target)) return count; 
+			else if ((sw == 0) && (count != 0) && (x != target)) 
+			{
+				x = target - (x - target);
+				sw++;
+			}
+			else if ((sw != 0) && (count != 0) && (x != target)) return count; 
+			if (!sw) x++; 
+		}
+	}
+}
+
+int main()
+{
+	FILE* fp;
+	int t, i;
+	long int target_num, data_num;
+	fp = fopen("input.txt", "r");
+	if (fp == NULL) return 0; 
+	fscanf(fp, "%d ", &t); 
+	while (t--) {
+		fscanf(fp, "%ld %ld", &data_num, &target_num); 
+		for (i = 0; i < data_num; i++) fscanf(fp, "%ld", &data_arr[i]); 
+		printf("%d\n", checkTwoNumbers(data_num, target_num)); 
+	}
+	fclose(fp); 
+	return 1;
+}

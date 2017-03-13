@@ -1,0 +1,59 @@
+
+
+#include <iostream>
+#include <fstream>
+
+
+using namespace std;
+
+int factorial(int num) {
+	if (num==0) 
+		return 1;
+	else 
+		return num*factorial(num-1);
+}
+void diction(char *str, int n, int range) 
+{
+	char temp;
+	for(int j=0; j<n; j++) {
+		int fac = factorial(n-j-1);
+		int first = range/fac;
+		if(range%fac==0) 
+			first=first-1;
+		for(int h=(j+first); h>j; h--) {
+			temp=str[h-1];
+			str[h-1]=str[h];
+			str[h]=temp;
+		}
+		range = range-fac*first;
+	}
+	if(range==2) {
+		temp=str[n-2];
+		str[n-2]=str[n-1];
+		str[n-1]=temp;
+	}
+}
+
+void show(char*str, int n)
+{
+	for(int j=0; j<n; j++) {
+		cout << str[j];
+	}
+	cout << endl;
+}
+int main(void) 
+{
+	int test, n, range;
+	ifstream file;
+	file.open("input.txt"); 
+	file >> test;
+
+	for(int i=0; i<test; i++) 
+	{
+		file >> n >> range;
+		char str[12] = {'a','b','c','d','e','f','g','h','i','j','k','l' };
+		diction(str, n, range);
+		show(str,n);
+	}
+	return 0;
+}

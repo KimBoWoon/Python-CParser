@@ -1,0 +1,53 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int pos;
+
+int palindromicNumbers(int b[], int left, int right){
+	if (left >= right)
+		return 1;
+	
+	if (b[left] == b[right])
+		palindromicNumbers(b, left + 1, right - 1);
+	else
+		return 0;
+}
+
+void chargeB(int* b, int base, int num){
+	if (num < base){
+		b[pos] = num;
+	}
+	else {
+		chargeB(b, base, num / base);
+		b[++pos] = num%base;
+	}
+}
+
+void main(void) {
+	FILE *inFile;
+	int circle, i;
+	int num;
+
+	inFile = fopen("input.txt", "r");
+	fscanf(inFile, "%d", &circle);
+	while (circle--){
+		int b[30] = { 0, };
+		int check = 0;
+		fscanf(inFile, "%d", &num);
+		
+		
+		for (i = 2; i <= 64; i++){
+			pos = 0;
+			chargeB(b, i, num);
+			check = palindromicNumbers(b, 0, pos);
+			if (check)
+				break;
+			
+		}
+
+		printf("%d\n", check);
+
+	}
+}

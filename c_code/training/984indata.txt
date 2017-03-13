@@ -1,0 +1,194 @@
+
+
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+
+#define RIGHT 0
+#define DOWN 1
+#define MAXTURN 300
+
+typedef struct position
+{
+	int horizon_x, horizon_y;
+	int vertical_x, vertical_y;
+	int	horizon_max, vertical_max;
+	int move_directon;
+	int move_distance;
+} POSITION;
+
+int proveLoad(std::fstream &inputfile,int grid_m, int grid_n, int drive_time, int gas);
+bool moveCar(int horizon_length[101][101], int vertical_length[101][101], POSITION &pos, int &current_turn, int gas);
+int decison_turn(int current_pos, int max_pos, int current_turn);
+void resetPostion(POSITION &pos);
+bool reverseMove(POSITION &pos, POSITION &defalutpos, int &current_turn);
+
+int main()
+{
+	std::fstream inputfile; 
+	int testcase; 
+	int grid_m, grid_n, drive_time,gas;
+	
+	inputfile.open("input.txt");
+	if (inputfile.fail())
+	{
+		std::cerr << "Input file opening failed \n";
+		exit(1);
+	}
+	inputfile >> testcase;
+
+	for (int i = 0; i < testcase; i++)
+	{
+		inputfile >> grid_m >> grid_n >> drive_time >> gas;
+		std::cout << proveLoad(inputfile,grid_m, grid_n, drive_time, gas) << std::endl;
+	}
+
+	return 0;
+}
+int proveLoad(std::fstream &inputfile, int grid_m, int grid_n, int drive_time, int gas)
+{
+	int horizon_length[100][100]; 
+	int verticle_length[100][100]; 
+
+	for (int i = 0; i < grid_m; i++)
+	{
+		for (int j = 1; j < grid_n; j++)
+		{
+			inputfile >> horizon_length[i][j - 1];
+		}
+	}
+	for (int i = 1; i < grid_m; i++)
+	{
+		for (int j = 0; j < grid_n; j++)
+		{
+			inputfile >> verticle_length[i - 1][j];
+		}
+	}
+
+	int ****all_move; 
+	all_move = new int ***[101];
+	for (int i = 0; i < 101; i++)
+	{
+		all_move[i] = new int **[101];
+		for (int j = 0; j < 101; j++)
+		{
+			all_move[i][j] = new int *[2];
+			for (int k = 0; k < 2; k++)
+			{
+				all_move[i][j][k] = new int[201];
+				for (int l = 0; l < 201; l++)
+				{
+					all_move[i][j][k][l] = 0;
+				}
+			}
+		}
+	}
+	all_move[0][0][0][0] = 0;
+	all_move[0][1][0][0] = horizon_length[0][0];
+	all_move[1][0][1][0] = verticle_length[0][0];
+
+	for (int i = 0; i < grid_m; i++)
+	{
+		for (int j = 0; j < grid_n; j++)
+		{
+			if (i == 0 && j == 0) continue;
+
+			for (int m = 0; m < 2; m++)
+			{
+				for (int n = 0; n < 201; n++)
+				{
+					if (all_move[i][j][m][n] > 0)
+					{
+						if (m == RIGHT)
+						{
+							if (all_move[i][j + 1][RIGHT][n] > 0)
+							{
+								if (all_move[i][j + 1][RIGHT][n] > all_move[i][j][RIGHT][n] + horizon_length[i][j])
+								{
+									all_move[i][j + 1][RIGHT][n] = all_move[i][j][RIGHT][n] + horizon_length[i][j];
+								}
+							}
+							else
+							{
+								all_move[i][j + 1][RIGHT][n] = all_move[i][j][RIGHT][n] + horizon_length[i][j];
+							}
+							if (all_move[i + 1][j][DOWN][n + 1] > 0)
+							{
+								if (all_move[i + 1][j][DOWN][n + 1] > all_move[i][j][RIGHT][n] + verticle_length[i][j])
+								{
+									all_move[i + 1][j][DOWN][n + 1] = all_move[i][j][RIGHT][n] + verticle_length[i][j];
+								}
+							}
+							else
+							{
+								all_move[i + 1][j][DOWN][n + 1] = all_move[i][j][RIGHT][n] + verticle_length[i][j];
+							}
+						}
+						else if (m == DOWN)
+						{
+							if (all_move[i][j + 1][RIGHT][n + 1] > 0)
+							{
+								if (all_move[i][j + 1][RIGHT][n + 1] > all_move[i][j][DOWN][n] + horizon_length[i][j])
+								{
+									all_move[i][j + 1][RIGHT][n + 1] = all_move[i][j][DOWN][n] + horizon_length[i][j];
+								}
+							}
+							else
+							{
+								all_move[i][j + 1][RIGHT][n + 1] = all_move[i][j][DOWN][n] + horizon_length[i][j];
+							}
+							if (all_move[i + 1][j][DOWN][n] > 0)
+							{
+								if (all_move[i + 1][j][DOWN][n] > all_move[i][j][DOWN][n] + verticle_length[i][j])
+								{
+									all_move[i + 1][j][DOWN][n] = all_move[i][j][DOWN][n] + verticle_length[i][j];
+								}
+							}
+							else
+							{
+								all_move[i + 1][j][DOWN][n] = all_move[i][j][DOWN][n] + verticle_length[i][j];
+							}
+						}
+					} 
+				} 
+			} 
+		} 
+	} 
+	int minimunturn = MAXTURN;
+	for (int i = 0; i < 2; i++)
+	{
+		for (int k = 0; k < 201; k++)
+		{
+			if ((all_move[grid_m - 1][grid_n - 1][i][k] > 0) && all_move[grid_m - 1][grid_n - 1][i][k] <= gas)
+			{
+				if (minimunturn > k )
+					minimunturn = k;
+			}
+		}
+	}
+	for (int i = 0; i < 101; i++)
+	{
+		for (int j = 0; j < 101; j++)
+		{
+			for (int k = 0; k < 2; k++)
+			{
+				delete[] all_move[i][j][k];
+			}
+		}
+	}
+	for (int i = 0; i < 101; i++)
+	{
+		for (int j = 0; j < 101; j++)
+		{
+			delete[] all_move[i][j];
+		}
+	}
+	for (int i = 0; i < 101; i++)
+	{
+		delete[] all_move[i];
+	}
+	delete[] all_move;
+
+	if (minimunturn == MAXTURN) return -1;
+	return (((grid_m - 1) + (grid_n - 1))*drive_time + minimunturn);
+}

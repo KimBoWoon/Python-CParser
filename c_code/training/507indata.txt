@@ -1,0 +1,80 @@
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+#define SELECTED 'z'        
+#define SWAP(x,y,t) ( (t) = (x), (x) = (y), (y) = (t) )     
+
+int testCase, n, k;
+char alpa[] = "abcdefghijkl";       
+char *str = NULL;
+
+void sorting(int _n)        
+{
+	int i, j;
+	char tmp;
+
+	for(i=0; i<_n-1; i++)
+	{
+		for(j=i+1; j<_n; j++)
+		{
+			if(str[i] > str[j])
+			{
+				SWAP(str[i], str[j], tmp);
+			}
+		}
+	}
+}
+
+int factorial(int _n)       
+{
+	int i;
+	int result = 1;
+
+	for(i=_n; i>0; i--)
+	{
+		result *= i;
+	}
+
+	return result;
+}
+
+int main()
+{
+	FILE *fp = NULL;
+
+	fp = fopen("input.txt", "r");
+	fscanf(fp, "%d", &testCase);
+	while(testCase--)
+	{
+		int i, select;
+		int subVar = 1;
+		fscanf(fp, "%d %d", &n, &k);
+		str = (char *) malloc (n * sizeof(char));
+		for(i=0; i<n; i++)
+		{
+			str[i] = alpa[i];
+		}
+		k -= 1;         
+
+		select = k / factorial(n-subVar);       
+		printf("%c", str[select]);
+		str[select] = SELECTED;                 
+		sorting(n);                             
+
+		while(subVar < n)       
+		{
+			select = k % factorial(n-subVar) / factorial(n-subVar-1);
+			printf("%c", str[select]);
+			str[select] = SELECTED;
+			sorting(n);
+			subVar += 1;
+		}
+		printf("\n");
+		free(str);
+	}
+
+	fclose(fp);
+	return 0;
+}

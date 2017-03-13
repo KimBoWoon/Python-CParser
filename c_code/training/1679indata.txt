@@ -1,0 +1,85 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define POINTMAX 100004
+
+typedef struct point {
+	int x;
+	int y;
+	int number;
+} Point;
+
+int sortXY(const void *x, const void *y) {
+	return ((*(Point *)x).x != (*(Point *)y).x) ?
+		(*(Point *)x).x - (*(Point *)y).x :
+		(*(Point *)x).y - (*(Point *)y).y;
+}
+
+int compNumber(const void *x, const void *y) {
+	return (*(Point *)x).number - (*(Point *)y).number;
+}
+
+Point pos[POINTMAX] = { 0, };
+
+int main() {
+	
+	int numTestCase, i;
+	FILE* file;
+
+	file = fopen("input.txt", "r");
+
+	fscanf(file, "%d", &numTestCase);
+
+	for(i=0; i< numTestCase; i++) {
+		
+		int cafeNum = 0;
+		int cafeQNum = 0;
+		int j = 0;
+		int preY = 0;
+		int number = 1;
+		int x, y, e;
+
+		fscanf(file, "%d", &cafeNum);
+		memset(pos, 0, sizeof(Point) * POINTMAX);
+
+		for (j = 0; j < cafeNum; j++)   
+			fscanf(file, "%d %d", &pos[j].x, &pos[j].y);
+
+		qsort(pos, cafeNum, sizeof(Point), sortXY);   
+
+
+		for (j = 0; j < cafeNum; j++) {
+			e = j;
+			for (x = j + 1; x <= cafeNum; x++) {
+				if (pos[j].x == pos[x].x)
+					e = x;
+				else
+					break;
+			}
+			if (pos[j].y < preY) {
+				for (y = e; y >= j; y--)
+					pos[y].number = number++;
+				preY = pos[j].y;
+			}
+			else {
+				for (y = j; y <= e; y++)
+					pos[y].number = number++;
+				preY = pos[e].y;
+			}
+			j = e;
+		}
+
+		qsort(pos, cafeNum, sizeof(Point), compNumber); 
+		
+		fscanf(file, "%d", &cafeQNum);
+
+		for (j = 0; j < cafeQNum; j++) {
+			int cafe;
+			fscanf(file, "%d", &cafe);
+			printf("%d %d\n", pos[cafe - 1].x, pos[cafe - 1].y);
+		}
+	}
+}

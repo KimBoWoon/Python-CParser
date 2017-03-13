@@ -1,0 +1,58 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+void find_parenthesis(std::string str, int left_parenthesis, int right_parenthesis, int index);
+
+int main(void){
+
+	std::ifstream inFile("input.txt");
+	if (inFile.fail()){
+		std::cout << "not file" << std::endl;
+		return 0;
+	}
+
+	int testCases = 0;
+	inFile >> testCases;
+		
+	std::string parenthesis;
+	std::getline(inFile, parenthesis);
+	
+	for (int i = 0; i < testCases; i++){
+		
+		std::getline(inFile, parenthesis);
+		find_parenthesis(parenthesis, 0, 0, 0);
+	}
+
+	return 0;
+}
+
+void find_parenthesis(std::string str, int left_parenthesis, int right_parenthesis, int index){
+
+	if (index == str.length()){
+
+		if (left_parenthesis == right_parenthesis){
+			std::cout << "YES" << std::endl;
+		}
+		else{
+			std::cout << "NO" << std::endl;
+		}
+		return;
+	}
+	else if (left_parenthesis < right_parenthesis){
+		std::cout << "NO" << std::endl;
+		return;
+	}
+	else{
+		if (str.at(index) == '('){
+			find_parenthesis(str, left_parenthesis + 1, right_parenthesis, index + 1);
+		}
+		else if(str.at(index) == ')'){
+			find_parenthesis(str, left_parenthesis, right_parenthesis + 1, index + 1);
+		}
+		else{
+			std::cout << "NO" << std::endl;
+			return;
+		}
+	}
+}

@@ -1,0 +1,33 @@
+
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include<stdlib.h>
+
+int fib(int n)
+{
+	if (n <= 1)
+		return 1;
+	else
+		return n* fib(n - 1);
+}
+
+void main(){
+	FILE *in_file;
+	int no_cases, no_data;
+	int i;
+
+	in_file = fopen("input.txt", "r"); 
+	if (in_file == NULL) exit(1);
+
+	fscanf(in_file, "%d", &no_cases);
+
+	for (i = 0; i < no_cases; i++)
+	{
+		fscanf(in_file, "%d", &no_data);
+		
+		printf("%d\n",fib(no_data));
+	}
+
+	fclose(in_file);
+}
+

@@ -1,0 +1,54 @@
+
+
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<cstdlib>
+
+using namespace std;
+
+int factorial(int i);
+
+int tempCount = 0;
+int main()
+{
+	int numTest;
+	int count = 0;
+	int size = 0;
+	int checkSize = 0;
+	ifstream inStream;
+	inStream.open("input.txt");
+	if (inStream.fail()) exit(1);
+
+	inStream >> numTest;
+	for (int i = 0; i < numTest; i++){
+		inStream >> size >> count;
+		char alpha[13] = "abcdefghijkl";
+		checkSize = size;
+		tempCount = (--count) / factorial(size - 1);
+
+		for (int k = 0; k < checkSize; k++)
+		{
+			tempCount = (count) / factorial(size - 1);
+			cout << alpha[tempCount];
+
+			int j = 0;
+			for (int t = 0; t < size; t++)
+			{
+				if (alpha[t] != alpha[tempCount])
+				{
+					alpha[j++] = alpha[t];
+				}
+			}
+
+			count = (count) % factorial(size - 1);
+			size--;
+		}
+		cout << endl;
+
+	}
+}int factorial(int num)
+{
+	if (num <= 1) return 1;
+	else  return num*factorial(num - 1);
+}

@@ -1,0 +1,44 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+
+using namespace std;
+
+int main()
+{
+	int test_case;
+	
+	ifstream file("input.txt");
+	
+	if(!file)
+	{
+		cout<<"wrong file!"<<endl;
+	
+	}
+	
+	file>>test_case;
+
+	while(test_case--)
+	{
+		int number;
+		file>>number;
+		int result=1;
+		
+		if(number<2)
+		{
+			result=0;
+		}
+
+		for(int i=2; i<=number; i++)
+		{
+				if(number!=i && (number % i) == 0)
+				{
+					result = 0;
+				}
+		}
+		cout<<result<<endl;
+		
+	}
+
+	return 0;
+}

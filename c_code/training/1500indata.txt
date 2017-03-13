@@ -1,0 +1,73 @@
+#include<iostream>
+#include<fstream>
+
+#define MAXSIZE 9
+using namespace std;
+
+typedef struct Point {
+	int x, y;
+}point;
+
+point direction[8] = { {1, -2}, {2, -1}, {2, 1}, {1,2}, {-1, 2}, {-2, 1}, {-2, -1}, {-1, -2} };
+int board[MAXSIZE][MAXSIZE], path[MAXSIZE][MAXSIZE];
+
+int knightTour(int m, int n, point pos, int counter)
+{
+	int i;
+	point next;
+
+	if (counter == m*n)
+		return 1;
+
+	for (i = 0; i < 8; i++) {
+		next.x = pos.x + direction[i].x;
+		next.y = pos.y + direction[i].y;
+
+		if (next.x > 0 && next.x <= n && next.y > 0 && next.y <= m && board[next.y][next.x] != 1) {
+			board[next.y][next.x] = 1;
+			path[next.y][next.x] = counter + 1;
+
+			if (knightTour(m, n, next, counter + 1))
+				return 1;
+
+			board[next.y][next.x] = 0;
+		}
+	}
+	return 0;
+}
+
+int main() {
+	ifstream inStream;
+	inStream.open("input.txt");
+	int testCase;
+	inStream >> testCase;
+
+	for (int t = 0; t < testCase; ++t) {
+		int m, n, startX, startY;
+		inStream >> m >> n >> startX >> startY;
+		point start;
+		start.y = startX;
+		start.x = startY;
+
+		for (int i = 0; i < MAXSIZE; i++)
+			for (int j =0; j < MAXSIZE; j++)
+				board[i][j] = 0;
+
+		board[start.y][start.x] = 1;
+		path[start.y][start.x] = 1;
+
+		if (knightTour(m, n, start, 1)) {
+			cout << 1 << endl;
+			for (int i = 1; i <= m; i++) {
+				for (int j = 1; j <= n; j++)
+					cout << path[i][j] << " ";
+				cout << endl;
+			}
+		}else
+			cout << 0 << endl;
+	}
+
+	inStream.close();
+	return 0;
+}
+

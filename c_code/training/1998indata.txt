@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+
+int Partition(int *arr, int left, int right);
+void QuickSort(int *arr, int left, int right);
+void AddArray(int *arr, int k, int size);
+
+void main() {
+	int numTestCases;
+	int i, j;
+	int size, k;
+	int *arr = NULL;
+	FILE *f;
+	f = fopen("input.txt", "r");
+	fscanf(f, "%d", &numTestCases);
+
+	for (i = 0; i < numTestCases; i++) {
+		fscanf(f, "%d %d", &size, &k);
+		arr = (int *)malloc(sizeof(int)*size);
+		for (j = 0; j < size; j++) {
+			fscanf(f, "%d", &arr[j]);
+		}
+		QuickSort(arr, 0, size - 1); 
+		AddArray(arr, k, size);
+	}
+	free(arr);
+}
+
+int Partition(int *arr, int left, int right) {
+	int temp;
+	int index = left;
+	int pivot = arr[index];
+	left++;
+
+	while (left <= right) {
+		while (arr[left] <= pivot && left < right)
+			left++;
+		while (arr[right] > pivot && left <= right)
+			right--;
+
+		if (left < right) {
+			temp = arr[left];
+			arr[left] = arr[right];
+			arr[right] = temp;
+		}
+		else
+			break;			
+	}
+	temp = arr[index];
+	arr[index] = arr[right];
+	arr[right] = temp;
+
+	return right;
+}
+void QuickSort(int *arr, int left, int right) {
+	if (left < right) {
+		int index = Partition(arr, left, right);
+		QuickSort(arr, left, index - 1);
+		QuickSort(arr, index + 1, right);
+	}
+}
+void AddArray(int *arr, int k, int size) {
+	int left = 0;
+	int right = size - 1;
+	int check = abs(arr[left] + arr[right] - k);
+	int count = 0;
+	int temp = left;
+
+	while (left < right) {
+		if (abs(arr[left] + arr[right] - k) < check) {
+			check = abs(arr[left] + arr[right] - k);	
+			count = 1;	
+			left++;	
+		}
+		else if (abs(arr[left] + arr[right] - k) > check) {	
+			if (arr[left] + arr[right] - k > 0) {	
+				right--;	
+				left = temp;
+			}
+			else {	
+				temp = left;
+				left++;
+			}
+		}
+		else {	
+			count++;
+			left++;
+		}
+	}
+	printf("%d\n", count);
+}

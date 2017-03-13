@@ -1,0 +1,42 @@
+
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+using namespace std;
+int score[1000][2];
+int ArrScore[1000];
+double W(double S, double A){
+	return ( (S*S) / ((S*S) + (A*A)) );
+}
+
+int main(void){
+	ifstream in;
+	in.open("input.txt");
+	int testcases;
+	in >> testcases;
+	int teamNum, plays;
+	int teamA,teamB,plus,minus;
+	for (int i = 0; i < testcases; i++){
+		int score[1000][2] = { 0, };
+		int ArrScore[1000] = { 0, };
+		in >> teamNum >> plays;
+		for (int j = 0; j < plays; j++){
+			in >> teamA >> teamB>>plus>>minus;
+			score[teamA][0] += plus;
+			score[teamA][1] += minus;
+
+			score[teamB][0] += minus;
+			score[teamB][1] += plus;
+		}
+
+		for (int j = 1; j <= teamNum; j++){
+			if (score[j][0] == 0 && score[j][1] == 0)
+				return ArrScore[j] = 0;
+			else{
+				ArrScore[j] = 1000 * W(score[j][0], score[j][1]);
+			}
+		}
+		sort(ArrScore + 1, ArrScore + teamNum + 1);
+		cout << ArrScore[teamNum] << endl << ArrScore[1] << endl;
+	}
+}

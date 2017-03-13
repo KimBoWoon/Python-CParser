@@ -1,0 +1,39 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+ifstream instream;
+
+int main(void)
+{
+   
+    int testCase;
+    int number;
+    int i, j;
+    instream.open("input.txt");
+    if(instream.fail())
+    {
+        cerr << "input file opening failed. \n";
+        exit(1);
+    }
+    
+    instream >> testCase;
+    
+    for(i=0; i<testCase; i++)
+    {
+        instream >> number;
+        for(j=2; j<number; j++)
+        {
+            if(number%j==0)
+            {
+            cout<<"0"<<endl;
+            break;
+            }
+        }
+        if(j==number)
+            cout<<"1"<<endl;
+        
+    
+    }
+    return 0;
+}

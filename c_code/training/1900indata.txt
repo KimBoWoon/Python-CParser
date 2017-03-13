@@ -1,0 +1,59 @@
+
+
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#pragma warning(disable:4996)
+int main()
+{
+	FILE *inFile; 
+	int i = 0;
+	int numtestCase, n, m, a, p, b, q; 
+	double win[1000] = { 0 };
+	double lose[1000] = { 0 };
+	double expect[1000] = { 0 }; 
+	double max = 0;
+	double min = 1000;
+
+	inFile = fopen("input.txt", "r");
+
+	
+	fscanf(inFile, "%d", &numtestCase);
+	while (numtestCase--)
+	{
+		fscanf(inFile, "%d %d", &n, &m);
+		while (m--)
+		{
+			fscanf(inFile, "%d %d %d %d", &a, &b, &p, &q);
+			win[a] += p;
+			lose[a] += q;
+			win[b] += q;
+			lose[b] += p; 
+		}
+		for (i = 0; i < 1000; i++)
+		{
+			if ((win[i] * win[i] + lose[i] * lose[i]) != 0)
+				expect[i] = win[i] * win[i] / (win[i] * win[i] + lose[i] * lose[i]); 
+		}
+		for (i = 0; i < 1000; i++)
+		{
+			if (expect[i] >= max)
+				max = expect[i];
+			if (expect[i] <= min&& expect[i] != 0)
+				min = expect[i];
+		} 
+		max *= 1000;
+		min *= 1000; 
+		printf("%0.lf\n", floor(max));
+		printf("%0.lf\n", floor(min)); 
+		max = 0;
+		min = 1000;
+		for (i = 0; i < 1000; i++)
+		{
+			win[i] = 0;
+			lose[i] = 0;
+			expect[i] = 0;
+		} 
+	}
+	return 0;
+}

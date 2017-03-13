@@ -1,0 +1,25 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+bool match(string s,int m,int i)
+{
+    if(m<0)return false;
+    if(i==s.length())
+        return m==0?true:false;
+    return s[i]=='('?match(s,m+1,i+1):match(s,m-1,i+1);
+}
+int main()
+{
+	ifstream fs;
+	fs.open("input.txt");
+    int n;
+    fs>>n;
+    while(n--)
+    {
+        string s;
+        fs>>s;
+        if(match(s,0,0))cout<<"YES\n";
+        else cout<<"NO\n";
+    }
+}

@@ -1,0 +1,27 @@
+#include <iostream>
+#include <stdio.h>
+#include <string.h>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+int main()
+{
+	int t,h,w,guest,ans_floor,tmp;
+	long long int ans_number;
+	char s[3]={0};
+	ifstream inStream;
+	inStream.open("input.txt");
+	inStream>>t;
+	for(int i=0; i<t; i++)
+	{
+		inStream>>h>>w>>guest;
+		ans_floor=(guest-1)%h+1;
+		ans_number=(guest-1)/h+1;
+		sprintf(s,"%d",ans_number);
+		if(strlen(s)==1)
+			cout<<ans_floor<<0<<ans_number<<endl;
+		else cout<<ans_floor<<ans_number<<endl;
+	}
+    return 0;
+}

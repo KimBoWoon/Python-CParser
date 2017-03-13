@@ -1,0 +1,41 @@
+
+#include <iostream>
+#include <fstream>
+#include <cstring>
+
+#define SIZE 1000	
+
+using namespace std;
+
+int checkPalindrome(char string[], int first, int last);
+
+
+int main()
+{
+	ifstream inFile;
+	inFile.open("input.txt");
+
+	int numTestCase;	
+	inFile >> numTestCase;
+
+	while (numTestCase--)	
+	{
+		char string[SIZE];	
+		inFile >> string;
+
+		cout << checkPalindrome(string, 0, strlen(string)-1) << endl;
+	}
+
+	inFile.close();
+	return 0;
+}
+
+int checkPalindrome(char string[], int first, int last)
+{
+	if (first >= last)	
+		return 1;
+	else if (string[first] != string[last])	
+		return 0;
+	else
+		return checkPalindrome(string, ++first, --last);	
+}

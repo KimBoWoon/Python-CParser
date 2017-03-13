@@ -1,0 +1,35 @@
+
+#include <cstdio>
+
+using namespace std;
+
+bool check(char *str, int cnt=0) {
+	if (cnt < 0) return false;
+	else if (*str == '\0') {
+		if (cnt != 0) return false;
+		else return true;
+	}
+	else if (*str == '(') return check(str + 1, cnt + 1);
+	else if (*str == ')') return check(str + 1, cnt - 1);
+}
+int main(void) {
+	FILE *ip = fopen("input.txt", "r");
+
+	int t;
+
+	fscanf(ip, "%d", &t);
+
+	for (int testcase = 0; testcase < t; testcase++) {
+		char str[53];
+
+
+		fscanf(ip, "%s", str);
+
+		bool result = check(str);
+
+
+		printf("%s\n", result ? "YES" : "NO");
+	}
+
+	return 0;
+}

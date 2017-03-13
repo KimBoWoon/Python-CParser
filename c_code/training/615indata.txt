@@ -1,0 +1,31 @@
+
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+unsigned int factorial(short n)
+{
+	if(n == 0)
+		return 1;
+	else 
+		return n*factorial(n-1);
+}
+
+int main()
+{
+	ifstream in;
+	in.open("input.txt");
+
+	short t;
+	in>>t;
+
+	while(t--)
+	{
+		short n;
+		in>>n;
+
+		cout<<factorial(n)<<endl;
+	}
+	in.close();
+}

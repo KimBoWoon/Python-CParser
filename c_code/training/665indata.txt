@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int Factorial(int num);
+int ans;
+void main()
+{
+	FILE *file;
+	int i=0;
+	int t, n;
+	file = fopen("input.txt","r");
+	if(file ==NULL)
+		exit(1);
+	fscanf(file, "%d", &t);
+	for(i=0; i<t; i++)
+	{
+		fscanf(file,"%d", &n);
+		printf("%d\n",Factorial(n));
+	}
+	fclose(file);
+}
+int Factorial(int num) 
+{
+	if(num <=1) 
+		ans=1; 
+	else
+		ans = num * Factorial(num-1); 
+
+	return ans;
+}

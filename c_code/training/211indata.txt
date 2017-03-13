@@ -1,0 +1,37 @@
+ 
+
+ 
+#include <stdio.h>
+
+long gcd(long m, long n); 
+
+int main()
+{
+    int test;
+    FILE *fp;
+    fp = fopen("input.txt","r"); 
+    fscanf(fp,"%d",&test);
+    while(test--)
+    {
+        long son_1,son_2,par_1,par_2,son,par,_gcd;
+        fscanf(fp,"%ld %ld %ld %ld",&son_1,&par_1,&son_2,&par_2);
+        par = par_1*par_2; 
+        son = son_1*(par/par_1) + son_2*(par/par_2); 
+        _gcd = gcd(par,son); 
+        printf("%ld %ld\n",son/_gcd,par/_gcd); 
+    }
+    fclose(fp); 
+    return 0;
+}
+
+long gcd(long m, long n) 
+{
+    if(n == 0) 
+    {
+        return m;
+    }
+    else 
+    {
+        return gcd(n,m%n);
+    }
+}

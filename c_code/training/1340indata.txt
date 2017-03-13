@@ -1,0 +1,51 @@
+
+
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+int gcd(int num1, int num2) 
+{	
+	if(num2==0) 
+		return num1;
+	else
+		return gcd(num2,num1%num2); 
+}
+
+void frationSubtract(int &son1,int &ma1, int ma2) 
+{
+	int newSon = son1*ma2 - ma1;
+	int newMa = ma1*ma2;
+	int gcdNum = gcd(newSon,newMa);
+
+	son1 = newSon/gcdNum;
+	ma1 = newMa/gcdNum;
+}
+
+void compare(int son,int ma) 
+{
+	for(int i=2;;i++)
+	{
+		if(son==1) 
+		{	
+			cout<<ma<<endl;
+			break;
+		}
+		if(son*i>ma) 
+			frationSubtract(son,ma,i);
+	}
+}
+
+int main()
+{
+	ifstream instream("input.txt",ios::in);
+	int testCase;
+	instream>>testCase;
+
+	while(testCase--)
+	{
+		int son,ma;
+		instream>>son>>ma;
+		compare(son,ma);
+	}
+}

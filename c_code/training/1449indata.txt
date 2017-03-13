@@ -1,0 +1,45 @@
+
+
+
+
+
+
+
+
+#include<iostream>
+#include<cmath>
+#include<fstream>
+using namespace std;
+
+
+int roomNumber(int H, int W, int N)
+{
+	int high, row, RN;
+	high = N % H; 
+	if (high == 0)
+	{
+		high = H;
+		row = N / H;
+	}
+	else
+		row = N / H +1;
+
+	RN = high * 100 + row; 
+	cout << RN << endl; 
+	return 0 ;
+}
+
+int main()
+{
+	fstream instream("input.txt", ios::in);
+	int testcase, H, W ,N;
+	instream >> testcase;
+
+	for (int i = 0; i<testcase; i++)
+	{
+		instream >> H >> W >> N;
+		roomNumber(H, W, N);
+
+	}
+	return 0;
+}

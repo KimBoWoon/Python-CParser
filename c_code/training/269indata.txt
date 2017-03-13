@@ -1,0 +1,48 @@
+
+
+
+
+
+
+
+#include<iostream>
+#include<cmath>
+#include<fstream>
+#include<cstring>
+using namespace std;
+
+int gcd(int A, int B)
+{
+	if (B == 0) 
+		return A;
+	else
+		return gcd(B, A%B);
+
+}
+
+int fountainSum(int a,int b, int c, int d)
+{
+	int A = a*d + b*c, B= b*d, g; 
+	g = gcd(A, B); 
+	A /= g;
+	B /= g;
+	cout << A << " " << B << endl;
+
+	return 0;
+}
+
+
+int main()
+{
+	fstream instream("input.txt", ios::in);
+	int testcase;
+	int a,b,c,d;
+	instream >> testcase;
+
+	for (int i = 0; i<testcase; i++)
+	{
+		instream >> a>>b>>c>>d;
+		fountainSum(a, b, c, d);
+	}
+	return 0;
+}

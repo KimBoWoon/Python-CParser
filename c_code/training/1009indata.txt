@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <string.h> 
+#include <stdlib.h>
+#include <math.h>
+
+int mac(int a);
+
+void main(void)
+{
+	FILE *in_file;
+	int no_cases; 
+	int i,j,m,k;
+	int c[15];
+	int print;
+
+
+	in_file = fopen("input.txt","r");
+	if(in_file == NULL) exit(1);
+	fscanf(in_file,"%d",&no_cases);
+	for(i=0; i<no_cases; i++){
+		fscanf(in_file,"%d",&m);
+		k=1000;
+		print=0;
+		for(j=0; j<m; j++){
+			fscanf(in_file,"%d",&c[j]);
+		}
+		while(k--) {
+			if(check(m,c)) {
+				printf("ZERO\n");
+				print=1;
+				break;
+			}
+		}
+		if(!print) printf("LOOP\n");
+	}
+}
+
+int check(int length,int c[])
+{
+	int i,j;
+	int newc[15];
+	for(i=0; i<length; i++)
+	{
+		if(i!=length-1) {
+			newc[i]=abs(c[i]-c[i+1]);}
+		else {newc[i]=abs(c[i]-c[0]);}
+	}
+	for(i=0; i<length; i++)
+	{
+		c[i] = newc[i];
+	}
+	for(i=0; i<length; i++)
+	{
+		if(c[i] != 0) return 0;
+	}
+	return 1;
+}

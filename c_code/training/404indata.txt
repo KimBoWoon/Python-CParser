@@ -1,0 +1,36 @@
+
+
+
+#include<stdio.h>
+
+int gcd(int _a, int _b)     
+{
+	if(_b == 0)
+	{
+		return _a;
+	}
+	else
+	{
+		int remainder = _a % _b;
+		return gcd(_b, remainder);
+	}
+}
+
+int main(void)
+{
+	FILE *fp = NULL;
+	int testCase;
+
+	fp = fopen("input.txt", "r");       
+	fscanf(fp, "%d", &testCase);        
+	while(testCase--)
+	{
+		int a, b, result;
+		fscanf(fp, "%d %d", &a, &b);    
+		result = gcd(a, b);             
+		printf("%d\n", result);         
+	}
+
+	fclose(fp);                         
+	return 0;
+}

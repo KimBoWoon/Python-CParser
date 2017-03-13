@@ -1,0 +1,72 @@
+
+
+#pragma warning(disable : 4996) 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct _team
+{
+	int win;
+	int lose;
+	float exp;
+	int flag;	
+}Team;
+
+float calcExp(float, float);
+void calMaxAndMinExp(Team []);
+
+void main(void)
+{
+	FILE *inFile;
+	int i, j;
+	int numCases;
+	int numTeam, numGame;
+	int teamA, teamB, winA, winB;
+	Team t = { 0, 0, 0.0f, 0 };
+	Team team[1001];
+
+	inFile = fopen("input.txt", "r"); 	
+
+	if (inFile == NULL) exit(1);
+	fscanf(inFile, "%d", &numCases); 	
+	for (i = 0; i < numCases; i++)
+	{
+		fscanf(inFile, "%d %d", &numTeam, &numGame); 
+
+		for (j = 0; j < 1001; j++)
+			team[j] = t;
+		for (j = 0; j < numGame; j++)
+		{
+			fscanf(inFile, "%d %d %d %d", &teamA, &teamB, &winA, &winB);
+			team[teamA].win += winA; team[teamA].lose += winB; team[teamA].flag = 1;
+			team[teamB].win += winB; team[teamB].lose += winA; team[teamB].flag = 1;
+		}
+		calMaxAndMinExp(team);
+	}
+
+	fclose(inFile); 			
+}
+
+
+float calcExp(float win, float lose)
+{
+	if (win == 0.0f&&lose == 0.0f) return 0;	
+	return (win*win) / (win*win + lose*lose);
+}
+
+void calMaxAndMinExp(Team team[])
+{
+	int i;
+	float max = 0.0f, min = 1.0f;
+
+	for (i = 0; i <= 1001; i++)
+		if (team[i].flag)		
+		{
+			team[i].exp = calcExp((float)team[i].win, (float)team[i].lose);	
+			max = max < team[i].exp ? team[i].exp : max;					
+			min = min > team[i].exp ? team[i].exp : min;					
+		}
+
+	printf("%d\n%d\n", (int)(max * 1000), (int)(min * 1000));
+}

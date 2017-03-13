@@ -1,0 +1,122 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void two_numbers(int* s, int k, int st, int en,	int* lmd, int* lmc);
+int compare(const void* a, const void* b);
+
+int main() {
+	FILE* fp = fopen("input.txt", "r");
+
+	int* s = NULL;	
+
+	int md = 0;	
+	int mc = 0;	
+
+	int lmd = 0;	
+	int lmc = 0;	
+
+	int t = 0, n = 0, k = 0;	
+	int i = 0; 
+	int key = 0, start = 0, end = 0; 
+
+	fscanf(fp, "%d", &t);
+	while (t--) {
+		fscanf(fp, "%d %d", &n, &k);
+
+		s = (int*)malloc(sizeof(int) * n);
+
+		for (i = 0; i < n; i++)
+			fscanf(fp, "%d", &s[i]);
+
+		qsort(s, n, sizeof(int), compare);
+		
+		for (i = 0; i < n - 1; i++) {
+			key = k - s[i];
+			start = i + 1;
+			end = n - 1;
+
+			lmd = -1;
+			lmc = 0;
+			
+			two_numbers(s, key, start, end, &lmd, &lmc);
+
+			if (i == 0) {
+				md = lmd;
+				mc = lmc;
+			}
+			else { 
+				if (lmd == md) {
+					mc += lmc;
+				}
+				else if (lmd < md) {
+					md = lmd;
+					mc = lmc;
+				}
+				else {
+				}
+			}
+
+		}
+		printf("%d\n", mc);
+
+		if (s != NULL) {
+			free(s);
+		}
+	}
+
+	return 0;
+}
+
+void two_numbers(int* s, int key, int start, int end, int* lmd, int* lmc) {
+	int left = start;
+	int right = end;
+	int mid = 0, i = 0;
+
+	int tmp[3] = { 0, };
+
+	if (left > right) {
+		return;
+	}
+
+	while (left <= right) {
+		mid = (left + right) / 2;
+		if (s[mid] == key) {
+			break;
+		}
+		if (key < s[mid]) {
+			right = mid - 1;
+			continue;
+		}
+		if (key > s[mid]) {
+			left = mid + 1;
+			continue;
+		}
+	}
+
+	tmp[0] = (mid - 1 >= start) ? abs(key - s[mid - 1]) : -1;
+	tmp[1] = abs(key - s[mid]);
+	tmp[2] = (mid + 1 <= end) ? abs(key - s[mid + 1]) : -1;
+
+	if (s[mid] == key) {
+		*lmd = tmp[1];
+		*lmc = 1;
+		return;
+	}
+
+	*lmd = tmp[1];
+	*lmc = 0;
+	for (i = 0; i<3; i++) { 
+		if (tmp[i] != -1 && tmp[i] < *lmd) {
+			*lmd = tmp[i];
+		}
+	}
+	for (i = 0; i<3; i++) { 
+		if (tmp[i] == *lmd) {
+			(*lmc)++;
+		}
+	}
+}
+
+int compare(const void* a, const void* b) {
+	return *(int*)a - *(int*)b;
+}

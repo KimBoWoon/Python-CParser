@@ -1,0 +1,101 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char room[100][100] = { '+', };
+int count_room_scale = 0;						
+
+void four_way_check(int i, int j)
+{
+	room[i][j] = '+';							
+	count_room_scale++;							
+
+	if ((j != 99) && (room[i][j + 1] == '.'))	
+	{
+		four_way_check(i, j + 1);
+	}
+	if ((i != 99) && (room[i + 1][j] == '.'))	
+	{
+		four_way_check(i + 1, j);
+	}
+	if ((j != 0) && (room[i][j - 1] == '.'))	
+	{
+		four_way_check(i, j - 1);
+	}
+	if ((i != 0) && (room[i - 1][j] == '.'))	
+	{
+		four_way_check(i - 1, j);
+	}
+}
+int main()
+{
+	int room_scale[100] = { 0, };
+	int numcase;
+	int M, N;
+	int i, j, k;
+	int count_room_num = 0;						
+	int max, max_i;								
+	char temp[104] = { 0, };					
+
+	FILE * in_file;
+	in_file = fopen("input.txt", "r");
+	fscanf(in_file, "%d", &numcase);
+
+	while (numcase--)
+	{
+		count_room_num = 0;								
+
+		memset(room_scale, 0, sizeof(room_scale));		
+		memset(room, '+', sizeof(room));				
+
+		fscanf(in_file, "%d %d\n", &M, &N);
+
+		for (i = 0; i < N; i++)
+		{
+			k = 0;
+			fgets(temp, sizeof(temp), in_file);			
+
+			for (j = 0; j < M; j++)
+			{
+				room[i][j] = temp[k];					
+				k++;
+			}
+		}
+
+		for (i = 0; i < N; i++)
+		{
+			for (j = 0; j < M; j++)
+			{
+				if (room[i][j] == '.')
+				{
+					four_way_check(i, j);
+					room_scale[count_room_num] = count_room_scale;		
+					count_room_num++;									
+					count_room_scale = 0;								
+				}
+			}
+		}
+
+		printf("%d\n", count_room_num);									
+
+		for (j = 0; j < count_room_num; j++)
+		{
+			max = 0;
+			max_i = 0;
+
+			for (i = 0; i < count_room_num; i++)
+			{
+				if (room_scale[i] > max)
+				{
+					max = room_scale[i];
+					max_i = i;
+				}
+			}
+			room_scale[max_i] = 0;
+
+			printf("%d ", max);											
+		}
+		printf("\n");
+	}
+	fclose(in_file);
+}

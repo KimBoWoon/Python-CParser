@@ -1,0 +1,23 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int mcFunc(int n) {
+	return (n > 100) ? n - 10 : mcFunc(mcFunc(n + 11));
+}
+
+int main(void) {
+	ifstream in("input.txt");
+
+	int t;
+
+	in >> t;
+
+	for (int i = 0; i < t; i++) {
+		int n;
+
+		in >> n;
+		cout << mcFunc(n) << endl;
+	}
+}

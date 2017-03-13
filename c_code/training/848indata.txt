@@ -1,0 +1,26 @@
+
+
+
+#include <stdio.h>
+
+int Fibonacci(int num){
+	if(num==0) return 0;	
+	else if(num==1) return 1;	
+	else return Fibonacci(num-1)+Fibonacci(num-2);	
+}
+
+int main(){
+	int cases,data,i;
+
+	FILE *infile;
+	infile = fopen("input.txt","r");
+	fscanf(infile,"%d",&cases);
+
+	for(i=0;i<cases;i++){
+		fscanf(infile,"%d",&data);
+		printf("%d\n", Fibonacci(data));
+	}
+
+	fclose(infile);
+	return 0;
+}

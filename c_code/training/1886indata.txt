@@ -1,0 +1,55 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+typedef struct team{
+	int plus;
+	int minus;
+	int pytha;
+}Team;
+
+int compare(const void* a, const void* b){
+	Team i = *(Team*)a;
+	Team j = *(Team*)b;
+
+	return -(i.pytha - j.pytha);
+}
+
+int main(){
+	int caseNum;
+	ifstream inputFile;
+	inputFile.open("input.txt");
+
+	inputFile >> caseNum;
+
+	for (int i = 0; i < caseNum; i++){
+		Team* teams;
+		int teamNum;
+		int playNum;
+		inputFile >> teamNum >> playNum;
+		
+		teams = new Team[teamNum];
+		for (int j = 0; j < teamNum; j++)
+		{
+			teams[j].minus = teams[j].plus = 0;
+		}
+		for (int j = 0; j < playNum; j++){
+			int a = 0, b = 0, c = 0, d = 0;
+			inputFile >> a >> b >> c >> d;
+			teams[a - 1].plus += c;
+			teams[a - 1].minus += d;
+			teams[b - 1].plus += d;
+			teams[b - 1].minus += c;
+		}
+		for (int j = 0; j < teamNum; j++)
+		{
+			teams[j].pytha = (teams[j].plus * teams[j].plus * 1000 / (teams[j].plus * teams[j].plus + teams[j].minus * teams[j].minus));
+		}
+		qsort(teams, teamNum, sizeof(Team), compare);
+
+
+		cout << teams[0].pytha << endl << teams[teamNum - 1].pytha << endl;
+		delete teams;
+	}
+}

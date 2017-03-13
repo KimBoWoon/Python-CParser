@@ -1,0 +1,79 @@
+#include <stdio.h> 
+ #include <stdlib.h> 
+
+ 
+ #define PARMAX 51 
+ #define STACKMAX 25 
+
+ 
+void EnterRoom(FILE** in_file, char par[]); 
+ int isParenthesis(char par[]); 
+void PrintVaild(int n); 
+
+ 
+ int main() 
+ { 
+	FILE* in_file; 
+ 	int test_case;  
+ 	 
+ 	in_file = fopen("input.txt","r"); 
+ 	
+ 	if(in_file == NULL) { 
+ 		printf("cannot open the file\n"); 
+		exit(1); 
+ 	} 
+ 
+ 
+ 	fscanf(in_file, "%d", &test_case);  
+ 	while(test_case--) { 
+		char par[PARMAX] = {0}; 
+ 
+ 
+ 		EnterRoom(&in_file, par); 
+ 		PrintVaild(isParenthesis(par)); 
+ 	} 
+ 	fclose(in_file); 
+ 
+ 
+	return 0; 
+ } 
+ 
+ void EnterRoom(FILE** in_file, char par[]) { 
+ 
+ 	fscanf(*in_file, "%s ", par); 
+ } 
+
+ int isParenthesis(char par[]) { 
+ 	char stack[STACKMAX] = {0}; 
+ 	int pStack=0;		  
+ 	int i; 
+
+ 
+ 	for(i=0; par[i]!='\0'; i++) 
+ 	{ 
+ 		if(par[i]=='(') { 
+			 
+ 			if(pStack==STACKMAX) 
+ 				return -1; 
+ 			stack[pStack++] = '('; 
+ 		} 
+ 		else { 
+			
+ 			if(pStack == 0) 
+ 				return -1; 
+ 			else  
+				stack[--pStack] = 0; 
+ 		} 
+ 	} 
+ 	if(pStack == 0) 
+ 		return 0;   
+ 	else  
+ 		return -1; 
+ } 
+
+ void PrintVaild(int n) { 
+ 	if(n==0) 
+		printf("%s\n", "YES"); 
+ 	else 
+ 		printf("%s\n", "NO"); 
+ } 

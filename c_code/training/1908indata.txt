@@ -1,0 +1,47 @@
+
+#include <iostream>
+#include <fstream>
+#define BORDER 1000
+using namespace std;
+
+int main(){
+	ifstream in;
+	in.open("input.txt");
+
+	int no_cases;
+	in>>no_cases;
+	while(no_cases--)
+	{
+		int wins[BORDER]={0,};
+		double score[BORDER]={0,}, loss[BORDER]={0.1,}; 
+
+		int num_Teams, num_Games;
+		in>>num_Teams>>num_Games;
+		while(num_Games--)
+		{
+			int a, b; 
+			double s_a, s_b;
+			in>>a>>b>>s_a>>s_b;
+			score[a]+=s_a;
+			loss[a]+=s_b;
+			score[b]+=s_b;
+			loss[b]+=s_a;
+			if(s_a>s_b) wins[a]++;
+			else      wins[b]++;
+		}
+
+		double max=0.0, min=1.0;
+		for(int i=1; i<=num_Teams; i++) 
+		{
+			double W; 
+			W = (double) (score[i]*score[i]) / ((score[i]*score[i])+(loss[i]*loss[i]));
+
+			if(max <= W) max=W;
+			else if(min >= W) min=W;
+
+		}
+		cout<<int(max*BORDER)<<endl<<int(min*BORDER)<<endl;
+	}
+	in.close();
+	return 0;
+}

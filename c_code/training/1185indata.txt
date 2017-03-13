@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+	FILE *file;
+	int cases,num;
+	int i,j,k;
+	int tn[45],data[1001]={0};
+
+	for(i=1;i<45;i++)
+		tn[i]=i*(i+1)/2; 
+	for(i=1;i<45;i++)
+		for(j=i;j<45;j++)
+			for(k=j;k<45;k++)
+				if(tn[i]+tn[j]+tn[k]<1001)
+					data[tn[i]+tn[j]+tn[k]]=1;  
+	
+	file=fopen("input.txt","r");
+
+	fscanf(file,"%d",&cases);
+	while(cases--){
+		fscanf(file,"%d",&num);
+		printf("%d\n",data[num]);
+	}
+	
+	fclose(file);
+}

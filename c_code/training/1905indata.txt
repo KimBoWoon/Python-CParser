@@ -1,0 +1,76 @@
+
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+int main()
+{
+	ifstream inStream;
+	int numTestCases;		
+	int n, m;
+	int a, b, p, q;
+	float max, min;
+
+	inStream.open("input.txt");
+
+	if (inStream.fail())
+	{
+		cerr << "Input file opening failed.\n";
+		exit(1);
+	}
+
+	inStream >> numTestCases;	
+
+	for (int i = 0; i < numTestCases; i++)
+	{
+		inStream >> n >> m;
+		int gp[1000] = { 0, };
+		int lp[1000] = { 0, };
+		float w[1000] = { 0, };
+
+		for (int j = 0; j < m; j++)
+		{
+			inStream >> a >> b >> p >> q;
+			
+			gp[a - 1] += p;
+			gp[b - 1] += q;
+			lp[a - 1] += q;
+			lp[b - 1] += p;
+		}
+
+
+		for (int l = 0; l < n; l++)
+		{
+			gp[l] = gp[l] * gp[l];
+			lp[l] = lp[l] * lp[l];
+			w[l] = (float)(gp[l]) / (float)(gp[l] + lp[l]);
+		}
+
+		max = w[0];
+		min = w[0];
+
+		for (int e = 0; e < n; e++)
+		{
+			if (w[e] > max)
+			{
+				max = w[e];
+			}
+			else if (w[e] < min)
+			{
+				min = w[e];
+			}
+		}
+		max = max * 1000;
+		min = min * 1000;
+		cout << (int)max << endl << (int)min << endl;
+
+	}
+
+	inStream.close();
+	return 0;
+}
+

@@ -1,0 +1,42 @@
+
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+int main()
+{
+	ifstream instream;
+	instream.open("input.txt");
+	if (instream.fail())
+	{
+		cerr << "Error";
+		exit(1);
+	}
+
+	int no_cases;
+	instream >> no_cases;
+
+	for (int i = 0; i < no_cases; i++)
+	{
+		int H, W, N;
+		instream >> H >> W >> N;
+
+		int y = (N - 1) % H + 1;
+		int x = (N - 1) / H + 1;
+
+		if (x < 10)
+		{
+			cout << y << "0" << x << endl;
+		}
+		else
+		{
+			cout << y << x << endl;
+		}		
+	}
+
+	return 0;
+}

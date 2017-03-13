@@ -1,0 +1,46 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+void function(int H, int W, int N);
+
+int main()
+{
+	ifstream infile("input.txt");
+	
+	int h,w,n;
+	int numTestCases;
+
+	infile >> numTestCases;
+	
+
+	while(numTestCases--)
+	{
+		infile >> h >> w >> n;
+		
+		function(h,w,n);
+	}
+	
+	
+	return 0;
+}
+void function(int H, int W, int N)
+{
+	int height = 0 ;
+	int width = 0;
+
+	height = N % H;
+	width = N / H;
+	
+	if(height == 0)
+	height = H;
+	else
+	width++;
+	
+	if(width >= 10)
+		cout<<height<<width<<endl;
+	else
+		cout<<height<<0<<width<<endl;
+}
+	
+

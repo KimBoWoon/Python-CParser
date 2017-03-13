@@ -1,0 +1,34 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+int gcd(int n,int m) 
+{
+    if(m==0)
+        return n;
+    else 
+        return gcd(m,n%m);
+}
+int main()
+{
+	ifstream inStream;
+	inStream.open("input.txt");
+    int t,a,b;
+    inStream>>t;
+    for(int i=0; i<t; i++)
+    {
+		int x, gcd_value;
+		inStream>>a>>b;
+		while(a!=1) 
+		{
+			if(b%a!=0) x=int(b/a)+1; 
+			else x=b/a;
+			a=a*x-b; 
+			b=b*x;
+			gcd_value=gcd(a,b);
+			a=a/gcd_value; 
+			b=b/gcd_value;
+		}
+		cout<<b<<endl;
+	}
+}

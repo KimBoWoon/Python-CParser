@@ -1,0 +1,74 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+void cal(fstream &infile);
+int sosu(int a);
+
+int main()
+{
+	int nocases;
+
+	fstream infile;
+
+	infile.open("input.txt");
+
+	if(infile.fail())
+	{
+		cerr <<"파일열기 오류" << endl;
+	}
+
+	infile >> nocases;
+
+	for(int i = 0; i<nocases; i++)
+	{
+		cal(infile);
+	}
+
+	return 0;
+}
+
+void cal(fstream &infile)
+{
+	int a;
+	int ns1,ns2;
+	int sns1,sns2;
+
+	infile >> a;
+	
+	ns1 = a/2;
+	ns2 = a-ns1;
+	
+	while(1)
+	{
+		sns1 = sosu(ns1);
+		sns2 = sosu(ns2);
+
+		if(sns1 == 1 && sns2 == 1)
+		{
+			cout << ns1 << " " << ns2 << endl;
+			break;
+		}
+
+		else
+		{
+			ns1 -= 1;
+			ns2 += 1;
+		}
+	}
+}
+
+int sosu(int a)
+{
+	for(int j=2; j*j <= a; j++)
+	{
+		if(a%j == 0)
+		{
+			return 0;
+		}
+	}
+
+	return 1;
+}

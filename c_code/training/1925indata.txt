@@ -1,0 +1,88 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+class team
+{
+public:
+	int winScore;
+	int loseScore;
+	double pytagoreanExpectation;
+	team() :winScore(0), loseScore(0) {}
+	void calcPE()
+	{
+		pytagoreanExpectation = ((double)(winScore * winScore)) / ((double)(winScore * winScore + loseScore * loseScore));
+	}
+};
+
+int compare(const void* a, const void* b)
+{
+	team* ptA = (team*)a;
+	team* ptB = (team*)b;
+
+	return ptA->pytagoreanExpectation > ptB->pytagoreanExpectation;
+}
+
+class baseballGame
+{
+private:
+	int numOfTeams;
+	team t[1000];
+public:
+	baseballGame(const int& n) :numOfTeams(n) {}
+	void playGame(const int& team1, const int& team2, const int& score1, const int& score2)
+	{
+		t[team1 - 1].winScore += score1;
+		t[team2 - 1].winScore += score2;
+
+		t[team1 - 1].loseScore += score2;
+		t[team2 - 1].loseScore += score1;
+	}
+	void calcTeamsPE()
+	{
+		for (int i = 0; i < numOfTeams; i++)
+			t[i].calcPE();
+		qsort(t, numOfTeams, sizeof(team), compare);
+	}
+
+	int maxPE()
+	{
+		return (int)(t[numOfTeams - 1].pytagoreanExpectation * 1000);
+	}
+	int minPE()
+	{
+		return (int)(t[0].pytagoreanExpectation * 1000);
+	}
+};
+
+int main()
+{
+	std::ifstream input;
+	input.open("input.txt");
+	if (input.fail())
+	{
+		std::cerr << "file open err" << std::endl;
+		return 1;
+	}
+
+	int numOfCase;
+	input >> numOfCase;
+	for (int i = 0; i < numOfCase; i++)
+	{
+		int numOfTeams, numOfGames;
+		input >> numOfTeams;
+		baseballGame b(numOfTeams);
+		input >> numOfGames;
+		for (int j = 0; j < numOfGames; j++)
+		{
+			int team1, team2, team1WinScore, team2WinScore;
+			input >> team1 >> team2 >> team1WinScore >> team2WinScore;
+			b.playGame(team1, team2, team1WinScore, team2WinScore);
+		}
+		b.calcTeamsPE();
+		std::cout << b.maxPE() << std::endl;
+		std::cout << b.minPE() << std::endl;
+	}
+
+	return 0;
+}

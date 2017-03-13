@@ -1,0 +1,44 @@
+
+#include <iostream>
+#include <fstream>
+
+#define max(x,y) ( (x)>(y) ) ? (x) : (y) 
+
+int A[1003], S[1003];
+int D[1003][1003];
+
+int dy(int s, int e)
+{
+	if (s >e ) return 0;
+	if( s== e) return A[s];
+	int &ret = D[s][e];
+
+	if( ret >= 0 ) return ret;
+	
+	ret = max(S[e] - S[s-1] - dy(s+1,e), S[e] - S[s-1] - dy(s, e-1));
+	return ret;
+}
+
+int main()
+{
+	int i,j;
+	int numTests;
+	int N;
+	std::fstream infile("input.txt");
+	infile >> numTests;	
+	
+	for(int k =0; k<numTests; k++ )
+	{
+		infile >> N;
+		for( i=1; i<=N; i++)
+		{
+			infile>> A[i];
+			S[i] = S[i-1] +A[i];
+		}
+		for( i=1; i<=N; i++) for( j=i; j<= N; j++) D[i][j] = -1;
+		std::cout<<dy(1,N)<<std::endl; 
+	}
+	
+	return 0;
+}
+

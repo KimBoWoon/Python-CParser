@@ -1,0 +1,90 @@
+
+#include<iostream>
+#include<fstream>
+#include <cmath>
+#include <cstdlib>
+using namespace std;
+
+int* getPrimeN(int* primeNum); 
+void printGC(int num, int* primeNum); 
+
+int main()
+{
+	int testCase = 0;
+	ifstream file;
+	file.open("input.txt");
+	file >> testCase;
+
+	int num = 0, idx = 0;
+	int primeNum[500] = { 0 }; 
+	getPrimeN(primeNum); 
+	
+	for (int i = 0; i < testCase; i++)
+	{
+		file >> num;
+
+		printGC(num, primeNum);
+	}
+
+	return 0;
+}
+
+int* getPrimeN(int* primeNum)
+{
+	
+	int idx = 0;
+	bool flag; 
+
+	for (int i = 2; i < 1000; i++)
+	{
+		flag = true;
+		for (int j = 2; j < i; j++)
+		{
+			if ((i % j) == 0) 
+			{
+				flag = false;
+				break;
+			}
+		}
+
+		if (flag)
+			primeNum[idx++] = i; 
+	}
+
+	return primeNum;
+}
+
+void printGC(int num, int* primeNum)
+{
+	int GCNum1 = 0, GCNum2 = 0; 
+	int beforeDiff = 0; 
+
+	for (int i = 0; num > primeNum[i]; i++)
+	{
+		for (int j = 0; j <= i; j++)
+		{
+			if ((primeNum[i] + primeNum[j]) == num)
+			{ 
+				if (GCNum1==0) 
+				{
+					GCNum1 = primeNum[i];
+					GCNum2 = primeNum[j];
+				}
+				else if (beforeDiff > abs(primeNum[i] - primeNum[j])) 
+				{
+					GCNum1 = primeNum[i];
+					GCNum2 = primeNum[j];
+				}
+
+				beforeDiff = abs(GCNum1 - GCNum2);
+
+			}
+		}
+	}
+
+	int temp = GCNum1;
+	GCNum1 = (GCNum1 > GCNum2) ? GCNum1 : GCNum2; 
+	GCNum2 = (temp < GCNum2) ? temp : GCNum2; 
+
+	cout << GCNum2 << " " << GCNum1 << endl;
+}

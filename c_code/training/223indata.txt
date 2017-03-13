@@ -1,0 +1,25 @@
+
+#include<iostream>
+#include<fstream>
+using namespace std;
+int gcd(int a,int b){return !b?a:gcd(b,a%b);}
+int lcm(int a,int b){return a*b/gcd(a,b);}
+
+int main()
+{
+	ifstream fs;
+	int n;
+	fs.open("input.txt");
+	fs>>n;
+	while(n--)
+	{
+		int a,b,c,d,LCM,GCD;
+		fs>>a>>b>>c>>d;
+		LCM=lcm(b,d);
+		a*=LCM/b;
+		c*=LCM/d;
+		b=d=LCM;
+		GCD=gcd(a+c,d);
+		cout<<(a+c)/GCD<<" "<<b/GCD<<"\n";
+	}
+}

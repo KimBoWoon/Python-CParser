@@ -1,0 +1,105 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void find_nearest_point(const int* set, const int key, const int start, const int end,
+	int* main_minDiff, int* main_minCnt) {
+	int left = start, right = end, mid = 0;
+	int tmp[3] = { 0, };
+	int i;
+
+	if (left <= right) {
+		while (left <= right) {
+			mid = (left + right) / 2;
+
+			if (set[mid] == key) break;
+			else{
+				if (key < set[mid]) right = mid - 1;
+				if (key > set[mid]) left = mid + 1;
+				continue;
+			}
+		}
+
+		tmp[0] = (mid - 1 >= start) ? abs(key - set[mid - 1]) : -1;
+		tmp[1] = abs(key - set[mid]);
+		tmp[2] = (mid + 1 <= end) ? abs(key - set[mid + 1]) : -1;
+
+		if (set[mid] == key) {
+			*main_minDiff = tmp[1];
+			*main_minCnt = 1;
+			return;
+		}
+
+		*main_minDiff = tmp[1];
+		*main_minCnt = 0;
+		for (i = 0; i<3; i++) {
+			if (tmp[i] != -1 && tmp[i] < *main_minDiff) *main_minDiff = tmp[i];
+		}
+		for (i = 0; i<3; i++) {
+			if (tmp[i] == *main_minDiff) (*main_minCnt)++;
+		}
+	}
+}
+
+int compare(const void* value0, const void* value1) {
+	return *(int*)value0 - *(int*)value1;
+}
+
+int main(int argc, char* argv[]) {
+	FILE *inFile;
+	int* set = NULL;
+	int minDiff = 0, minCnt = 0;
+	int main_minDiff = 0, main_minCnt = 0;
+	int circle = 0, z = 0, n = 0, k = 0;
+	int key = 0, start = 0, end = 0;
+	int i, flag_update;
+
+	inFile = fopen("input.txt", "r");
+	fscanf(inFile, "%d", &circle);
+	while (circle--){
+		fscanf(inFile, "%d%d", &n, &k); 
+
+		set = (int*)malloc(sizeof(int)*n);
+
+		for (i = 0; i<n; i++) fscanf(inFile, "%d", &set[i]);
+
+		qsort(set, n, sizeof(int), compare);
+
+		for (i = 0; i<n - 1; i++) {
+				{
+					key = k - set[i];
+					start = i + 1;
+					end = n - 1;
+
+					main_minDiff = -1;
+					main_minCnt = 0;
+					flag_update = 0;
+				}
+
+			find_nearest_point(set, key, start, end, &main_minDiff, &main_minCnt);
+
+			if (i) {
+				if (main_minDiff == minDiff) {
+					minCnt += main_minCnt;
+				}
+				if (main_minDiff < minDiff) {
+					minDiff = main_minDiff;
+					minCnt = main_minCnt;
+					flag_update = 1;
+				}
+			}
+			else {
+				minDiff = main_minDiff;
+				minCnt = main_minCnt;
+				flag_update = 1;
+			}
+
+		}
+
+		printf("%d\n", minCnt);
+		free(set);
+	}
+
+	return 0;
+}

@@ -1,0 +1,29 @@
+
+
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+
+int uclid(int n,int m);
+int main()
+{
+	ifstream inStream;
+	inStream.open("input.txt");
+	if (inStream.fail()) exit(1);
+	int numTest, num1,num2;
+	inStream >> numTest;
+
+	for (int i = 0; i < numTest; i++){
+		inStream >> num1 >> num2;
+		cout << uclid(num1, num2) << endl;
+	}
+
+}
+int uclid(int n, int m)
+{
+	if (m == 0) return n;
+	else return uclid(m, n%m);
+}
+
+

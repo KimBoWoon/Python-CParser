@@ -1,0 +1,45 @@
+#include<iostream>
+#include<fstream>
+#include<math.h>
+#include<vector>
+using namespace std;
+
+bool prime(int num) {		
+	for (int cnt = 2; cnt <= (int)sqrt(num); cnt++) {
+		if (num%cnt == 0) return false;
+	}
+	return true;
+}
+void swap(int *m, int* n) {
+	int temp = *m;
+	*m = *n;
+	*n = temp;
+}
+int main() {
+	ifstream fin;
+	fin.open("input.txt");
+	int num, value,dir=0,tmp,arr=0;
+	fin >> num;
+	for (int cnt = 0;cnt < num;cnt++) {
+		fin >> value;
+		vector<int> s;
+		vector<int> b;
+		for (int cnt1 = 2;cnt1 < value+2;cnt1++) {
+			if (prime(cnt1) && prime(value - cnt1)) {	
+				s.push_back(cnt1);						
+				b.push_back(value - cnt1);
+			}
+		}
+		dir = b[0];
+		for (int cnt1 = 0;cnt1 < (s.size());cnt1++) {		
+			tmp = b[cnt1] - s[cnt1];
+			if (tmp < dir&&tmp >= 0) {
+				arr = cnt1;
+				swap(dir, tmp);
+
+			}
+		}
+		cout << s[arr] << " " << b[arr]<<endl;
+		arr = 0;
+	}
+}

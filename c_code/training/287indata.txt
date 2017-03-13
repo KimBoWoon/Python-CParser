@@ -1,0 +1,51 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int gcd(int a, int b) 
+{
+	if(b==0)
+		return a;
+	else 
+		return gcd(b, a%b);
+}
+
+int division(int numerator, int denominator) 
+{
+	int num = gcd(numerator, denominator); 
+	if(num == 1)
+		printf("%d %d\n", numerator, denominator);
+	else
+		return division(numerator/num, denominator/num); 
+}
+
+void main()
+{
+	FILE *file;
+	int i;
+	int test;
+	int left_numerator, left_denominator, right_numerator, right_denominator;  
+	int numerator=0, denominator=0;
+
+	file = fopen("input.txt", "r"); 
+	if(file==NULL) exit(1);
+
+	fscanf(file, "%d", &test); 
+	for(i=0; i<test; i++)
+	{
+		fscanf(file, "%d %d %d %d", &left_numerator, &left_denominator, &right_numerator, &right_denominator);
+		
+		if(left_denominator == right_denominator){ 
+		numerator = (left_numerator+right_numerator);
+		denominator = left_denominator;
+		}
+		else{ 
+		numerator = ((left_numerator*right_denominator)+(right_numerator*left_denominator));
+		denominator = (left_denominator*right_denominator);
+		}
+
+		division(numerator, denominator);
+	}
+	fclose(file); 
+}

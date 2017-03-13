@@ -1,0 +1,70 @@
+
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+int merge(int table[][501],int opTable[][501], int *file, int data) 
+{
+	for(int a=1;a<=data;a++)
+	{	
+		opTable[a][a] = file[a];
+		table[a][a] = 0;
+	}
+	int j;
+	for(int dia=1;dia<=data-1;dia++)
+	{
+		for(int i=1;i<=data-dia;i++)
+		{
+			j = i+dia;
+			opTable[i][j]=opTable[i][i]+opTable[i+1][j];
+		}
+	}
+
+	int k;
+	j=0;
+	
+	for(int dia=1;dia<=data-1;dia++)
+	{
+		for(int i=1;i<=data-dia;i++)
+		{
+			j = i+dia;
+			
+			int min=2e9;
+			int temp=0;
+			for(k=i;k<=j-1;k++)
+			{
+				temp=table[i][k]+table[k+1][j]+opTable[i][j];
+				if(min>temp)
+					min = temp;
+
+				table[i][j] = min;
+			}
+			
+		}
+	}
+
+	return table[1][data];
+}
+
+int main()
+{
+	ifstream instream("input.txt",ios::in);
+	int testcase;
+	instream>>testcase;
+
+	for(int i=0;i<testcase;i++)
+	{
+		int data;
+		instream>>data;
+
+		int file[501];
+		for(int i=1;i<=data;i++)
+			instream>>file[i];
+		int opTable[501][501] = {0};
+		int table[501][501] = {0};
+		cout<<merge(table,opTable,file,data)<<endl;
+
+	}
+	return 0;
+}
+

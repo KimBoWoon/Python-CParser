@@ -1,0 +1,60 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int recursive(int a, int b)
+{
+	if (a >= b)
+	{
+		if (b == 0)
+		{
+			return a;
+		}
+		else
+		{
+			return recursive(b, a%b);
+		}
+	}
+	else
+	{
+		if (a == 0)
+		{
+			return b;
+		}
+		else
+		{
+			return recursive(a, b%a);
+		}
+	}
+}
+
+int main()
+{
+	FILE *in_file;
+	int i;
+	int numTestCases;
+	int a1, b1, a2, b2;
+	int c, d;
+	int n1, n2;
+
+	in_file = fopen("input.txt", "r");
+	if (in_file == NULL)
+		exit(1);
+
+	fscanf(in_file, "%d", &numTestCases);
+
+	for (i = 0; i < numTestCases; i++)
+	{
+		fscanf(in_file, "%d %d %d %d", &a1, &b1, &a2, &b2);
+
+		d = b1 * b2;
+		c = a1 * b2 + a2 * b1;
+
+		n1 = c / recursive(c, d);
+		n2 = d / recursive(c, d);
+
+		printf("%d %d\n", n1, n2);
+		
+	}
+	fclose(in_file);
+}

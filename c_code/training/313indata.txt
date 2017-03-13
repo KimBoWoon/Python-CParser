@@ -1,0 +1,100 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int num;
+int size[10000];
+int col, row;
+
+void arraysort(int* arr, int num)
+{
+	int i, j;
+ 	int before, temp;
+ 	
+ 	for(i=0; i<num-1; i++){
+ 	    before = i;
+ 	    for(j=i+1; j<num; j++){
+ 	        if(arr[j] < arr[before]) before = j;
+ 	    }
+       	temp = arr[i];
+       	arr[i] = arr[before];
+        arr[before] = temp;
+    }
+}
+
+void Room(char** array,int ipos, int jpos)
+{	
+	if(ipos<0||ipos>=row||jpos<0||jpos>=col) return;
+	
+	if(array[ipos][jpos]=='+')
+	{
+		int i;
+		int j;
+		
+		for (i=0; i<row; i++)
+		{
+			for(j=0; j<col; j++)
+				if(array[i][j]=='.') Room(array,i,j);	
+		}
+	}
+
+	else if(array[ipos][jpos]=='.')
+	{
+		
+		
+		array[ipos][jpos]='0';
+		int n = 0;
+		
+		if(jpos+1<col&&array[ipos][jpos+1]=='.') Room(array,ipos,jpos+1);
+		if(ipos+1<row&&array[ipos+1][jpos]=='.') Room(array,ipos+1,jpos);
+		if(ipos-1>=0&&array[ipos-1][jpos]=='.')	Room(array,ipos-1,jpos);
+		
+		if(jpos-1>=0&&array[ipos][jpos-1]=='.') Room(array,ipos,jpos-1);
+		array[ipos][jpos]='+';
+		size[num]++;
+		
+		if(jpos+1<col&&array[ipos][jpos+1]=='+') n++;
+		if(ipos+1<row&&array[ipos+1][jpos]=='+') n++;
+		if(ipos-1>=0&&array[ipos-1][jpos]=='+') n++;
+		if(jpos-1>=0&&array[ipos][jpos-1]=='+') n++;
+		if(n==4){num++;}			
+	}
+}
+
+void main()
+{
+	FILE* infile = fopen("input.txt", "r");
+	int tastcase = 0;
+	int i = 0;
+	char a;
+	fscanf(infile,"%d",&tastcase);
+	for(i=0; i<tastcase; i++)
+	{
+		int l = 0, m = 0;
+
+		fscanf(infile,"%d %d", &col, &row);
+		char** array = (char**)malloc(sizeof(char*)*row);
+		for(l=0;l<row;l++) array[l]= (char*)malloc(sizeof(char)*col);
+
+		for(l=0;l<row;l++)
+		{
+			fscanf(infile,"%c",&a);
+			for(m=0; m<col; m++)
+			{
+				fscanf(infile,"%c",&array[l][m]);	
+				
+			}
+		}
+
+		Room(array,0,0);
+		
+		printf("%d\n",num);
+		arraysort(size,num);
+		for(l=num-1; l>=0; l--)
+		{
+			printf("%d ",size[l]);
+			size[l]=0;
+		}
+		printf("\n");
+		num=0;
+    }
+}

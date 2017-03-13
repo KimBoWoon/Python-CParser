@@ -1,0 +1,26 @@
+
+#include <iostream>
+#include <fstream>
+
+int factor(int f);
+int main()
+{
+	std::ifstream infile("input.txt");
+
+	int testCase;
+	infile >> testCase;
+
+	for(int i =0 ; i<testCase; i++)
+	{
+		int f;
+		infile >> f;
+		std::cout<<factor(f)<<std::endl;
+	}
+}
+int factor(int f)
+{
+	if( f<= 1)
+		return 1;
+	else
+		return f*factor(f-1);
+}

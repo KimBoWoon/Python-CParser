@@ -1,0 +1,42 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+int main(){
+	ifstream inStream;
+	int numTestCases;	
+
+	inStream.open("input.txt");
+	if (inStream.fail()){
+		cerr << "Input file opening failed.\n";
+		exit(1);
+	}
+
+	inStream >> numTestCases;	
+
+	for (int i = 0; i < numTestCases; i++){
+		int num;
+		int check = 0;
+
+		inStream >> num;
+
+		for (int a = 1; a < 45; a++)	
+			for (int b = a; b < 45; b++)
+				for (int c = b; c < 45; c++)
+				if (num == ((a*(a + 1) + b*(b + 1) + c*(c + 1)) / 2 + (a*(a + 1) + b*(b + 1) + c*(c + 1)) % 2)){
+					check = 1;
+					break;
+				}
+			
+		if (check == 1)
+			cout << "1" << endl;
+
+		else
+			cout << "0" << endl;
+
+	}
+
+	inStream.close();
+	return 0;
+}

@@ -9,6 +9,10 @@ fileName = ''
 codeLines = []
 keywordList = []
 usedSet = set()
+cursor = {'CursorKind.FUNCTION_DECL': 0, 'CursorKind.FOR_STMT': 1, 'CursorKind.CLASS_DECL': 2,
+          'CursorKind.STRUCT_DECL': 3, 'CursorKind.CALL_EXPR': 4, 'CursorKind.IF_STMT': 5,
+          'CursorKind.BINARY_OPERATOR': 6, 'CursorKind.FIELD_DECL': 7, 'CursorKind.WHILE_STMT': 8,
+          'CursorKind.DO_STMT': 9, 'CursorKind.VAR_DECL': 10}
 
 
 class CCVisitor(object):
@@ -36,7 +40,7 @@ class CCVisitor(object):
                         keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
                         usedSet.add(node.kind)
                     if node.kind == CursorKind.FIELD_DECL or node.kind == CursorKind.VAR_DECL:
-                        keywordList.append(DataSet(node.displayname, node.location.line, node.kind))
+                        keywordList.append(DataSet(node.displayname, node.location.line, node.kind, node.type.kind))
                         usedSet.add(node.kind)
                     if node.kind == CursorKind.BINARY_OPERATOR:
                         if '&&' in codeLines[node.location.line - 1]:
@@ -93,7 +97,9 @@ def measure_complexity(code, module_name):
 
     visitor = CCVisitor(ast, description=module_name)
 
-    # print visitor.getKeywordList()
+    print keywordList
     print usedSet
+    # for s in usedSet:
+    #     matrix[]
 
     return visitor.stats

@@ -1,0 +1,62 @@
+#include <cstdio>
+#include <cstring>
+
+int arr[8][8];
+int m, n;
+int pi, pj;
+
+struct Dir {
+	int j, i;
+};
+
+Dir dir[8] = { {-2, 1}, {-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1} };
+
+bool knightTour(int i, int j, int key = 1) {
+	arr[i][j] = key;
+
+	if (key == m * n) {
+		return true;
+	}
+
+	bool result = false;
+	for (int k = 0, nexti, nextj; k < 8; k++) {
+		nexti = i + dir[k].i;
+		nextj = j + dir[k].j;
+
+		if ((nexti >= 0 && nexti < m && nextj >= 0 && nextj < n) && !arr[nexti][nextj]) {
+			result |= knightTour(nexti, nextj, key + 1);
+		}
+	}
+
+	if (!result) {
+		arr[i][j] = 0;
+	}
+
+	return result;
+}
+
+int main() {
+	freopen("input.txt", "r", stdin);
+	int t;
+	scanf("%d", &t);
+
+	while (t--) {
+		scanf("%d %d %d %d", &m, &n, &pi, &pj);
+		memset(arr, 0, sizeof(int) * 8 * 8);
+
+		if (knightTour(pi - 1, pj - 1)) {
+			printf("1\n");
+			for (int i = 0; i < m; i++) {
+				for (int j = 0; j < n; j++) {
+					printf("%d ", arr[i][j]);
+				}
+				printf("\n");
+			}
+		}
+		else {
+			printf("0\n");
+		}
+	}
+
+	return 0;
+}

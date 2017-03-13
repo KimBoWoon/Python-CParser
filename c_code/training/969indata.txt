@@ -1,0 +1,68 @@
+  
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int row_matrix[101][101]={0,}, col_matrix[101][101]={0,}, driving[101][101][2][201]={0,};
+
+int main()
+{
+	ifstream inFile("input.txt");  
+	int no_cases=0;
+	int i=0, j=0, k=0, o=0;
+	inFile>> no_cases;
+	for(int test =0; test < no_cases; test++){
+		int n=0,m=0,l=0,g=0;
+		inFile>>n>>m>>l>>g;
+
+		for(i=1; i<=n; i++){ 
+			for(int j=1; j<m; j++){
+				inFile>>row_matrix[i][j];
+			}
+		}
+		for( i=1; i<n; i++){ 
+			for(int j=1; j<=m; j++){
+				inFile>>col_matrix[i][j];
+			}
+		}
+
+		for (i=1;i<=n;i++){ 
+			for (j=1;j<=m;j++){ 
+				for (k=0;k<2;k++){ 
+					for (o=0;o<201;o++){ 
+						driving[i][j][k][o] = g+1;
+					}
+				}
+			}
+		}
+		driving[1][1][0][0] = driving[1][1][1][0] = 0;
+		int ans = 2e9;
+		for (i=1;i<=n;i++){ 
+			for (j=1;j<=m;j++){ 
+				for (o=0;o<201;o++){ 
+					for (k=0;k<2;k++){ 
+						if (driving[i][j][k][o] <= g){							
+							if (i == n && j == m){ 
+								if (ans > o) ans = o;
+							}
+							if (o < 200 && driving[i][j][!k][o+1] > driving[i][j][k][o]) 
+								driving[i][j][!k][o+1] = driving[i][j][k][o];
+							if (k){
+								if (j < m && driving[i][j+1][k][o] > driving[i][j][k][o]+row_matrix[i][j])
+									driving[i][j+1][k][o] = driving[i][j][k][o]+row_matrix[i][j];
+							}
+							else{
+								if (i < n && driving[i+1][j][k][o] > driving[i][j][k][o]+col_matrix[i][j])
+									driving[i+1][j][k][o] = driving[i][j][k][o]+col_matrix[i][j];
+							}
+						}
+					}
+				}
+			}
+		}
+		if (ans < 2e9) cout<<(n+m-2)*l+ans<<endl;
+		else cout<<"-1"<<endl;
+	}
+}

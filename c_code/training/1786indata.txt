@@ -1,0 +1,86 @@
+
+#include <cstdio>
+#include <iostream>
+#include <fstream>
+#include <string>
+
+#define SIZE 51	
+
+using namespace std;
+
+class Stack;
+void Parenthesis(Stack stack, string str, int index);	
+
+class Stack
+{
+	char *stack;
+	int top;
+
+public :
+	Stack();
+
+	bool IsEmpty() const;
+	char Top() const;
+	void Push(char input);
+	void Pop();
+};
+
+Stack::Stack()
+{
+	stack = new char[SIZE];
+	top = -1;
+}
+
+inline bool Stack::IsEmpty() const { return top == -1 ? true : false; }
+inline char Stack::Top() const { return *(stack + top); }
+void Stack::Pop() { stack[top--] = NULL; }
+void Stack::Push(char input) { stack[++top] = input; }
+
+void Parenthesis(Stack stack, string str, int index)
+{
+
+	if (str[index] == '(')
+		stack.Push(str[index]);
+	else if (str[index] == ')')
+	{
+		if (stack.IsEmpty())	
+		{
+			cout << "NO" << endl;	
+			return;
+		}
+		stack.Pop();
+	}
+		
+	else  
+	{
+		if (stack.IsEmpty())
+			cout << "YES" << endl;
+		else
+			cout << "NO" << endl;	
+		return;
+	}
+
+	Parenthesis(stack, str, ++index);	
+}
+
+int main()
+{
+	ifstream inFile;
+	inFile.open("input.txt");
+
+	int numTestCase;
+	inFile >> numTestCase;
+
+
+	while (numTestCase--)
+	{
+		Stack stack;
+		string str;
+		inFile >> str;
+
+		Parenthesis(stack, str, 0);
+
+	}
+
+	return 0;
+}

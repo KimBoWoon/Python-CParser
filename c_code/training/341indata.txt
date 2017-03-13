@@ -1,0 +1,72 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+void fill(char **r, short i, short j, short count, short *n){
+
+	if(r[i][j] != '.')
+		return;
+	else{
+		r[i][j] = '-';
+		n[count]++;
+
+		fill(r,i-1, j, count, n); 
+		fill(r,i+1, j, count, n); 
+		fill(r,i, j-1, count, n); 
+		fill(r,i, j+1, count, n); 
+	}
+}
+
+int main(){
+
+	ifstream in;
+	in.open("input.txt");
+
+	short t;
+	in>>t;
+
+	while(t--){
+		short garo, sero; 
+		in>>garo>>sero;
+
+		char **room;
+		room = new char *[sero];
+		for(short i=0; i<sero; i++){
+			room[i] = new char[garo];
+			for(short j=0; j<garo; j++)
+				in>>room[i][j];
+		}
+
+		short count=0, num[100] = {0,};
+		for(short i=1; i<sero-1; i++){ 
+			for(short j=1; j<garo-1; j++){
+				if(room[i][j] == '.'){ 
+					fill(room, i, j, count, num);
+					count++; 
+				}
+			}
+		}
+		cout<<count<<endl;
+		short temp;
+		for(short i=0; i<count-1; i++){
+			for(short j=i+1; j<count; j++)
+				if(num[i]<num[j]){
+					temp=num[i];
+					num[i]=num[j];
+					num[j]=temp;
+				}
+		}
+
+		for(short i=0; i<count; i++)
+			cout<<num[i]<<" ";
+		cout<<endl;
+
+		while(sero--){ delete[] room[sero]; }
+		delete[] room;
+		room = '\0';
+	}
+	in.close();
+	return 0;
+}
+

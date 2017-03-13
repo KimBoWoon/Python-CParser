@@ -1,0 +1,23 @@
+
+
+#include <stdio.h>
+int calculateMacarthy(int n) 
+{
+	if (n > 100) return n - 10; 
+	else if (n <= 100) return calculateMacarthy(calculateMacarthy(n + 11)); 
+}
+
+int main()
+{
+	int t, n;
+	FILE *fp;
+	if ((fp = fopen("input.txt", "r")) == NULL) return 0; 
+	fscanf(fp, "%d", &t); 
+	while (t--)
+	{
+		fscanf(fp, "%d", &n); 
+		printf("%d\n", calculateMacarthy(n)); 
+	}
+	fclose(fp); 
+	return 1;
+}

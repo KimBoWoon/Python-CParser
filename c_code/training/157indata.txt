@@ -1,0 +1,28 @@
+
+#include<iostream>
+#include<fstream>
+#include<cstring>
+
+using namespace std;
+
+int mcCarthy(int num) {
+	if ( num > 100)
+		return num-10;
+	else
+		return mcCarthy(mcCarthy(num+11));
+
+}
+
+
+int main()
+{
+	int testCase, num, a, b = 0;
+	fstream instream("input.txt", ios::in);
+	instream >> testCase;
+	for (int q = 0; q < testCase; q++)
+	{
+		instream >> num;
+		cout << mcCarthy(num) << endl;
+	}
+}
+

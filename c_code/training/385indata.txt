@@ -1,0 +1,58 @@
+
+#include <iostream> 
+#include <fstream>
+#include <algorithm>
+#include <functional>
+#include <memory.h>
+using namespace std;
+
+char room[102][102];
+int r_n[100];
+int ans;
+
+void dfs(int i, int j, int b)
+{
+	r_n[b]++;
+	room[i][j]='+';
+	if(room[i+1][j]=='.')
+		dfs(i+1, j, b);
+	if(room[i][j-1]=='.')
+		dfs(i, j-1, b);
+	if(room[i][j+1]=='.')
+		dfs(i, j+1, b);
+	if(room[i-1][j]=='.')
+		dfs(i-1, j, b);
+}
+int main()
+{
+	int t,m,n; 
+	ifstream inStream;
+	inStream.open("input.txt");
+	inStream>>t;
+	for(int i=0; i<t; i++)
+	{
+		memset(room, '+', sizeof(room));
+		memset(r_n, 0, sizeof(r_n));
+		inStream>>m>>n;
+		for(int j=1; j<=n; j++)
+			for(int k=1; k<=m; k++)
+				inStream>>room[j][k];
+		int b=0;
+		for(int j=2; j<=n-1; j++)
+		{
+			for(int k=2; k<=m-1; k++)
+			{
+				if(room[j][k]=='.')
+				{
+					dfs(j,k,b);
+					b++;
+				}
+			}
+		}
+		sort(r_n, r_n+b, greater<int>());
+		cout<<b<<endl;
+		for(int j=0; j<b; j++)
+			cout<<r_n[j]<<' ';
+		cout<<endl;
+	}
+}

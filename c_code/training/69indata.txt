@@ -1,0 +1,31 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void) 
+{
+	int test=0, num=0, i, j;  
+	FILE *file = fopen("input.txt", "r"); 
+	if(NULL == file) exit(1);
+
+	fscanf(file, "%d", &test);
+
+	for(i=0; i<test; i++) 
+	{
+		fscanf(file, "%d", &num); 
+		for(j=1; j<num; j++)
+		{
+			if(j>1 && num%j == 0) {
+				printf("0\n");
+				break;
+			}
+			else if(num==j+1)
+				printf("1\n");
+
+		}
+	}
+
+	fclose(file);
+	return 0;
+}

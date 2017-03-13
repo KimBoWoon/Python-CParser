@@ -1,0 +1,84 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int fn(char d[110][110], int x, int y)
+{
+	if (d[x][y] == '+')
+		return 0;
+
+	else
+	{
+		d[x][y] = '+';
+		return 1 + fn(d, x + 1, y) + fn(d, x, y + 1) + fn(d, x - 1, y) + fn(d, x, y - 1);
+	}
+}
+
+void main(void)
+{
+	FILE *inFile;
+	int i;
+	int numCases;
+
+	inFile = fopen("input.txt", "r");									
+	if(inFile == NULL) exit(1);
+
+	fscanf(inFile, "%d", &numCases);									
+
+	for(i=0; i<numCases; i++)
+	{
+		int n, m, i, j;
+		int k = 0;
+		int b = 0;
+		int t;
+		int c[100];
+		char d[110][110];
+
+		fscanf(inFile, "%d", &n);
+		fscanf(inFile, "%d", &m);	
+
+		for (i = 0; i < m; i++)
+		{
+			for (j = 0; j < n+1; j++)
+				fscanf(inFile, "%c", &d[i][j]);
+		}
+
+			for (i = 1; i < m; i++)
+			{
+				for (j = 1; j < n+1; j++)
+				{
+					k = fn(d,i,j);
+
+					if(k !=0 )
+					{
+						c[b] = k;
+						b++;
+					}
+				}
+			}
+		
+		for(i=0; i<b; i++)
+		{
+			for(j=i+1; j<b ; j++)
+			{
+				if(c[i] > c[j])
+					c[i] = c[i];
+				else
+				{
+					t = c[i]; 
+					c[i] = c[j];
+					c[j] = t;
+				}
+			}
+		}
+
+		printf("%d\n",b);
+
+		for(i=0; i<b; i++)
+			printf("%d ",c[i]);
+		printf("\n");
+	}
+	fclose(inFile);
+}

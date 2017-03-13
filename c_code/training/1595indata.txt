@@ -1,0 +1,48 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+#define MAX 987654321
+
+int A[501][501];
+int files[501];
+int S[501];
+
+void setA(int a, int b){
+	int i, j, temp;
+	for (i = b; i >= a; i--){
+		for (j = i; j <= b; j++){
+			if (i == j) A[i][j] = 0;
+			else {
+				int k;
+				for (k = 0; k < j-i; k++){
+					temp = A[i][i + k] + A[i + k + 1][j] + S[j] - S[i - 1];
+					if (A[i][j] > temp) A[i][j] = temp;
+ 				}
+			}
+		}
+	}
+}
+
+void main(void) {
+	FILE *inFile;
+	int circle, i, j;
+	int num;
+	inFile = fopen("input.txt", "r");
+	fscanf(inFile, "%d", &circle);
+
+
+	while (circle--){
+		fscanf(inFile, "%d", &num);
+		for (i = 1; i <= num; i++) {
+			fscanf(inFile, "%d", &files[i]);
+			S[i] = S[i - 1] + files[i];
+		}
+		for (i = 1; i <= num; i++) for (j = 1; j <= num; j++) A[i][j] = MAX;
+		setA(1, num);
+		printf("%d\n", A[1][num]);
+	}
+}

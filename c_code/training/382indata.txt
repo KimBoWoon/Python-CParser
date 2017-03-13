@@ -1,0 +1,68 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+#define MAX 100
+
+void floodFill(char fig[][MAX], int x, int y, char oldColor, char newColor,int roomsize[],int roomnum)  
+{
+	if (fig[x][y] != oldColor) 
+		return;
+	else {
+		fig[x][y] = newColor;
+		roomsize[roomnum]++; 
+		floodFill(fig, x-1, y, oldColor, newColor,roomsize,roomnum);
+		floodFill(fig, x+1, y, oldColor, newColor,roomsize,roomnum);
+		floodFill(fig, x, y-1, oldColor, newColor,roomsize,roomnum);
+		floodFill(fig, x, y+1, oldColor, newColor,roomsize,roomnum);
+
+
+	}
+}
+
+int main ()
+{
+	ifstream instream;
+	instream.open("input.txt");
+
+	int testcase;
+	instream >> testcase;
+
+	for(int i=0;i<testcase;i++)
+	{
+		int row, col,roomnum=0;
+		instream >> col>>row;
+		int roomsize[10000]={0};
+		char room[100][100];
+		for(int j=0;j<row;j++)
+			instream >> room[j];
+
+		for(int a=0;a<row;a++)
+		{
+			for(int b=0;b<col;b++)
+			{
+				if(room[a][b]=='.') 
+				{
+					floodFill(room,a,b,'.','+',roomsize,roomnum); 
+					roomnum++; 
+				}
+			}
+		}
+		for(int a=0;a<roomnum;a++)   
+		{
+			for(int b=0;b<roomnum-1;b++)
+			{
+				if(roomsize[b]<roomsize[b+1]) 
+				{
+					int temp=roomsize[b];
+					roomsize[b]=roomsize[b+1];
+					roomsize[b+1]=temp;
+				}
+			}
+		}
+		cout<<roomnum<<endl;
+		for(int a=0;a<roomnum;a++)
+			cout<<roomsize[a]<<" ";
+		cout<<endl;
+	}
+}

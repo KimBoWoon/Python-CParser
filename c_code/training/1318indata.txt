@@ -1,0 +1,66 @@
+
+
+
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+#define MAX 2147483647 
+using namespace std;
+int limit = 0;
+int GCD(int a, int b)
+{
+	if (b == 0)
+		return a;
+	else
+		return GCD(b, a%b);
+}
+int HenryRepre(int s, int m, int cnt)
+{
+	while (limit <= MAX)
+	{
+		int ts = 1, tm = 0; 
+		int temp = m; 
+		int gcd = 0;
+		if (s <= 1) break;
+		while (s * cnt <= m) cnt++;
+		tm = cnt; 
+		s *= tm;
+		m *= tm;
+		ts *= temp;
+		tm *= temp;
+		limit *= m; 
+		s -= ts; 
+		gcd = GCD(s, m);
+		s /= gcd;
+		m /= gcd;
+		if (m / s <= cnt) cnt++;
+		else cnt = m / s;
+	}
+	return m;
+}
+
+int main(void)
+{
+	ifstream inStream;
+	int numTestCases = 0;
+	int son = 0, mom = 0;
+
+	inStream.open("input.txt");
+	if (inStream.fail())
+	{
+		cerr << "Input file opening failed. \n";
+		exit(1);
+	}
+	inStream >> numTestCases;
+	for (int i = 0; i < numTestCases; i++)
+	{
+		inStream >> son >> mom;
+		limit = mom; 
+		if (1 <= son && son < mom && mom <= 10000)
+		{
+			cout << HenryRepre(son, mom, 2) << endl;
+		}
+	}
+	inStream.close();
+	return 0;
+}

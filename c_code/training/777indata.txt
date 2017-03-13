@@ -1,0 +1,58 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <cstring>
+
+using namespace std;
+
+int change(char str[]); 
+
+int length;
+int result = 1;
+int j=0;
+
+int main()
+{
+	fstream infile;
+
+	int nocases;
+	char str[1000];
+
+	infile.open("input.txt");
+
+	if(infile.fail())
+	{
+		cerr << "파일열기 오류" << endl;
+
+		exit(1);
+	}
+
+	infile >> nocases;
+
+	for(int i=0; i<nocases; i++)
+	{
+		infile >> str;
+		length = strlen(str)-1;
+		cout << change(str) << endl;
+		j=0;
+		result = 1;
+	}
+}
+
+int change(char str[])
+{
+	if(length >= 0)
+	{
+		if(str[length] != str[j])
+		{
+			result = 0;
+		}
+
+		length--;
+		j++;
+		return change(str);
+	}
+
+	else
+		return result;
+}

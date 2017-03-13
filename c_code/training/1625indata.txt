@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int M[501][501], S[501][501];
+
+int MergeFile(FILE* file)
+{
+	int n,i,j,k;
+	int temp;
+	int mini;
+	fscanf(file, "%d", &n);
+	for(i=1; i<=n; i++)
+		fscanf(file, "%d", &S[i][i]);
+
+	for(i=1; i<=n; i++){
+		for(j=1; j<=n; j++){
+			if(i<=j){
+				S[i][j]=S[j][j]+S[i][j-1];
+				M[i][j] = S[i][j];
+				M[i][i] = 0;
+			}
+		}
+	}
+
+	for(j=3; j<=n; j++){
+		for(i=j-2; i>0; i--){
+			temp =10* M[1][n];
+			for(k=i; k<j; k++){
+				M[i][j] = S[i][j]+ M[i][k]+ M[k+1][j];
+				if(temp > M[i][j] ){
+					temp = M[i][j];
+				}
+			}
+			M[i][j] = temp;
+		}
+	}
+	printf("%d\n", M[1][n]);
+}
+ 
+int main(){
+	int testcase,i;
+	int num;
+	FILE *file = fopen("input.txt","r");
+	if(file ==NULL)
+		exit(1);
+	fscanf(file, "%d", &testcase);
+	for(i=0; i<testcase; i++)
+	{
+		MergeFile(file);
+	}
+}

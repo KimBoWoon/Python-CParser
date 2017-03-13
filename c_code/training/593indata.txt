@@ -1,0 +1,32 @@
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+using namespace std;
+std::ifstream inStream; 
+
+
+int Factorial(int num){
+	return num <= 1 ? 1 :Factorial(num - 1)*num;
+}
+
+
+int main() {
+	
+	int cases, number;
+
+	inStream.open("input.txt");
+	if (inStream.fail()) {		
+		std::cerr << "input file opening failed. \n";
+		return -1; 
+	}
+
+	inStream >> cases;
+
+	for (int i = 0; i < cases; i++) {
+		inStream >> number;
+		cout << Factorial(number) << endl;
+
+	}
+	inStream.close();		
+	return 0;
+}

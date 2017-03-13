@@ -1,0 +1,25 @@
+
+#include <iostream>
+#include <fstream>
+#include <cstring>
+using namespace std;
+int p(char check[], int start, int rear){
+	if (rear <= start)
+		return 1;
+	else if (check[start] != check[rear])
+		return 0;
+	else 
+		return p(check, start + 1, rear - 1);
+}
+int main(){
+	ifstream in;
+	in.open("input.txt");
+	int n;
+	char str[1001];
+	in >> n;
+	for (int i = 0; i < n; i++){
+		in >> str;
+		cout << p(str,0, strlen(str)-1 )<< endl;
+	}
+	return 0;
+}

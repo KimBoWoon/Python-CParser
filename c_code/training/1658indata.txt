@@ -1,0 +1,99 @@
+
+
+#include <cstdio>
+#include <cstdlib>
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+class Point{
+public:
+	int x;
+	int y;
+	Point(){ x = 0, y = 0; };
+};
+Point point[100000];
+
+
+int compare(const void *a, const void *b) {
+	Point *ptrA = (Point *)a;
+	Point *ptrB = (Point *)b;
+	if (ptrA->x < ptrB->x)
+		return -1;
+	else if (ptrA->x > ptrB->x)
+		return 1;
+	else if (ptrA->y < ptrB->y)
+		return -1;
+	else if (ptrA->y > ptrB->y)
+		return 1;
+	else
+		return 0;
+}
+
+int compare2(const void *a, const void *b) {
+	Point *ptrA = (Point *)a;
+	Point *ptrB = (Point *)b;
+
+	if (ptrA->y < ptrB->y)
+		return 1;
+	else if (ptrA->y > ptrB->y)
+		return -1;
+	else
+		return 0;
+}
+void monotone(int j, int number)
+{
+	int k;
+	int count = 1;
+	if (point[0].y != 0) {
+		for (k = j; k<number - 1; k++){
+			if (point[k].x == point[k + 1].x)
+				count++;
+			else
+				break;
+		}
+		qsort(&point[j], count, sizeof(point[0]), compare2);
+		count = 1;
+		j = k;
+	}
+	else if ((point[j].x != point[j + 1].x && point[j].y != point[j + 1].y)) {
+		for (k = j + 1; k<number; k++) {
+			if (point[k].x == point[k + 1].x)
+				count++;
+			else
+				break;
+		}
+		qsort(&point[j + 1], count, sizeof(point[0]), compare2);
+		count = 1;
+		j = k;
+	}
+}
+
+int main() {
+
+	ifstream inFile("input.txt");
+	int no_cases = 0;
+	inFile >> no_cases;
+	for (int test = 0; test < no_cases; test++){
+		int number;
+		int m;
+		int count = 1;
+		inFile>>number;
+		for (int j = 0; j<number; j++) {
+			inFile >> point[j].x >> point[j].y;
+		}
+		qsort(point, number, sizeof(point[0]), compare);
+		for (int j = 0; j<number - 1; j++) {
+			monotone(j, number);
+		}
+		inFile>>m;
+		for (int j = 0; j<m; j++) {
+			int k;
+			inFile>>k;
+			cout << point[k - 1].x << " " << point[k - 1].y << endl;
+		}
+
+	}
+	return 0;
+}

@@ -1,0 +1,42 @@
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int gcd(int a, int b);
+
+int main() {
+    
+    FILE* fp;
+    
+    int i, num_cases, data1, data2;
+    
+    fp = fopen("input.txt", "r");
+    if(fp == NULL)  exit(1);
+    
+    fscanf(fp, "%d", &num_cases);
+    
+    for(i=0; i<num_cases; i++) {
+        fscanf(fp, "%d %d", &data1, &data2);
+        
+        printf("%d\n", gcd(data1, data2));
+    }
+    
+    fclose(fp);
+}
+
+int gcd(int a, int b) {
+    
+    if(b == 0)
+        return a;
+    else
+        return gcd(b, a%b);
+}
+
+
+
+
+

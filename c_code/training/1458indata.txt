@@ -1,0 +1,36 @@
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void main(void)
+{
+	FILE *file;
+	int i, test;
+
+	file=fopen("input.txt","r"); 
+	if(file==NULL) exit(1);
+	
+	fscanf(file,"%d", &test); 
+
+	for(i=0; i<test; i++)
+	{
+		int i, floor, room, guest=0;
+		int C=0,H=1;
+		fscanf(file,"%d %d %d", &floor, &room, &guest); 
+
+		H += guest/floor;
+		C+= guest%floor;
+
+		if(guest%floor==0)
+		{
+			C=floor;
+			H-=1;
+		}
+		printf("%d%02d\n",C,H);
+	}
+	fclose(file); 
+}
+
+

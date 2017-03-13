@@ -1,0 +1,1 @@
+#include <iostream>#include <fstream>using namespace std;int recursive(int result, int x[], int cnt){	int sec;	int secResult = result;	while(true)							

@@ -1,0 +1,27 @@
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+int gcd(int a, int b)
+{
+	if ( b == 0) return a;
+	else return gcd(b, a%b);
+}
+int main()
+{
+	int numTestCases;
+	int posit_int1;
+	int posit_int2;
+
+	ifstream inFile;
+	inFile.open("input.txt");
+	inFile >> numTestCases; 
+
+if(inFile.is_open() == false) {cout << "파일을 열 수 없습니다" <<endl;}
+
+	for(int i = 0 ; i < numTestCases ; i++) {
+		inFile >> posit_int1 >> posit_int2 ;
+		cout <<gcd(posit_int1, posit_int2)<< endl;
+	}
+}

@@ -1,0 +1,40 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+int gcd(int a, int b)
+{
+	if (b == 0)
+		return a;
+	else
+		return gcd(b, a%b);
+}
+
+int henry(int a, int b)
+{
+	int x;
+	while ((a/gcd(a,b))!=1)
+	{
+			x = (b / a)+1;
+			a = (a*x - b)  ;
+			b = b*x ;
+	}
+	return (b/ gcd(a, b));
+}
+
+void main(void)
+{
+	FILE *file;
+	int i, test, dividend, divisor;
+	file = fopen("input.txt", "r"); 
+	if (file == NULL) exit(1);
+
+	fscanf(file, "%d", &test); 
+
+	for (i = 0; i<test; i++)
+	{
+		fscanf(file, "%d %d", &dividend, &divisor); 
+		printf("%d\n", henry(dividend, divisor));
+	}
+	fclose(file); 
+}

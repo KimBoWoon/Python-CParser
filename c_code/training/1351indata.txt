@@ -1,0 +1,54 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int GCD(int a, int b)
+{
+	if (b == 0)
+		return a;
+	else
+		return GCD(b, a%b);
+}
+
+
+int henry(int a, int b)
+{
+	int x = 2; 
+	while (1)
+	{
+		if (a == 1) 
+			return b;
+		if (a*x > b)
+		{
+			int divisor;
+			a = (a*x - b); 
+			b = (b*x);
+			divisor = GCD(a, b); 
+			a /= divisor; 
+			b /= divisor;
+		}
+		else
+			x++;
+	}
+}
+
+
+int main()
+{
+	ifstream instream;
+	instream.open("input.txt");
+	if (!instream)
+	{
+		cout << "파일을 열 수 없습니다. \n";
+		return 0;
+	}
+	int testcase;
+	instream >> testcase;
+	for (int z = 0; z < testcase; z++)
+	{
+		int a, b;
+		instream >> a >> b;
+		cout << henry(a, b) << endl; 
+	}
+}

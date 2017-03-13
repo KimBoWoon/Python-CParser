@@ -1,0 +1,52 @@
+
+
+
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+
+int checkRoom(int h, int w, int n);
+int main()
+{
+	ifstream inStream;
+	int numTest, room;
+	inStream.open("input.txt");
+	if (inStream.fail()) exit(1);
+
+	inStream >> numTest;
+
+	for (int i = 0; i < numTest; i++)
+	{
+		int h, w, n;
+		inStream >> h >> w >> n;
+		room = checkRoom(h, w, n);
+		cout << room << endl;
+	}
+	inStream.close();
+}
+
+int checkRoom(int h, int w, int n)
+{
+	int sumRoom;
+
+	int floorNumber;
+
+	int roomNumber;
+
+	if (n%h == 0)
+	{	roomNumber = n / h; 
+		floorNumber = h;
+	}
+
+	else{
+		roomNumber = n / h + 1;  
+		floorNumber = n%h;       
+	}
+	sumRoom = floorNumber * 100 + roomNumber;
+
+	return sumRoom;
+
+}
+
+

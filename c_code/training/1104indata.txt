@@ -1,0 +1,42 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cmath>
+using namespace std;
+int eurekaTheorem(int num);
+
+int main(){
+   ifstream inFile("input.txt");
+   if (inFile.fail()){
+      return 0;
+   }
+   int testCases = 0;
+   int num;
+   inFile >> testCases;
+   for (int i = 0; i < testCases; i++){
+      inFile >> num;
+      cout << eurekaTheorem(num) << endl;
+   }
+   return 0;
+}
+int eurekaTheorem(int num){
+   int flag = 0;
+   int T[45] = { 0, };
+   for (int i = 1; i < 45; i++){
+      T[i] = (i*i+i)/2;
+   }
+   for (int j = 1; j < 45; j++){
+      for (int k = 1; k < 45; k++){
+         for (int l = 1; l < 45; l++){
+            if (T[j] + T[k] + T[l] == num){
+               return 1;
+            }
+            else{
+               flag = 0;
+            }
+         }
+      }
+   }
+   return flag;
+}

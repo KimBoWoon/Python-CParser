@@ -1,0 +1,47 @@
+#include <iostream>
+#include <fstream>
+#include <string.h>
+#include <string>
+using namespace std;
+
+bool palindrome(int num) {
+	for (int i = 2; i < 64; i++) {
+		int temp = num;
+
+		string result = "";
+
+		while (temp >= i) {
+			result += (temp % i) + 48;
+			temp /= i;
+		}
+		if (temp != 0)
+			result += temp + 48;
+
+		for (int start = 0, end = result.size() - 1;; start++, end--) {
+			if (result[start] != result[end])
+				break;
+			else if (start > end)
+				return true;
+		}
+	}
+	return false;
+}
+
+int main() {
+	ifstream inFile;
+	inFile.open("input.txt");
+	
+	int testCaseNum;
+	inFile >> testCaseNum;
+
+	while (testCaseNum--) {
+		int num;
+
+		inFile >> num;
+
+		if (palindrome(num))
+			cout << 1 << endl;
+		else
+			cout << 0 << endl;
+	}
+}

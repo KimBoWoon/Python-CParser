@@ -1,0 +1,38 @@
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+#include<vector>
+
+using namespace std;
+ 
+#define pb push_back
+#define sz(v) ((int)(v).size())
+ 
+int T, N;
+ 
+int main()
+{
+	fstream infile;
+
+	infile.open("input.txt");
+
+	if(infile.fail())
+	{
+		cerr << "파일열기 오류" << endl;
+		exit(1);
+	}
+
+    for (infile >> T;T--;){
+        infile >> N;
+        bool ans = 0;
+        for (int b=2;b<65;b++){
+            vector <int> arr;
+            for (int v=N;v;v/=b) arr.pb(v%b);
+            int n = sz(arr);
+            bool sw = 0;
+            for (int j=0;j<n;j++) if (arr[j] != arr[n-j-1]) sw = 1;
+            if (!sw){ ans = 1; break; }
+        }
+        printf("%d\n", (int)ans);
+	}
+}

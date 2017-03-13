@@ -1,0 +1,18 @@
+
+#include<iostream>
+#include<fstream>
+using namespace std;
+int gcd(int a,int b){return !b?a:gcd(b,a%b);}
+int main()
+{
+	ifstream fs;
+	int n;
+	fs.open("input.txt");
+	fs>>n;
+	while(n--)
+	{
+		int a,b;
+		fs>>a>>b;
+		cout<<gcd(a,b)<<"\n";
+	}
+}

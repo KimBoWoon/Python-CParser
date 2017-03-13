@@ -1,0 +1,49 @@
+
+
+#pragma warning(disable:4996)
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+int count = 0;
+char arr[55] = { '0', }; 
+int Parenthesis( int itemp);
+int main(void)
+{
+	int itemp = 0;
+	int no_cases, i;
+	FILE *in_file;
+	in_file = fopen("input.txt", "r"); 
+	if (in_file == NULL) exit(1);
+
+	fscanf(in_file, "%d", &no_cases);  
+
+	for (i = 0; i < no_cases; i++)
+	{
+		fscanf(in_file, "%s", &arr);
+		Parenthesis( itemp);
+		if (count == 0)
+			printf("YES\n");
+		else if (count != 0)
+			printf("NO\n");
+		itemp = 0;
+		count = 0;
+	}
+}
+int Parenthesis( int itemp) 
+{
+	if (arr[itemp] == '(')
+	{
+		count++;
+		itemp++;
+		Parenthesis(itemp);
+	}
+	else if (arr[itemp] == ')')
+	{
+		count--;
+		itemp++;
+		if (count < 0)
+			return;
+		Parenthesis(itemp);
+	}
+
+}

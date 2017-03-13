@@ -1,0 +1,39 @@
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int checkPal(char str[], int first, int last)
+{
+	if( last <= first )
+		return 1;
+	else if( str[first] != str[last] )
+		return 0;
+	else
+		return checkPal(str, first+1, last-1);
+}
+
+void main(void)
+{
+	FILE *inFile;
+	int i;
+	int numCases;
+
+	inFile = fopen("input.txt", "r");									
+	if(inFile == NULL) exit(1);
+
+	fscanf(inFile, "%d", &numCases);									
+
+	for(i=0; i<numCases; i++)
+	{
+		char line[1024];														
+
+		fscanf(inFile, "%s", &line);										
+
+		printf("%d\n", checkPal(line, 0, strlen(line)-1));
+	}
+
+	fclose(inFile);														
+}

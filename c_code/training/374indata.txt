@@ -1,0 +1,88 @@
+
+
+
+#pragma warning(disable:4996)
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+void floodFill(char fig[][100], int x, int y, char oldColor, char newColor, int &count);
+
+
+int main(void)
+{
+	int no_cases=0;
+	int garo, sero, n, m;
+	char room[100][100];
+	ifstream file;
+	file.open("input.txt");
+	file >> no_cases;   
+
+	for (int i = 0; i < no_cases; i++)
+	{
+		file >> garo >> sero;
+		for (n = 0; n < sero; n++)
+		{
+			for (m = 0; m < garo; m++)
+				file >> room[n][m];
+		}
+		int num[100] = { 0 }; 
+		int a = 0, count = 0; 
+
+		for (n = 0; n < sero; n++)
+		{
+			for (m = 0; m <garo; m++)
+			{
+				count = 0;
+				if (room[n][m] == '.')
+				{
+					a++; 
+					floodFill(room, n, m, '+', '.', count);
+					num[a] = count; 
+
+				}
+			}
+		}
+		cout << a << endl;  
+
+		int temp = 0;
+		for (int i = 1; i <= a; i++)  
+		{
+			for (int j = i; j <= a; j++)
+			{
+				if (num[i] < num[j])
+				{
+					temp = num[j];
+					num[j] = num[i];
+					num[i] = temp;
+				}
+			}
+		}
+	
+	
+		for (int i = 1; i <= a; i++)  
+			cout << num[i] << " ";
+		cout << endl;
+	}
+	return 0;
+}
+void floodFill(char fig[][100], int x, int y, char oldColor, char newColor, int&count)
+{
+
+	if (fig[x][y] == newColor) 
+	{
+		count++;
+		fig[x][y] = oldColor; 
+	}
+	if (fig[x - 1][y] == newColor)
+		floodFill(fig, x - 1, y, oldColor, newColor, count);
+	if (fig[x + 1][y] == newColor)
+		floodFill(fig, x + 1, y, oldColor, newColor, count);
+	if (fig[x][y - 1] == newColor)
+		floodFill(fig, x, y - 1, oldColor, newColor, count);
+	if (fig[x][y + 1] == newColor)
+		floodFill(fig, x, y + 1, oldColor, newColor, count);
+	else
+		return;
+}
+

@@ -1,0 +1,32 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+int macarthy(int n);
+
+int main()
+{
+	std::fstream infile;
+	int testcase;
+	int num1;
+
+	infile.open("input.txt");
+	if (infile.fail())
+	{
+		std::cerr << "error";
+		exit(1);
+	}
+
+	infile >> testcase;
+	for (int i = 0; i < testcase; i++)
+	{
+		infile >> num1;
+		std::cout << macarthy(num1) << std::endl;
+	}
+	return 0;
+}
+int macarthy(int n)
+{
+	if (n>100) return n - 10;
+	else return macarthy(macarthy(n + 11));
+}

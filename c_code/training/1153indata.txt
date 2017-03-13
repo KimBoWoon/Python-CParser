@@ -1,0 +1,56 @@
+
+
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+int main()
+{
+	ifstream instream;
+	instream.open("input.txt");
+	if (instream.fail())
+	{
+		cerr << "Error";
+		exit(1);
+	}
+
+	int no_cases;
+	instream >> no_cases;
+
+	for (int i = 0; i < no_cases; i++)
+	{
+		int num;
+		instream >> num;
+
+		int T[45];
+		int K[1001] = { 0 };
+
+		for (int i = 1; i < 45; i++)
+		{
+			T[i] = (i*(i+1))/2; 
+		}
+
+		for (int a = 1; a < 45; a++) 
+		{
+			for (int b = a; b < 45; b++)
+			{
+				for (int c = b; c < 45; c++)
+				{
+					if (T[a] + T[b] + T[c] < 1001)
+					{
+						K[T[a] + T[b] + T[c]] = 1;
+					}
+				}
+			}
+		}
+
+		cout << K[num] << endl;
+
+	}
+
+	return 0;
+}

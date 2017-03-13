@@ -1,0 +1,57 @@
+
+#pragma warning(disable:4996)
+
+#include <cstdio>
+#include <cstdlib>
+
+int rowFule[101][101], colFule[101][101], path[101][101][2][201]; 
+
+int main(int argc, char* argv[]){
+
+	FILE* readStream = 0x00L;
+	readStream = fopen("input.txt", "r");
+
+	if(readStream == 0x00L){
+		fprintf(stderr, "Don`t open the file.\n");
+		return 2;
+	}
+
+	short testCases = 0,
+		  row = 0, col = 0, distance = 0, fule = 0;
+
+	fscanf(readStream, "%hd", &testCases);
+	
+	while(testCases--){
+		fscanf(readStream, "%hd %hd %hd %hd", &row, &col, &distance, &fule);
+		
+		for(int i = 1; i <= row; ++i) 
+			for(int j = 1; j < col; ++j) 
+				fscanf(readStream, "%hd", &rowFule[i][j]);
+		
+		for(int i = 1; i < row; ++i) 
+			for(int j = 1; j <= col; ++j) 
+				fscanf(readStream, "%hd", &colFule[i][j]);
+      
+		for(int i = 1; i <= row; ++i) 
+			for(int j = 1; j <= col; ++j) 
+				for(int k = 0; k < 2; ++k) 
+					for(int r = 0; r < 201; ++r) 
+						path[i][j][k][r] = fule+1;
+
+        path[1][1][0][0] = path[1][1][1][0] = 0;
+        int turnCount = (int)2e9;
+		   
+		for(int i = 1;i <= row; ++i) 
+			for(int j = 1; j <= col; ++j) 
+				for(int r = 0; r < 201; ++r) 
+					for(int k = 0; k < 2; ++k) 
+						if (path[i][j][k][r] <= fule){
+							if (i == row && j == col && turnCount > r) turnCount = r;
+							if (r < 200 && path[i][j][!k][r+1] > path[i][j][k][r]) path[i][j][!k][r+1] = path[i][j][k][r];
+							if(k && (j < col) && path[i][j+1][k][r] > path[i][j][k][r] + rowFule[i][j]) path[i][j+1][k][r] = path[i][j][k][r] + rowFule[i][j];
+							else if(!k && (i < row) && path[i+1][j][k][r] > path[i][j][k][r] + colFule[i][j]) path[i+1][j][k][r] = path[i][j][k][r] + colFule[i][j];
+        }
+		printf("%d\n", (turnCount < 2e9) ? ((row + col - 2) * distance + turnCount) : -1);
+	}
+	fclose(readStream);
+}

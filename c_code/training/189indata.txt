@@ -1,0 +1,41 @@
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int M(int n);
+
+int main() {
+    
+    FILE* fp;
+    
+    int i, num_cases, num_data;
+    
+    fp = fopen("input.txt", "r");
+    if(fp == NULL)  exit(1);
+    
+    fscanf(fp, "%d", &num_cases);
+    
+    for(i=0; i<num_cases; i++) {
+        fscanf(fp, "%d", &num_data);
+        
+        printf("%d\n", M(num_data));
+    }
+    
+    fclose(fp);
+}
+
+int M(int n) {
+    
+    if(n > 100)
+        return n - 10;
+    else
+        return M(M(n+11));
+}
+
+
+
+
+

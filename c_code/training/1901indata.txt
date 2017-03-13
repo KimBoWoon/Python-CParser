@@ -1,0 +1,44 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main()
+{
+        fstream in;
+        int numTestCases;
+        int n,m; 
+        in.open("input.txt");
+
+        in>>numTestCases;
+        for(int i=0; i<numTestCases; i++){
+                in>>n>>m;
+				double get[1000]={0};
+				double loss[1000]={0};
+                int a,b;
+                double p,q;
+                for(int j=0; j<m; j++){
+                        in>>a>>b>>p>>q;
+						get[a]+=p;
+                        loss[a]+=q;
+                        get[b]+=q;
+                        loss[b]+=p;
+                }
+                double max=0.0;
+                double min=1.0;
+                for(int p=1; p<=n; p++){
+                        double score;
+                        score=(double)(get[p]*get[p])/((get[p]*get[p])+(loss[p]*loss[p]));
+
+                        if(max<=score)
+                                max=score;
+                        if(min>=score)
+                                min=score;
+                }
+
+                cout<<int(max*1000)<<endl;
+				cout<<int(min*1000)<<endl;
+        }
+        in.close();
+        return 0;
+
+}

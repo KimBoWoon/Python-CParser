@@ -1,0 +1,59 @@
+
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+int main(){
+	ifstream in;
+	in.open("input.txt");
+	int n,cnt,min,cmin;
+	in >> n;
+	for (int i = 0; i < n; i++){
+		in >> cnt;
+		int **matrix = new int*[cnt + 1];
+		int **sub = new int*[cnt + 1];
+		int *file = new int[cnt + 1];
+		for (int j = 1; j <= cnt; j++){
+			in >> file[j];
+			*(matrix+j) = new int[cnt + 1];
+			*(sub + j) = new int[cnt + 1];
+		}
+		for (int j = 1; j <= cnt; j++){
+			for (int k = 1; k <= cnt; k++){
+				matrix[j][k] = 0;
+				sub[j][k] = 0;
+				if (k == j)
+					sub[j][k] = file[k];
+				else if (k > j){
+					sub[j][k] = sub[j][k - 1] + file[k];
+				}
+			}
+		}
+		for (int j = 1; j <= cnt; j++){
+			for (int k = j-1; k >= 1; k--){
+				if (j > k){
+					for (int p = j; p > k; p--){
+						if (p == j)
+							min = matrix[k][p-1] + matrix[p][j] + sub[k][j];
+						else{
+							cmin = matrix[k][p-1] + matrix[p][j] + sub[k][j];
+							if (cmin < min){
+								min = cmin;
+							}
+						}
+					}
+					matrix[k][j] = min;
+				}
+			}
+		}
+		cout << matrix[1][cnt] << endl;
+		for (int j = 1; j <= cnt; j++){
+			delete[] * (matrix + j);
+			delete[] * (sub + j);
+		}
+		delete matrix;
+		delete file;
+		delete sub;
+	}
+	return 0;
+}

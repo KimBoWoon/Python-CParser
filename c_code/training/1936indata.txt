@@ -1,0 +1,60 @@
+#include <iostream>
+#include <cstdlib>
+#include <algorithm>
+#include <fstream>
+#include <string.h>
+
+typedef struct baseballteam
+{
+	int win;
+	int lose;
+	double expectednum;
+} Base;
+
+bool compare(Base a, Base b);
+double getexpect(Base base);
+int main(void)
+{
+	std::fstream infile;
+	infile.open("input.txt");
+	if (infile.fail())
+	{
+		std::cerr << "input file error";
+	}
+	int testcase;
+	infile >> testcase;
+	for (int i = 0; i < testcase; i++)
+	{
+		Base base[1001];
+		memset(base, 0, sizeof(Base) * 1001);
+		int teamcount, gamecount;
+		infile >> teamcount >> gamecount;
+		for (int j = 0; j < gamecount; j++)
+		{
+			int teamA, teamB;
+			int point1, point2;
+			infile >> teamA >> teamB >> point1 >> point2;
+			base[teamA].win += point1; base[teamA].lose += point2;
+			base[teamB].win += point2; base[teamB].lose += point1;
+		}
+		for (int j = 1; j <= teamcount; j++)
+		{
+			base[j].expectednum = getexpect(base[j]);
+		}
+		std::sort(base, base+teamcount + 1, compare);
+		std::cout << (int)(base[0].expectednum*1000) << std::endl;
+		std::cout << (int)(base[teamcount-1].expectednum*1000) << std::endl;
+	}
+	return 0;
+}
+double getexpect(Base base)
+{
+	double bunja = (double)base.win*(double)base.win;
+	double bunmo = ((double)base.win*(double)base.win + ((double)base.lose)*((double)base.lose));
+	if (bunmo == 0) return 0;
+	else return bunja / bunmo;
+}
+bool compare(Base a, Base b)
+{
+	return a.expectednum > b.expectednum;
+}

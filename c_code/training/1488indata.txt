@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+	FILE *file;
+	int cases,hight,width,num;
+	int roomnum;
+
+	file=fopen("input.txt","r");
+
+	fscanf(file,"%d",&cases);
+	while(cases--){
+		fscanf(file,"%d %d %d",&hight,&width,&num);
+	    
+		if(num%hight==0){
+			roomnum=num/hight; 
+			roomnum+=hight*100; 
+		}
+		else{
+			roomnum=num/hight+1; 
+			roomnum+=(num%hight)*100; 
+		}
+		printf("%d\n",roomnum);
+	}
+	fclose(file);
+}

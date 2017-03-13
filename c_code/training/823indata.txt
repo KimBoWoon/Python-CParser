@@ -1,0 +1,25 @@
+
+
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+int fibo(int num);
+int main(){
+	ifstream inStream;
+	int numTest,num;
+	inStream.open("input.txt");
+	if (inStream.fail()) exit(1);
+
+	inStream >> numTest;
+
+	for (int k = 0; k < numTest; k++){
+		inStream >> num;
+		cout<<fibo(num)<<endl;
+	}
+}
+int fibo(int num){
+	if (num == 0) return 0;
+	else if (num == 1) return 1;
+	else return fibo(num - 1) + fibo(num - 2);
+}

@@ -1,0 +1,84 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAXSIZE 9
+
+#define UNMARK 0
+
+typedef struct Point { int x, y;} point;
+point direction[8] = {{1,-2}, {2,-1}, {2,1}, {1,2}, {-1,2}, {-2,1}, {-2,-1}, {-1,-2}};
+
+
+void printMatrix(int arr[MAXSIZE][MAXSIZE], int row, int col) {
+    int i, j;
+    for (i=0; i<row; i++)
+    for (j=0; j<col; j++)
+        printf(j==col-1 ? "%d\n" : "%d ", arr[i][j]);
+}
+
+
+int isOutOfRange(int row, int col, point pos) {
+	if( pos.y < 0 || pos.y >= row ) return 0;
+	if( pos.x < 0 || pos.x >= col ) return 0;
+	return 1;
+}
+
+
+int findPath(int arr[MAXSIZE][MAXSIZE], int row, int col, point pos, int cnt){
+    int i;
+    point next;
+    
+    if (cnt == row * col) return 1;
+    
+    for(i=0; i<8; i++) {
+        next.x = pos.x + direction[i].x;
+        next.y = pos.y + direction[i].y;
+        
+        if (isOutOfRange(row, col, next) && arr[next.y][next.x] == UNMARK) {
+            arr[next.y][next.x] = cnt+1;
+			
+			if(findPath(arr, row,col,next,cnt+1)) return 1;
+
+			arr[next.y][next.x] = UNMARK;
+		}
+	}
+	return 0;
+}
+
+void knightTour(FILE *fin) {
+    int i, j;
+    int row, col, x, y;
+	int arr[MAXSIZE][MAXSIZE];
+    point pos;
+    
+    fscanf(fin, "%d %d %d %d", &row, &col, &y, &x);
+    
+    
+    for(i=0; i<row; i++)
+    for(j=0; j<col; j++)
+        arr[i][j] = UNMARK;
+        
+    
+    pos.x = x-1; pos.y = y-1;
+	arr[pos.y][pos.x] = 1;
+
+	if( findPath(arr, row, col, pos, 1) ) {
+        printf("1\n");
+        printMatrix(arr, row, col);
+    } else printf("0\n");
+}
+   
+int main(){
+    int testCases, cases;
+    FILE* fin = fopen("input.txt", "r");    
+    
+    fscanf(fin, "%d", &testCases);      
+    
+    for(cases=0; cases<testCases; cases++)
+        knightTour(fin);        
+    
+    fclose(fin);            
+    
+    return 0;           
+}

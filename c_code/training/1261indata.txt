@@ -1,0 +1,73 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+int allP(int num1[], int n) 
+{
+	int count=0;
+	num1[count++]=2;
+	for(int k=3; k<n; k++) {
+		int check=0;
+		for(int i=2; i<k; i++) {
+			if(k%i==0) check++;
+		}
+		if(check==0) 
+			num1[count++] = k;
+	}
+	return count;
+}
+int primeNum(int num)
+{
+	int k;
+	for(int j=1; j<num; j++)
+	{
+		if(j>1 && num%j == 0) {
+			k=0;
+			break;
+		}
+		else if(num==j+1) k= 1;
+	}
+	return k;
+}
+void numcase(int num1[], int count, int n)
+{
+	int a=0, b=0;
+	for(int i=0; i<count; i++) {
+		if(primeNum(n-num1[i])) {
+			if(a==0 && b==0) {
+				a=n-num1[i];
+				b=num1[i];
+			} else if(abs(a-b)>abs(num1[i]-(n-num1[i]))){
+				a = n-num1[i];
+				b=num1[i];
+			}
+		}
+	}
+	if(a > b) {
+		int temp=a;
+		a=b;
+		b=temp;
+	}
+	cout<<a<<" "<<b<<endl;
+}
+int main(void) 
+{
+	int test, n, count;
+	ifstream file;
+	file.open("input.txt"); 
+	file >> test;
+
+	for(int i=0; i<test; i++) 
+	{
+		int num1[1000]={0};
+		file >> n;
+		count = allP(num1,n);
+		numcase(num1, count, n); 
+	}
+	file.close();
+	return 0;
+}

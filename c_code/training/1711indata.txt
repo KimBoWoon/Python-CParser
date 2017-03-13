@@ -1,0 +1,42 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int main() {
+	ifstream instream;
+	int numCases;
+	instream.open("input.txt");
+	instream >> numCases;
+	for(int i=0; i<numCases; i++) {
+		int num;
+		bool tmp = 0;
+		instream >> num;
+		for(int b=2; b<=64; b++) {
+			vector<int> V;
+			int data = num;
+			while(data > 0) {
+				V.push_back(data%b);
+				data /= b;
+			}
+			bool val = 1;
+			for(int j=0; j<V.size(); j++) {
+				if(V[j] != V[(int)V.size()-1-j]) {
+					val = 0;
+					break;
+				}
+			} 
+			if(val) {
+				tmp = 1;
+				break;
+			}
+		}
+		if(tmp)
+			cout << 1 << endl;
+		else
+			cout << 0 << endl;
+	}
+	instream.close();
+}
+ 

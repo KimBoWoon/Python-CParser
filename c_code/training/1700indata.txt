@@ -1,0 +1,42 @@
+#include <cstdio>
+#include <string>
+using namespace std;
+
+int T, N;
+bool flag;
+int main() {
+    FILE* inFile;
+    inFile = fopen("input.txt", "r");
+
+    for (fscanf(inFile, "%d", &T); T--; )
+    {
+        fscanf(inFile, "%d", &N);
+        for (int i=2; i<65; ++i)
+        {
+            string str;
+            int num = N;
+            flag = true;
+            while(num!=0){
+                str += num%i;
+                num /= i;
+            }
+            int size = str.size();
+            for (int j=0; j<size/2; ++j){
+                if(str[j] != str[size-1-j]) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) {
+                break;
+            }
+        }
+        if(flag)
+            printf("%d\n", 1);
+        else
+            printf("%d\n", 0);
+    }
+
+    fclose(inFile);
+    return 0;
+}

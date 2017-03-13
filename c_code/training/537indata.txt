@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define max 13
+
+int factorial(int n);
+void permutation(char *str, int wordNum, int order);
+
+void main()
+{
+	FILE *f;
+	int i,j;
+	int count;
+	int alpa;
+	int number;
+
+	f = fopen("input.txt", "r");
+	if(f == NULL) exit(1);
+
+	fscanf(f, "%d", &count);
+	for(i=0; i<count; i++)
+	{
+		char alpabet[max] = {'\0'};
+		fscanf(f, "%d %d", &alpa, &number);
+
+		for(j=0; j<alpa; j++)
+		{
+			alpabet[j] = 'a'+j;
+		}
+		permutation(alpabet, alpa, number);        
+	}
+	fclose(f);
+} 
+
+int factorial(int n)
+{
+	if(n<=1)
+		return 1;
+	else
+		return n*factorial(n-1);
+}
+void permutation(char *str, int wordNum, int order)
+{
+	int i,j;
+	int index;
+	int realIndex;
+
+	for(i=0; i<strlen(str); i++)
+	{
+		index = (order-1) / factorial(wordNum-1-i);
+		order = (order-1) % factorial(wordNum-1-i) + 1;
+		realIndex = index;
+
+		for(j=0; j<realIndex; j++)
+		{
+			if(*(str+j) == '0')
+				realIndex++;
+		}
+		while(1)
+		{
+			if(*(str+realIndex) == '0')
+				realIndex++;
+			else
+			{
+				printf("%c", *(str+realIndex));
+				str[realIndex] = '0';
+				break;
+			}
+		}			
+	}	
+	printf("\n");    
+}

@@ -1,0 +1,33 @@
+#include<fstream>
+#include<iostream>
+#define MAX 44
+
+using namespace std;
+
+int main(){
+	ifstream in;
+	in.open("input.txt");
+	if (!in) return 1;
+	int n = 0,triNum[MAX];
+	for (int i = 1; i <= MAX; i++){
+		triNum[i - 1] = i*(i + 1) / 2;
+	}
+	in >> n;
+	for (int i = 0; i < n; i++){
+		int temp = 0,flag =0;
+		in >> temp;
+		for (int j = 0; j < MAX; j++){
+			for (int k = 0; k < MAX; k++){
+				for (int l = 0; l < MAX; l++){
+					if (flag) break;
+					if (temp == triNum[j] + triNum[k] + triNum[l]) flag = 1;
+				}
+				if (flag) break;
+			}
+			if (flag) break;
+		}
+		cout << flag << endl;
+	}
+	in.close();
+	return 0;
+}
