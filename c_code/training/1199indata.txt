@@ -1,0 +1,85 @@
+
+#include <iostream>
+#include <fstream>
+
+#define SIZE 250	
+
+using namespace std;
+
+int input_data(ifstream& ifs, int& evenNum, int primeNum[]);	
+bool isPrime(int range, int num);	
+void findGBC(int primeNum[], int numOfPrime, int target);	
+void swap(int& a, int& b);
+
+int main()
+{
+	ifstream inFile;
+	inFile.open("input.txt");
+
+	int numTestCase;
+	inFile >> numTestCase;
+
+	while (numTestCase--)
+	{
+		int evenNum;	
+		int primeNum[SIZE];	
+		
+		int numOfPrime = input_data(inFile, evenNum, primeNum);	
+		findGBC(primeNum, numOfPrime, evenNum);
+	}
+	return 0;
+}
+
+int input_data(ifstream& ifs, int& evenNum, int primeNum[])
+{
+	ifs >> evenNum;
+	int numOfPrime = 0;
+	
+	for (int i = 2; i <= evenNum; i++)
+		if (isPrime(evenNum, i)) primeNum[numOfPrime++] = i;	
+
+	return numOfPrime;
+}
+
+bool isPrime(int range, int num)
+{
+	if (num == 2 || num == 3) return true;	
+
+	for (int i = 2; i < num; i++)	
+		if (!(num % i)) return false;	
+
+	return true;
+}
+
+void findGBC(int primeNum[], int numOfPrime, int target)
+{
+	int midIdx;
+
+	for (int i = 0;; i++)
+		if (primeNum[i] >= target / 2)
+		{
+			midIdx = i;
+			break;
+		}
+
+	for (int i = midIdx ;; i--)
+		for (int j = numOfPrime - 1; j >= 0; j--)
+		{
+			if (primeNum[i] + primeNum[j] > target)
+				continue;
+			if (target == primeNum[i] + primeNum[j])
+			{
+				if (primeNum[j] > primeNum[i])
+					swap(i, j);
+				cout << primeNum[j] << " " << primeNum[i] << endl;
+				return;
+			}
+		}
+}
+
+void swap(int& a, int& b)
+{
+	int temp = a;
+	a = b;
+	b = temp;
+}

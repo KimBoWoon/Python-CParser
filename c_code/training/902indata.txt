@@ -1,0 +1,22 @@
+
+#include<iostream>
+#include<fstream>
+#include<algorithm>
+using namespace std;
+int n,sum[1002],dp[1002][1002];
+int main()
+{
+	ifstream fs("input.txt");
+	int t;
+	fs>>t;
+    while (t--)
+	{
+		fs>>n;
+		for (int i=1;i<=n;i++)
+			fs>>sum[i],sum[i] += sum[i-1];
+		for (int l=1;l<=n;l++)
+			for (int i=1,j=l;j<=n;i++,j++)
+				dp[i][j]=sum[j]-sum[i-1]-min(dp[i+1][j],dp[i][j-1]);
+		cout<<dp[1][n]<<"\n";
+    }
+}

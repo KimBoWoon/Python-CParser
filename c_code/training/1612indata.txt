@@ -1,0 +1,57 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+int fileArr[502][502];
+int sumFile[502];
+void makeTable(int size);
+int main(void) {
+	ifstream in; in.open("input.txt");
+	int testcases, fileNum;
+	in >> testcases;
+	for (int i = 0; i < testcases; i++) {
+		in >> fileNum;
+		for (int j = 1; j <= fileNum; j++) {
+			in >> fileArr[j][j];
+			sumFile[j] += sumFile[j - 1] + fileArr[j][j];
+		}
+		makeTable(fileNum);
+		cout << fileArr[1][fileNum] << endl;
+		for (int j = 1; j <= fileNum; j++) {
+			sumFile[j] = 0;
+			for (int k = 1; k <= fileNum; k++)
+				fileArr[j][k] = 0;
+		}
+	}
+}
+void makeTable(int size) {
+	for (int i = 1; i < size; i++) {
+		fileArr[i][i + 1] = fileArr[i][i] + fileArr[i + 1][i + 1];
+	}
+	for (int i = 1; i <= size; i++) {
+		fileArr[i][i] = 0;
+	}
+	for (int i = 2; i < size; i++) {
+		int a = 1;
+		int b = i+1;
+		int value;
+		int sum;
+		while (b<=size){
+			int k = a;
+			for (int j = 1; j <= b-a; j++)
+			{
+				if (j == 1)
+					value = fileArr[a][k] + fileArr[k + 1][b];
+				else {
+					if (value > (fileArr[a][k] + fileArr[k + 1][b]))
+						value = fileArr[a][k] + fileArr[k + 1][b];
+				}
+				k++;
+			}
+			sum = sumFile[b] - sumFile[a - 1];
+			fileArr[a][b]=sum+value;
+			value = 0;
+			a++; b++;
+		}
+	}
+}

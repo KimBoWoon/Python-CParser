@@ -1,0 +1,47 @@
+
+
+
+#include<stdio.h>
+#include<string.h>
+
+#define TRUE 1
+#define FALSE 0
+
+char palindrome[1000];
+
+char checkPalindrome()  
+{
+	int i;
+	int length = strlen(palindrome);
+	int halfLength = (int) (length * 0.5f);
+	for(i=0; i<halfLength; i++)
+	{
+		if(palindrome[i] != palindrome[length-i-1])     
+		{
+			return FALSE;
+		}
+	}
+	return TRUE;
+}
+
+int main(void)
+{
+	FILE *fp = NULL;
+	int testCase;
+
+	fp = fopen("input.txt", "r");                       
+	fscanf(fp, "%d", &testCase);                        
+
+	while(testCase--)
+	{
+		char result;
+
+		memset(palindrome, '\0', sizeof(palindrome));   
+		fscanf(fp, "%s", palindrome);                   
+		result = checkPalindrome();                     
+		printf("%d\n", result);                         
+	}
+
+	fclose(fp);                                         
+	return 0;
+}

@@ -1,0 +1,48 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int gcd(int a, int b)
+{
+	if(b==0)
+		return a;
+	else
+		return gcd(b,a%b);
+}
+
+int Henry(int a, int b)
+{
+	int arr;
+	
+	while ((a/gcd(a,b))!=1)
+	{
+		arr = (b / a) + 1;
+		a = ((a*arr) - b);
+		b = b*arr;
+		
+	}
+	return (b/gcd(a,b));
+	
+}
+
+void main()
+{
+	FILE *file;
+	int i;
+	int test;
+	int a;
+	int b;
+
+	file = fopen("input.txt", "r");
+	if(file==NULL) exit(1);
+	fscanf(file, "%d", &test);
+
+	for (i = 0; i < test; i++)
+	{
+		fscanf(file, "%d %d", &a, &b);
+
+		printf("%d\n",Henry(a, b));
+	}
+	fclose(file);
+}

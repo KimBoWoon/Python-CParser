@@ -1,0 +1,30 @@
+#include <iostream>
+#include <fstream>
+#include <cstring>
+
+int main(void) {
+	std::ifstream fin("input.txt");
+	bool * arr = new bool[100001];
+	
+	memset(arr, true, sizeof(bool) * 100001);
+	arr[0] = arr[1] = false;
+	
+	for (int i = 2; i < 100001; i++) {
+		if (arr[i]) {
+			for (int j = i + i; j < 100001; j += i) {
+				arr[j] = false;
+			}
+		}
+	}
+	
+	int nCase; fin >> nCase;
+	int num = 0;
+	
+	for (int i = 0; i < nCase; i++) {
+		fin >> num;
+		std::cout << (arr[num] ? 1 : 0) << std::endl;
+	}
+	
+	delete []arr;
+	fin.close();
+}

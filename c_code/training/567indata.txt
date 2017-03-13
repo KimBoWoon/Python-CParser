@@ -1,0 +1,50 @@
+#include <stdio.h>
+
+int Factorial(int n){
+    if( n < 2 ) 
+		return 1;
+    else 
+		return Factorial(n-1)*n;
+}
+int DivFact(int a, int b){
+	return a/Factorial(b);
+}
+
+void Swap(char *x, char *y){
+    char temp = *x;
+    *x = *y;
+    *y = temp;
+}
+
+void Permutation(int n, int k){
+	char str[13] = {"abcdefghijkl"};
+    int i,num = 0;
+    int a = k-1;
+    int b = n-1;
+    
+    while(a>0){    
+        printf("%c",str[DivFact(a,b)]);
+        for(i=DivFact(a,b); i<12; i++)
+            Swap(&str[i], &str[i+1]);
+        a = a%Factorial(b--);
+        num++;
+    }
+
+    for(i=0; i<n-num; i++)        
+        printf("%c", str[i]);   
+    printf("\n");
+}
+int main(){
+    int t, i;
+	int n1, k1;
+    FILE* file = fopen("input.txt", "r"); 
+    
+    fscanf(file, "%d", &t);      
+    for(i=0; i<t; i++){
+		fscanf(file, "%d %d", &n1, &k1);
+        Permutation(n1, k1); 
+	}
+    
+    fclose(file);   
+	  return 0;   
+}

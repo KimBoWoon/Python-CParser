@@ -1,0 +1,17 @@
+
+
+#include <stdio.h>
+unsigned int Factorial(n) { 
+	return n > 0 ? n*Factorial(n - 1) : 1; 
+}
+int main()
+{
+	unsigned int t, n;
+	FILE *fp;
+	if ((fp = fopen("input.txt", "r")) == NULL) return 0; 
+	fscanf(fp, "%d", &t); 
+	while (t--){
+		fscanf(fp, "%d", &n); 
+		printf("%u\n", Factorial(n)); 
+	}fclose(fp);
+}

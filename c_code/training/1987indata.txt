@@ -1,0 +1,117 @@
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+void findTwoNumbers(int a[], int size, int numK);
+int pivot(int a[], int first, int last);
+void quickSort(int a[], int first, int last);
+void swap(int& a, int& b);
+int absFun(int a);
+
+int main(){
+
+	ifstream inStream;
+	inStream.open("input.txt");
+	if (inStream.fail()) exit(1);
+	int numtest;
+	inStream >> numtest;
+	for (int i = 0; i < numtest; i++)
+	{
+		int size, numK;
+		inStream >> size >> numK;
+		int* numArray = new int[size];
+
+		for (int k = 0; k < size; k++)
+		{
+			inStream >> numArray[k];
+		}
+		quickSort(numArray, 0, size - 1);
+		findTwoNumbers(numArray, size, numK);
+		delete[] numArray;
+	}
+}
+void findTwoNumbers(int numArray[], int size, int numK)
+{
+	int startA = 0;
+	int startB = size - 1;
+	int absVal = 200000000;
+	int trueCount = 0;
+	int absValCount = 0;
+	int patternNum = 0;
+	while (true)
+	{
+		patternNum = (numArray[startA] + numArray[startB] - numK);
+		if (startA == startB) break;
+		if (startA > startB) break;
+		if (absFun(patternNum) == 0){
+			trueCount++;
+			startA++;
+			startB--;
+		}
+		else	 if (absFun(patternNum)<absVal){
+			absVal = absFun(patternNum);
+			absValCount = 1;
+			if (patternNum<0) startA++;
+			else if (patternNum > 0) startB--;
+		}
+
+		else	 if (absFun(patternNum) == absVal){
+			absVal = absFun(patternNum);
+			absValCount++;
+			if (patternNum <0) startA++;
+			else if (patternNum > 0) startB--;
+
+		}
+		else	 if (absFun(patternNum) > absVal){
+			if (patternNum <0) startA++;
+			else if (patternNum> 0) startB--;
+		}
+	}
+
+	if (trueCount > 0) cout << trueCount << endl;
+	else cout << absValCount << endl;
+
+}
+void quickSort(int a[], int first, int last)
+{
+	int pivotElement;
+
+	if (first < last)
+	{
+		pivotElement = pivot(a, first, last);
+		quickSort(a, first, pivotElement - 1);
+		quickSort(a, pivotElement + 1, last);
+	}
+}
+
+int pivot(int a[], int first, int last)
+{
+	int  p = first;
+	int pivotElement = a[first];
+
+	for (int i = first + 1; i <= last; i++)
+	{
+		
+		if (a[i] <= pivotElement)
+		{
+			p++;
+			swap(a[i], a[p]);
+		}
+	}
+
+	swap(a[p], a[first]);
+
+	return p;
+}
+void swap(int& a, int& b)
+{
+	int temp = a;
+	a = b;
+	b = temp;
+}
+
+int absFun(int a)
+{
+	if (a >= 0) return a;
+	else return -a;
+}

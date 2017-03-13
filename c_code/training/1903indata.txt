@@ -1,0 +1,81 @@
+
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <fstream>
+#include <iostream>
+
+using namespace std;
+
+
+int info[1001][3];
+
+
+int main(void) {
+
+	ifstream dataFile("input.txt");
+
+	int caseCount;
+	dataFile >> caseCount;
+
+	for (int i = 0; i < caseCount; i++) {
+		int teamCount;
+		dataFile >> teamCount;
+
+		int totalGameCount;
+		dataFile >> totalGameCount;
+
+		for (int p = 1; p <= teamCount; p++) {
+			info[p][0] = 0;
+			info[p][1] = 0;
+			info[p][2] = 0;
+		}
+
+		for (int j = 0; j < totalGameCount; j++) {
+			int team1, team2;
+			dataFile >> team1 >> team2;
+
+			int team1GetPoint, team2GetPoint;
+			dataFile >> team1GetPoint >> team2GetPoint;
+
+			info[team1][0] += team1GetPoint;
+			info[team1][1] += team2GetPoint;
+
+			info[team2][0] += team2GetPoint;
+			info[team2][1] += team1GetPoint;
+		}
+
+		int min = 999;
+		int max = 0;
+
+		for (int k = 1; k <= teamCount; k++) {			
+
+			if (info[k][0] == 0 && info[k][1] == 0) {
+				info[k][2] = 0;
+			}
+			else {
+				info[k][2] =  info[k][0] * info[k][0] * 1000 / ((info[k][0] * info[k][0]) + (info[k][1] * info[k][1]));
+			}
+
+
+			if (info[k][2] < min) {
+				min = info[k][2];
+			}
+			
+			if (info[k][2] > max) {
+				max = info[k][2];
+			}
+
+			
+		}
+		cout << max << endl;
+		cout << min << endl;
+		
+	}
+
+	getchar();
+
+	dataFile.close();
+
+	return 0;
+}

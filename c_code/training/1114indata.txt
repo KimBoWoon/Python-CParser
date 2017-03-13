@@ -1,0 +1,41 @@
+
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+void main(void) {
+	FILE *inFile;
+	int caseNum;	
+
+	int a;
+	int i, j, k;
+	int n;
+
+	int triNums[45];
+	int res[1001] = { 0 };
+
+	inFile = fopen("input.txt", "r");
+	fscanf(inFile, "%d", &caseNum);
+
+	for (a = 1; a < 45; a++) {
+		triNums[a] = a*(a + 1) / 2;		
+	}
+
+	for (i = 1; i < 45; i++) {
+		for (j = i; j < 45; j++) {
+			for (k = j; k < 45; k++) {
+				if (triNums[i] + triNums[j] + triNums[k] < 1001) {
+					res[triNums[i] + triNums[j] + triNums[k]] = 1;
+				}				
+			}
+		}
+	}
+
+	for (i = 0; i < caseNum; i++) {
+		fscanf(inFile, "%d", &n);		
+		printf("%d\n", res[n]);		
+	}
+}

@@ -1,0 +1,112 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int h[100][100], v[100][100], d[100][100][2][200];
+
+void main()
+{
+	FILE *f;
+	int count;
+	int i;
+	int a, b, c;
+	int m,n,k;
+	int M,N,L,G;
+
+	f = fopen("input.txt", "r");
+	if(f==NULL) exit(1);
+
+	fscanf(f, "%d", &count);
+	for(i=0; i<count; i++)
+	{
+		for(a=0; a<100; a++)
+		{
+			for(b=0; b<100; b++)
+			{
+				for(c=0; c<200; c++)
+				{
+					d[a][b][0][c] = 0;
+					d[a][b][1][c] = 0;
+				}
+			}
+		}
+
+		fscanf(f, "%d %d %d %d", &M, &N, &L, &G);
+		for(a=0; a<M; a++)
+			for(b=0; b<N-1; b++)
+				fscanf(f, "%d", &h[a][b]);
+
+		for(a=0; a<M-1; a++)
+			for(b=0; b<N; b++)
+				fscanf(f, "%d", &v[a][b]);
+		
+		for(m=0; m<M; m++)
+		{
+			for(n=0; n<N; n++)
+			{
+				if(m == 0 && n == 0)
+					continue;
+				if(m == 0)
+				{
+					d[0][n][0][0] = d[0][n-1][0][0]+h[0][n-1];
+					continue;
+				}
+				if(n == 0)
+				{
+					d[m][0][1][0] = d[m-1][0][1][0]+v[m-1][0];
+					continue;
+				}				
+				for(k=1; k<m+n; k++)
+				{
+					if(d[m][n-1][0][k] != 0 || d[m][n-1][1][k-1] != 0)
+					{
+						if(d[m][n-1][0][k] == 0)
+							d[m][n][0][k] = d[m][n-1][1][k-1]+h[m][n-1];
+						else if(d[m][n-1][1][k-1] == 0)
+							d[m][n][0][k] = d[m][n-1][0][k] + h[m][n-1];
+						else
+						{
+							if(d[m][n-1][0][k] > d[m][n-1][1][k-1])
+								d[m][n][0][k] = d[m][n-1][1][k-1]+h[m][n-1];
+							else
+								d[m][n][0][k] = d[m][n-1][0][k] + h[m][n-1];
+						}
+					}
+					if(d[m-1][n][0][k-1] != 0 || d[m-1][n][1][k] != 0)
+					{
+						if(d[m-1][n][0][k-1] == 0)
+							d[m][n][1][k] = d[m-1][n][1][k]+v[m-1][n];
+						else if(d[m-1][n][1][k] == 0)
+							d[m][n][1][k] = d[m-1][n][0][k-1]+v[m-1][n];
+						else
+						{
+							if(d[m-1][n][0][k-1] > d[m-1][n][1][k])
+								d[m][n][1][k] = d[m-1][n][1][k]+v[m-1][n];
+							else
+								d[m][n][1][k] = d[m-1][n][0][k-1]+v[m-1][n];
+						}
+					}
+					if(d[m][n][0][k] > G)
+						d[m][n][0][k] = 0;
+					if(d[m][n][1][k] > G)
+						d[m][n][1][k] = 0;
+				}
+			}
+		}
+
+		for(k=1; k<M+N; k++)
+		{
+			if(d[M-1][N-1][0][k] != 0)
+			{
+				printf("%d\n", (M+N-2)*L+k);
+				break;
+			}
+			else if(d[M-1][N-1][1][k] != 0)
+			{
+				printf("%d\n", (M+N-2)*L+k);
+				break;
+			}
+			if(k==M+N-2)
+				printf("-1\n");
+		}
+	}
+}

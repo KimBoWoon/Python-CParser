@@ -1,0 +1,29 @@
+
+#include <stdio.h>
+
+int henry(int a, int b){
+    if(b%a == 0) return b/a;
+    return henry(a*(b/a+1) - b, b*(b/a+1));
+}
+
+void henryRep(FILE *fin){
+    int a, b;
+    
+    fscanf(fin, "%d %d", &a, &b);
+    
+    printf("%d\n", henry(a, b));
+}
+
+int main(){
+    int testCases, cases;
+    FILE* fin = fopen("input.txt", "r");    
+    
+    fscanf(fin, "%d", &testCases);      
+    
+    for(cases=0; cases<testCases; cases++)
+        henryRep(fin);      
+    
+    fclose(fin);            
+    
+    return 0;           
+}

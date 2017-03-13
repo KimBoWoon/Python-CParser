@@ -1,0 +1,50 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int parenthesis(char*str,int i,int r,int l)
+{
+	while(1)
+	{
+		if(l>r)
+			return 1;
+		if(str[i]=='\0'){
+			if(r==l)
+				return 0;
+			else 
+				return 1;
+		}
+
+		if(str[i]=='('){
+			return parenthesis(str,i+1,r+1,l);
+		}
+		else if(str[i]==')')
+			return parenthesis(str,i+1,r,l+1);
+	}
+}
+
+void main(void)
+{
+	FILE *file;
+	int i,k, test;
+	char str[50];
+	file=fopen("input.txt","r"); 
+	if(file==NULL) exit(1);
+	
+	fscanf(file,"%d", &test); 
+
+	for(i=0; i<test; i++)
+	{
+		int result;
+		fscanf(file,"%s", str); 
+		result = parenthesis(str,0,0,0);
+		if(result!=0)
+			printf("NO\n");
+		else
+			printf("YES\n");
+		for(k=0;k<50;k++)
+			str[k]='0';
+	}
+	fclose(file); 
+}

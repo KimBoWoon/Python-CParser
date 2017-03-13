@@ -1,0 +1,39 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstring>
+
+using namespace std;
+
+bool pp(char par[])
+{
+	int check=0;
+	for(int i=0; i<strlen(par); i++) {
+		if(par[i]=='(') check++;
+		else check--;
+		if(check<0) return false;
+		if(i==strlen(par)-1) {
+			if(check==0) return true;
+			else return false;
+		}
+	}
+}
+int main(void) 
+{
+	int test, a, b;
+	bool p;
+	ifstream file;
+	file.open("input.txt"); 
+	file >> test;
+
+	for(int i=0; i<test; i++) 
+	{
+		char par[50]={0};
+		file>>par;
+		if(pp(par)) cout<<"YES"<<endl;
+		else cout<<"NO"<<endl;
+	}
+	file.close();
+	return 0;
+}

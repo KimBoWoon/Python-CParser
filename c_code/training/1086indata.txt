@@ -1,0 +1,110 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+void cal(fstream &in_file, int num);
+
+int main()
+{
+	int no_cases;
+	int num;
+
+	fstream in_file;
+
+	in_file.open("input.txt");
+
+	if(in_file.fail())
+	{
+		cerr << "input file error" << endl;
+		exit(1);
+	}
+
+	in_file >> no_cases;
+
+	for(int i = 0; i < no_cases; i++)
+	{
+		in_file >> num;
+		cal(in_file,num);
+	}
+
+	return 0;
+}
+
+void cal(fstream &in_file, int num)
+{
+	int snum[1000][15];
+	int count = 0;
+	int count1 = 0;
+	int count2 = 0;
+	int count3 = 0;
+	int num2 = 0;
+
+	for(int i = 0; i<num; i++)
+	{
+		in_file >> snum[0][i];
+	}
+
+	while(1)
+	{
+		if(count1 < num-1)
+		{
+			snum[count+1][count1] = snum[count][count1] > snum[count][count1+1] ? (snum[count][count1]-snum[count][count1+1])%10 : (snum[count][count1+1]-snum[count][count1])%10;
+			count1 ++;
+		}
+
+		else if(count1 == num-1)
+		{
+			snum[count+1][count1] = snum[count][count1] > snum[count][0] ? (snum[count][count1]-snum[count][0])%10 : (snum[count][0] - snum[count][count1])%10;
+
+			for(int i = 0; i<num; i++)
+			{
+				if(snum[count+1][i] == 0)
+				{
+					count2 ++;
+				}
+			}
+
+			if(count2 == num)
+			{
+				cout << "ZERO" << endl;
+				break;
+			}
+
+			else
+			{
+				count2 = 0;
+			}
+
+			for(int i = 0; i < count; i++)
+			{
+				for(int j = 0; j < num; j++)
+				{
+					if(snum[i][j] == snum[count+1][j])
+					{
+						count3 ++;
+					}
+				}
+
+				if(count3 == num)
+				{
+					cout << "LOOP" << endl;
+					num = 1;
+					break;
+				}
+
+				else
+					count3 = 0;
+			}
+
+			if(num == 1)
+			{
+				break;
+			}
+
+			count1 = 0;
+			count++;
+		}
+	}
+}

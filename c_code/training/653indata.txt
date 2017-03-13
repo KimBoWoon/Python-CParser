@@ -1,0 +1,42 @@
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+
+int pibo(int n);
+
+void main(){
+
+	int numCases;
+	int i;
+	int num;
+
+	
+	FILE *file;
+
+	
+	file = fopen("input.txt","r");
+
+	fscanf(file, "%d", &numCases);
+
+	for(i=0; i<numCases; i++){
+		fscanf(file, "%d", &num);
+
+		printf("%d\n",pibo(num));
+
+	}
+}
+
+
+int pibo(int n){
+
+	if(n<=1)
+		return 1;
+	else
+		return n*pibo(n-1);
+}
+
+
+
+

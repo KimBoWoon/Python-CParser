@@ -1,0 +1,71 @@
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+int gcd(int fst_input, int sec_input);
+
+int main()
+{
+	ifstream inStream;
+	int testcase;
+
+	inStream.open("input.txt");
+	if (inStream.fail())
+	{
+		cerr << "input file open failed";
+		return 0;
+	}
+
+	inStream >> testcase;
+
+	int deno_sum = 0;
+	int nume_sum = 0;
+	int gcd_num = 1;
+
+	for (int i = 0; i < testcase; i++)
+	{
+		int deno1, deno2, nume1, nume2;
+
+		inStream >> nume1 >> deno1 >> nume2 >> deno2;
+
+		if (deno1 == deno2)
+		{
+			deno_sum = deno1;
+			nume_sum = nume1 + nume2;
+		}
+		else if (deno1%deno2 == 0)
+		{
+			deno_sum = deno1;
+			nume_sum = nume1 + nume2*(deno1 / deno2);
+		}
+		else if (deno2%deno1 == 0)
+		{
+			deno_sum = deno2;
+			nume_sum = nume2 + nume1*(deno2 / deno1);
+		}
+		else
+		{
+			deno_sum = deno1*deno2;
+			nume_sum = nume1*deno2 + nume2*deno1;
+		}
+
+		gcd_num = gcd(deno_sum, nume_sum);
+		deno_sum = deno_sum / gcd_num;
+		nume_sum = nume_sum / gcd_num;
+
+		cout << nume_sum << " " << deno_sum << endl;
+
+	}
+	return 0;
+}
+
+
+int gcd(int fst_input, int sec_input)
+{
+	if (sec_input == 0)
+		return fst_input;
+
+	else
+		return gcd(sec_input, fst_input%sec_input);
+}

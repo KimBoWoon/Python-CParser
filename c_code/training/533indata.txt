@@ -1,0 +1,51 @@
+  
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+int factorial(int n){ 
+	if(n == 0)
+		return 1;
+	if (n == 1)
+		return 1;
+	else
+		return factorial(n - 1)*n;
+}
+int main(){
+
+	ifstream inFile;
+	inFile.open("input.txt");
+	int no_cases=0; 
+	inFile >> no_cases;
+	for (int test = 0; test < no_cases; test++){
+		int number=0, count=0,fcount=0,check=0,dnum=0;
+		char str[12] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l' };
+		char change=0;
+		inFile >> number >> count;
+		check = number - 1;
+		for (int k = 0; k<number; k++){
+			fcount = factorial(check);
+			dnum = count / fcount;
+			if (count % fcount==0)
+				dnum--;
+			for (int j = dnum +k; j > k; j--){
+				change = str[j - 1];
+				str[j - 1] = str[j];
+				str[j] = change;
+			}
+			count -= dnum*fcount;
+			check--;
+		}
+		if (count==2){
+			change = str[number - 2];
+			str[number - 2] = str[number - 1];
+			str[number - 1] = change;
+		}
+		for (int j = 0; j < number; j++){
+			cout << str[j];
+		}
+		cout << endl;
+	}
+	return 0;
+}

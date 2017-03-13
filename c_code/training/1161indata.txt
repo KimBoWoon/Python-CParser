@@ -1,0 +1,31 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+int main()
+{
+	ifstream instream("input.txt");
+	int numtestcases, numdata, sum = 0, check = 0;
+	instream >> numtestcases;
+	for (int i = 0; i < numtestcases; i++){
+		instream >>numdata;
+		check = 0;
+		for (int i = 1; i < 44; i++){
+			for (int j = 1; j < 44; j++){
+				for (int k = 1; k < 44; k++){
+					sum = ((i*(i + 1)) / 2) + ((j*(j + 1)) / 2) + ((k*(k + 1)) / 2);
+					if (sum == numdata){
+						check = 1;
+						goto A;
+					}
+					else if (sum > numdata) break;
+				}
+			}
+		}
+		A:
+		cout << check << endl;
+	}
+	instream.close();
+}

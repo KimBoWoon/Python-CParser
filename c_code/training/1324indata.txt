@@ -1,0 +1,49 @@
+  
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+int gcd(int a, int b); 
+int main(){
+
+	ifstream inFile;
+	inFile.open("input.txt");
+	int no_cases=0; 
+	inFile >> no_cases;
+	for (int test = 0; test < no_cases; test++){
+		int a=0,b=0;
+		inFile>>a>>b;
+		
+		while(1)
+		{
+			int tmpa=a, tmpb=b;
+			if(a/gcd(a,b)==1){
+				cout<<b/gcd(a,b)<<endl; 
+				break;
+			}
+
+			while(1)
+			{
+				if(tmpb%tmpa==0){
+					tmpb=tmpb/tmpa;
+					tmpa=1;		
+					break;
+				}
+				tmpb++;
+			}
+			int gc=gcd(b,tmpb); 
+			int tmpaa=a*tmpb/gc; int tmpbb=b*tmpb/gc; int tmpcc=tmpa*b/gc; int tmpdd=tmpb*b/gc;
+			a= tmpaa-tmpcc; b=tmpbb;
+		}
+		
+	}
+
+	return 0;
+}
+int gcd(int a, int b)
+{
+	if(b==0)
+		return a;
+	else
+		return gcd(b,a%b);
+}

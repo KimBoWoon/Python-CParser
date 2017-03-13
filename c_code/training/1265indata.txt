@@ -1,0 +1,40 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+bool isPrime(int n)
+{
+	int flag = 0;
+	for (int i = 2; i <n; i++){
+		if (n%i == 0){
+			flag++;
+			break;
+		}
+	}
+	if (flag < 1)
+		return true;
+	else
+		return false;
+}
+int print(int num, int num1, int num2)
+{
+	if (isPrime(num1) == 1 && isPrime(num2)==1 && num1+num2 == num ){
+		cout << num1 << " " << num2 << endl;
+		return 1;
+	}
+	else
+		return print(num, num1 - 1, num2 + 1);
+}
+int main()
+{
+	ifstream instream("input.txt");
+	int numtestcases, num;
+	instream >> numtestcases;
+	for (int i = 0; i < numtestcases; i++){
+		instream >> num;
+		print(num, num / 2, num/2);
+	}
+	instream.close();
+}

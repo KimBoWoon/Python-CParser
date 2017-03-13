@@ -1,0 +1,39 @@
+
+#include <iostream>
+#include <cmath>
+#include <fstream>
+using namespace std;
+
+
+unsigned int gcd(unsigned int a, unsigned int b){
+	return b==0 ? a: gcd(b, a%b);
+}
+
+
+
+void henry(unsigned int numer1, unsigned int deno1, unsigned int deno2){
+	unsigned int eur = gcd(numer1, deno1);
+	numer1 /= eur;	deno1 /= eur;
+	if(numer1*deno2==deno1 || numer1==0){
+		cout << (deno2==2 ? deno2 : deno2-1) << endl;
+		return ;
+	}
+
+	while(numer1*deno2<deno1)
+		deno2++;
+	return henry(numer1*deno2-deno1, deno1*deno2, deno2+1);
+}
+
+
+int main(void){
+	ifstream fp;
+	fp.open("input.txt", ifstream::in);
+	int numcase;
+	fp >> numcase;
+	for(int i=0; i<numcase; i++){
+		unsigned int num1, num2;
+		fp >> num1 >> num2;
+		henry(num1, num2, 2);
+	}
+	return 0;
+}

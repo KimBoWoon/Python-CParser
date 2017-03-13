@@ -1,0 +1,60 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+void cal(int a, int b);
+
+int main()
+{
+	FILE *in_file;
+	int no_cases;
+	int a,b;
+	int i;
+
+	in_file = fopen("input.txt","r");
+	if(in_file == NULL) exit(1);
+
+	fscanf(in_file,"%d",&no_cases);
+   for(i = 0; i<no_cases; i++)
+   {
+      fscanf(in_file,"%d %d",&a,&b);
+      cal(a,b);
+   }
+   fclose(in_file);
+}
+
+void cal(int a, int b)
+{
+   int c=1,d=2;
+   int num;
+   int cal1,cal2;
+
+   if(a != 1)
+   {
+	   int i;
+      for(i = 2; i<10000; i++)
+      {
+         num = b*i;
+         cal1 = a*i;
+         cal2 = c*b;
+
+         if(b%a == 0)
+         {
+            b = b/a;
+            break;
+         }
+
+         if(cal1-cal2 > 1)
+         {
+            a = cal1 - cal2;
+            b = num;
+         }
+
+         else if(cal1-cal2 == 1)
+         {
+            b = num;
+            break;
+         }
+      }
+   }
+   printf("%d\n",b);
+}

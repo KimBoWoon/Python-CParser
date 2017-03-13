@@ -1,0 +1,132 @@
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+typedef struct Point {int x, y;} Point;
+
+typedef int (*comp)(const void* aa, const void* bb);
+
+int compare (const void * a, const void * b) 
+{ return ( *(int*)a - *(int*)b ); }
+int ascending(const Point* aa, const Point* bb)
+{
+	if(aa->y > bb->y)
+		return 1;
+	else if(aa->y < bb->y)
+		return -1;
+	else
+		return 0;
+}
+
+int descending(const Point* aa, const Point* bb)
+{
+	if(aa->y < bb->y)
+		return 1;
+	else if(aa->y > bb->y)
+		return -1;
+	else
+		return 0;
+}
+
+void sort(int exY,int curX, int *xArr, Point *cafe, int curi, int n) 
+{															
+	int temp = curi + xArr[curX];
+
+	if(curi==0) 
+	{
+		for(int i=0;i<xArr[0];i++)
+		{
+			   if(cafe[i].y>0) 
+			{
+				qsort(cafe,xArr[0],sizeof(cafe[0]),(comp)ascending);
+				break;
+			}
+			else if(cafe[i].y<0) 
+			{
+				qsort(cafe,xArr[0],sizeof(cafe[0]),(comp)descending);
+				break;
+			}
+		}
+	}
+
+
+	else
+	for(int i = curi;i<temp;i++)
+	{
+		if(cafe[i].y > exY)
+		{
+			qsort(cafe+curi,xArr[curX],sizeof(cafe[0]),(comp)ascending);
+			break;
+		}
+		else if(cafe[i].y < exY)
+		{	
+			qsort(cafe+curi,xArr[curX],sizeof(cafe[0]),(comp)descending);
+			break;
+		}
+	}
+
+}
+
+void pathCheck(Point *cafe,int n, int *xArr)
+{
+	int exY=0;
+
+	sort(0,0,xArr,cafe,0,0); 
+
+	for(int i=1;i<n;i++)
+	{
+			if(cafe[i-1].x != cafe[i].x) 
+			{	
+
+				if(xArr[cafe[i].x]==1) 
+					continue;
+
+				sort(cafe[i-1].y,cafe[i].x, xArr,cafe,i,n);
+			}
+	}
+}
+
+void pathPrint(int temp, int* arr,Point *cafe)
+{
+	for(int i=0;i<temp;i++)
+	{
+		cout<<cafe[arr[i]-1].x<<" "<<cafe[arr[i]-1].y<<endl;
+	}
+}
+
+int main()
+{
+	ifstream instream("input.txt",ios::in);
+	int test;
+	instream>>test;
+
+	while(test--)
+	{
+		int nOfCafe;
+		instream>>nOfCafe;
+		Point *cafe = new Point[nOfCafe];
+		int xArr[100000]={0}; 
+
+		for(int i=0;i<nOfCafe;i++)
+		{	
+			instream>>cafe[i].x>>cafe[i].y;
+			int temp = cafe[i].x;
+			xArr[temp]++;
+		}
+		qsort(cafe,nOfCafe,sizeof(cafe[0]),compare);
+
+		pathCheck(cafe,nOfCafe, xArr);
+
+
+		int m;
+		instream>>m;
+		int *printArr = new int[m];
+		for(int i=0;i<m;i++)
+			instream>>printArr[i];
+
+		pathPrint(m, printArr, cafe);
+		delete[] cafe;
+		delete[] printArr;
+	}
+	return 0;
+}

@@ -1,0 +1,37 @@
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int T[45], A[1001];
+int main() {
+    FILE* fp;
+    
+    int i, num_cases, num_data;
+    int j, k, l;
+    
+    fp = fopen("input.txt", "r");
+    if(fp == NULL)  exit(1);
+    
+    fscanf(fp, "%d", &num_cases);
+    
+    for(i=0; i<num_cases; i++) {
+        fscanf(fp, "%d", &num_data);
+        
+        for(j=1; j<45; j++)
+            T[j] = j*(j+1)/2;
+        
+        for(j=1; j<45; j++)
+            for(k=j; k<45; k++)
+                for(l=k; l<45; l++)
+                    if(T[j]+T[k]+T[l] <= 1000)
+                        A[T[j]+T[k]+T[l]] = 1;
+        printf("%d\n", A[num_data]);
+    }
+    fclose(fp);
+    
+}
+
+

@@ -1,0 +1,72 @@
+#include <iostream>
+#include <fstream>
+#include <cstring>
+
+using namespace std;
+
+void fraction(int a, int b ,int c , int d);
+int LCM(int a, int b, int GCD);
+int GCD(int a, int b);
+int main()
+{
+	ifstream infile;
+
+	infile.open("input.txt");
+	
+	int numTestCases = 0;
+	int a,b,c,d;
+	
+	infile >> numTestCases;
+	
+	
+	while(numTestCases--)
+	{
+		infile >> a >> b >> c >> d;
+		
+		fraction(a,b,c,d);
+		
+	}
+
+	
+	return 0;
+}
+void fraction(int a, int b ,int c , int d)
+{
+	
+	int denom = 0;
+	int numer = 0;
+	int temp;
+	
+	
+
+	denom = LCM(b, d, GCD(b,d));
+	
+	numer = a * (denom/b) + c * (denom/d);
+	
+	temp = GCD(denom, numer);
+
+	numer = numer / temp, denom = denom / temp;
+
+	cout<< numer << " " << denom << endl;
+
+}
+int GCD(int a, int b)
+{
+	int x; 
+	while(a){
+		if(a < b)
+		{
+			x = a;
+			a = b;
+			b = x;
+		}
+		a = a - b;
+	}
+	return b;
+}
+int LCM(int a, int b, int GCD)
+{
+	int temp = a * b / GCD;
+
+	return temp;
+}

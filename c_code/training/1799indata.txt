@@ -1,0 +1,86 @@
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 51
+#define STACK 25
+
+int isparenthesis(char arr[]);
+void parenthesis(FILE** inFile, char arr[]);
+void validparenthesis(int n);
+
+int main()
+{
+	FILE* inFile; 
+	int numCases;
+	inFile = fopen("input.txt","r");
+
+	if(inFile == NULL)
+	{
+		exit(1);
+	}
+
+	fscanf(inFile, "%d", &numCases);
+	for(int a=0; a<numCases; a++)
+	{
+		char arr[MAX] = {0};
+
+		parenthesis(&inFile, arr);
+		validparenthesis(isparenthesis(arr));
+	}
+
+	fclose(inFile);
+
+	return 0;
+}
+
+void parenthesis(FILE** inFile, char arr[])
+{
+	fscanf(*inFile, "%s ", arr);
+}
+
+int isparenthesis(char arr[]) 
+{
+	char stack[STACK] = {0}; 
+	int pStack=0;		  
+	int i;
+
+	for(i=0; arr[i]!='\0'; i++)
+	{
+		if(arr[i]=='(') 
+		{
+		
+			if(pStack==STACK)
+				return -1;
+
+			stack[pStack++] = '('; 
+		}
+
+		else
+		{
+		
+			if(pStack == 0)
+				return -1;
+
+			else 
+				stack[--pStack] = 0;
+		}
+	}
+
+	if(pStack == 0)
+		return 0;  
+	else 
+		return -1;
+}
+
+void validparenthesis(int n) 
+{
+	if(n==0)
+		printf("%s\n", "YES");
+
+	else
+		printf("%s\n", "NO");
+}

@@ -1,0 +1,43 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int main(void) {
+	int triangle[46] = { 0 };
+
+	int sum = 0;
+
+	for (int i = 1; sum <= 1000; i++) {
+		sum += i;
+
+		triangle[i] = sum;
+	}
+
+	bool number[1001] = { 0 };
+
+	for (int i = 1; i <= 45; i++){
+		for (int j = 1; j <= 45; j++) {
+			for (int k = 1; k <= 45; k++) {
+				if (triangle[i]+triangle[j]+triangle[k] > 1000) break;
+
+				number[triangle[i] + triangle[j] + triangle[k]] = true;
+			}
+		}
+	}
+
+	ifstream in("input.txt");
+
+	int t;
+	in >> t;
+
+	for (int i = 0; i < t; i++) {
+		int inp;
+
+		in >> inp;
+
+		cout << number[inp] << endl;
+	}
+
+	return 0;
+}

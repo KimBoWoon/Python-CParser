@@ -1,0 +1,81 @@
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+void find (int num, int sosu[]);
+void isPrime(int sosu[]);
+
+int main(){
+
+	int i;
+	int testCases;
+	int num;
+	int sosu[10000];
+
+
+	FILE *file;
+	file = fopen("input.txt","r");
+
+	if(file == NULL) exit(1);
+
+	fscanf(file, "%d", &testCases);
+
+	isPrime(sosu);
+
+	for(i=0; i<testCases; i++){
+
+		fscanf(file,"%d",&num);
+
+		find(num, sosu);
+
+	}
+
+	return 0;
+}
+
+void find(int num, int sosu[]){
+
+	int i;
+	int minus = 99999;
+	int tmp1, tmp2;
+
+	for(i=2; i<=num/2; i++){
+		if(sosu[i]==1 && sosu[num-i]==1){
+			if(abs(i-(num-i))<minus){
+				tmp1 = i;
+				tmp2 = num-i;
+				minus = abs(i-(num-i));
+			}
+		}
+	}
+
+	printf("%d %d\n",tmp1, tmp2);
+
+}
+
+
+
+void isPrime (int sosu[]){
+
+	int i,j;
+	int count;
+
+	for(i=2; i<=10000; i++){
+
+		count = 0;
+
+		for(j=2; j<=i; j++){
+			if(i%j == 0)
+				count++;
+			if(count > 1)
+				break;
+		}
+
+
+		if(count == 1)
+			sosu[i] =1;
+	}
+}
+
+

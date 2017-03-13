@@ -1,0 +1,62 @@
+ 
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define ex(s,a) (((double)s*s)/((double)s*s+a*a)) 
+typedef struct point{ 
+    int obtain;
+    int lose;
+}point;
+
+int main()
+{
+    int T;
+    FILE *fp;
+    fp = fopen("input.txt","r");
+    fscanf(fp,"%d",&T);
+    while(T--)
+    {
+        int n,m;
+        int i;
+        double max=0,min=1; 
+        struct point *arr;
+        fscanf(fp,"%d %d",&n,&m);
+        arr = calloc(sizeof(struct point),n+1);
+        for(i=0;i<m;i++)
+        {
+            int a,b,p,q;
+            fscanf(fp,"%d %d %d %d",&a,&b,&p,&q);
+            arr[a].obtain += p;
+            arr[a].lose += q;
+            arr[b].obtain += q;
+            arr[b].lose += p;
+        }
+        for(i=1;i<=n;i++)
+        {
+            if(arr[i].obtain == 0 && arr[i].lose == 0)
+            {
+                min = 0;
+            }
+            else
+            {
+                double tmp = ex(arr[i].obtain,arr[i].lose);
+                if(tmp > max) 
+                {
+                    max = tmp;
+                }
+                if(tmp < min) 
+                {
+                    min = tmp;
+                }
+            }
+        }
+        printf("%d\n%d\n",(int)(max*1000),(int)(min*1000));
+        
+        free(arr);
+    }
+    fclose(fp);
+    return 0;
+}

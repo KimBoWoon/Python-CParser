@@ -1,0 +1,54 @@
+
+#pragma warning(disable:4996)
+
+#include <iostream>
+#include <cstdio>
+
+#define MAX_SIZE 30
+int palindrome[30];
+int main(int argc, char* argv[]){
+
+	FILE* readStream = 0x00L;
+	readStream = fopen("input.txt", "r");
+
+	if (readStream == 0x00L){
+		fprintf(stderr, "Don`t open the file.\n");
+		return 2;
+	}
+
+	int testCases = 0,
+		number = 0;
+
+	fscanf(readStream, "%d", &testCases);
+
+	while (testCases--){
+		fscanf(readStream, "%d", &number);
+
+		for (int i = 2; i <= 64; ++i){
+		
+			
+			int tempNumber = number;
+			int length = 0;
+
+			do{
+				palindrome[length++] = tempNumber % i;
+				tempNumber /= i;
+			} while (tempNumber > 0);
+
+			int isRight = true;
+			for (int j = 0; j < (length / 2); ++j){
+				if (palindrome[j] != palindrome[length - 1 - j]){
+					isRight = false;
+					break;
+				}
+			}
+			if (isRight){
+				std::cout << 1 << std::endl; break;
+			}
+			if ((i == 64) && !isRight) std::cout << 0 << std::endl;
+		
+		}
+	}
+	fclose(readStream);
+	return 0;
+}

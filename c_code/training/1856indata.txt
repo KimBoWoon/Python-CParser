@@ -1,0 +1,55 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int paren(char *str,int j,int count)
+{
+	while (str[j]!='\0')
+	{
+		if (str[j] == '(')
+			count+=1;
+		else
+			count-=1;
+
+		j++;
+
+	}
+
+	if (str[j - 1] == ')' && count == 0)
+		printf("YES\n");
+	
+	else
+		printf("NO\n");
+
+	return 0;
+}
+
+void main(){
+
+	FILE *in_file;
+
+	in_file = fopen("input.txt", "r"); 
+	if (in_file == NULL) exit(1);
+
+	int i;
+	int test;
+	int j = 0;
+	char str[50];
+
+	fscanf(in_file, "%d", &test);
+
+	for (i = 0; i < test; i++)
+	{
+		int count = 0;
+
+		fscanf(in_file, "%s", &str);
+	
+		if (str[0] == ')')
+			printf("NO");
+		else
+			paren(str,j,count);
+		
+	}
+	fclose(in_file);
+}

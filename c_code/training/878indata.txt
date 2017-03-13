@@ -1,0 +1,42 @@
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int fibo(int n);
+
+int main() {
+    
+    FILE* fp;
+    
+    int i, num_cases, num_data;
+    
+    fp = fopen("input.txt", "r");
+    if(fp == NULL)  exit(1);
+    
+    fscanf(fp, "%d", &num_cases);
+    
+    for(i=0; i<num_cases; i++) {
+        fscanf(fp, "%d", &num_data);
+        
+        printf("%d\n", fibo(num_data));
+    }
+    
+    fclose(fp);
+}
+
+int fibo(int n) {
+    
+    if(n <= 1)
+        return n;
+    else
+        return fibo(n-1) + fibo(n-2);
+}
+
+
+
+
+

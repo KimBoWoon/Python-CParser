@@ -1,0 +1,98 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Point {int x, y;} point;
+point direction[8] = {{1, -2}, {2, -1}, {2, 1}, {1, 2},{-1, 2}, {-2, 1}, {-2, -1}, {-1, -2}};
+
+int knightTour (int m, int n, point pos, int counter, int **board, int **path)
+{
+	int i, j;
+	point next;
+	
+	if (counter == m * n)
+	{
+		printf("1\n");
+		for(i=0; i<m; i++)
+		{
+			for(j=0; j<n; j++)
+			{	
+				printf("%2d ", path[i][j]);
+			}
+			printf("\n");
+		}
+		return 1;
+	}
+	
+	for (i=0; i<8; i++)
+	{
+		next.x = pos.x + direction[i].x;
+		next.y = pos.y + direction[i].y;	
+		if ( next.x >= 0 && next.x < n && next.y >= 0 && next.y < m && board[next.y][next.x] != 1 )
+		{
+			board[next.y][next.x] = 1;
+			path[next.y][next.x] = counter+1;
+			if ( knightTour(m, n, next, counter+1, board, path) )
+				return 1;
+			board[next.y][next.x] = 0;
+		}
+	}
+	return 0;
+}
+
+void main()
+{
+	point start;
+	FILE *file;
+	int i, j, k;
+	int test;
+	int m, n;
+	int **board=NULL, **path=NULL;
+	int result=1;
+	
+	file = fopen("input.txt", "r");
+	if(file==NULL) exit(1);
+
+	fscanf(file, "%d", &test);
+	for(i=0; i<test; i++)
+	{
+		fscanf(file, "%d %d %d %d", &m, &n, &start.y, &start.x);
+		
+		board = (int**)malloc(sizeof(int*)*m);
+		
+		for(j=0; j<m; j++)
+		{
+			*(board+j)=(int*)malloc(sizeof(int)*n);
+			
+		}
+		path = (int**)malloc(sizeof(int*)*m);
+		for(j=0; j<m; j++)
+		{
+			*(path+j)=(int*)malloc(sizeof(int)*n);
+		}
+
+		for (j=0; j<m; j++)
+		{
+			for (k=0; k<n; k++)
+			{
+				board[j][k] = 0;
+			}
+		}
+		for (j=0; j<m; j++)
+		{
+			for (k=0; k<n; k++)
+			{
+				path[j][k] = 0;
+			}
+		}
+		start.y--;
+		start.x--;
+		board[start.y][start.x] = 1;
+		path[start.y][start.x] = 1;
+		
+		result = knightTour(m, n, start, 1, board, path);
+		if(result == 0)
+			printf("0\n");
+	}
+}

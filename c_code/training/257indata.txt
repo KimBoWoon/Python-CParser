@@ -1,0 +1,39 @@
+
+
+#pragma warning(disable : 4996) 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int GreatestCommonDivision(int a, int b); 
+
+void main(void)
+{
+	FILE *inFile;
+	int i;
+	int numCases;
+	int numerator1, denominator1, numerator2, denominator2;
+	int resultOfNumerator, resultOfDenominator;
+
+	inFile = fopen("input.txt", "r"); 
+
+	if (inFile == NULL) exit(1);
+	fscanf(inFile, "%d", &numCases); 
+	for (i = 0; i<numCases; i++)
+	{
+		fscanf(inFile, "%d %d %d %d", &numerator1, &denominator1, &numerator2, &denominator2); 
+
+		resultOfNumerator = (numerator1*denominator2 + numerator2*denominator1) / GreatestCommonDivision(numerator1*denominator2+numerator2*denominator1, denominator1*denominator2);
+		resultOfDenominator= (denominator1*denominator2) / GreatestCommonDivision(numerator1*denominator2 + numerator2*denominator1, denominator1*denominator2); 
+
+		printf("%d %d\n", resultOfNumerator, resultOfDenominator);
+	}
+
+	fclose(inFile); 
+}
+
+int GreatestCommonDivision(int a, int b)
+{
+	if (b == 0) return a; 
+	return GreatestCommonDivision(b, a%b);
+}

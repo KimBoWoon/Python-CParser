@@ -1,0 +1,32 @@
+
+
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+
+int palindrome(string str,int start, int finish)
+{
+	if(start>=finish) 
+		return 1;
+	else if(str[start]==str[finish])
+		return palindrome(str,start+1,finish-1);  
+	else if(str[start]!=str[finish]) 
+		return 0;
+}
+
+int main()
+{
+	fstream instream("input.txt",ios::in);
+	int testcase;
+	instream>>testcase;
+	
+	while(testcase--)
+	{
+		string str;
+		instream>>str;
+		cout<<palindrome(str,0,str.length()-1)<<endl;
+	}
+	instream.close();
+	return 0;
+}

@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+void value(int n);
+
+void main(void)
+{
+	FILE *in_file;
+	int i;
+	int no_cases;
+
+	in_file = fopen("input.txt", "r");
+	if(in_file == NULL) exit(1);
+
+	fscanf(in_file, "%d", &no_cases);
+
+	for(i = 0; i < no_cases; i++)
+	{
+		int n;
+		
+		fscanf(in_file, "%d", &n); 
+		value(n);
+	}
+	fclose(in_file);
+}
+
+void value(int n)
+{	
+	int j = 1;
+	int k = 0;
+	
+	if(n<=11)
+	{
+		if(n==2 || n==3 || n==5 || n==7 || n ==11)
+			printf("1\n");
+		else printf("0\n");
+	}
+	
+	else
+	{
+    	for(j=2; j < sqrt(n); j++)
+    	{
+    		if(n%j==0)
+    		{
+    			k = 0;
+    			break;
+    		}
+    		else k = 1;
+    	}
+    	printf("%d\n", k);
+	}
+	
+	return n;
+}

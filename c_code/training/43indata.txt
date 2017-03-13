@@ -1,0 +1,27 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+	FILE *inFile;
+	int i;
+	int testCase;
+	inFile=fopen("input.txt", "r");				
+	fscanf(inFile, "%d", &testCase);
+
+	for(i=0; i<testCase; i++){					
+		int num;
+		int div;
+		int prime=1;
+		fscanf(inFile, "%d", &num);
+		for(div=2; div<=num/2; div++){		
+			if(num%div==0){						
+				prime=0;								
+				break;
+			}
+		}
+		printf("%d\n", prime);
+	}
+	return 0;
+}

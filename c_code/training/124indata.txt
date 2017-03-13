@@ -1,0 +1,37 @@
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+int MF(int a)
+{
+	if(a > 100)
+		return a-10;
+
+	else
+		return MF(MF(a+11));
+
+}
+
+void main(void)
+{
+	FILE *inFile;
+	int i;
+	int numCases;
+	int p;
+
+	inFile = fopen("input.txt", "r");
+	if(inFile == NULL) exit(1);
+
+	fscanf(inFile, "%d", &numCases);
+
+	for(i=0; i<numCases; i++)
+	{
+		fscanf(inFile, "%d", &p);
+
+		printf("%d\n", MF(p));
+
+	}
+
+	fclose(inFile);
+}

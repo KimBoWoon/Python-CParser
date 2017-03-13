@@ -1,0 +1,47 @@
+
+#pragma warning(disable:4996)
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+	FILE *fp;
+	int i;
+	int numcases;
+	int n,m;
+	int a,b,p,q;
+	int j,k;
+	double w;
+	
+
+	fp=fopen("input.txt","r"); 
+	if(fp==NULL) exit(1);
+
+	fscanf(fp,"%d",&numcases);
+
+	for(i=0;i<numcases;i++){
+		double input [2000][2]={0};
+		double max=-1,min=30000;
+
+		fscanf(fp,"%d %d",&n,&m);
+
+		for(j=0;j<m;j++){
+			fscanf(fp,"%d %d %d %d",&a,&b,&p,&q);
+			input[a][0]+=p; input[a][1]+=q;
+			input[b][0]+=q; input[b][1]+=p;
+		}
+
+		for(k=1;k<=n;k++){
+			w=((input[k][0]*input[k][0])*1000/(input[k][0]*input[k][0]+input[k][1]*input[k][1]));
+			
+			if(input[k][0]==0 && input[k][1]==0)
+				w=0;
+			if(w<min)
+				min=w;
+			if(w>max)
+				max=w;
+		}
+		printf("%d\n",(int)max);
+		printf("%d\n",(int)min);
+	}
+	fclose(fp);
+}

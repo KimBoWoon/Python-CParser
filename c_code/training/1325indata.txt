@@ -1,0 +1,35 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+int gcd(int a, int b){ return b ? gcd(b, a%b) : a; }
+
+int main()
+{
+	FILE* file;
+	int c, p;
+	int cases;
+
+	file = fopen("input.txt", "r");
+
+	fscanf(file, "%d", &cases);
+
+	while (cases--){
+		fscanf(file, "%d%d", &c, &p);
+
+		int n = gcd(c, p);
+		int a = c / n, b = p / n;
+
+		while (a > 1){
+			int g = (b - 1) / a + 1;
+			n = gcd(a*g - b, b*g);
+			a = (a*g - b) / n;
+			b = (b*g) / n;
+		}
+		printf("%d\n", b);
+	}
+	return 0;
+}

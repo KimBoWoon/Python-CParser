@@ -1,0 +1,49 @@
+#include<iostream>
+#include<fstream>
+#include<cstdio>
+#include<cstdlib>
+#include<cmath>
+#include<algorithm>
+
+using namespace std;
+
+int alice[1003], S[1003];
+int denote[1003][1003];
+
+int cmp(int start, int end)
+{
+	if (start > end)
+		return 0;
+	if (start == end)
+		return alice[start];
+	
+	int &mediator = denote[start][end];
+	if (mediator >= 0) return mediator;
+	
+	mediator = max(S[end] - S[start - 1] - cmp(start + 1, end),
+		S[end] - S[start - 1] - cmp(start, end - 1));
+	return mediator;
+}
+
+int main()
+{
+	int T, N;
+
+	ifstream file;
+	file.open("input.txt");
+
+	file >> T;
+	while (T--){
+		file >> N;
+		for (int i = 1; i <= N; i++){
+			file >> alice[i];
+			S[i] = S[i - 1] + alice[i];
+		}
+		for (int i = 1; i <= N; i++)
+			for (int j = i; j <= N; j++)
+				denote[i][j] = -1;
+		
+		cout << cmp(1, N) << endl;
+	}
+}
+

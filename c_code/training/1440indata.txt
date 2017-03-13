@@ -1,0 +1,35 @@
+
+
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+void calculate(int h,int w,int n)
+{
+	int floor,room;
+	room = n/h+1;
+	floor = n%h;
+	if(floor==0)
+	{	
+		floor=h;
+		room-=1;
+	}
+	if(room<10)
+		cout<<floor<<"0"<<room<<endl;
+	else
+		cout<<floor<<room<<endl;
+}
+
+int main()
+{
+	fstream instream("input.txt",ios::in);
+	int testCase;
+	instream>>testCase;
+
+	for(int i=0;i<testCase;i++)
+	{
+		int height,width,num;
+		instream>>height>>width>>num;
+		calculate(height,width,num);
+	}
+}

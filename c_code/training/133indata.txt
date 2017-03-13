@@ -1,0 +1,18 @@
+#include<iostream>
+#include<fstream>
+using namespace std;
+int McCarthy(int val){
+	if (val > 100) return val - 10;		
+	else return McCarthy(McCarthy(val + 11));	
+}
+int main(){
+	ifstream fin;
+	fin.open("input.txt");
+	int num, val;
+	fin >> num;
+	for (int cnt = 0; cnt < num; cnt++){
+		fin >> val;
+		cout << McCarthy(val) << endl;;
+	}
+
+}

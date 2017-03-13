@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int size;
+
+void check (char* array, int i)
+{
+	if(i<50)
+	{		
+		if(array[i]=='(')
+		{
+			int j = 0;
+			int n = 0;
+			
+			for( j=i+1; j<50; j++) 
+			{
+				if(array[j]==')')
+				{
+					array[i] ='0';
+					array[j]='0';
+					break;
+				}
+			}
+			if(j==50) return;
+			else check(array,i+1);
+	
+		}
+                else if(array[i]=='0') check(array,i+1);
+
+		
+	}
+
+}
+	
+void main()
+{
+	int datacase = 0;
+	int i = 0;
+	FILE* infile = fopen("input.txt","r");
+	fscanf(infile,"%d",&datacase);
+	
+	for(i=0; i<datacase; i++)
+	{	
+		char str[50];
+		int n = 0;
+		char a;
+		
+		fscanf(infile,"%s",str);
+		
+		check(str,0);
+
+		for(n=0; n<strlen(str); n++) if(str[n]!='0') break;
+		if(n==strlen(str)) printf("YES\n");
+		else printf("NO\n");
+		
+	}	
+		
+}
+

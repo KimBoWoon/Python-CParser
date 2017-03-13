@@ -1,0 +1,39 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+	FILE *inFile;
+	int i;
+	int testCase;
+	inFile=fopen("input.txt", "r");						
+	fscanf(inFile, "%d", &testCase);
+
+	for(i=0; i<testCase; i++){							
+		int h, w, n, count=0;
+		int a, b, c=0;
+		int number;
+		int num[100][100]={0}; 
+		fscanf(inFile, "%d %d %d", &h, &w, &n);	
+		for(a=0; a<h; a++){								
+			c+=(a+1)*100+1;
+			for(b=0; b<w; b++){
+				num[a][b]=c;
+				c++;
+			}
+			c=0;
+		}
+		for(b=0; b<w; b++){								
+			for(a=0; a<h; a++){
+				count++;
+				if(count==n){
+					number=num[a][b];
+					break;
+				}
+			}			
+		}
+		printf("%d\n", number);
+	}
+	return 0;
+}

@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 1000000
+
+int cmp (const void * a, const void * b) {
+	return ( *(int*)a - *(int*)b );  
+}
+
+void TwoNumbers(FILE *file, int num, int near){
+	int i, count=0;
+	int arr[MAX];
+	int M=1000000000;
+	int start=0;
+	int end=num-1;
+	for(i=0; i<num; i++){
+			fscanf(file,"%d", &arr[i]);
+		}
+	qsort(arr, num, sizeof(int), cmp);
+	
+	while(start<end){
+		if(M>abs(near-(arr[start]+arr[end]))){
+			M=abs(near-(arr[start]+arr[end])); 
+			count=1; 
+		}
+		else if(abs(near-(arr[start]+arr[end]))==M){
+			count++; 
+		}
+		
+		if(near > arr[start]+arr[end])
+			start++; 
+		else if(near < arr[start]+arr[end])
+			end--; 
+		else if(near == arr[start]+arr[end]){
+			start++;  
+			end--;
+		}
+	}
+	printf("%d\n",count);
+	
+}
+	
+void main()
+{
+	FILE *file;
+	int testcase,num, near;
+	int i=0;
+
+	file = fopen("input.txt","r");
+	if(file ==NULL)
+		exit(1);
+	fscanf(file, "%d", &testcase);
+	for(i=0; i<testcase; i++)
+	{
+		fscanf(file,"%d %d", &num ,&near);
+		TwoNumbers(file, num, near);
+	}
+	fclose(file);
+}

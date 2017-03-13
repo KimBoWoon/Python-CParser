@@ -1,0 +1,59 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+
+using namespace std;
+
+void Henry(int a, int b);
+
+void find_small_x(int a, int b );
+bool check_if_sum(int a, int b);
+void sub_to_fract(int a, int b, int x);
+
+int main()
+{
+	ifstream infile;
+
+	infile.open("input.txt");
+	
+	int numTestCases = 0;
+	
+	infile >> numTestCases;
+	
+	
+	while(numTestCases--)
+	{
+		int a, b;
+		infile >> a >> b;
+		Henry(a,b);
+		
+	}
+	
+	return 0;
+}
+void Henry(int a, int b)
+{
+	find_small_x(a,b);
+}
+void find_small_x(int a , int b)
+{
+	int x;
+	x= 1; 
+	while(x++)
+	{
+		if(a*x >= b && (a*x - b) != x)
+			break;
+		else
+			continue;
+	}
+
+	
+	a = a*x - b;
+	b = b*x;
+	if( a != 0)
+	find_small_x(a, b);
+	else
+		cout<< x << endl;
+
+}
+

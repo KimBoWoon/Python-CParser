@@ -1,0 +1,69 @@
+
+
+
+
+
+
+
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+void winLose(int a, int b,int p,int q,int* winScore, int* loseScore) { 
+	winScore[a - 1] += p;
+	winScore[b - 1] += q;
+	loseScore[a - 1] += q;
+	loseScore[b - 1] += p;
+}
+
+
+int main()
+{
+	fstream instream("input.txt", ios::in);
+	int testcase;
+	int teamCnt, raceNum;
+	instream >> testcase;
+
+	for (int i = 0; i<testcase; i++)
+	{
+		instream >> teamCnt >> raceNum;
+
+		int* winScore = new int [teamCnt]; 
+		int* loseScore = new int[teamCnt]; 
+		int* pytha = new int[teamCnt]; 
+		int big=-1 , small=1000000 ; 
+		for (int j = 0; j < teamCnt; j++) { 
+			winScore[j] = 0;
+			loseScore[j] = 0;
+		}
+	
+		for (int j = 0; j < raceNum; j++) 
+		{
+			int a, b, p, q;
+			instream >> a >> b >> p >> q;
+			winLose(a, b, p, q, winScore, loseScore);
+
+		}
+
+		for (int j = 0; j < teamCnt; j++) { 
+			if (winScore[j] == 0 && loseScore[j] == 0) { 
+				pytha[j] = 0;
+			}
+			else {
+				double S = (double)winScore[j] * (double)winScore[j]; 
+				double A = (double)loseScore[j] * (double)loseScore[j];
+				pytha[j] = (int)((S / (S + A))*1000); 
+			}
+		}
+		 
+		for (int j = 0; j < teamCnt; j++) { 
+			if (big < pytha[j])
+				big = pytha[j];
+			if (small > pytha[j])
+				small = pytha[j];
+		}
+	
+		cout << big << endl << small << endl; 
+	}
+	return 0;
+}

@@ -1,0 +1,27 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int gcd(int a, int b) {
+	if (b == 0)
+		return a;
+	else
+		return gcd(b, a % b);
+}
+
+int main(void) {
+	ifstream fin("input.txt");
+
+	int nCase; fin >> nCase;
+	
+	while (nCase--) {
+		int a, b, c, d; fin >> a >> b >> c >> d;
+		
+		cout << (a * d + b * c) / gcd(a * d + b * c, b * d)
+			<< ' ' << (b * d) / gcd(a * d + b * c, b * d) << endl;
+	}
+
+	fin.close();
+	return 0;
+}

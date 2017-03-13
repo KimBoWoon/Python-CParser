@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define true 1
+#define false 0
+
+typedef int boolean;
+
+int fibonacci(int n);
+
+void main()
+{
+	FILE* fileDes = NULL;				
+	int trialNum;						
+
+	int n;								
+	int i = 0;							
+	
+
+	fileDes = fopen("input.txt", "r");
+
+	if(fileDes == NULL)
+		exit(1);
+
+	fscanf(fileDes, "%d", &trialNum);
+
+	for(i = 0; i < trialNum; i++)
+	{
+		fscanf(fileDes, "%d", &n);
+
+		printf("%d\n", fibonacci(n));
+	}
+
+	fclose(fileDes);
+}
+
+int fibonacci(int n)
+{
+	if(n == 0)
+		return 0;
+
+	else if(n == 1)
+		return 1;
+
+	else return (fibonacci(n-1) + fibonacci(n-2));
+}

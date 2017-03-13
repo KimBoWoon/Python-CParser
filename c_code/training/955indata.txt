@@ -1,0 +1,68 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int ans[100][100][2][201];
+
+int main(){
+    ifstream inStream;
+    inStream.open("input.txt");
+    int test_case;
+    inStream >> test_case;
+    for(int t=0; t<test_case; t++){
+        int M, N, L, G;
+        int mat_r[100][100], mat_c[100][100];
+
+        inStream >> M >> N >> L >> G;
+        int turnCnt =M+N+1;
+        for(int i=0; i<M; i++)
+            for(int j=0; j<N-1; j++)
+                inStream >> mat_r[i][j];
+
+        for(int i=0; i<M-1; i++)
+            for(int j=0; j<N; j++)
+                inStream >> mat_c[i][j];
+
+        for(int i=0; i<M; i++)
+            for(int j=0; j<N; j++)
+                for(int k=0; k<2; k++)
+                    for(int l=0; l<201; l++)
+                        ans[i][j][k][l] = G+1;
+        ans[0][0][0][0] = 0;
+        ans[0][0][1][0] = 0;
+
+        for(int i=0; i<M; i++)
+            for(int j=0; j<N; j++)
+                for(int l=0; l<201; l++)
+                    for(int k=0; k<2; k++){
+                        if(ans[i][j][k][l] <= G){
+                            if(i == (M-1) && j == (N-1)){
+                                if(turnCnt > l)
+                                    turnCnt = l;
+                            }
+
+                            if(ans[i][j][k][l] < ans[i][j][!k][l+1] && l<200)
+                                ans[i][j][!k][l+1] = ans[i][j][k][l];
+
+                            if(k==1){
+                                if(j < (N-1) && ans[i][j+1][k][l] > ans[i][j][k][l]+mat_r[i][j])
+                                    ans[i][j+1][k][l] = ans[i][j][k][l] + mat_r[i][j];
+                            }
+
+                            else{
+                                if(i < (M-1) && ans[i+1][j][k][l] > ans[i][j][k][l] + mat_c[i][j])
+                                    ans[i+1][j][k][l] = ans[i][j][k][l] + mat_c[i][j];
+                            }
+                        }
+                    }
+
+       if(turnCnt < M+N)
+           cout << ((M-1) + (N-1))*L+turnCnt << endl;
+       else
+           cout << "-1" << endl;
+    }
+}   
+
+
+

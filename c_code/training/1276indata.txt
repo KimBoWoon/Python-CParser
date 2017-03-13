@@ -1,0 +1,99 @@
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+
+int PRIME[1000] ={0};
+int SMALL[100] ={0};
+
+void prime();
+int intcmp(const void* pa, const void* pb);
+
+void main(void)
+{
+	FILE *inFile;
+	int i,j;
+	int x,y,m;
+	int numCases;
+	int count =0;
+	int num;
+	int n_count;
+
+	
+	inFile = fopen("input.txt","r"); 
+	if(inFile ==NULL) exit(1);
+
+	fscanf(inFile, "%d", &numCases);
+
+	for(i=0;i<numCases;i++)
+	{
+		fscanf(inFile, "%d ",&num );
+
+		prime();
+		n_count =0;
+		for(x=0;x<num/2+2;x++)
+		{
+			for(y=0; y<1000;y++)
+			{
+				if(num == PRIME[x]+PRIME[y])
+				{
+					n_count++;
+					SMALL[n_count] = PRIME[x];
+					if(SMALL[n_count] > num/2)
+						SMALL[n_count]=0;
+				}
+			}
+		}
+		qsort(SMALL,100,sizeof(int),intcmp);
+
+
+		printf("%d %d \n",SMALL[0],num-SMALL[0]);
+		
+		for(j=0;j<100;j++)
+		{
+			SMALL[j]=0;
+		}
+		
+	}
+
+	
+	
+	
+	fclose(inFile); 
+
+}
+
+void prime()
+{
+	int i,j;
+	int count;
+	PRIME[0] = 2;
+
+	for(i=3;i<1000;i++)
+	{
+		count =0;
+		for(j=3;j<1000;j++)
+		{
+			if(i%j==0)
+			{
+				count++	;
+			}
+
+			if(i%2==0)
+				count =0;
+		}
+		if(count==1)
+		{
+			PRIME[i+1] = i;
+		}
+	}
+}
+
+int intcmp(const void* pa, const void* pb)
+{
+        return (*(int*)pb) - (*(int*)pa);
+}

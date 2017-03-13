@@ -1,0 +1,154 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+
+int quickSort(int start, int end, int key);
+int compareInt(const void* var1, const void* var2);
+void ArraySort(FILE** inFile, int num);
+int twoNumbers(int var3, int targetNum);
+
+int* s; 
+int max_idx; 
+char targetCount = 0;
+
+int main()
+{
+	FILE* inFile; 
+	int testCases; 
+	int j;
+
+	inFile = fopen("input.txt", "r"); 
+	if(inFile == NULL) 
+	{
+		exit(1);
+	}
+
+	fscanf(inFile, "%d", &testCases); 
+	for(j=0; j<testCases; j++)
+	{
+		int var3; 
+		int k;		  
+		int num_count;
+
+		fscanf(inFile, "%d %d", &var3, &k); 
+		ArraySort(&inFile, var3);		   
+		
+		qsort(s, var3, sizeof(s[0]), compareInt); 
+
+		num_count = twoNumbers(var3, k);  
+		printf("%d\n", num_count); 
+
+		free(s); 
+	}
+
+	fclose(inFile);
+
+	return 0;
+}
+
+
+int compareInt(const void* var1, const void* var2) 
+{
+	return *(int*)var1 - *(int*)var2;
+}
+
+
+void ArraySort(FILE** in_file, int num)
+{
+	int i;
+
+	s = (int*)malloc(sizeof(int) * num); 
+	max_idx = num-1;
+
+	for(i=0; i<num; i++)
+		fscanf(*in_file, "%d", s+i);
+}
+
+
+
+int twoNumbers(int var3, int targetNum) 
+{
+	int target_count = 0;	
+	int near_target = 0;	
+	int near_count = 0;  
+	int key;			
+	int abs_val;	
+	int i;
+
+	for(i=0; i<var3-1; i++)
+	{
+		key = targetNum - s[i]; 
+		
+		targetCount=0; 
+		if(i+1 == var3-1) 
+			abs_val = abs(key-s[var3-1]);
+		else 
+			abs_val = quickSort(i+2, var3-1, key); 
+
+		
+		if(abs_val == 0)
+			target_count++;	
+
+		
+		else if(abs_val == near_target)
+		{
+			near_count += 1 + targetCount;
+		}
+
+		else if(near_target == 0 || abs_val < near_target) 
+		{ 
+			near_target = abs_val;
+			near_count = 1 + targetCount;
+		}
+	}
+
+	if(target_count != 0) 
+	{
+		return target_count;
+	}
+	else
+	{
+		return near_count;
+	}
+}
+
+
+int quickSort(int start, int end, int key)
+{
+	int mid = (end+start)/2;	
+
+
+	if(start == end) 
+	{
+		int abs_curr = abs(key - s[start]);	
+		int abs_prev = abs(key - s[start-1]); 
+
+		if(abs_curr == abs_prev)
+			targetCount=1;
+
+		return (abs_curr < abs_prev)? abs_curr : abs_prev;
+	}
+	
+	if(key < s[start]) 
+	{
+		int abs_curr = abs(key - s[start]);
+		int abs_prev = abs(key - s[start-1]);
+
+		if(abs_curr == abs_prev)
+		{
+			targetCount = 1;
+		}
+
+		return (abs_curr < abs_prev)? abs_curr : abs_prev;
+	}
+
+	else if(key > s[end])
+		return abs(key - s[end]);
+
+	else if(key >= s[start] && key <= s[mid])
+		return quickSort(start, mid, key);
+
+	else if(key > s[mid] && key <= s[end])
+		return quickSort(mid+1, end, key);
+}

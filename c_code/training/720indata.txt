@@ -1,0 +1,20 @@
+#include<iostream>
+#include<fstream>
+#include<cstring>
+using namespace std;
+int Palidnrome(char str[], int frist, int last){	
+	if (last <= frist) return 1;
+	else if (str[frist] != str[last]) return 0;
+	else return Palidnrome(str, frist + 1, last - 1);
+}
+int main(){
+	int num;
+	char line[1000];
+	ifstream fin;
+	fin.open("input.txt");
+	fin >> num;		
+	for (int cnt = 0; cnt < num; cnt++){
+		fin>>line;
+		cout << Palidnrome(line, 0, strlen(line) - 1)<<endl;	
+	}
+}

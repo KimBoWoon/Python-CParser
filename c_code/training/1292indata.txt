@@ -1,0 +1,67 @@
+
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+void find_prime(int arr[500], int value, int& index);
+void find_gold(int arr[500], int value, int index);
+
+int main(void)
+{
+	ifstream inStream;
+        int cases;
+	int n;
+	int arr_prime[500];
+	arr_prime[0] = 2;
+
+        inStream.open("input.txt");
+        if(inStream.fail())
+        {
+        cerr<<"Input file opening failed./n";
+        exit(1);
+        }
+
+        inStream >> cases;
+   for(int i=0; i<cases; i++)
+   {
+	int index = 1;
+	for(int j=3; j<1000; j++) {
+		find_prime(arr_prime,j,index); } 
+	inStream >> n;
+	find_gold(arr_prime, n, index);
+   }
+}
+
+void find_prime(int arr[500], int value, int& index)
+{ 
+   int count(0);               
+   for(int i=2; i<value; i++)
+   {
+      if(value % i==0)                  
+      {
+         break;
+      }
+      else
+         count++;
+   }
+   
+   if(count == (value-2))  {          
+      arr[index++] = value;  
+	}
+}
+
+void find_gold(int arr[500], int value, int index)
+{ 
+	int a(0), i(0), j(0);
+	for(i=value/2; i>=0; i--) {
+		for(j=i; j<index; j++) {
+			if((value-arr[i]) == arr[j])
+				break;  }
+		if((value-arr[i]) == arr[j]) break;
+		} 
+	cout << arr[i] << " " << arr[j] << endl;
+}

@@ -1,0 +1,40 @@
+
+#include <iostream>
+#include <fstream>
+
+int Euclid(int a, int b) {
+
+	if (b == 0) return a;
+	else return Euclid(b, a % b);
+}
+
+void henry(int a, int b) {
+	
+	if (a <= 1) {
+		std::cout << b << std::endl;
+		return;
+	}
+	
+	int x = (b / a) + 1; 
+	int n = Euclid(a * x - b, b * x);
+	a = (a * x - b) / n;	
+	b = (b * x) / n;
+
+	henry(a, b);
+}
+
+int main() {
+
+	std::ifstream fin;
+
+	fin.open("input.txt");
+	int numcase ,a ,b;
+	if (fin.is_open() == false)  return -1;
+
+	fin >> numcase;
+	while (numcase--) {
+		fin >> a >> b;
+		henry(a, b);
+	}
+	fin.close();
+}

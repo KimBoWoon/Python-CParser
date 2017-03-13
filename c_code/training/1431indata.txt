@@ -1,0 +1,43 @@
+#include <stdio.h>
+
+void checkIn(int height, int width, int number);
+
+void main() {
+	FILE *f;
+	int numTestCases = 0;
+	int height = 0;
+	int width = 0;
+	int number = 0;
+
+	int i = 0;
+	f = fopen("input.txt", "r");
+	fscanf(f, "%d", &numTestCases);
+
+	for (; i < numTestCases; i++) {
+		fscanf(f, "%d %d %d", &height, &width, &number);
+		checkIn(height, width, number);
+	}
+	fclose(f);
+}
+
+void checkIn(int height, int width, int number) {
+	int x = 1, y = 0;
+
+	if (number % height == 0)
+		y = height;
+	else 
+		y = number % height;
+
+	if (number % height == 0)
+		x += number / height - 1;
+	else 
+		x += number / height;
+
+	printf("%d", y);
+	if (x < 10)
+		printf("0%d\n", x);
+	else
+		printf("%d\n", x);
+
+	return;
+}

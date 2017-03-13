@@ -1,0 +1,46 @@
+#include<iostream>
+#include<fstream>
+#include<vector>
+using namespace std;
+vector<int> v;
+void baseConversion(int n, int base) {		
+	if (n >= base) {
+		baseConversion(n / base, base);
+	}
+	v.push_back(n%base);
+}
+int main() {
+	ifstream fin;
+	fin.open("input.txt");
+	int Case;
+	fin >> Case;
+	for (int T = 0;T < Case;T++) {
+		int value;int s = 0;int e;int state = 0;int palindronmic = 0;
+		fin >> value;
+		for (int i = 2;i <= 64;i++) {
+			baseConversion(value, i);
+			s = 0;
+			e = v.size()-1;
+			while (s < e) {		
+				if (v[s] != v[e]) {
+					state = 1;
+					break;
+				}
+				s++;
+				e--;
+			}
+			v.clear();
+			if (state == 0) {
+				palindronmic = 1;
+			}
+			state = 0;
+		}
+		if (palindronmic == 1) {
+			cout << "1" << endl;
+		}
+		else {
+			cout << "0" << endl;
+		}
+		palindronmic = 0;
+	}
+}

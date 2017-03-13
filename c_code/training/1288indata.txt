@@ -1,0 +1,42 @@
+#include <stdio.h>
+
+typedef enum {false, true} bool;
+
+int prime(int n){
+	int divisor;
+	for(divisor=2;divisor*divisor<=n;divisor++){
+			if(n%divisor==0){ 
+				return false;
+		}
+	}
+	return true;
+}
+
+int main(void)
+{
+	FILE *file;
+	int cases,n;
+	int a1,b1,a2,b2;
+	int i;
+	file=fopen("input.txt","r");
+	fscanf(file,"%d",&cases);
+
+	while(cases--){
+		fscanf(file,"%d",&n);
+		b1=n;
+		a2=1;
+		b2=n;
+		for(i=2;i<b1;i++){
+			if(prime(i)){
+				a1=i;
+				b1=n-i;
+				if(prime(b1)){
+					if(b1-a1<b2-a2){ a2=a1,b2=b1; }
+				}
+			}
+		}
+		printf("%d %d\n",a2,b2);
+	}
+	
+	fclose(file);
+}

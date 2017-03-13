@@ -1,0 +1,158 @@
+
+
+
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+using namespace std;
+
+int roomSize = 0, roomCnt =0;
+
+void change(int *roomSizeArr, int start, int end) 
+{
+	int temp = roomSizeArr[start];
+	roomSizeArr[start] = roomSizeArr[end];
+	roomSizeArr[end] = temp;
+}
+void exam(char **dptr, int frow, int fCol, int row, int col)
+{
+
+	if (dptr[frow][fCol] == '.')
+	{
+		dptr[frow][fCol] = '*';
+		roomSize++;
+	}
+
+	if (dptr[frow - 1][fCol] != '.' && dptr[frow + 1][fCol] != '.' && dptr[frow][fCol - 1] != '.' && dptr[frow][fCol + 1] != '.')
+		return;
+
+	if (fCol >= 2)
+		if (dptr[frow][fCol - 1] == '.')
+			exam(dptr, frow, fCol - 1, row, col);
+
+	if (fCol <= col - 2)
+		if (dptr[frow][fCol + 1] == '.')
+			exam(dptr, frow, fCol + 1, row, col);
+
+	if (frow >= 2)
+		if (dptr[frow - 1][fCol] == '.')
+			exam(dptr, frow - 1, fCol, row, col);
+
+	if (frow <= row - 2)
+		if (dptr[frow + 1][fCol] == '.')
+			exam(dptr, frow + 1, fCol, row, col);
+}
+
+int behind(char **dptr, int row, int col, int *roomSizeArr)
+{
+	int found = 0;
+	int frow, fCol;
+	roomSize = 0;
+
+	for (int i = 1; i < row - 1; i++)
+	{
+		for (int j = 1; j < col - 1; j++)
+		{
+			if (dptr[i][j] == '.')
+			{
+				frow = i, fCol = j;
+				found = 1;
+				break;
+			}
+		}
+		if (found)
+			break;
+	}
+
+	if (!found)
+		return 0;
+
+	exam(dptr, frow, fCol, row, col);
+
+	roomCnt++;
+
+	roomSizeArr[roomCnt - 1] = roomSize;
+
+	return 1;
+}
+
+int portion(int *roomSizeArr, int start, int end)
+{
+	int first = start;
+	int pivot = roomSizeArr[first];
+
+	start++;
+
+	while (start <= end) {
+		while (roomSizeArr[start] >= pivot && start < end)
+			start++;
+
+		while (roomSizeArr[end] < pivot && start <= end)
+			end--;
+
+		if (start < end)
+			change(roomSizeArr, start, end);
+		else
+			break;
+	}
+
+	change(roomSizeArr, first, end);
+
+	return end;
+}
+void sorting(int *roomSizeArr, int start, int end)
+{
+	if (start < end) {
+		int index = portion(roomSizeArr, start, end);
+		sorting(roomSizeArr, start, index - 1);
+		sorting(roomSizeArr, index + 1, end);
+	}
+}
+
+int main(void)
+{
+	ifstream inStream;
+	int numTestCases = 0;
+
+	inStream.open("input.txt");
+	if (inStream.fail())
+	{
+		cerr << "Input file opening failed. \n";
+		exit(1);
+	}
+	inStream >> numTestCases;
+	for (int i = 0; i < numTestCases; i++)
+	{
+		int row = 0, col = 0;
+		int *roomSizeArr = (int *)malloc(sizeof(int) * 100);
+		char **dptr = NULL;
+		roomCnt = 0;
+		inStream >> col >> row;
+		dptr = (char **)malloc(sizeof(char*)*row);
+		for (int j = 0; j < row; j++)
+		{
+			dptr[j] = (char *)malloc(sizeof(char)*col);
+			for (int k = 0; k < col; k++) inStream >> dptr[j][k];
+		}
+		while (1) 
+		{
+			if (!behind(dptr, row, col, roomSizeArr))	
+				break;
+		}
+
+		sorting(roomSizeArr, 0, roomCnt - 1);	
+		cout << roomCnt << endl;	
+
+		for (int j = 0; j < roomCnt; j++)
+			cout << roomSizeArr[j] << " ";	
+		cout << endl;
+
+		for (int j = 0; j < row; j++)
+			delete dptr[j];
+
+		delete[] dptr;
+		delete[] roomSizeArr;
+	}
+	inStream.close();
+	return 0;
+}

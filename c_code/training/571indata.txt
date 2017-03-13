@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int factorial (int a)
+{
+	int result = 1;
+	int i= 1;
+	for(; i<=a; i++) result*=i;
+	return result;
+}
+void swap (char* str, int a, int b)
+{
+	char term = str[a];
+	str[a]=str[b];
+	str[b]=term;
+}
+void push(char*str, int a , int b)
+{
+	swap(str,a,b);
+	int i = b;
+	for(; i>a+1; i--)	swap(str,i,i-1);
+}
+
+void permutation (char* str, int size, int k)
+{
+	int a = 0; 
+	
+	while(1)
+	{
+		int f = factorial(size-a-1);
+		int l = 0;
+		int k1 = k;
+		
+		while(1)
+		{
+			if(k1-f<=0)
+				break;	
+			l++;
+			k1=k1-f;
+		}
+		push(str,a,l+a);
+		a=a+1;
+		k=k-l*f;
+		if(a==size) return; 
+	}
+			
+}
+
+
+void main()
+{
+	FILE* infile = fopen("input.txt","r");
+	int datacase = 0;
+	int i = 0;
+
+	fscanf(infile,"%d",&datacase);
+	for(; i<datacase; i++)
+	{
+		char alphabet[12] ={'a','b','c','d','e','f','g','h','i','j','k','l'};
+		int number = 0,k = 0;
+		int j=0; 
+		fscanf(infile,"%d",&number);
+		fscanf(infile,"%d",&k);
+		permutation(alphabet,number,k);
+		for(j=0; j<number; j++) printf("%c",alphabet[j]);
+		printf("\n");
+	
+	}
+	fclose(infile);
+}

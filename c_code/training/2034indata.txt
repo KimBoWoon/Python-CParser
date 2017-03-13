@@ -1,0 +1,116 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+void findNP(const int* set, const int key, const int start, const int end, int* lgap, int* lcount);
+int compare(const void* a, const void* b);
+
+int main() {
+
+	ifstream inStream;
+	inStream.open("input.txt");
+
+	int gap = 0;
+	int count = 0;
+	int NumCases;
+	int num, sum;
+
+	inStream >> NumCases;
+
+	for (int i = 0; i < NumCases; i++) {
+		inStream >> num >> sum;
+
+		int *set = new int[num];
+
+		for (int j = 0; j < num; j++)
+			inStream >> set[j];
+
+		qsort(set, num, sizeof(int), compare);
+
+		for (int j = 0; j < num - 1; j++) {
+
+			int key = sum - set[j];
+			int start = j + 1;
+			int end = num - 1;
+
+			int lgap = -1;
+			int	lcount = 0;
+
+			int	flag_update = 0;
+
+
+			findNP(set, key, start, end, &lgap, &lcount);
+
+			if (j == 0) {
+				gap = lgap;
+				count = lcount;
+				flag_update = 1;
+			}
+
+			else {
+				if (lgap == gap) 
+					count += lcount;
+
+				if (lgap < gap) {
+					gap = lgap;
+					count = lcount;
+					flag_update = 1;
+				}
+			}
+		}
+		cout << count << endl;
+	}
+
+	return 0;
+}
+
+void findNP(const int* set, const int key, const int start, const int end, int* lgap, int* lcount) {
+	int left = start;
+	int right = end;
+	int mid = 0;
+
+	int tmp[3] = { 0, };
+
+	if (left > right) 
+		return;
+
+	while (left <= right) {
+		mid = (left + right) / 2;
+		if (set[mid] == key) {
+			break;
+		}
+		if (key < set[mid]) {
+			right = mid - 1;
+			continue;
+		}
+		if (key > set[mid]) {
+			left = mid + 1;
+			continue;
+		}
+	}
+
+	tmp[0] = (mid - 1 >= start) ? abs(key - set[mid - 1]) : -1;
+	tmp[1] = abs(key - set[mid]);
+	tmp[2] = (mid + 1 <= end) ? abs(key - set[mid + 1]) : -1;
+
+	if (set[mid] == key) {
+		*lgap = tmp[1];
+		*lcount = 1;
+		return;
+	}
+
+	*lgap = tmp[1];
+	*lcount = 0;
+	for (int i = 0; i < 3; i++) 
+		if (tmp[i] != -1 && tmp[i] < *lgap) 
+			*lgap = tmp[i];
+	
+	for (int i = 0; i < 3; i++)
+		if (tmp[i] == *lgap) 
+			(*lcount)++;
+}
+
+int compare(const void* a, const void* b) {
+	return *(int*)a - *(int*)b;
+}

@@ -1,0 +1,55 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+
+bool print_VPS(ifstream *file)
+{
+    int cnt=0;
+    string s;
+    *file>>s;
+
+    for(int i=0; i<s.length(); i++)   
+    {
+        if(s[i]=='(') cnt++;
+
+        else cnt--;
+
+        if(cnt<0)
+            return false;    
+    }
+
+    if(cnt==0) return true;
+    else return false;
+}
+
+int main()
+{
+    
+    ifstream file;
+    
+    file.open("input.txt");
+    
+    if(file.is_open()==false) 
+        cout<<"입력파일이 없습니다."<<endl;
+    
+    else
+    {
+        int case_num;
+        file>>case_num;
+        
+        for(int i=0; i<case_num; i++)
+        {
+            if(print_VPS(&file)) cout<<"YES"<<endl;
+            else  cout<<"NO"<<endl;
+        }
+        
+    }
+    
+    file.close();
+    
+}

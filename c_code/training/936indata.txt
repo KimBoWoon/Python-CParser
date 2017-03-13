@@ -1,0 +1,76 @@
+
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+#include <string.h>
+#include <algorithm>
+
+
+int card[1003]; 
+int cardsum[1003][1003]; 
+int maxcard[1003][1003]; 
+
+int playgame(int cardnum);
+int getcard(int startpoint, int endpoint);
+int MAX(int fritst, int second);
+
+using namespace std;
+
+int main()
+{
+	int testcase;
+	std::fstream infile;
+	infile.open("input.txt");
+	if (infile.fail())
+	{
+		std::cerr << "input file error";
+	}
+	infile >> testcase;
+	for (int i = 0; i < testcase; i++)
+{
+		int cardnum;
+		infile >> cardnum;
+		memset(maxcard, -1, sizeof(int) *1003 * 1003);
+		memset(card, 0, sizeof(int) *1003);
+		for (int j = 1; j <= cardnum; j++)
+		{
+			infile >> card[j];
+		}
+		std::cout << playgame(cardnum) << std::endl;
+		memset(cardsum, 0, sizeof(int) *1003 * 1003);
+		
+	}
+	return 0;
+}
+
+int playgame(int cardnum)
+{
+	for (int i = 1; i <= cardnum; i++)
+ 	{
+		for (int j = i; j <= cardnum; j++)
+		{
+			cardsum[i][j] = cardsum[i][j - 1] + card[j];
+		}
+	}
+
+	return getcard(1, cardnum);
+}
+
+int getcard(int startpoint, int endpoint)
+{
+	if (startpoint > endpoint) return 0;
+	if (startpoint == endpoint) return card[startpoint];
+
+	if (maxcard[startpoint][endpoint]<0)
+	{
+		int sp = cardsum[startpoint][endpoint] - getcard(startpoint + 1, endpoint);
+		int ep = cardsum[startpoint][endpoint] - getcard(startpoint, endpoint - 1);
+		maxcard[startpoint][endpoint] = MAX(sp, ep);
+	}
+	
+	return maxcard[startpoint][endpoint];
+}
+int MAX(int fritst, int second)
+{
+	return fritst > second ? fritst : second;
+}

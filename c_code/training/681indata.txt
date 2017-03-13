@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_LEN 1000
+
+#define true 1
+#define false 0
+
+typedef int boolean;
+
+unsigned long factorial(unsigned long n);
+
+void main()
+{
+	FILE* fileDes = NULL;				
+	int trialNum;						
+
+	unsigned long value;				
+	int i = 0;							
+
+
+
+
+	fileDes = fopen("input.txt", "r");
+
+	if(fileDes == NULL)
+		exit(1);
+
+	fscanf(fileDes, "%d", &trialNum);
+
+	for(i = 0; i < trialNum; i++)
+	{
+		fscanf(fileDes, "%lu", &value);
+
+		printf("%lu\n", factorial(value));
+	}
+
+	fclose(fileDes);
+}
+
+unsigned long factorial(unsigned long n)
+{
+	if(n == 0)
+		return 1;
+
+	else
+		return (n*(factorial(n-1)));
+}

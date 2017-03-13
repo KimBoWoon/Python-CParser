@@ -1,0 +1,79 @@
+
+
+
+#include<stdio.h>
+#include<string.h>
+
+#define STACKSIZE 50
+
+char stack[STACKSIZE] = {'\0', };
+int top = -1;
+
+void initStack()
+{
+	top = -1;
+	memset(stack, '\0', STACKSIZE);
+}
+
+void parenthsis(char *str)
+{
+	int i;
+	int length = strlen(str);           
+
+	initStack();                        
+	for(i=0; i<length; i++)
+	{
+		if(str[i] == '(')               
+		{
+			stack[++top] = str[i];
+			continue;
+		}
+
+		if(str[i] == ')')               
+		{
+			if(top == -1)               
+			{
+				printf("NO\n");
+				return;
+			}
+
+			if(stack[top] == '(')       
+			{
+				stack[top] = '\0';
+				top -= 1;
+			}
+			else                        
+			{
+				printf("NO\n");
+				return;
+			}
+		}
+	}
+
+	if(top == -1)                       
+	{
+		printf("YES\n");
+	}
+	else                                
+	{
+		printf("NO\n");
+	}
+}
+
+int main(void)
+{
+	FILE *fp = NULL;
+	int testCase;
+
+	fp = fopen("input.txt", "r");       
+	fscanf(fp, "%d", &testCase);        
+	while(testCase--)
+	{
+		char str[51] = {'\0', };
+		fscanf(fp, "%s", str);          
+		parenthsis(str);                
+	}
+
+	fclose(fp);                         
+	return 0;
+}

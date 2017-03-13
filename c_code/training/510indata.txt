@@ -1,0 +1,47 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int fac(int n){
+	int r=1;
+	for (int i = 2; i <= n; ++i)
+		r *= i;
+	return r;
+}
+
+void fn(char s[50], int n, int m)
+{
+	if (n <= 0){
+		cout << endl;
+		return;
+	}
+	else{
+		int ind = 0;
+		int f = fac(n - 1);
+		if (f <= m){
+			ind = m / f;
+			m %= f;
+		}
+		cout << s[ind];
+		for (int i = ind; i <= 26; ++i)
+			s[i] = s[i + 1];
+
+		fn(s, n - 1, m);
+	}
+}
+
+int main(){
+	ifstream fin("input.txt");
+
+	int nCase;
+	fin >> nCase;
+
+	for (int ci = 0; ci < nCase; ++ci)
+	{
+		int n, m;
+		fin >> n >> m;
+		char s[50] = "abcdefghijklmnopqrstuvwxyz";
+		fn(s, n, m-1);
+	}
+}

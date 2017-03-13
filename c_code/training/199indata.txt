@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_LEN 1000
+
+#define true 1
+#define false 0
+
+#define MAX_LEN 30
+
+typedef int boolean;
+
+int mccarthy(int n);
+
+void main()
+{
+	FILE* fileDes = NULL;				
+	int trialNum;						
+
+	int n;								
+	int i = 0;							
+	
+	
+
+
+
+	fileDes = fopen("input.txt", "r");
+
+	if(fileDes == NULL)
+		exit(1);
+
+	fscanf(fileDes, "%d", &trialNum);
+
+	for(i = 0; i < trialNum; i++)
+	{
+		fscanf(fileDes, "%d", &n);
+
+		printf("%d\n", mccarthy(n));
+	}
+
+	fclose(fileDes);
+}
+
+int mccarthy(int n)
+{
+	if(n > 100)
+		return (n-10);
+
+
+	else
+		return mccarthy(mccarthy(n + 11));
+}

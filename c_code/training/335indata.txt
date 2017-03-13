@@ -1,0 +1,103 @@
+
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <cstdlib>
+
+using namespace std;
+
+int roomCount;
+
+void floodFill(char room[100][100], int x, int y, int number, int arr[100]);
+void sort(int arr[100], int start, int end);
+
+int main(void) {
+
+	ifstream dataFile("input.txt");
+
+	int caseNum;
+	dataFile >> caseNum;
+
+	int verti, hori;
+	
+
+	for (int i = 0; i < caseNum; i++) {
+
+		roomCount = 0;
+		int roomArray[100] = { 0 };
+
+		dataFile >> verti >> hori;
+		char room[100][100];
+		for (int j = 0; j < hori; j++) {
+			for (int k = 0; k < verti; k++) {
+				dataFile >> room[j][k];
+			}
+		}		
+		
+		for (int j = 0; j < hori; j++) {
+			for (int k = 0; k < verti; k++) {
+				if (room[j][k] != '.') {
+					continue;
+				}
+				else {
+					floodFill(room, j, k, roomCount,roomArray);
+				}
+				roomCount++;
+			}
+		}
+		
+
+		cout << roomCount << endl;
+
+		sort(roomArray, 0, roomCount);		
+		int r = 0;
+		
+		while (roomArray[r] != 0) {
+			cout << roomArray[r] << ' ';
+			r++;
+		}
+		cout << endl;
+	}
+
+	getchar();
+	
+	return 0;
+}
+
+void floodFill(char room[100][100], int x, int y, int number, int arr[100]) {
+
+	if (room[x][y] != '.') { 
+		return;
+	}
+	else { 
+		room[x][y] = number+49;
+		arr[number]++;
+
+		floodFill(room, x - 1, y, number, arr);
+		floodFill(room, x + 1, y, number, arr);
+		floodFill(room, x, y - 1, number, arr);
+		floodFill(room, x, y + 1, number, arr);		
+	}
+	return;
+}
+
+void sort(int arr[100], int start, int end) {	
+
+	int temp;	
+	
+	for (int i = 0; i < end; i++) {
+		for (int a = 0; a < end; a++) {
+			if (arr[a] <= arr[a + 1]) {
+				temp = arr[a];
+				arr[a] = arr[a + 1];
+				arr[a + 1] = temp;
+			}
+		}
+	}
+}
+

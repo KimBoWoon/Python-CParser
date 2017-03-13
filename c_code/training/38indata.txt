@@ -1,0 +1,36 @@
+#include<fstream>
+#include<iostream>
+
+#define MAX 100000
+
+using namespace std;
+
+bool classifyNum(int num){
+	int count = 0;
+
+	if (num == 1 || num == 2)
+		return true;
+
+	for (int i = 2; i < num; i++){
+		if (num % i == 0)
+			count++;
+	}
+	if (count != 0) return false;
+	return true;
+}
+
+int main()
+{
+	ifstream file("input.txt");
+	int testCase;
+	int data;
+
+	file >> testCase;
+	for (int i = 0; i < testCase; i++){
+		file >> data;
+		cout << classifyNum(int(data)) << endl;
+	}
+	
+	file.close();
+	return 0;
+}

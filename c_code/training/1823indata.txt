@@ -1,0 +1,47 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <string>
+using namespace std;
+
+int l=0, r=0, len=0;		
+
+void paren(string par){
+	if(len==par.length()){				
+		if(l==r)
+			cout<<"YES"<<endl;			
+		else
+			cout<<"NO"<<endl;			
+	}
+	else{
+		if(par[len]=='(')					
+			l++;
+		else if(par[len]==')'){			
+			r++;
+			if(l<r){							
+				cout<<"NO"<<endl;
+				return ;
+			}
+		}
+		len++;
+		paren(par);						
+	}
+}
+
+
+int main(){
+	ifstream infile;
+	int i, testCase;
+	infile.open("input.txt");
+	infile>>testCase;
+
+	for(i=0; i<testCase; i++){
+		string par;
+		infile>>par;
+
+		paren(par);
+		l=r=len=0;				
+	}
+}

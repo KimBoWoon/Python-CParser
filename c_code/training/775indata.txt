@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define maxsize 1000
+
+int check(char* string,int start, int end);
+void main()
+{
+	FILE* infile = fopen("input.txt","r");
+	int datacase = 0;
+	int i;
+	
+	fscanf(infile,"%d",&datacase);
+	
+	for(i=0; i<datacase; i++)
+	{
+		char string[maxsize];
+		int size=0;
+		fscanf(infile,"%s", string);
+		for(size=0; string[size]!='\0'; size++);
+		printf("%d\n",check(string,0,size));
+	}
+	fclose(infile);
+}
+
+int check(char* string, int start,int end)
+{
+	if(start>=end) return 1;
+	else
+	{
+		if(string[start]==string[end-1]) return check(string,start+1,end-1);
+		else return 0;
+	}
+}
+

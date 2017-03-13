@@ -1,0 +1,59 @@
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+int checkPalindrome(int str[], int first, int last); 
+
+int main()
+{
+	ifstream inFile("input.txt");
+	int no_cases = 0;
+	inFile >> no_cases;
+	for (int test = 0; test < no_cases; test++){
+		int num=0;
+		int arr[1000] = { 0, };
+		inFile >> num;
+		
+		int tmp;
+		bool flag = false;
+		for (int div = 2; div <= 64; div++)
+		{
+			int rest = 0,cnt=0;
+			tmp = num;
+			while (1)
+			{ 
+				if (tmp == 0)
+					break;
+				arr[cnt++] = tmp%div;
+				tmp /= div;
+				
+			}
+			if (checkPalindrome(arr, 0, cnt - 1) == 1)
+			{
+				flag = true;
+				break;
+			}
+			for (int i = 0; i < cnt; i++)
+				arr[i] = 0;
+			
+		}
+		if (flag == false)
+			cout << "0" << endl;
+		else
+			cout << "1" << endl;
+
+		
+
+	}
+	return 0;
+}
+int checkPalindrome(int str[], int first, int last)
+{
+	if (last <= first)
+		return 1;
+	else if (str[first] != str[last])
+		return 0;
+	else
+		return checkPalindrome(str, first + 1, last - 1);
+}

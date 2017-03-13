@@ -1,0 +1,36 @@
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void main(void) {
+
+	FILE* fp;
+	
+	int i, num_cases, num_data;
+	int cnt = 0;
+
+	fp = fopen("input.txt", "r");
+	if (fp == NULL)	exit(1);
+	
+	fscanf(fp, "%d", &num_cases);
+
+	for (i = 0; i < num_cases; i++) {
+		int div;
+		int isPrime = 1;
+
+		fscanf(fp, "%d", &num_data);
+
+		for (div = 2; div*div <= num_data; div++)
+			if (num_data%div == 0) {
+				isPrime = 0;
+				break;
+			}
+
+		printf("%d\n", isPrime);
+	}
+
+	fclose(fp);
+}

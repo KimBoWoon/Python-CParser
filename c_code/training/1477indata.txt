@@ -1,0 +1,44 @@
+
+
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+void main(void)
+{
+	FILE *inFile;
+	int i,j;
+	int numCases;
+	int H ,W ,N;
+	
+	inFile = fopen("input.txt","r"); 
+	if(inFile ==NULL) exit(1);
+
+	fscanf(inFile, "%d", &numCases);
+
+	for(i=0;i<numCases;i++)
+	{
+		fscanf(inFile, "%d %d %d",&H ,&W ,&N );
+
+	
+
+		if(N%H == 0)
+		{	
+			printf("%d \n",(H)*100 + (N/H));
+		}
+
+		else
+		{
+			printf("%d \n",(N%H)*100 + (N/H +1));
+		}
+		
+	}
+	
+	
+	fclose(inFile); 
+
+}

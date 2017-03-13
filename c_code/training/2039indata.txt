@@ -1,0 +1,216 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int twoNum(int* arr, int len, int K);
+void combination(int* set, int setsize, int* arr, int arrsize, int K, int* cnt, int* nearest);
+void combination_iter(int* arr, int n, int needed, int K, int* cnt, int* nearest);
+int compare(const void* a, const void* b);
+
+int main()
+{
+	FILE* fileDes;
+	int trialNum;
+	int i, j;
+
+	int* arr;										
+	int len, K;										
+
+	fileDes = fopen("input.txt", "r");
+
+	if(fileDes == NULL)
+		exit(1);
+
+	fscanf(fileDes, "%d", &trialNum);
+
+	for(i = 0; i < trialNum; i++)
+	{
+		fscanf(fileDes, "%d %d", &len, &K);
+		arr = (int*)malloc(sizeof(int)*len);		
+		
+		for(j = 0; j < len; j++)					
+			fscanf(fileDes, "%d", &arr[j]);
+
+		qsort(arr, len, sizeof(int), compare);		
+
+
+
+		printf("%d\n", twoNum(arr, len, K) / 2);		
+
+		free(arr);									
+	}
+
+	fclose(fileDes);
+
+	return 0;
+
+}
+
+int twoNum(int* arr, int len, int K)
+{
+	int nearest = 200000000;		
+	int cnt = 0;					
+
+	int i, j, k;
+	int target;						
+
+	int low, high, middle;
+
+	int bsdist1, bsdist2;
+
+	int distValue;
+
+	for(i = 0; i < len; i++)
+	{
+		target = K - arr[i]; 
+
+		low = 0; high = len - 1;
+
+		while(low < high)
+		{
+			middle = (low + high) / 2;
+
+			bsdist1 = arr[middle] - target;
+			bsdist1 = (bsdist1 > 0)? bsdist1 : (-bsdist1);
+			bsdist2 = arr[middle + 1] - target;
+			bsdist2 = (bsdist2 > 0)? bsdist2 : (-bsdist2);
+
+			if(bsdist2 <= bsdist1)
+				low = middle + 1;
+
+			else
+				high = middle;
+
+		}
+
+
+
+
+		for(j = high; j >= 0; j--)
+		{
+			if(j == i) continue;
+
+			distValue = (arr[i] + arr[j]) - K;
+			distValue = (distValue > 0)? distValue : (-distValue);
+
+
+			if(distValue < nearest)
+			{
+				nearest = distValue; cnt = 1;
+			}
+
+			else if(distValue == nearest)
+			{
+				cnt++;
+			}
+
+			else if(distValue > nearest)
+				break;
+
+		}
+
+		for(j = high + 1; j < len; j++)
+		{
+			if(j == i) continue;
+
+
+			distValue = (arr[i] + arr[j]) - K;
+			distValue = (distValue > 0)? distValue : (-distValue);
+
+			if(distValue < nearest)
+			{
+				nearest = distValue; cnt = 1;
+			}
+
+			else if(distValue == nearest)
+			{
+				cnt++;
+			}
+
+			else if(distValue > nearest)
+				break;
+
+		}
+
+
+	}
+
+	return cnt;
+}
+
+void combination_iter(int* arr, int n, int needed, int K, int* cnt, int* nearest)
+{
+    int com[100];
+	int i, t;
+
+	int distValue;
+
+    for (i = 0; i < needed; i++) 
+		com[i] = i;
+
+    while (com[needed - 1] < n) 
+	{
+
+		distValue = (arr[com[0]] + arr[com[1]]) - K;
+		distValue = (distValue > 0)? distValue : (-distValue);
+
+		if(distValue < (*nearest))
+		{
+			(*nearest) = distValue;
+			(*cnt) = 1;
+		}
+
+		else if(distValue == (*nearest))
+			(*cnt)++;
+
+        
+
+        t = needed - 1;
+        while (t != 0 && com[t] == n - needed + t) 
+			t--;
+
+        com[t]++;
+
+        for (i = t + 1; i < needed; i++) 
+			com[i] = com[i - 1] + 1;
+    }
+}
+
+
+void combination(int* set, int setsize, int* arr, int arrsize, int K, int* cnt, int* nearest)
+{
+	int distValue;
+
+	if(arrsize == 0)
+	{
+
+		distValue = (arr[0] + arr[1]) - K;
+		distValue = (distValue > 0)? distValue : (-distValue);
+
+		if(distValue < (*nearest))
+		{
+			(*nearest) = distValue;
+			(*cnt) = 1;
+		}
+
+		else if(distValue == (*nearest))
+			(*cnt)++;
+
+		return;
+	}
+
+	if(setsize < arrsize)
+		return;
+
+	else
+	{
+		arr[arrsize - 1] = set[setsize - 1];
+
+		combination(set, setsize-1, arr, arrsize-1, K, cnt, nearest);
+		combination(set, setsize-1, arr, arrsize, K, cnt, nearest);
+	}
+}
+
+int compare(const void* a, const void* b)
+{ 
+	return (*((int*)a)) - (*((int*)b));
+}

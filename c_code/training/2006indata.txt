@@ -1,0 +1,73 @@
+
+
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+
+int compare (const void * a, const void * b) 
+{ return ( *(int*)a - *(int*)b ); }
+
+void arrAstate(int *arrA, int &head, int &tail, int k)
+{
+	int num = arrA[head]+arrA[tail]; 
+		
+	if(k==num)
+	{
+		head++;
+		tail--;
+	}
+	else if(k<num)
+	{
+		tail--;
+	}
+	else if(k>num)
+	{
+		head++;
+	}
+}
+void twoNumber(int *arrA, int k, int n)
+{
+	int cnt=0;
+	int preAbs=100000000;
+	int head=0,tail=n-1; 
+	int curAbs;
+
+	while(head<tail)
+	{
+		curAbs = abs(k-(arrA[head]+arrA[tail]));
+		if(preAbs==curAbs) 
+			cnt++;
+		else if(preAbs>curAbs)
+		{						
+			preAbs=curAbs;
+			cnt=1;
+		}
+		arrAstate(arrA,head,tail,k);
+		
+	}
+	cout<<cnt<<endl;
+}
+
+int main()
+{
+	ifstream instream("input.txt",ios::in);
+	int testCase;
+	instream>>testCase;
+	for(int i=0;i<testCase;i++)
+	{
+		int n,k;
+		instream>>n>>k;
+		int *arrA = new int[n];
+		
+		for(int i=0;i<n;i++)
+			instream>>arrA[i];	
+		
+		qsort(arrA, n, sizeof(int), compare);
+		twoNumber(arrA,k,n);
+		
+		delete[] arrA;
+	}
+
+	return 0;
+}

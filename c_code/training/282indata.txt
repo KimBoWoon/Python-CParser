@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <stdlib.h>
+int gcd(int b, int d){                     
+	if(d == 0)
+		return b;
+	else
+		return gcd(d , b%d);
+}
+void main(){
+	FILE *in_file;
+	int i, numcases, a, b, c , d;
+	int down, up, res_up, res_down;
+
+	in_file = fopen("input.txt", "r");
+	fscanf(in_file, "%d", &numcases);
+
+	for(i=0; i<numcases; i++){
+
+		for(a = 1; a <10000; a++){
+			fscanf(in_file, "%d", &a);
+			for(b=1; b<10000; b++){
+				fscanf(in_file, "%d", &b);
+				for(c=1; c<10000; c++){
+					fscanf(in_file, "%d", &c);
+					for(d=1; d<10000; d++){
+						fscanf(in_file, "%d", &d);                      
+						goto a;
+					}
+				}
+			}
+		}
+		a:
+							up = ( ( d/gcd(b,d) ) * a) + ( ( b /gcd(b,d) ) * c);   
+							down =(( b / gcd(b,d) ) * d);                         
+							res_up = up / gcd(up, down);
+							res_down = down / gcd(up, down);    
+				
+		printf("%d %d\n", res_up, res_down);
+	}
+	fclose(in_file);
+}

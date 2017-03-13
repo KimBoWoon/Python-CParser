@@ -1,0 +1,79 @@
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 2147483647 
+
+int Henry(int a, int b);
+int gcd(int n, int m); 
+
+int main()
+{
+	FILE* inFile; 
+	int numCases; 
+	
+	inFile = fopen("input.txt", "r");
+	if(inFile == NULL)
+	{
+		exit(1);
+	}
+
+	fscanf(inFile, "%d ", &numCases);
+	for(int i=0; i<numCases; i++)
+	{
+		int p,q; 
+
+		fscanf(inFile, "%d %d", &p, &q);
+
+		printf("%d\n", Henry(p, q)); 
+	}
+}
+
+int gcd (int n, int m)
+{
+	if(m==0)
+		return n;
+
+	else
+		return gcd(m, n%m);
+}
+
+int Henry(int a, int b)
+{
+	int k = b; 
+	int fraction=2;
+	int g;
+
+	while(k <= MAX)
+	{
+	
+		if(a==1)
+			return b;
+
+		
+		if(a*fraction - b < 0)
+		{
+			
+			if(k * ++fraction <= MAX)
+				continue;
+	
+			else
+				break;
+		}
+
+		a = a*fraction - b;
+		b *= fraction;
+	
+		g = gcd(b,a);
+
+		a /= g;
+		b /= g;
+
+		k *= fraction++;
+	}
+
+	return b;
+}

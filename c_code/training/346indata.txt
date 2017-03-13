@@ -1,0 +1,77 @@
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+int rSize =0;
+
+void countRoom(std::string* r,int x, int y);
+
+int main()
+{
+	std::ifstream infile("input.txt");
+
+	int numCase;
+	std::string* room;
+	std::vector<int> v;
+
+	infile >> numCase;	
+
+	for(int i=0; i<numCase; i++)
+	{
+		int m , n;	
+		infile >> m >> n;
+		room = new std::string[n];
+		
+		for(int j=0; j<n; j++)
+		{
+			infile>>room[j];
+		}
+
+		for( int j=1; j< n-1; j++)
+		{
+			for( int k=1; k<m-1; k++)
+			{
+				if( room[j].at(k) == '.')
+				{
+					countRoom(room,k,j);
+					v.push_back(rSize);
+					rSize = 0;
+					
+				}
+			}
+		}
+		std::cout<<v.size()<<std::endl;
+
+		std::sort(v.begin(),v.end());
+		for(int j=v.size()-1; j >= 0 ; j--)
+		{
+			std::cout<<v.at(j)<<' ';
+		}
+
+		std::cout<<std::endl;
+		
+
+		v.clear();
+
+	}
+}
+
+
+void countRoom(std::string* r,int x, int y)
+{
+	if( r[y].at(x) != '.')
+		return;	
+	else
+	{
+		r[y].replace(x,1,1,'+');  
+		rSize++;
+
+		countRoom(r, x-1, y);
+		countRoom(r, x+1, y);
+		countRoom(r, x, y-1);
+		countRoom(r, x, y+1);
+	}
+}

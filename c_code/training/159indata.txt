@@ -1,0 +1,32 @@
+
+
+
+
+
+#include <iostream>
+#include <fstream>
+
+int mcCarthy(int n);
+
+int main() {
+	std::ifstream inFile;
+	inFile.open("input.txt");
+
+	int testCaseNum;
+
+	inFile >> testCaseNum;
+
+	for(int i = 0; i < testCaseNum; i++) {
+		int n = 0;
+		
+		inFile >> n;
+		std::cout << mcCarthy(n) << std::endl;
+	}
+}
+
+int mcCarthy(int n) {
+	if (n > 100)
+		return n - 10;
+	else
+		return mcCarthy(mcCarthy(n + 11));
+}

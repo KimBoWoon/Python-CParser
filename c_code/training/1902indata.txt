@@ -1,0 +1,43 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void main(void) {
+	FILE *inFile;
+	int circle, i;
+
+	inFile = fopen("input.txt", "r");
+	fscanf(inFile, "%d", &circle);
+
+	while (circle--){
+		int teams, matchs;
+		int teamGt[1001] = { 0 };
+		int teamLos[1001] = { 0 };
+		int teamA, teamB;
+		int aScore, bScore;
+		int results = 0, maxis = 0, minis = 987654321;
+		fscanf(inFile, "%d %d", &teams, &matchs);
+
+		for (i = 0; i < matchs; i++) {
+
+			fscanf(inFile, "%d %d %d %d", &teamA, &teamB, &aScore, &bScore);
+			teamGt[teamA] += aScore;
+			teamLos[teamA] += bScore;
+
+			teamGt[teamB] += bScore;
+			teamLos[teamB] += aScore;
+
+		}
+		for (i = 1; i <= teams; i++) {
+			results = ((teamGt[i] * teamGt[i])) * 1000;
+			results = results / ((teamGt[i] * teamGt[i]) + (teamLos[i] * teamLos[i]));
+			if (maxis < results)
+				maxis = results;
+			if (minis > results)
+				minis = results;
+		}
+
+		printf("%d\n%d\n", maxis, minis);
+	}
+}

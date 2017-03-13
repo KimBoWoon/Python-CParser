@@ -1,0 +1,124 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define true 1
+#define false 0
+
+int fuel_row[101][101] = {0,};			
+int fuel_col[101][101] = {0,};		    
+int dp[101][101][2][201] = {0,};		
+int main()
+{
+	int row, col, time, fuel;			
+	int i, j, k, l;
+	int numcase;
+	int change_count = 0;				
+	int change_max = 0;					
+	int find_Flag = false;				
+
+	FILE * in_file;
+	in_file = fopen("input.txt", "r");
+	if(in_file == NULL)
+		exit(1);
+
+	fscanf(in_file, "%d", &numcase);
+
+	while (numcase--)
+	{
+		change_count = 0;
+		find_Flag = false;
+
+		fscanf(in_file, "%d %d %d %d", &row, &col, &time, &fuel);
+
+		for (i=1; i<=row; i++)
+		{
+			for (j=1; j<col; j++)
+			{   
+				fscanf(in_file, "%d", &fuel_row[i][j]);
+			}
+		}
+
+		for (i=1; i<row; i++)
+		{
+			for (j=1; j<=col; j++)
+			{   
+				fscanf(in_file, "%d", &fuel_col[i][j]);
+			}
+		}
+
+		if (row < col)
+			change_max = row*2 -1;
+		else
+			change_max = col*2 -1;
+
+
+		for (i=1; i<=row; i++)
+		{
+			for (j=1; j<=col; j++)
+			{
+				for (k=0; k<2; k++)
+				{
+					for (l=0; l<=change_max; l++)
+					{	
+						dp[i][j][k][l] = fuel + 1;
+					}	
+				}
+			}
+		}
+
+		dp[1][1][0][0] = 0;		
+		dp[1][1][1][0] = 0;		
+
+		for (i=1; i<=row; i++)
+		{
+			for (j=1; j<=col; j++)
+			{
+				for (l=0; l<=change_max; l++)
+				{
+					for (k=0; k<2; k++)
+					{
+						if (dp[i][j][k][l] <= fuel)
+						{	
+
+							if ((i == row) && (j == col) && (1 <= l))
+							{
+								change_count = l;	
+								l = change_max;		
+								k = 2;
+								find_Flag = true;  
+							}
+							else
+							{
+								if ( (l < change_max) && (dp[i][j][k][l] < dp[i][j][!k][l+1]))
+								{
+									dp[i][j][!k][l+1] = dp[i][j][k][l];
+								}
+
+								if (k == 0)
+								{
+									if ((i < row) && ((dp[i][j][k][l] + fuel_col[i][j]) < dp[i+1][j][k][l]))
+									{
+										dp[i+1][j][k][l] = dp[i][j][k][l] + fuel_col[i][j];
+									}
+								}
+								else if (k == 1)
+								{
+									if ((j < col) && ((dp[i][j][k][l] + fuel_row[i][j]) < dp[i][j+1][k][l]))
+									{
+										dp[i][j+1][k][l] = dp[i][j][k][l] + fuel_row[i][j];
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (find_Flag)								
+			printf("%d\n", (row+col-2)*time + change_count);	
+		else                                        
+			printf("-1\n");
+	}
+	fclose(in_file);
+}

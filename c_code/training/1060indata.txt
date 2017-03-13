@@ -1,0 +1,91 @@
+
+
+
+
+
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+
+
+void ducci(int**loop, int number, int n);
+
+int main(int argc, char* argv[]){
+	
+	
+	std:: ifstream is;
+	is.open("input.txt"); 
+	
+	int times; 
+	is >> times;
+	
+	for(int i = 0; i < times; i++){
+		
+		int n;
+		is>>n;
+
+		int number = 0;
+
+		int **loop = new int*[1000];
+		
+		for(int j = 0; j < 1000; j++)
+			loop[j] = new int[n];
+
+		for(int j = 0; j < n; j ++)
+			is>>loop[0][j];
+
+		ducci(loop,number,n);
+	
+
+	}
+}
+
+
+void ducci(int **loop, int number,int n){
+
+	int k =0;
+
+	for(int i = 0; i < n; i ++){
+		if(loop[number][i] != 0)
+			break;
+		else
+			k++;
+	}
+	if(k == n){
+		std::cout<<"ZERO"<<std::endl;
+		return;
+	}
+	
+	k = 0;
+	
+	for(int i = 0; i < number; i ++){
+		for(int j = 0; j < n; j ++){
+			if(loop[number][j] != loop[i][j])
+				break;
+			else
+				k++;
+		}
+		if(k == n){
+			std::cout<<"LOOP"<<std::endl;
+			return;
+		}
+	}
+
+	number++;
+	for(int i = 0; i < n; i ++){
+		loop[number][i] =abs(loop[number-1][(i+1)%n]-loop[number-1][i]);
+		
+		
+	}
+	
+	ducci(loop,number,n);
+
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,44 @@
+
+#include <iostream>
+#include <string>
+#include <fstream>
+using namespace std;
+
+int fact(int n);
+
+int main() {
+	ifstream instream;
+	int nocase;
+
+	instream.open("input.txt");
+
+	instream >> nocase;
+
+	for (int i = 0; i < nocase; i++) {
+		int size = 0;
+		int index = 0;
+		int fac = 0;
+		string str = "abcdefghijkl";           
+		string result = "";                    
+
+		instream >> size >> index;             
+
+		for (int f = fact(--size), j = index - 1; size >= 1; size--) 
+		{
+			int select = j / f;     
+			j %= f;                   
+
+			result += str[select];       
+			str.erase(select, 1);         
+			f /= size;				
+		}
+		cout << result << str[0] << endl;
+	}
+}
+
+int fact(int n) {
+	if (n == 0)
+		return 1;
+	else
+		return n * fact(n - 1);
+}

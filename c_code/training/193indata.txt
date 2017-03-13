@@ -1,0 +1,30 @@
+
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+
+
+int mc(int n){
+	if(n>100)
+		return n-10;
+	else if(n<=100)
+		return mc(mc(n+11));
+}
+int main(void){
+	ifstream infile;
+
+	infile.open("input.txt");
+	if(infile.fail()){
+		cerr << "input file error"<<endl;
+		exit(1);
+	}
+	int num;
+	int x;
+	infile >> num;
+	for(int i=0;i<num;i++){
+		infile >> x ;
+		cout<<mc(x)<<endl;	
+	}
+	return 0;
+}

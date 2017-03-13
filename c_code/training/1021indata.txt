@@ -1,0 +1,50 @@
+
+
+
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+using namespace std;
+
+int swit = 0; 
+
+int main(void)
+{
+	ifstream inStream;
+	int numTestCases = 0;
+	int num = 0;
+
+	inStream.open("input.txt");
+	if (inStream.fail())
+	{
+		cerr << "Input file opening failed. \n";
+		exit(1);
+	}
+	inStream >> numTestCases;
+	for (int i = 0; i < numTestCases; i++)
+	{
+		int arr[17];
+		swit = 0;
+		inStream >> num;
+		for (int j = 0; j < num; j++)
+			inStream >> arr[j];
+		for (int j = 0; j < 1000; j++)
+		{
+			int temp = 0;
+			arr[num] = arr[0]; 
+			for (int k = 0; k < num-1; k++)
+				arr[k] = (arr[k] - arr[k + 1]) > 0 ? (arr[k] - arr[k + 1]) : -(arr[k] - arr[k + 1]); 
+			arr[num - 1] = (arr[num - 1] - arr[num]) > 0 ? (arr[num - 1] - arr[num]) : -(arr[num - 1] - arr[num]); 
+			for (int k = 0; k < num; k++) temp += arr[k];
+			if (temp == 0)
+			{
+				swit = 1;
+				break;
+			}
+		}
+		if (swit == 1) cout << "ZERO" << endl;
+		else cout << "LOOP" << endl;
+	}
+	inStream.close();
+	return 0;
+}

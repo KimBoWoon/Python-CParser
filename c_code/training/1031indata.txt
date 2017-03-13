@@ -1,0 +1,131 @@
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <cmath>
+#include <cstring>
+
+int ducci(int* seq, int size);
+
+int abs(int a);
+
+std::vector<int*> v;
+
+int main()
+{
+	std::ifstream infile("input.txt");
+	int numCase;
+	
+	infile >> numCase;
+	for(int i=0; i < numCase; i++)
+	{
+		int t_size;
+		infile >> t_size;
+
+		int *t = new int[t_size];
+
+		for(int j=0;j < t_size; j++)
+		{
+			infile >> t[j];
+		}
+
+		v.clear();
+		int* temp = new int[t_size];
+		memcpy(temp, t, sizeof(int)*t_size);
+		v.push_back(temp);
+		
+
+		if(ducci(t,t_size))
+		{
+			std::cout<<"LOOP"<<std::endl;
+		}
+		else
+			std::cout<<"ZERO"<<std::endl;
+
+
+	
+
+ 		for(int k=0; k<v.size(); k++)
+ 		{
+ 			delete[] v.at(k);
+ 		}
+
+		delete[] t;
+
+		
+	}
+	return 0;
+}
+
+
+
+int ducci(int* seq, int size)
+{
+
+	while(1)
+	{
+		int zero_flag = 0; 
+		int same_flag = 1;
+		int* seq_temp = new int[size];
+		memcpy(seq_temp ,seq , sizeof(int)*size);
+
+
+		
+		for(int i=0; i<size; i++)
+		{
+			if( i < size-1)
+			{
+				seq[i] = abs(seq_temp[i] - seq_temp[i+1]);	
+				zero_flag += seq[i];
+			}
+			else
+			{
+				seq[i] = abs(seq_temp[i]-seq_temp[0]);
+				zero_flag += seq[i];
+			}
+		}	
+
+		int* temp = new int[size];
+		memcpy(temp, seq,sizeof(int)*size);
+		v.push_back(temp);
+
+
+ 
+
+		if( zero_flag == 0 )
+			return 0;
+		else
+		{
+			for(int i = 0; i<v.size()-1; i++)
+			{   
+				same_flag =1;
+
+				for( int j=0; j<size; j++ )
+				{
+					if(v.at(i)[j] != seq[j] )
+					{
+						same_flag = 0;
+						
+					}
+				}
+				if(same_flag )
+					return 1;
+
+
+				
+			}
+
+		}
+	}
+}
+
+
+int abs(int a)
+{
+	if( a <0 )
+		return a *=-1;
+	else 
+		return a;
+
+}
+

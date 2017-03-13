@@ -1,0 +1,26 @@
+
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+int fac(int n) {
+	if (n <= 1)
+		return 1;
+	else
+		return n*fac(n - 1);
+}
+
+
+int main()
+{
+	int testCase,num= 0;
+	fstream instream("input.txt", ios::in);
+	instream >> testCase;
+	for (int q = 0; q < testCase; q++)
+	{
+		instream >> num;
+		cout << fac(num) << endl;
+	}
+}
+

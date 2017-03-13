@@ -1,0 +1,34 @@
+#include<stdio.h>
+
+int Euclid(int B, int S)
+{
+	if(S==0)		return B;
+	return Euclid(S, B%S);
+}
+
+void main()
+{
+	FILE*inFile = fopen("input.txt", "r");
+	int testNum, appleBoy, appleMom, mangoBoy, mangoMom;
+	int i;
+
+	fscanf(inFile, "%d", &testNum);
+	for(i=0; i<testNum; ++i){
+		int gcd, appleMangoGcd;
+		int timesToApple, timesToMango;
+		int appleMangoBoy, appleMangoMom;
+		fscanf(inFile, "%d %d %d %d", &appleBoy, &appleMom, &mangoBoy, &mangoMom);
+		gcd = appleMom>=mangoMom ? Euclid(appleMom, mangoMom):Euclid(mangoMom, appleMom);
+		
+		timesToApple = mangoMom/gcd;
+		timesToMango = appleMom/gcd;
+
+		appleMangoBoy = timesToApple*appleBoy+timesToMango*mangoBoy;
+		appleMangoMom = timesToApple*timesToMango*gcd;
+		appleMangoGcd =  appleMangoBoy >= appleMangoMom ? Euclid(appleMangoBoy, appleMangoMom):Euclid(appleMangoMom, appleMangoBoy);
+
+		printf("%d %d\n", appleMangoBoy/appleMangoGcd, appleMangoMom/appleMangoGcd);
+	}
+
+	fclose(inFile);
+}

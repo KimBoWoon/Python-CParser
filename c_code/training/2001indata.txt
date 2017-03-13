@@ -1,0 +1,107 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+void swap(int arr[],int a, int b)
+{
+	int temp=arr[a];
+	arr[a]=arr[b];
+	arr[b]=temp;
+}
+
+int Partition(int *arr,int left, int right)
+{
+	int pivot=arr[left];
+	int bottom=left+1;
+	int top=right;
+
+	while(bottom<=top)
+	{
+		while(pivot>arr[bottom])
+			bottom++;
+		while(pivot<arr[top])
+			top--;
+		if(bottom<=top)
+			swap(arr,bottom,top);
+	}
+	swap(arr,left,top);
+	return top;
+}
+
+void QuickSort(int *arr,int left,int right)
+{
+	if(left<=right)
+	{
+		int pivot=Partition(arr,left,right);
+		QuickSort(arr,left,pivot-1);
+		QuickSort(arr,pivot+1,right);
+	}
+}
+int main()
+{
+	fstream in;
+	in.open("input.txt");
+	int numcases;
+	in>>numcases;
+	
+	
+	for(int i=0; i<numcases; i++)
+	{
+		int length,k;
+		in>>length>>k;
+		int pair=1;
+		int min;
+		int j=1;
+		int p=length-1;
+		int num;
+		int *arr=new int[length];
+		for(int ss=0; ss<length; ss++)
+		{
+			in>>arr[ss];
+		}
+		QuickSort(arr,0,length-1);
+		
+		min=(arr[0]+arr[length-1]);
+		if(min>=k)
+		{
+			min=min-k;
+		}
+		else
+		{
+			min=k-min;
+		}
+		while(j!=p)
+		{
+			num=(arr[j]+arr[p]);
+			if(num>=k)
+			{
+				num=num-k;
+			}
+			else
+			{
+				num=k-num;
+			}
+			if(min>num)
+			{
+				min=num;
+				pair=0;
+				pair++;
+			}
+			else if(min==num)
+			{
+				pair++;
+			}
+			if((arr[j]+arr[p])>k)
+			{
+				p--;
+			}
+			else
+			{
+				j++;
+			}
+		}
+		cout<<pair<<endl;
+		delete arr;
+				
+	}
+}

@@ -1,0 +1,58 @@
+
+#include <fstream>
+#include <iostream>
+using namespace std;
+
+int gcd(int a, int b){
+	if (b == 0) return a;
+	else return gcd(b, a % b);
+}
+
+bool isPlus(int deno1, int nume1, int deno2, int nume2){
+	if (nume1 * deno2 > nume2 * deno1)
+		return true;
+	else
+		return false;
+}
+
+void minusN(int& deno, int& nume, int deno2, int nume2){
+	int nume1 = nume;
+	int deno1 = deno;
+	nume1 *= deno2;
+	nume2 *= deno1;
+	nume = (nume1 - nume2) / gcd((nume1 - nume2), (deno1 * deno2));
+	deno = (deno1 * deno2) / gcd((nume1 - nume2), (deno1 * deno2));
+}
+
+int Henry(int deno, int nume){
+	if (nume == 1)
+		return deno;
+	else{
+		for (int i = 2; i < deno; i++){
+			if (isPlus(deno, nume, i, 1)){
+				minusN(deno, nume, i, 1);
+				break;
+			}
+		}
+		return Henry(deno, nume);
+	}
+}
+
+
+int main(){
+
+	int caseNum = 0;
+	ifstream inputFile("input.txt");
+
+	inputFile >> caseNum;
+	for (int i = 0; i < caseNum; i++){
+		int deno = 0, nume = 0;
+
+		inputFile >> nume >> deno;
+
+		cout << Henry(deno, nume) << endl;
+
+	}
+
+	return 0;
+}

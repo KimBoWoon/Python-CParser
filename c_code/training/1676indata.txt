@@ -1,0 +1,74 @@
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100001
+
+typedef struct Point {int x, y;} point;
+
+int cmpfunc (const void * a, const void * b) { 
+	point *x = (point*)a;
+	point *y = (point*)b;
+
+	if(x->x == y->x) return x->y - y->y;
+	else return x->x - y->x; 
+} 
+
+int cmpfunc2 (const void * a, const void * b) { 
+	point *x = (point*)a;
+	point *y = (point*)b;
+
+	if(x->x == y->x) return y->y - x->y;
+	else return x->x - y->x;
+} 
+
+void Monotone(int num, point *cafe,int m,int *order){
+	int i,j,tmp=0,count=1,flag=0;
+	int cnt[MAX];
+	
+	qsort(cafe, num, sizeof(point), cmpfunc); 
+
+	cafe[num].y=-100001; 
+	cafe[num].x=-100001;
+
+	for(i=0;i<num;i++){
+		if(cafe[i].x!=cafe[i+1].x){
+			if(flag==0)
+				qsort(cafe+i-count+1, count, sizeof(point), cmpfunc2); 
+			tmp=cafe[i].y; 
+			flag=0;
+			count=1; 
+		}
+		else{
+			count++; 
+			if(cafe[i].y>tmp || cafe[i+1].y>tmp) 
+				flag=1;
+		}
+	}
+	
+	for(i=0;i<m;i++)
+		printf("%d %d\n", cafe[order[i]-1].x,cafe[order[i]-1].y); 
+}
+
+int main(){
+	int cases,num,i,j,m;
+	int order[10];
+	point cafe[MAX];
+
+	FILE *fin=fopen("input.txt","r");
+	fscanf(fin,"%d",&cases);
+
+	while(cases--){
+		fscanf(fin,"%d",&num);
+		for(i=0;i<num;i++)
+			fscanf(fin,"%d %d",&cafe[i].x,&cafe[i].y);
+		fscanf(fin,"%d",&m);
+		for(i=0;i<m;i++)
+			fscanf(fin,"%d",&order[i]);
+		Monotone(num,cafe,m,order);
+	}
+	fclose(fin);
+	return 0;
+}

@@ -1,0 +1,28 @@
+
+
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+
+int divide(int bd, int adbc);
+
+int main(){
+
+	ifstream inStream;
+	int numTest,a,b,c,d,common;
+	inStream.open("input.txt");
+	if (inStream.fail()) exit(1);
+	inStream >> numTest;
+
+	for (int k = 0; k < numTest; k++)
+	{ 
+		inStream >> a >>b >>c >>d;
+		common=divide(b*d, a*d + b*c);
+		cout << (a*d + b*c) / common << " " << b*d / common << endl;
+	}
+}
+int divide(int bd,int adbc){
+	if (adbc == 0) return bd;
+	else return divide(adbc, bd%adbc);
+}

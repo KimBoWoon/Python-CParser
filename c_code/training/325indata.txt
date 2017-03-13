@@ -1,0 +1,72 @@
+
+
+#include<iostream>
+#include<fstream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+vector<int> room;
+int roomNum = 0;
+
+void roomSpace(char** map, int r, int c){
+	if (map[r][c] == '.'){
+		room[roomNum]++;		
+		map[r][c] = 'x';		
+		roomSpace(map, r + 1, c);
+		roomSpace(map, r - 1, c);
+		roomSpace(map, r, c + 1);
+		roomSpace(map, r, c - 1);
+	}
+	else
+		return;
+}
+
+
+int main(){	
+	ifstream File;
+	int numCase = 0, row = 0, col = 0;
+	char** map = NULL;
+	char c = ' ';
+
+	File.open("input.txt");
+	File >> numCase;
+	for (int iter = 0; iter < numCase; iter++){
+		room.push_back(0);		
+		File >> col >> row;
+		map = new char*[row];
+		for (int i = 0; i < row; i++){
+			map[i] = new char[col];
+		}
+		for (int i = 0; i < row; i++){
+			for (int j = 0; j < col; j++){
+				File >> c;
+				map[i][j] = c;
+			}
+		}
+		for (int i = 0; i < row; i++){
+			for (int j = 0; j < col; j++){
+				if (map[i][j] == '.'){
+					roomNum++;
+					room.push_back(0);
+					roomSpace(map, i, j);
+				}
+			}
+		}
+		sort(room.begin(), room.end());
+		cout << roomNum << endl;
+		for (int i = roomNum; i >= 1; i--){
+			cout << room[i] << ' ';
+		}
+		cout << endl;
+
+		roomNum = 0;
+		room.clear();
+		for (int i = 0; i < row; i++){
+			delete[] map[i];
+		}
+		delete[] map;
+	}
+	File.close();
+	return 0;
+}

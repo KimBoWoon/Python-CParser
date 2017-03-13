@@ -1,0 +1,25 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int M(int n) {
+	if (n > 100)
+		return n - 10;
+	else
+		return M(M(n + 11));
+}
+
+int main(void) {
+	ifstream fin("input.txt");
+
+	int nCase; fin >> nCase;
+	
+	while (nCase--) {
+		int num; fin >> num;
+		cout << M(num) << endl;
+	}
+
+	fin.close();
+	return 0;
+}

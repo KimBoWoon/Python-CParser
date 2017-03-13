@@ -1,0 +1,46 @@
+
+
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+void triangleSet(int *arr) 
+{
+	for(int i=1;i<45;i++)
+	{
+		arr[i]=(i*(i+1))/2;
+		if(arr[i]>1000)
+			break;
+	}
+}
+
+int allCase(int *tri,int num)
+{
+	int p=1;
+	for(int i=1;i<45;i++)
+		for(int j=1;j<45;j++)
+			for(int k=1;k<45;k++)
+				if((tri[i]+tri[j]+tri[k])==num)
+				{
+					cout<<1<<endl;
+					return 0;
+				}
+	cout<<0<<endl;
+	return 0;
+}
+
+int main()
+{
+	fstream instream("input.txt",ios::in);
+	int testCase;
+	instream>>testCase;
+	int triangleNum[1000];
+	triangleSet(triangleNum);
+	for(int i=0;i<testCase;i++)
+	{
+		int num;
+		instream>>num;
+		allCase(triangleNum,num);
+	}
+	return 0;
+}

@@ -1,0 +1,64 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int isPrime(int inputNum);
+void goldbach(int inputNum);
+
+int main(void)
+{
+	FILE *f = fopen("input.txt", "r");
+	if (f == NULL) {
+		printf("ERROR\n");
+		exit(1);
+	}
+
+	int testCase = 0; 
+	int inputNum = 0; 
+
+	fscanf(f, "%d", &testCase); 
+
+	while (testCase--) {
+
+		fscanf(f, "%d", &inputNum); 
+
+		goldbach(inputNum);
+	}
+
+	fclose(f);
+	return 0;
+}
+
+int isPrime(int inputNum){
+	int divNum = 2; 
+	int isPrime = 1; 
+
+	for (divNum = 2; divNum <= inputNum / 2; divNum++) {
+
+		if (inputNum % divNum == 0) {
+			isPrime = 0;
+			break;
+		}
+		else
+			continue;
+	}
+
+	return isPrime;
+}
+
+void goldbach(int inputNum) {
+	int i = 0;
+
+	if (isPrime(inputNum / 2)) {
+		printf("%d %d\n", inputNum / 2, inputNum / 2);
+		return;
+	}
+
+	for (i = (inputNum / 2) - 1; i >= 2; i--) {
+		if (isPrime(i) && isPrime(inputNum - i)) {
+			printf("%d %d\n", i, inputNum - i);
+			return;
+		}
+	}
+}

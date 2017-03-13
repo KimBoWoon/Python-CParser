@@ -1,0 +1,45 @@
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+
+#define BLANK 'X'
+using namespace std;
+
+
+std::ifstream inStream;
+
+int main() {
+	int cases, num, tar;
+	inStream.open("input.txt");
+
+	inStream >> cases;
+
+	for (int i = 0; i < cases; i++) {
+		char arp[13] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'X' };
+		int arrs[100] = { 0 };
+
+		inStream >> num >> tar;
+		tar = tar - 1;
+		for (int j = 1; j <= num; j++){
+			arrs[j] = tar % j;
+			tar = tar / j;
+		}
+
+		for (int j = num; j > 0; j--){
+			int toGet = arrs[j];
+			cout << arp[toGet];
+			while (1){
+				arp[toGet] = arp[toGet + 1];
+				toGet++;
+				if (arp[toGet] == 'X') break;
+			}
+		}
+
+		cout << endl;
+
+	}
+
+	inStream.close();		
+	return 0;
+}
+

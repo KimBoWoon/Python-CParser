@@ -1,0 +1,33 @@
+#include<iostream>
+#include<cmath>
+#include<fstream>
+using namespace std;
+
+int prime(double num)
+{
+	double rootNum = sqrt(num);
+	int count=0;
+	int tempNum = (int)num;
+	for(int i=2;i<=rootNum;i++)
+		if(tempNum%i==0)
+			count++;
+	if(count>0)
+		return 0;
+	else return 1;
+}
+
+int main()
+{
+	fstream instream("input.txt",ios::in);
+	int testcase;
+	instream>>testcase;
+	
+	for(int i=0;i<testcase;i++)
+	{
+		double num;
+		instream>>num;
+		cout<<prime(num)<<endl;
+	}
+
+	return 0;
+}

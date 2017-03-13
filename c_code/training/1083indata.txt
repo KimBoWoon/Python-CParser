@@ -1,0 +1,53 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+bool checkLoop(int *a,int *b,int size){
+	int i;	
+	for(i=0;i<size;i++){
+		if(a[i]!=b[i]) return false;
+	}
+	return true;
+}
+
+bool checkZero(int *a,int size){
+	int i;
+	for(i=0;i<size;i++){
+		if(a[i] != 0) return false;
+	}
+	return true;
+}
+
+void Ducci(int *a,int *b,int size){
+	int i,n;
+	for(i=0;i<size;i++){
+		if(i==size-1) n=a[i]-a[0];
+		else n=a[i+1]-a[i];
+		n=n>0?n:n*(-1);
+		b[i]=n;
+	}
+}
+
+int main(){
+	ifstream in;
+	int cases,num;
+	int data[1000][15];
+	int i,j;
+	
+	in.open("input.txt");
+	in>>cases;
+
+	while(cases--){
+		in>>num;
+		for(i=0;i<num;i++)	in>>data[0][i];
+	
+		for(i=0;i<999;i++){
+			Ducci(data[i],data[i+1],num);
+			if(checkZero(data[i+1],num)){ printf("ZERO\n"); break; }
+			for(j=0;j<i;j++){
+				if(checkLoop(data[j],data[i+1],num)){ printf("LOOP\n"); break;  }
+			}
+			if(checkLoop(data[j],data[i+1],num)) break;
+		}
+	}
+}

@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int n = 2;
+void henry (int a, int b)
+{
+	if(a==0) return ;
+	
+	while(1)
+	{
+
+		if(a*n-b>=0) break;
+		n++;
+	}
+	henry(a*n-b,b*n);
+}
+void main()
+{
+	int datacase = 0, i=0;
+	FILE* infile = fopen("input.txt","r");
+	fscanf(infile,"%d",&datacase);
+	
+	for(i=0; i<datacase; i++)
+	{	
+		int a = 0;
+		int b = 0;
+		int result = 0;
+		
+		fscanf(infile,"%d",&a);
+		fscanf(infile,"%d",&b);
+		henry(a,b);
+
+		printf("%d\n",n);
+		n=2;
+	}	
+}

@@ -1,0 +1,52 @@
+
+
+
+
+#pragma warning(disable:4996)
+
+#include<stdio.h>
+#include<stdlib.h>
+
+int main(void)
+{
+	FILE *in_file;
+	int H, W, N;
+	int no_cases;
+	int room_num, num, hight;
+	int i, j;
+
+
+	in_file=fopen("input.txt", "r");
+	if (in_file == NULL) exit(1);
+
+	fscanf(in_file, "%d", &no_cases);   
+
+
+	for (i = 0; i<no_cases; i++)
+	{
+		fscanf(in_file, "%d %d %d", &H, &W, &N);
+		
+		{
+			num = N / H;
+			hight = N%H;
+		
+			
+				if (hight == 0)   
+				{
+					room_num = (H * 100) + num;
+					printf("%d\n", room_num);
+				}
+				else
+				{
+					room_num = (hight * 100) + num + 1;
+					printf("%d\n", room_num);
+				}
+			
+
+		}
+	}
+	fclose(in_file);
+
+	return 0;
+
+}

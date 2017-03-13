@@ -1,0 +1,78 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int k=0;
+int ducci(int **arr2, int n)
+{
+	int i, j, m;
+	int sum=0;
+	int num=0;
+
+	for(i=0; i<n; i++)
+	{
+		sum += arr2[k][i];
+	}
+	
+	if(sum == 0)
+		return printf("ZERO\n");
+
+	else
+	{
+		for(i=0; i<k; i++)
+		{
+			for(j=0; j<n; j++)
+			{
+				if(arr2[i][j] == arr2[k][j])
+					num++;	
+			}
+			if(num == n)
+				return printf("LOOP\n");
+			num=0;
+		}
+		for(i=0; i<n; i++)
+		{
+			if(i==n-1)
+				arr2[k+1][i] = abs(arr2[k][i]-arr2[k][0]);
+				
+			else
+				arr2[k+1][i] = abs(arr2[k][i]-arr2[k][i+1]);
+			
+		}
+		k++;
+		return ducci(arr2, n);
+	}	
+}
+
+void main()
+{
+	FILE *file;
+	int i, j;
+	int test;
+	int n;
+	int **arr2=NULL;
+
+	file = fopen("input.txt","r");
+	
+	fscanf(file, "%d", &test);
+	for(i=0; i<test; i++)
+	{
+		fscanf(file, "%d", &n);
+		
+		arr2=(int**)malloc(sizeof(int*)*(1000)); 
+		for(j=0; j<1000; j++)
+		{
+			*(arr2+j)=(int*)malloc(sizeof(int)*n);
+		}
+		for(j=0; j<n; j++)
+		{
+			fscanf(file, "%d", &arr2[0][j]);
+		}
+		
+		ducci(arr2, n);
+		k=0;
+	}
+	fclose(file);
+}

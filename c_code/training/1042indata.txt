@@ -1,0 +1,84 @@
+
+
+#pragma warning(disable : 4996) 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int IsSameArray(int a[], int b[], int arrSize);	
+int IsZeroArray(int a[], int arrSize);			
+int IsDucciSequenceReachZero();					
+
+void main(void)
+{
+	FILE *inFile;
+	int i, j;
+	int numCases, numData;
+	int* numArray = NULL;
+
+	inFile = fopen("input.txt", "r"); 
+
+	if (inFile == NULL) exit(1);
+	fscanf(inFile, "%d", &numCases); 
+	for (i = 0; i<numCases; i++)
+	{
+		fscanf(inFile, "%d", &numData); 
+		numArray = (int*)malloc(sizeof(int) * numData);
+		for (j = 0; j < numData; j++)
+			fscanf(inFile, "%d", &numArray[j]);
+		
+		if (IsDucciSequenceReachZero(numArray, numData)) puts("ZERO");
+		else puts("LOOP");
+	}
+	free(numArray);
+
+	fclose(inFile); 
+}
+
+
+int IsSameArray(int a[], int b[], int arrSize)
+{
+	int i;
+	for (i = 0; i < arrSize; i++)
+		if (a[i] != b[i]) return 0;
+	return 1;
+}
+
+int IsZeroArray(int a[], int arrSize)
+{
+	int i;
+	for (i = 0; i < arrSize; i++)
+		if (a[i]) return 0;
+	return 1;
+}
+
+int IsDucciSequenceReachZero(int dataArray[], int arrSize)
+{
+	int i;
+	int matrixCount = 0;
+	int* bufferArray;
+	int* arrMatrix[1000];
+
+	bufferArray = (int*)malloc(sizeof(int) * arrSize);
+	for (i = 0; i < 1000; i++)
+		arrMatrix[i] = (int*)malloc(sizeof(int) * arrSize);
+
+	while (!IsZeroArray(dataArray, arrSize))
+	{
+		for (i = 0; i < arrSize; i++)
+			arrMatrix[matrixCount][i] = dataArray[i];		
+		matrixCount++;
+
+		for (i = 0; i < arrSize - 1; i++)
+			bufferArray[i] = abs(dataArray[i] - dataArray[i + 1]);		
+		bufferArray[arrSize - 1] = abs(dataArray[arrSize - 1] - dataArray[0]);
+
+		for (i = 0; i < matrixCount; i++)
+			if (IsSameArray(arrMatrix[i], bufferArray, arrSize))	
+				return 0;
+
+		for (i = 0; i < arrSize; i++)
+			dataArray[i] = bufferArray[i];
+	}
+	return 1;
+}

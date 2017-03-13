@@ -1,0 +1,31 @@
+
+#include <iostream> 
+#include <fstream>
+using namespace std;
+int gcd(int i, int j) 
+{
+	if(j==0)
+		return i;
+	return gcd(j, i%j);
+}
+int main()
+{
+	int t,a,b,c,d;
+	ifstream inStream;
+	inStream.open("input.txt");
+	inStream>>t;
+	for(int i=0; i<t; i++)
+	{
+		int gc,gc2,gc3,tmp,ans,ans2;
+		inStream>>a>>b>>c>>d;
+		gc=gcd(b,d);
+		gc2=gc*(b/gc)*(d/gc);
+		a=a*(gc2/b);
+		c=c*(gc2/d);
+		tmp=a+c;
+		gc3=gcd(tmp,gc2);
+		ans=tmp/gc3;
+		ans2=gc2/gc3;
+		cout<<ans<<' '<<ans2<<endl;
+	}
+}

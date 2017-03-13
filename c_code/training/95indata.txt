@@ -1,0 +1,63 @@
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define true 1
+#define false 0
+
+void primeTest(int inputVal);
+void printResult(int result);
+
+void main(void)
+{
+	FILE* fileDes = NULL;			
+	int trialNum;					
+	int i;							
+
+	int inputVal;
+
+	fileDes = fopen("input.txt", "r");
+
+	if(fileDes == NULL)
+		exit(1);
+
+	fscanf(fileDes, "%d", &trialNum);
+
+	for(i = 0; i < trialNum; i++)
+	{
+		fscanf(fileDes, "%d", &inputVal);
+		primeTest(inputVal);
+	}
+
+	fclose(fileDes);
+}
+
+void primeTest(int inputVal)
+{
+	
+	int divisor = 2; 	
+
+	for( ; divisor <= inputVal; divisor++)
+	{
+		if(inputVal == divisor)
+		{
+			printResult(true);
+			break;
+		}
+
+		if(inputVal % divisor == 0)
+		{
+			printResult(false);
+			break;
+		}
+	}
+
+	return;
+}
+
+void printResult(int result)
+{
+	printf("%d\n", (result)? 1 : 0);
+}

@@ -1,0 +1,64 @@
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <vector>
+#include <set>
+using namespace std;
+int main()
+{
+	FILE *fp;
+	fp=fopen("input.txt","r");
+	int t;
+	fscanf(fp,"%d",&t);
+	for(int i=0; i<t; i++)
+	{
+		int cafe_num=0,x=0,y=0,max_x=0,last_y=0,z=0,cafe_number=0;
+		fscanf(fp,"%d",&cafe_num);
+		vector<vector<int > > v;
+		set<int> s; 
+		v.resize(100001);
+		for(int j=0; j<cafe_num; j++)
+		{
+			fscanf(fp,"%d %d",&x,&y);
+			if(max_x<x) 
+				max_x=x;
+			s.insert(x);
+			v[x].push_back(y);
+		}
+		set<int>::iterator sit=s.begin();
+		for(int j=0; j<s.size(); j++)
+		{
+			sort(v[*sit].begin(), v[*sit].end());
+			sit++;
+		}
+		vector<pair<int,int> > ans;
+		set<int>::iterator sit2=s.begin();
+		for(int j=0; j<s.size(); j++)
+		{
+			if(last_y==v[*sit2][0])
+			{
+				for(int k=0; k<v[*sit2].size(); k++)
+				{
+					ans.push_back(make_pair(*sit2,v[*sit2][k]));
+				}
+				last_y=v[*sit2][v[*sit2].size()-1];
+			}
+			else 
+			{
+				for(int k=v[*sit2].size()-1; k>=0; k--)
+				{
+					ans.push_back(make_pair(*sit2,v[*sit2][k]));
+				}
+				last_y=v[*sit2][0];
+			}
+			sit2++;
+		}
+		fscanf(fp,"%d",&z);
+		for(int j=0; j<z; j++)
+		{
+			fscanf(fp,"%d",&cafe_number);
+			printf("%d %d\n",ans[cafe_number-1].first,ans[cafe_number-1].second);
+		}
+	}
+}

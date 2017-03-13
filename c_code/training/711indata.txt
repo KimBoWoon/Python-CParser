@@ -1,0 +1,29 @@
+#include <iostream>
+#include <fstream>
+#include <cstring>
+using namespace std;
+
+bool palindrome(char *str, int gap)
+{
+	if(gap*2==strlen(str)-1)
+		return true;
+	if(gap>strlen(str)/2)
+		return true;
+	if(str[gap]==str[strlen(str)-1 -gap])
+		return palindrome(str,gap+1);
+	return false;
+}
+
+int main()
+{
+	ifstream f;
+	f.open("input.txt");
+	int num;
+	f >> num;
+	while(num--)
+	{
+		char str[1001];
+		f>>str;
+		cout<<((palindrome(str,0)) ? 1 : 0)<<endl;
+	}
+}

@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_LEN 51
+
+typedef int Boolean;
+#define true 1
+#define false 0
+
+Boolean parenthesis(char* inputLine, int len, int left);
+
+void main()
+{
+	FILE* fileDes = NULL;			
+	int trialNum;					
+
+	int i = 0;							
+	char inputLine[MAX_LEN] = {0, };	
+
+	fileDes = fopen("input.txt", "r");
+
+	if(fileDes == NULL)
+		exit(1);
+
+	fscanf(fileDes, "%d", &trialNum);
+
+	for(i = 0; i < trialNum; i++)
+	{
+		fscanf(fileDes, "%s", inputLine);
+
+		printf("%s\n", ((parenthesis(inputLine, strlen(inputLine), strlen(inputLine)) == true)? "YES" : "NO"));
+	}
+
+	fclose(fileDes);
+}
+
+Boolean parenthesis(char* inputLine, int len, int left)
+{
+	int i = 0;								
+	int recentCloser = -1;					
+	int recentOpener = -1;					
+
+
+	if(left == 0) return true;
+
+	while(recentCloser == -1 && i < len)
+	{
+		if(inputLine[i] == '(') recentOpener = i;
+
+		if(inputLine[i] == ')' && recentOpener != -1)
+		{
+			recentCloser = i;
+			inputLine[recentCloser] = inputLine[recentOpener] = 'x';			
+			left -= 2;
+			break;
+		}
+
+		i++;
+	}
+
+	if(recentCloser == -1 || recentOpener == -1) return false;
+
+	return parenthesis(inputLine, len, left);
+}

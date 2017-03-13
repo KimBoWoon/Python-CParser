@@ -1,0 +1,68 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+int gcd(int a, int b); 
+int lcm(int a, int b); 
+
+int main()
+{
+	ifstream inStream;
+	int numTestCases;
+	inStream.open("input.txt"); 
+	if (inStream.fail())
+	{
+		cerr << "Input file opening failed. \n";
+		exit(1);
+	}
+
+	inStream >> numTestCases;
+	for (int i = 0; i < numTestCases; i++)
+	{
+		int ac, ap, bc, bp, Tc, Tp, last; 
+		inStream >> ac >> ap >> bc >> bp;
+		
+		int Lcm = lcm(ap, bp); 
+		int Gcd = gcd(ap, bp); 
+
+		ac = Lcm / ap * ac;
+		bc = Lcm / bp * bc; 
+
+		Tc = ac + bc; 
+		last = gcd(Tc, Lcm); 
+
+		Tc = Tc / last;
+		Tp = Lcm / last; 
+
+		cout << Tc << " " << Tp << endl;
+	}
+	inStream.close();
+	return 0;
+	
+}
+
+int lcm(int a, int b) 
+{
+	return a*b/gcd(a, b);
+}
+
+int gcd(int a, int b) 
+{
+	if (a >= b) 
+	{
+		if (b == 0) 
+			return a;
+		else 
+			return gcd(b, a%b);
+	}
+	else 
+	{
+		if (a == 0)
+			return b;
+		else
+			return gcd(a, b%a);
+	}
+}

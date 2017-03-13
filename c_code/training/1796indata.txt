@@ -1,0 +1,47 @@
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#pragma warning(disable : 4996)
+void checkParent(char parenthesis[50], int size, int count, int now);
+void main(void)
+{
+	FILE* inFile;
+	int testCase = 0, i, j = 0, length = 0;
+	char parent[50] = { 0 };
+	inFile = fopen("input.txt", "r"); 
+	if (inFile == NULL) exit(1);
+	fscanf(inFile, "%d", &testCase); 
+	for (i = 0; i < testCase; i++)
+	{
+		fscanf(inFile, "%s", parent);
+		while (parent[j] != 0)
+		{
+			length++;
+			j++;
+		}
+		checkParent(parent, length, 0, 0);
+		length = 0;
+		j = 0;
+	}
+}
+
+void checkParent(char parenthesis[50], int size, int count, int now)
+{
+	if (now == size)
+	{
+		if (count == 0 && parenthesis[size-1] != '(')
+			printf("YES\n");
+		else
+			printf("NO\n");
+	}
+	else
+	{
+		if (parenthesis[now] == '(')
+			count++;
+		else if (parenthesis[now] == ')')
+			count--;
+		checkParent(parenthesis, size, count, now + 1);
+	}
+}

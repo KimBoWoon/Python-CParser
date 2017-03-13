@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_M 501	
+#define VERY_BIG_VALUE 999999999	
+
+int mergingFile(int* arr, int length);
+
+void main()
+{
+	FILE* fileDes;
+	int trialNum;
+	int i, j;
+
+	int length;				
+	int arr[MAX_M];			
+
+	if((fileDes = fopen("input.txt", "r")) == NULL)
+	{
+		exit(1);
+	}
+
+	fscanf(fileDes, "%d", &trialNum);
+
+	for(i = 0; i < trialNum; i++)
+	{
+		fscanf(fileDes, "%d", &length);
+
+		for(j = 0; j < length; j++)
+			fscanf(fileDes, "%d", &arr[j]);
+
+		printf("%d\n", mergingFile(arr, length));
+	}
+
+	fclose(fileDes);
+}
+
+int mergingFile(int* arr, int length)
+{
+	int M[MAX_M][MAX_M];	
+
+	int diag,i, j, k;
+	int calculValue;		
+	int min;				
+	int sum;				
+
+
+	for(diag = 0; diag < length; diag++)
+		M[diag][diag] = 0;
+
+	for(diag = 0; diag < length; diag++)
+	{
+		for(i = 0; i < length - diag; i++)
+		{
+			j = i + (diag + 1);
+
+			sum = 0;
+			for(k = i; k <= j; k++)
+				sum += arr[k];
+
+			min = VERY_BIG_VALUE;	
+
+			
+			for(k = i; k < j; k++)
+			{
+				calculValue = (M[i][k] + M[k+1][j]);
+				min = (min > calculValue)? calculValue : min;
+			}
+
+			M[i][j] = min + sum;
+
+
+		}
+	}
+
+
+
+
+	return M[0][length-1];
+}

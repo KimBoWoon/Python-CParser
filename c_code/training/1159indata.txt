@@ -1,0 +1,46 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void main(void) 
+{
+	int test=0, i, n, a, b, c;
+	int k, T=0, value=0, sum;
+	FILE *file = fopen("input.txt", "r"); 
+	if(NULL == file) exit(1);
+
+	fscanf(file, "%d", &test);
+
+	for(i=0; i<test; i++) 
+	{
+		fscanf(file, "%d", &k); 
+		
+		for(n=1; n<k; n++) {
+			T = n*(n+1)/2;
+			if(T == k)
+				break;
+			else if(T > k) {
+				n = n-1;
+				break;
+			}
+		}
+		value = 0;
+		
+		for(a=1; a<=n; a++) {
+			for(b=1; b<=n; b++) {
+				for(c=1; c<=n; c++) {
+					sum = a*(a+1)/2 + b*(b+1)/2 + c*(c+1)/2;
+					if(sum == k) {
+						value=1;
+						break;
+					}
+				}
+			}
+		}
+
+		printf("%d\n", value);
+	}
+
+	fclose(file);
+}

@@ -1,0 +1,60 @@
+
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+void perform(int n1, int d1, int n2, int d2);
+int uclid(int divisor, int remainder);
+
+
+
+void swap(int &smallNum, int &bigNum);
+
+int main()
+{
+	ifstream inFile;
+	inFile.open("input.txt");
+
+	int numTestCase;	
+	inFile >> numTestCase;
+
+	while (numTestCase--)	
+	{
+		int numerator_1, denominator_1, numerator_2, denominator_2;	
+		inFile >> numerator_1 >> denominator_1 >> numerator_2 >> denominator_2;
+		perform(numerator_1, denominator_1, numerator_2, denominator_2);
+	}
+
+	inFile.close();
+	return 0;
+}
+
+void perform(int n1, int d1, int n2, int d2)
+{
+	int result_n = n1*d2 + d1*n2,
+		result_d = d1*d2;
+	
+	int gcd = uclid(result_n, result_d);	
+
+	cout << result_n / gcd << " " << result_d / gcd << endl;	
+}
+
+int uclid(int divisor, int remainder)
+{
+
+	if (divisor == 0 || remainder == 0)
+		return divisor;
+	
+
+	else
+		return uclid(remainder, divisor % remainder);
+}
+
+void swap(int &smallNum, int &bigNum)	
+{
+	int temp;
+	temp = smallNum;
+	smallNum = bigNum;
+	bigNum = temp;
+}

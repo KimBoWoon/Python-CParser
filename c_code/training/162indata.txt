@@ -1,0 +1,28 @@
+
+#include <cstdio>
+#include <cstdlib>
+
+int McCarthy(int number){
+	return (number > 100) ? (number - 10) : McCarthy(McCarthy(number+11));
+}
+int main(int argc, char* argv[]){
+
+	FILE* readStream = 0x00L;
+	readStream = fopen("input.txt", "r");
+
+	if(readStream == 0x00L){
+		fprintf(stderr, "Don`t open the file.\n");
+		return 2;
+	}
+
+	int testCases = 0,
+		number = 0;
+	
+	fscanf(readStream, "%d", &testCases);
+
+	while(testCases--){
+		fscanf(readStream, "%d", &number);
+		printf("%d\n", McCarthy(number));
+	}
+	fclose(readStream);
+}

@@ -1,0 +1,72 @@
+#include <algorithm>
+#include <iostream>
+#include <fstream>
+
+#define MAXN 100005
+
+using namespace std;
+
+int T, N, M;
+
+struct Z{
+	int x, y, o;
+} A[MAXN];
+
+
+bool cmp(struct Z a, struct Z b){
+	if (a.x != b.x){
+		return a.x < b.x;
+	}
+	else{
+		return a.y < b.y;
+	}
+}
+
+bool cmpT(struct Z a, struct Z b){
+	return a.o < b.o;
+}
+
+int main()
+{
+	ifstream file;
+	file.open("input.txt");
+
+	file >> T;
+	while (T--){
+		file >> N;
+		for (int i = 1; i <= N; i++){
+			file >> A[i].x >> A[i].y;
+		}
+
+
+		sort(A + 1, A + N + 1, cmp);
+
+		int last_y = 0, o = 1;
+		for (int i = 1; i <= N; i++){
+			int t = i;
+			for (int j = i + 1; j <= N; j++){
+				if (A[j].x == A[i].x) t = j;
+				else break;
+			}
+			if (A[i].y < last_y && last_y < A[t].y) for (;;);
+			else if (A[i].y >= last_y){
+				for (int j = i; j <= t; j++) A[j].o = o++;
+				last_y = A[t].y;
+			}
+			else{
+				for (int j = t; j >= i; j--) A[j].o = o++;
+				last_y = A[i].y;
+			}
+			i = t;
+		}
+		sort(A + 1, A + N + 1, cmpT);
+
+		file >> M;
+		while (M--){
+			int n;
+			file >> n;
+
+			cout << A[n].x << " " << A[n].y << endl;
+		}
+	}
+}

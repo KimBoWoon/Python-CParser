@@ -1,0 +1,37 @@
+#include <iostream>
+#include <fstream>
+#include <cstring>
+
+using std::cout;
+using std::endl;
+using std::ifstream;
+
+int main() {
+	ifstream fin("input.txt");
+	
+	int arr[50], last = 2;
+	for (arr[1] = 1; arr[last - 1] + last <= 1000; last++) {
+		arr[last] = arr[last - 1] + last;
+	}
+
+	bool answer[1001];
+	memset(answer, false, sizeof(bool) * 1001);
+	for (int i = 1; i < last; i++) {
+		for (int j = i; j < last; j++) {
+			for (int k = j; k < last; k++) {
+				if (arr[i] + arr[j] + arr[k] <= 1000) {
+					answer[arr[i] + arr[j] + arr[k]] = true;
+				}
+			}
+		}
+	}
+
+	int nCase, num; fin >> nCase;
+	for (int i = 0; i < nCase; i++) {
+		fin >> num;
+		cout << (answer[num] ? 1 : 0) << endl;
+	}
+
+	fin.close();
+	return 0;
+}

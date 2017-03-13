@@ -1,0 +1,24 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+int fibornacci(int n)
+{
+	if(n==0)
+		return 0;
+	else if(n==1)
+		return 1;
+	else
+		return fibornacci(n-1)+fibornacci(n-2);
+}
+int main()
+{
+	int t,n;
+	ifstream inStream;
+	inStream.open("input.txt");
+	inStream>>t;
+	for(int i=0; i<t; i++)
+	{
+		inStream>>n;
+		cout<<fibornacci(n)<<endl;
+	}
+}

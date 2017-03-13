@@ -1,0 +1,87 @@
+
+
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+int m,n,l,g;
+int H[101][101], V[101][101], D[101][101][2][201];
+
+void main(void)
+{
+	FILE *inFile;
+	int i;
+	int numCases;
+	int a,b,c,d;
+
+	inFile = fopen("input.txt", "r");
+	if(inFile == NULL) exit(1);
+
+	fscanf(inFile, "%d", &numCases);
+
+	for(i=0; i<numCases; i++)
+	{
+		fscanf(inFile, "%d%d%d%d", &n ,&m, &l, &g);
+
+		for(a=1; a<=n; a++)
+		{
+			for(b=1; b<m; b++)
+				fscanf(inFile, "%d", H[a]+b);
+		}
+
+		for(a=1; a<n; a++)
+		{
+			for(b=1; b<=m; b++)
+				fscanf(inFile, "%d", V[a]+b);
+		}
+
+		for(a=1; a<=n; a++)
+		{
+			for(b=1; b<=m; b++)
+			{
+				for(c=0; c<2; c++)
+				{
+					for(d=0; d<201; d++)
+						D[a][b][c][d] = g+1;
+				}
+
+			}
+		}
+
+		D[1][1][0][0] = D[1][1][1][0] = 0;
+		int License = 2e9;
+
+		for(a=1;a<=n;a++) for (b=1;b<=m;b++) for (d=0;d<201;d++) for (c=0;c<2;c++) if (D[a][b][c][d] <= g)
+		{
+            if(a == n && b == m)
+			{
+                if (License > d) 
+					License = d;
+            }
+
+            if(d < 200 && D[a][b][!c][d+1] > D[a][b][c][d])
+                D[a][b][!c][d+1] = D[a][b][c][d];
+
+            if(c)
+			{
+                if(b < m && D[a][b+1][c][d] > D[a][b][c][d]+H[a][b])
+                    D[a][b+1][c][d] = D[a][b][c][d]+H[a][b];
+            }
+
+            else
+			{
+                if(a < n && D[a+1][b][c][d] > D[a][b][c][d]+V[a][b])
+                    D[a+1][b][c][d] = D[a][b][c][d]+V[a][b];
+            }
+        }
+
+        if(License < 2e9) printf("%d\n", (n+m-2)*l+License);
+        else puts("-1");
+
+	}
+
+	fclose(inFile);
+}
+

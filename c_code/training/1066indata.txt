@@ -1,0 +1,61 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 20 
+
+
+int n; 
+int i, j, c; 
+int _case;  
+int num[MAX]; 
+
+void main()
+{
+	FILE *in_file;
+
+	in_file = fopen("input.txt", "r"); 
+	if (in_file == NULL) exit(1);
+
+
+	fscanf(in_file, "%d", &_case);
+
+	for (c = 0; c<_case; c++)
+	{
+
+		fscanf(in_file, "%d", &n);
+
+
+		for (i = 0; i<n; i++)
+		{
+			fscanf(in_file, "%d", &num[i]);
+
+		}
+
+		num[n] = num[0];
+
+		for (i = 0; i<1000; i++) 
+		{
+			for (j = 0; j<n; j++)             {
+				num[j] = num[j] - num[j + 1];
+				if (num[j] < 0) num[j] = -num[j];
+			}
+			num[n] = num[0]; 
+		}
+
+		for (j = 0; j<n; j++)
+		{
+			num[n + 1] += num[j];
+		}
+		if (num[n + 1] == 0) 
+		{
+			printf("ZERO\n");
+		}
+		else   
+		{
+			printf("LOOP\n");
+		}
+	}
+
+	fclose(in_file);
+}

@@ -1,0 +1,55 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <cmath>
+#include <algorithm>
+
+using namespace std;
+
+int count = 0;
+
+void func(int length, int k, int arr[]){
+	int i = 0, j = length - 1;
+	int res = 0;
+	int min = 1000000000;
+	while (j > i){
+		res = arr[i] + arr[j];
+
+		if (min > abs(k - res)){
+			min = abs(k - res); 
+			::count=1;
+		}
+		else if (min == abs(k - res)){
+			::count++;
+		}
+		
+		if (res < k){
+			i++;
+		}
+		else
+			j--;
+	}
+}
+int main()
+{
+	ifstream instream("input.txt");
+	int numtestcases, length, k, data;
+	instream >> numtestcases;
+	for (int i = 0; i < numtestcases; i++){
+		instream >> length >> k;
+		int *arr = new int[length];
+		for (int i = 0; i < length; i++){
+			instream >> arr[i];
+		}
+		
+		sort(arr, arr+length);
+		::count = 0;
+		
+		func(length, k, arr);
+		cout << ::count << endl;
+		delete[] arr;
+	}
+	instream.close();
+}

@@ -1,0 +1,40 @@
+
+#pragma warning(disable:4996)
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+	FILE *fp;
+	int i;
+	int numcases;
+
+	fp = fopen("input.txt", "r"); 
+	if (fp == NULL) exit(1);
+
+	fscanf(fp, "%d", &numcases);
+
+	for (i = 0; i < numcases; i++) {
+		int n;
+		int i, j, k; 
+		int flag = 0; 
+		fscanf(fp, "%d", &n);
+		
+
+		for (i = 1; i < 44; i++) {
+			for (j = 1; j < 44; j++) {
+				for (k = 1; k < 44; k++) {
+					if ((i*(i + 1) + j*(j + 1) + k*(k + 1))/2 == n) {
+						flag = 1;
+						goto end;
+					}
+					
+				}
+			}
+			
+		}
+	end:
+		printf("%d\n", flag);
+
+	}
+	fclose(fp);
+}

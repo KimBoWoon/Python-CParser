@@ -1,0 +1,70 @@
+
+
+#include<iostream>
+#include<cstdlib>
+#include<fstream>
+#include<cmath>
+
+using namespace std;
+void printResult(int* numArray,int numSize);
+int main(){
+
+	int numTest;
+	ifstream inStream;
+	inStream.open("input.txt");
+	if (inStream.fail()) exit(1);
+
+	inStream >> numTest;
+	int numArray[16];
+	int numSize;
+
+	for (int i = 0; i < numTest; i++)
+	{
+		inStream >> numSize;
+		
+		for (int k = 0; k < numSize; k++)
+		{
+			inStream >> numArray[k];
+		}
+		
+		printResult(numArray, numSize);
+
+	}
+
+}
+
+void printResult(int* numArray, int numSize)
+{
+	int* newArray=new int[numSize];
+	int start, end;
+	int result;
+	for (int j = 0; j < 1000; j++){
+		for (int k = 0; k < numSize; k++)
+		{
+			if (k + 1 == numSize) {
+				end = 0;
+			}
+			else end = k + 1;
+
+			newArray[k] = abs(numArray[k] - numArray[end]);
+		}
+		for (int k = 0; k < numSize; k++)
+		{
+			numArray[k] = newArray[k];
+		}
+		for (int k = 0; k < numSize; k++)
+		{
+			if (numArray[k] == 0) result = 1;
+			else{
+				result = 0;
+				break;
+			}
+		}
+		if (result == 1){
+			cout << "ZERO" << endl;
+			return;
+		}
+	}
+	cout << "LOOP" << endl;
+	
+}

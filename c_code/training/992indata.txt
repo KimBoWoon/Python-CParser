@@ -1,0 +1,71 @@
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+#include <cstring>
+#define right 1
+#define down 0
+using namespace std;
+
+int right_value[101][101];
+int down_value[101][101];
+
+int in_gas[101][101][202][2];
+
+int main() {
+	ifstream file;
+	file.open("input.txt");
+
+	int cases;
+	file >> cases;
+	while (cases--) {
+		int Row, Col, Length, Gas;
+		file >> Row >> Col >> Length >> Gas;
+
+		
+
+		for (int i = 0; i < Row; i++)
+			for (int j = 0; j < Col; j++)
+				for (int k = 0; k < 202; k++)
+					in_gas[i][j][k][right] = in_gas[i][j][k][down] = 99999;
+
+		for (int i = 0; i < Row; i++)
+			for (int j = 0; j < Col - 1; j++)
+				file >> right_value[i][j];
+
+		for (int i = 0; i < Row - 1; i++)
+			for (int j = 0; j < Col; j++)
+				file >> down_value[i][j];
+
+		in_gas[0][0][0][down] = in_gas[0][0][0][right] = 0;
+
+		for (int i = 1; i < Row; i++)	
+			in_gas[i][0][0][down] = in_gas[i - 1][0][0][down] + down_value[i - 1][0];
+		for (int i = 1; i < Col; i++)	
+			in_gas[0][i][0][right] = in_gas[0][i - 1][0][right] + right_value[0][i - 1];
+
+		int temp = min(Row, Col) * 2;
+		int print_L = -1;
+
+		for (int x = 1; x < Row; x++) {
+			for (int y = 1; y < Col; y++) {
+				for (int dir = 0; dir < 2; dir++) {
+					
+					for (int turn = 1; turn <= temp; turn++) {
+						in_gas[x][y][turn][down] = min(in_gas[x - 1][y][turn][down], in_gas[x - 1][y][turn - 1][right]) + down_value[x - 1][y];
+						in_gas[x][y][turn][right] = min(in_gas[x][y - 1][turn][right], in_gas[x][y - 1][turn - 1][down]) + right_value[x][y - 1];
+
+						if (x == Row - 1 && y == Col - 1) {
+							if (in_gas[x][y][turn][right] <= Gas || in_gas[x][y][turn][down] <= Gas) {
+								print_L = (x + y) * Length + turn;
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		cout << print_L << endl;
+	}
+
+	return 1;
+}

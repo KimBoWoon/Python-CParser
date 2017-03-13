@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 50
+
+void checkParenthesis(char *arr, int countL, int countR);
+
+void main() {
+	int numTestCases;
+	int i;
+	char *arr = (char *)malloc(MAX+1);
+	*(arr + MAX) = '\0';
+	FILE *f;
+	f = fopen("input.txt", "r");
+	if (!f)
+		exit(1);
+
+	fscanf(f, "%d", &numTestCases);
+	for (i = 0; i < numTestCases; i++) {
+		fscanf(f, "%s", arr);
+		checkParenthesis(arr, 0, 0);
+	}
+}
+
+void checkParenthesis(char *arr, int countL, int countR) {
+	if (!*arr) {
+		if (countL == countR)
+			printf("YES\n");
+		else
+			printf("NO\n");
+		return;
+	}
+	if (countR > countL) {
+		printf("NO\n");
+		return;
+	}
+
+	if (*arr == '(')
+		checkParenthesis(++arr, ++countL, countR);
+	else if (*arr == ')')
+		checkParenthesis(++arr, countL, ++countR);
+	else {
+		printf("Input Wrong Character\n");
+		return;
+	}	
+}

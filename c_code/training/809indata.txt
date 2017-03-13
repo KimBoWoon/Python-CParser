@@ -1,0 +1,36 @@
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#pragma warning(disable : 4996)
+int fibo(int number); 
+
+void main(void)
+{
+	FILE* inFile;
+	int testCase = 0, number = 0;
+	int i = 0;
+	inFile = fopen("input.txt", "r"); 
+	if (inFile == NULL) exit(1);
+	fscanf(inFile, "%d", &testCase); 
+
+	for (i = 0; i < testCase; i++)
+	{
+		fscanf(inFile, "%d", &number);
+		printf("%d\n", fibo(number));
+	}
+	fclose(inFile);
+}
+
+int fibo(int number)
+{
+	if (number <= 1) 
+	{
+		return number;
+	}
+	else 
+	{
+		return fibo(number- 1) + fibo(number - 2);
+	}
+}

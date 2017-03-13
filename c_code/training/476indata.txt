@@ -1,0 +1,23 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+int gcd(int a, int b){
+	if (b == 0)
+		return a;
+	else
+		return gcd(b, a%b);
+}
+int main(){
+	ifstream instream("input.txt");
+	int numtestcases, data1, data2;
+	instream >> numtestcases;
+	for (int i = 0; i < numtestcases; i++){
+		instream >> data1 >> data2;
+		cout << gcd(data1, data2) << endl;
+	}
+	instream.close();
+}

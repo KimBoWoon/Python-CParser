@@ -1,0 +1,28 @@
+#include <cstdio>
+
+bool isVPS(char * str, int left = 0) {
+	if (left < 0 || (str[0] == NULL && left != 0)) 
+		return false;
+	if (str[0] == NULL && left == 0) 
+		return true;
+	
+	if (str[0] == '(') 
+		return isVPS(str + 1, left + 1);
+	else 
+		return isVPS(str + 1, left - 1);
+}
+
+int main() {
+	FILE * fp = fopen("input.txt", "r");
+	int nCase;
+	fscanf(fp, "%d", &nCase);
+
+	while (nCase--) {
+		char str[51];
+		fscanf(fp, "%s", str);
+		printf("%s\n", (isVPS(str) ? "YES" : "NO"));
+	}
+
+	fclose(fp);
+	return 0;
+}

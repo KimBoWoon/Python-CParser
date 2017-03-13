@@ -1,0 +1,20 @@
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+int Mc(int n){
+	if (n > 100)
+		return n - 10;
+	return Mc(Mc(n + 11));
+}
+int main(){
+	ifstream inFile("input.txt");
+	int cases;
+	inFile >> cases;
+	while (cases--){
+		int num;
+		inFile >> num;
+		cout << Mc(num) << endl;
+	}
+	return 1;
+}

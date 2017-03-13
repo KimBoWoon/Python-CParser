@@ -1,0 +1,51 @@
+
+
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+int gcd(int i, int j);
+
+int main(void)
+{
+	ifstream inStream;
+	inStream.open("input.txt");
+
+	int numTestCases;
+
+	inStream >> numTestCases;
+
+	for (int i = 0; i < numTestCases; i++) {
+
+		int a, b;
+		int k = 2;
+		inStream >>a>>b;
+		for(int j=0; j<100; j++){
+			if (a == 1) {
+				cout << b << endl;
+				break;
+			}
+			if (a*k >= b){
+				a = a*k - b;
+				if (a == 0){
+					cout << k << endl;
+					break;
+				}
+				b = b*k;
+				int c = gcd(a, b);
+				a = a / c;
+				b = b / c;
+
+				
+			}
+			k = b / a + 1;
+		}
+	}
+}
+
+
+int gcd(int i, int j){
+	if (j == 0) return i;
+	else gcd(j, i%j);
+}

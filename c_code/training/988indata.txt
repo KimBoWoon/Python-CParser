@@ -1,0 +1,78 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+int Fuel[101][101][2][201];
+
+int main()
+{
+	ifstream infile;
+	int testCase;
+	int row, col, length, fuel; 
+
+	int row_fuel[101][101], col_fuel[101][101];
+	int time;
+	int ans;
+
+	infile.open("input.txt");
+	
+	infile >> testCase;
+
+	for (int h = 0; h < testCase; h++)
+	{
+		infile >> row >> col >> length >> fuel;
+		for (int a = 1; a <= row; a++) for (int b = 1; b < col; b++) infile >> row_fuel[a][b];
+		for (int a = 1; a < row; a++) for (int b = 1; b <= col; b++) infile >> col_fuel[a][b];
+
+		for (int i = 1; i <= row; i++) 
+			for (int j = 1; j <= col; j++) 
+				for (int k = 0; k < 2; k++) 
+					for (int l = 0; l < 201; l++)
+						Fuel[i][j][k][l] = fuel + 1;
+
+		Fuel[1][1][0][0] = 0; 
+		Fuel[1][1][1][0] = 0; 
+		
+		ans = 201;
+		
+		for (int i = 1; i <= row; i++) 
+			for (int j = 1; j <= col; j++) 
+				for (int l = 0; l < 201; l++) 
+					for (int k = 0; k < 2; k++)  
+						if (Fuel[i][j][k][l] <= fuel)
+						{
+							if (!k) 
+							{
+								if (i < row && Fuel[i + 1][j][k][l] > Fuel[i][j][k][l] + col_fuel[i][j]) 
+									Fuel[i + 1][j][k][l] = Fuel[i][j][k][l] + col_fuel[i][j];
+							}
+							else
+							{
+								if (j < col && Fuel[i][j + 1][k][l] > Fuel[i][j][k][l] + row_fuel[i][j]) 
+									Fuel[i][j + 1][k][l] = Fuel[i][j][k][l] + row_fuel[i][j];
+							}
+
+							if (i == row && j == col)
+							{
+								if (ans > l) ans = l; 
+							}
+							else if (l < 200 && Fuel[i][j][!k][l + 1] > Fuel[i][j][k][l])
+								Fuel[i][j][!k][l + 1] = Fuel[i][j][k][l];
+						}
+		time = (row + col - 2)*length + ans;
+
+		if (ans < 201) 
+			cout << time << endl;
+		else 
+			cout << "-1" << endl;
+
+	}
+
+	infile.close();
+
+	return 0;
+}

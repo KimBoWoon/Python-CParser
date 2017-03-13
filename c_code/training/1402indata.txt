@@ -1,0 +1,24 @@
+
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+int main(){
+	ifstream f; 
+	f.open("input.txt"); 
+	int num = 0; 
+	int resultNum=0,layer=0,roomNum=0,clientNum=0,buffOb=0,buffLess=0; 
+	f >> num; 
+
+	for (int i = 0;i<num;i++){
+		f >> layer >> roomNum >> clientNum;
+		buffOb = clientNum/layer; 
+		buffLess = clientNum%layer; 
+		resultNum = buffLess * 100 + buffOb + 1; 
+		if (buffLess == 0){ 
+			resultNum = layer*100 + buffOb; 
+		}
+		cout << resultNum << endl;
+	}
+}

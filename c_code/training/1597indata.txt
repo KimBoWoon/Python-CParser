@@ -1,0 +1,82 @@
+
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+#define min(a,b) ((a)<(b)?(a):(b))		
+
+using namespace std;
+
+int main()
+{
+	ifstream inStream;
+	int numTestCases;		
+	int fCount, min, i, j, p, n, m;
+	int file[501], S[501], D[501][501];
+
+	inStream.open("input.txt");
+
+	if (inStream.fail())
+	{
+		cerr << "Input file opening failed.\n";
+		exit(1);
+	}
+
+	inStream >> numTestCases;	
+
+	for (int q = 0; q < numTestCases; q++)
+	{
+		inStream >> fCount;
+		for (i = 1; i <= fCount; i++)
+			inStream >> file[i];
+
+		D[1][fCount] = 0;
+
+		S[0] = 0;
+		for (i = 1; i <= fCount; i++)
+		{
+			S[i] = S[i - 1] + file[i];		
+			D[i][i] = file[i];				
+		}
+
+		for (i = 2; i <= fCount; i++)
+			D[i - 1][i] = D[i - 1][i - 1] + D[i][i];		
+
+		for (i = 3; i <= fCount; i++)
+			D[i - 2][i] = min(D[i - 2][i - 1], D[i - 1][i]) + S[i] - S[i-3];		
+
+		for (n = 4; n <= fCount; n++)		
+		{
+			i = 1, j = n;
+			for (m = n; m <= fCount; m++)
+			{
+				min = D[i][i] + D[i + 1][j];
+				for (p = i; p < j; p++)
+				{
+					if (i == p)						
+					{
+						if (min > D[p + 1][j])		
+							min = D[p + 1][j];		
+					}
+					else if (p + 1 == j)			
+					{
+						if (min > D[i][p])
+							min = D[i][p];			
+					}
+					else
+					{
+						if (min > D[i][p] + D[p + 1][j])	
+							min = D[i][p] + D[p + 1][j];
+					}
+				}
+				D[i][j] = min + S[j] - S[i - 1];		
+				i++, j++;
+			}
+		}
+		cout << D[1][fCount] << endl;		
+	}
+	inStream.close();
+	return 0;
+}

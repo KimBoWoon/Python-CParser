@@ -1,0 +1,74 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+int checkPalindrome(int str[], int first, int last);
+
+int main(void)
+{
+	FILE *f = fopen("input.txt", "r");
+	if (f == NULL) {
+		printf("ERROR\n");
+		exit(1);
+	}
+
+	int testCase = 0; 
+	unsigned int inputNum = 0, temp = 0; 
+	int str[20] = { 0 }; 
+	unsigned int base = 2; 
+	int last = 0; 
+	int i = 0; 
+	int isPal = 0; 
+
+	fscanf(f, "%d", &testCase); 
+
+	while (testCase--) {
+
+		fscanf(f, "%d", &inputNum);
+		isPal = 0; 
+
+		for (base = 2; base <= 64; base++) { 
+			temp = inputNum;
+			last = 0; 
+
+			while (temp >= base) { 
+				str[last] = temp%base; 
+				temp = temp / base; 
+				last++;
+			}
+			str[last] = temp%base; 
+
+			
+
+			if (checkPalindrome(str, 0, last)) {
+				isPal = 1;
+				break;
+			}
+
+			for (i = 0; i < 20; i++){
+				str[i] = 0; 
+			}
+
+		}
+
+		printf("%d\n", isPal); 
+
+	}
+
+	fclose(f);
+	return 0;
+}
+
+int checkPalindrome(int str[], int first, int last) {
+	if (last <= first) 
+		return 1;
+	else if (str[first] != str[last])
+	{
+		return 0;
+	}
+	else
+		return checkPalindrome(str, first + 1, last - 1);
+}

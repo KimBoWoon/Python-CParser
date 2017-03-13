@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int contrast (const void *one, const void *two)
+{
+    if (*(int*)one > *(int*)two)
+        return 1;
+    else if (*(int*)one < *(int*)two)
+        return -1;
+    else
+        return 0;
+}
+ 
+int exam(int *array, int size, int k)
+{
+	int first=0,end=size-1;
+	int scale=100000000;
+	int result= 0;
+	while(first<end)
+	{
+		if(abs(array[first]+array[end]-k)<scale)
+		{
+			scale=abs(array[first]+array[end]-k);
+			result=1;
+		}
+		else if(abs(array[first]+array[end]-k)==scale)
+		{
+			result++;
+		}
+		
+		if(array[first]+array[end]>k)
+		{
+			end--;
+		}
+		else if(array[first]+array[end]<k)
+		{
+			first++;
+		}
+		else
+		{
+			first++;
+			end--;
+		}
+	}
+	return result;
+}
+
+void main()
+{
+	int tastcase = 0;
+	FILE* infile = fopen("input.txt","r");
+	int i = 0;
+	fscanf(infile,"%d",&tastcase);
+
+	for(i=0; i<tastcase; i++)
+	{
+		int size = 0;
+		int k = 0;
+		int j = 0;
+		int *array = NULL;
+		int result = 0;
+		fscanf(infile,"%d %d",&size,&k);
+		array=(int*)malloc(sizeof(int)*size);
+		for(; j<size; j++) fscanf(infile,"%d",array+j);
+		qsort(array,size,sizeof(int),contrast);
+		result = exam(array,size,k);
+		printf("%d\n", result);
+		free(array);
+	}
+	fclose(infile);
+}

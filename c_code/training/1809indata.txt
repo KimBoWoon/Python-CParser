@@ -1,0 +1,66 @@
+
+
+#include<iostream>
+#include<fstream>
+#include<string>
+
+using namespace std;
+
+void paren(string str, int start, int end);
+
+int main()
+{
+	int numOfCase = 0; 
+	int num = 0;	
+	char cha[50];
+	string str;
+
+	ifstream input("input.txt");
+	if (input.fail()){
+		cout << "파일을 여는 데 실패했습니다." << endl;
+	}
+	input >> numOfCase;
+	input.getline(cha, 50);	
+
+	for (int i = 0; i < numOfCase; i++){
+		input.getline(cha, 50);
+		str = cha;
+		paren(str, 0, str.length());
+
+	}
+	input.close();
+	return 0;
+}
+
+void paren(string str, int start, int end){
+	int open=0,close=0; 
+	if (str.length() % 2 == 1){ 
+		cout << "NO" << endl;
+		return;
+	}
+	for (int i = start; i < end; i++){
+		if (str[i] == '('){
+			open++;
+		}
+		else{
+			close++;
+		}
+		if (open < close){
+			cout << "NO" << endl;
+			return;
+		}
+		else if (open == close){
+			open=0,	close=0;
+			paren(str, i + 1, end);
+			i = end + 1;
+		}
+	}
+	if (open != 0){
+		cout << "NO" << endl;
+		return;
+	}
+	else if(start==end){
+		cout << "YES" << endl;
+		return;
+	}
+}

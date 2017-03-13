@@ -1,0 +1,48 @@
+
+
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+int a[45], d[1001];
+
+void main(void)
+{
+	FILE *inFile;
+	int m;
+	int numCases;
+
+	inFile = fopen("input.txt", "r");
+	if(inFile == NULL) exit(1);
+
+	fscanf(inFile, "%d", &numCases);
+
+	int i,j,k;
+	for(i=1; i<45; i++){
+
+		a[i] = i*(i+1)/2;
+	}
+
+	for(i=1; i<45; i++)
+	{
+		for(j=1; j<45; j++)
+		{
+			for(k=j; k<45; k++)
+			{
+				if (a[i] + a[j] + a[k] < 1001)
+					d[a[i] + a[j] + a[k]] = 1;
+			}
+		}
+	}
+
+	for(m=0; m<numCases; m++)
+	{
+		fscanf(inFile, "%d", &k);
+
+		printf("%d\n", d[k]);
+	}
+
+	fclose(inFile);
+}

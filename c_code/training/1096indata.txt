@@ -1,0 +1,51 @@
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void main(void)
+{
+	FILE *inFile;
+	int i;
+	int numCases;
+
+	inFile = fopen("input.txt", "r");									
+	if(inFile == NULL) exit(1);
+
+	fscanf(inFile, "%d", &numCases);									
+
+	for(i=0; i<numCases; i++)
+	{
+		int N = 0;														
+		int i = 0;
+		int j = 0;
+		int k = 0;
+		int l = 0;
+		int R = 0;
+
+		fscanf(inFile, "%d", &N);										
+
+		for(i=1; i*(i+1)/2<N; i++)
+		{}
+
+		for(j=i; j>=1; j--)
+		{
+			for(k=i; k>=1; k--)
+			{
+				for(l=i; l>=1; l--)
+				{
+					if(N == j*(j+1)/2 + k*(k+1)/2 + l*(l+1)/2 )
+					{
+						R=1;
+						break;
+					}
+				}
+			}
+		}
+
+		printf("%d\n", R);
+	}
+
+	fclose(inFile);														
+}

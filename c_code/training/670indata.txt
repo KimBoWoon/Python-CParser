@@ -1,0 +1,41 @@
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int fac(int n);
+
+int main() {
+    
+    FILE* fp;
+    
+    int i, num_cases, num_data;
+    
+    fp = fopen("input.txt", "r");
+    if(fp == NULL)  exit(1);
+    
+    fscanf(fp, "%d", &num_cases);
+    
+    for(i=0; i<num_cases; i++) {
+        fscanf(fp, "%d", &num_data);
+        
+        printf("%d\n", fac(num_data));
+    }
+    
+    fclose(fp);
+}
+
+int fac(int n) {
+    
+    if(n <= 1)
+        return 1;
+    else
+        return n * fac(n-1);
+}
+
+
+
+
+

@@ -1,0 +1,31 @@
+
+
+
+#include <stdio.h>
+
+int McCarthy_func(int n)
+{
+	if (n >100) 
+	return n-10;
+	else
+	McCarthy_func(McCarthy_func(n+11));	  
+	
+}
+int main()
+{
+	
+	FILE *in_file;
+	int no_cases;
+	int i;
+	int n;
+	in_file = fopen("input.txt","r");
+	fscanf(in_file,"%d",&no_cases);
+	
+	for(i=0; i<no_cases; i++)
+{
+	fscanf(in_file,"%d",&n);
+	printf("%d\n",McCarthy_func(n));
+}
+	fclose(in_file);
+	return 0;
+}

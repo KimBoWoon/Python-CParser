@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int Henry(int ch, int mo);  
+int gcd(int a, int b);            
+
+void main(void)
+{
+	FILE *inFile;
+	int notestcases, i;
+	int ch, mo; 
+
+	inFile = fopen("input.txt", "r"); 
+	if (inFile == NULL) exit(1);
+
+	fscanf(inFile, "%d", &notestcases);
+
+	for (i = 0; i<notestcases; i++)
+	{
+		fscanf(inFile, "%d %d", &ch, &mo);  
+
+		printf("%d\n", Henry(ch, mo));   
+	}
+
+	fclose(inFile);
+}
+
+int Henry(int ch, int mo)
+{
+	int temp, next_ch, next_mo;  
+	int g;
+
+	if (ch == 1)  
+		return mo;
+
+	temp = (mo / ch) + 1;    
+
+	next_mo = mo * temp;            
+	next_ch = ch*temp - mo;        
+
+
+	g = gcd(next_ch, next_mo);
+	next_mo = next_mo / g;            
+	next_ch = next_ch / g;
+
+	return Henry(next_ch, next_mo);
+}
+
+int gcd(int a, int b)
+{
+	if (b == 0)
+		return a;
+	else
+		return gcd(b, a%b);
+}

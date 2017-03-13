@@ -1,0 +1,47 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int ncnt;
+int testZero(int *arr, int n){
+	int i;
+	for(i = 0;i<n;i++)
+		if( arr[i] !=0) return 0;
+	return 1;
+}
+int ducciSequence(int *arr, int n){
+	int i;
+	if(ncnt++>=1000) return 0;
+	arr[n]=arr[0];
+	for(i=0;i<=n;i++)
+		arr[i]=abs(arr[i]-arr[i+1]);
+	if (testZero(arr,n))return 1;
+	return ducciSequence(arr, n);
+}
+
+void main(){
+
+	FILE *in_file;
+	int no_cases;
+	int n,i,*arr;
+	in_file = fopen("input.txt", "r");
+
+	if(in_file == NULL) exit(1);
+
+	fscanf(in_file,"%d", &no_cases);
+
+	while(no_cases--){
+		ncnt=0;
+		
+		fscanf(in_file,"%d", &n);
+		arr = (int*)malloc(sizeof(int)*(n+1));
+		for ( i = 0;i< n;i++)
+			fscanf(in_file,"%d", &arr[i]);
+		if(ducciSequence(arr,n)) printf("ZERO\n");
+		else printf("LOOP\n");
+		free(arr); 
+	}
+	fclose(in_file);
+}

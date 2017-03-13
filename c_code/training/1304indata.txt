@@ -1,0 +1,34 @@
+
+#include<iostream>
+#include<string>
+#include<fstream>
+
+using namespace std;
+typedef long long lld;
+
+int T;
+
+lld gcd(lld a, lld b){ return b ? gcd(b, a%b) : a; }
+
+struct Z{
+	Z(lld p, lld q){ lld g = gcd(p, q); a = p / g, b = q / g; }
+	lld a, b;
+};
+
+int main(){
+	ifstream f;
+	f.open("input.txt");
+	int numCount = 0, numA = 0, numB = 0, fractionNum = 2;
+
+	f >> numCount;
+	for (int i = 0;i<numCount;i++){
+		f >> numA >> numB;
+		Z z(numA, numB);
+		while (z.a > 1){
+			lld n = (z.b - 1) / z.a + 1;
+			z = Z(z.a*n - z.b, z.b*n);
+		}
+		cout << z.b << endl;
+	}
+	return 0;
+}

@@ -1,0 +1,39 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+int Fibo(int num)
+{
+	if (num == 0)	
+		return 0;
+	else if (num <= 2)	
+		return 1;
+	else				
+		return Fibo(num - 1) + Fibo(num - 2);
+}
+
+int main() 
+{
+	int gatsu = 0;	
+	int num = 0;	
+	ifstream inStream;
+	
+
+	inStream.open("input.txt");
+	if (inStream.fail()) 
+	{
+		cerr << "Input file opening failed.\n";
+		exit(1);
+	}
+
+	inStream >>gatsu ;
+	for (int i = 0; i < gatsu; i++)
+	{
+		inStream >> num;
+		cout << Fibo(num)<<endl;	
+	}
+
+	inStream.close();
+	return 0;
+}

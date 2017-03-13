@@ -1,0 +1,35 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int reCount;
+void parenthesis(char* str, int idx){
+	if (reCount < 0){
+		reCount = -1000;
+	}
+	else if (str[idx] == '(') reCount++;
+	else reCount--;
+	if (idx + 1 < strlen(str))
+		parenthesis(str, idx + 1);
+}
+int main(void){
+	FILE* file;
+	int cases;
+
+	file = fopen("input.txt", "r");
+
+	fscanf(file, "%d", &cases);
+	while (cases--){
+		char str[51];
+		fscanf(file, "%s", str);
+
+		parenthesis(str, 0);
+
+		if (reCount != 0)  puts("NO");
+		else   puts("YES");
+
+		reCount = 0;
+	}
+	return 0;
+}

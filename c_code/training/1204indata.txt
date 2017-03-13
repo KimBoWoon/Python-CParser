@@ -1,0 +1,44 @@
+
+
+#include<iostream>
+#include<fstream>
+#include<vector>
+using namespace std;
+
+vector<int> prime;
+
+int main(){
+	ifstream File;
+	int numCase = 0;
+	int num = 0;
+
+	for (int num = 2; num <= 1000; num++){
+		bool flag = true;
+		for (int i = 2; i < num; i++){
+			if (num % i == 0){
+				flag = false;
+				break;
+			}
+		}
+		if (flag)
+			prime.push_back(num);
+	}
+
+	File.open("input.txt");
+	File >> numCase;
+	for (int iter = 0; iter < numCase; iter++){
+		int num1 = 0, num2 = 0;
+		File >> num;
+		for (int i = 0; i < prime.size(); i++){
+			for (int j = i; j < prime.size(); j++){
+				if (prime[i] + prime[j] == num){
+					num1 = prime[i];
+					num2 = prime[j];
+				}
+			}
+		}
+		cout << num1 << ' ' << num2 << endl;
+	}
+	File.close();
+	return 0;
+}

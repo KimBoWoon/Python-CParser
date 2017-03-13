@@ -1,0 +1,55 @@
+
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+#include <cmath>
+using namespace std;
+
+int main ()
+{
+	ifstream instream;
+	instream.open("input.txt");
+	
+	int testcase;
+	instream >> testcase;
+	
+	for(int i=0;i< testcase;i++)
+	{
+		int num;
+		instream >> num;
+		int *arr = new int[num];
+
+		for(int j=0;j<num;j++)   
+		{
+			int temp;
+			instream>> temp ;
+			arr[j] = temp;
+		}
+		int n =1000;
+		while(n)
+		{
+			int ttemp=arr[0];     
+			for(int a=0;a<num;a++)
+			{
+				if( a == num-1)
+					arr[a]= abs(arr[a]-ttemp);
+				else
+					arr[a]= abs(arr[a+1]-arr[a]);
+			}
+			int res=1; 
+			for(int b=0;b<num;b++){
+				if(arr[b]!=0)  
+				{
+					res=0;break;
+				}
+			}
+			if(res){    
+				cout<<"ZERO"<<endl;
+				break;
+			}
+			n--;
+		}
+		if(n==0)     
+			cout<<"LOOP"<<endl;
+	}
+}

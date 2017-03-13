@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdlib.h> 
+
+void cal(int a); 
+
+int main()
+{
+	FILE *in_file; 
+
+	int nocases;
+	int num;
+	int i;
+
+	in_file = fopen("input.txt", "r");
+
+	if(in_file == NULL) 
+		exit(1); 
+
+	fscanf(in_file, "%d", &nocases);
+
+	for(i=0; i<nocases; i++)
+	{
+		fscanf(in_file, "%d", &num);
+		cal(num);
+	}
+
+	return 0;
+}
+
+void cal(int a)
+{
+	int save[45];
+	int save1[91125];
+	int count = 0;
+	int scount = 0;
+	int b = 1;
+	int num = 0;
+	int num1 = 0;
+	int count1 = 0;
+	int count2 = 0;
+	int count3 = 0;
+	int re = 0;
+	int i,j,k;
+
+	for(i=0; i<45; i++)
+	{
+		num = b*(b+1)/2;
+
+		save[count] = num;
+
+		b++;
+		count++;
+	}
+
+	for(i=0; i<45; i++)
+	{
+		for(j=0; j<45; j++)
+		{
+			for(k=0; k<45; k++)
+			{
+				if(save[i]+save[j]+save[k] <= 1000)
+				{
+					save1[scount] = save[i]+save[j]+save[k];
+					scount++;
+				}
+			}
+		}
+	}
+			
+	for(i=0; i<scount; i++)
+	{
+		if(a == save1[i])
+		{
+			re = 1;
+		}
+	}
+
+	printf("%d\n",re);
+}

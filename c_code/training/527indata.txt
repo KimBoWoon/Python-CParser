@@ -1,0 +1,57 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include<stdlib.h>
+#include<iostream>
+#include<fstream>
+using namespace std;
+int factorial(int input);
+
+int main() {
+	ifstream fin;
+	fin.open("input.txt");
+	int num;
+	fin >> num;
+	int numOfMember, numOfResult;
+	for (int cnt = 0; cnt < num; cnt++){
+		fin >> numOfMember >> numOfResult;
+
+		char* result = (char *)malloc(sizeof(char)*numOfMember);
+		for (int i = 0; i < numOfMember; i++)
+			result[i] = i + 'a';
+
+		int total = numOfResult - 1;
+		if (total == 0) {
+			for (int i = 0; i < numOfMember; i++)
+				cout << result[i];
+		}
+		else{
+			for (int i = 0; i < numOfMember - 1; i++) {
+				int count = total / factorial(numOfMember - i - 1);
+				cout << result[count];
+				for (int k = count; k < numOfMember - 1; k++)
+					result[k] = result[k + 1];
+
+				int temp = factorial(numOfMember - i - 1);
+				if (total%temp == 0) {
+
+					for (int j = 0; j < numOfMember - i - 1; j++)
+					cout << result[j];
+					break;
+				}
+				else
+					total %= temp;
+
+			}
+		}
+		cout << endl;
+	}
+	return 0;
+}
+
+int factorial(int input) {
+
+	if (input != 1)
+		return input * factorial(input - 1);
+	else
+		return input;
+}

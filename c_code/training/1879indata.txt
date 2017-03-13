@@ -1,0 +1,70 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <cstring>
+
+using namespace std;
+
+void cal(fstream &in_file);
+
+int main()
+{
+   int no_cases;
+   char abc[50];
+   fstream in_file;
+
+   in_file.open("input.txt");
+
+   if(in_file.fail())
+   {
+      cerr << "input file error" <<endl;
+      exit(1);
+   }
+
+   in_file >> no_cases;
+   in_file.getline(abc,50);
+   for(int i = 0; i<no_cases; i++)
+   {
+      cal(in_file);
+   }
+
+   return 0;
+}
+
+void cal(fstream &in_file)
+{
+   char str[50];
+   int length;
+   int count = 0;
+
+   in_file.getline(str,50);
+   
+   length = strlen(str);
+
+   if(str[0] == '(' && str[length-1] == ')')
+   {
+      for(int i = 1; i<length-1; i++)
+      {
+         if(str[i] == '(')
+         {
+            count ++;
+         }
+
+         else if(str[i] == ')')
+         {
+            count --;
+         }
+      }
+
+      if(count == 0)
+      {
+         cout << "YES" << endl;
+      }
+
+      else
+         cout << "NO" << endl;
+   }
+
+   else
+      cout << "NO" << endl;
+}

@@ -1,0 +1,58 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MIN(a,b) ((a)<(b)?(a):(b))
+#define MAX(a,b) ((a)>(b)?(a):(b))
+
+int calPyt(double got, double lost) {
+	double result = (got * got) * 1000 / (got * got + lost * lost);
+	return (int) result;
+}
+
+int main(void) {
+	FILE *input;
+	int no_cases, no_teams, no_games;
+	int team1, team2, score1, score2;
+	int result[1001][3];
+	int i, j, k, min, max;
+
+	input = fopen("input.txt", "r");
+	if (input == NULL)
+		exit(1);
+	fscanf(input, "%d", &no_cases);
+
+	for (i = 0; i < no_cases; i++) {
+		fscanf(input, "%d %d", &no_teams, &no_games);
+
+		for (j = 0; j < 1001; j++) {
+			for (k = 0; k < 3; k++) {
+				result[j][k] = 0;
+			}
+		}
+		for (j = 0; j < no_games; j++) {
+			fscanf(input, "%d %d %d %d", &team1, &team2, &score1, &score2);
+			result[team1][0] += score1;
+			result[team1][1] += score2;
+			result[team2][0] += score2;
+			result[team2][1] += score1;
+		}
+
+		result[1][2] = calPyt((double) result[1][0], (double) result[1][1]);
+		min = result[1][2];
+		max = result[1][2];
+		for (j = 2; j <= no_teams; j++) {
+			if (result[j][0] != -1 && result[j][1] != -1) {
+				result[j][2] = calPyt((double) result[j][0],
+						(double) result[j][1]);
+				min = MIN(min, result[j][2]);
+				max = MAX(max, result[j][2]);
+			}
+		}
+		printf("%d\n%d\n", max, min);
+	}
+
+	fclose(input);
+	return 0;
+}

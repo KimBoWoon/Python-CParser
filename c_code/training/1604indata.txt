@@ -1,0 +1,49 @@
+#include <iostream>
+#include <fstream>
+
+#define min(x,y) ((x)<(y)) ? (x) : (y)
+
+using namespace std;
+
+int main()
+{
+	int i,j,k;
+	int numTests;
+	int N;
+	int dia;
+
+	fstream infile("input.txt");
+	infile >> numTests;	
+
+	int A[503], S[503];
+	int D[503][503];
+
+	for(int l =0; l<numTests; l++ )
+	{
+		infile >> N;
+		for( i=1; i<=N; i++)
+		{
+			infile>> A[i];
+			S[i] = S[i-1] +A[i];
+		}
+		for( i=1; i<=N; i++) for( j=i+1; j<= N; j++) D[i][j] = 500000000 ;
+
+
+		for( dia = 1; dia<=N-1; dia++)
+		{
+			for( i = 1; i<=N-dia; i++)
+			{
+				j = i+dia;
+				for( k = i; k<=j-1; k++)
+				{
+					D[i][j] =min(D[i][j], D[i][k] + D[k+1][j] + S[j]-S[i-1]);
+				}
+			}
+		}
+
+		cout<<D[1][N]<<std::endl;
+	}
+	
+	return 0;
+}
+

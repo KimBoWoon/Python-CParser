@@ -1,0 +1,43 @@
+#include <stdio.h>
+
+void swap(int *a, int *b){
+    int tmp=0;
+    tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+
+int getGCD(int e, int f){
+    if( e < f ) swap(&e,&f);
+    if( e % f == 0 ) return f;
+    else return getGCD(f, e%f);
+}
+
+void addFraction(FILE *fin){
+    int a, b, c, d = 0;
+    int e, f = 0;
+    int gcd = 0;
+    
+    fscanf(fin, "%d %d %d %d", &a, &b, &c, &d);
+    
+    f = b * d;
+    e = a*d + c*b;
+    
+    gcd = getGCD(e, f);
+    
+    printf("%d %d\n", e/gcd, f/gcd);
+}
+
+int main(){
+    int testCases, cases;
+    FILE* fin = fopen("input.txt", "r");    
+    
+    fscanf(fin, "%d", &testCases);      
+    
+    for(cases=0; cases<testCases; cases++)
+        addFraction(fin);        
+    
+    fclose(fin);            
+    
+    return 0;           
+}

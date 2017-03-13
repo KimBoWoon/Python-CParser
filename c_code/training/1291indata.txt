@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void cal(FILE *in_file);
+int sosu(int a);
+
+void main()
+{
+	FILE *in_file;
+	int no_cases;
+	int i;
+
+	in_file = fopen("input.txt","r");
+	if(in_file == NULL) exit(1);
+
+	fscanf(in_file,"%d",&no_cases);
+   for(i = 0; i<no_cases; i++)
+   {
+      cal(in_file);
+   }
+   fclose(in_file);
+}
+
+void cal(FILE *in_file)
+{
+   int a;
+   int ns1,ns2;
+   int sns1,sns2;
+
+  fscanf(in_file,"%d",&a);
+   
+   ns1 = a/2;
+   ns2 = a-ns1;
+   
+   while(1)
+   {
+      sns1 = sosu(ns1);
+      sns2 = sosu(ns2);
+
+      if(sns1 == 1 && sns2 == 1)
+      {
+		  printf("%d %d\n",ns1,ns2);
+		  break;
+      }
+
+      else
+      {
+         ns1 -= 1;
+         ns2 += 1;
+      }
+   }
+}
+
+int sosu(int a)
+{
+	int j;
+   for(j=2; j*j <= a; j++)
+   {
+      if(a%j == 0)
+      {
+         return 0;
+      }
+   }
+
+   return 1;
+}

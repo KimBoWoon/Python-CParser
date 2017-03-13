@@ -1,0 +1,32 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#pragma warning(disable : 4996)
+
+int m(int n){
+	if (n > 100)
+	{
+		return n - 10;
+	}
+	if (n <= 100)
+	{
+		return m(m(n + 11));
+	}
+}
+int main(void)
+{
+	FILE *in_file;
+
+	in_file = fopen("input.txt", "r");
+	if (in_file == NULL) exit(1);
+
+	int n, TestCases, i;
+
+	fscanf(in_file, "%d", &TestCases);
+
+	for (i = 0; i < TestCases; i++){
+		fscanf(in_file, "%d", &n);
+		printf("%d\n",m(n));
+	}
+}

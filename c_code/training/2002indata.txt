@@ -1,0 +1,125 @@
+
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+#define MAX 1000000
+
+int isPositive(int posit_int)
+{
+	return posit_int >= 0 ? posit_int : -(posit_int);
+}
+
+void TwoNumbers(int arr[], int k, int n)
+{
+	int sum;
+	int start = 0;
+	int end = n-1;
+	int near; 
+	int sec_near;
+	int before_sum = 0;
+	int flag = 0;
+	int before_near = 0;
+	int cnt = 0;
+	
+	while(1)
+	{
+
+		
+		
+		sum = arr[start] + arr[end];
+		before_near = near;
+		if(flag == 0) {before_sum = sum; before_near = 0; flag = 1;}
+			
+		near = (isPositive(sum-k) <= isPositive(before_sum-k)) ? sum : before_sum;
+		if(end-start == 1) break;
+		if(near < before_near) {near = before_near; break;}
+		
+		 if(sum > k) end--;
+		 else if(sum < k)start++;
+		 else break;
+	}
+	if(near != k) sec_near = 2*k - near;
+	else sec_near = 0;
+	start = 0;
+	end = n-1;
+	while(1)
+	{
+
+		
+		if(end-start == 0 || start > end) break;
+		sum = arr[start] + arr[end];
+
+		if(sec_near != 0){
+		if(near == sum || sum ==sec_near) cnt++;
+		}
+		if(sec_near == 0 && near == 2){if(near == sum || sum ==sec_near) cnt++;}
+		if(sec_near == 0 && near != 2) { if(near==sum) cnt++;}
+		
+		 if(sum > k) end--;
+		 else if(sum < k) start++;
+		 else {start++; end--;}
+	}
+
+	cout << cnt << endl;
+
+}
+void q_sort(int numbers[], int left, int right)
+{
+    int pivot, l_hold, r_hold;
+    l_hold = left;
+    r_hold = right;
+    pivot = numbers[left]; 
+    while (left < right)
+    {
+        while ((numbers[right] >= pivot) && (left < right))
+            right --;
+
+        if (left != right)
+        {
+             numbers[left] = numbers[right];
+        }
+        while ((numbers[left] <= pivot) && (left < right))
+            left ++;
+        if (left != right)
+        {
+             numbers[right] = numbers[left];
+             right --;
+        }
+    }
+    numbers[left] = pivot;
+    pivot = left;
+    left = l_hold;
+    right = r_hold;
+
+    if (left < pivot)
+        q_sort(numbers, left, pivot - 1);
+    if (right > pivot)
+        q_sort(numbers, pivot+1, right);
+}
+
+void quickSort(int numbers[], int array_size)
+{
+    q_sort(numbers, 0, array_size -1);
+}
+
+
+int main()
+{
+	int numTestCases;
+	int n, k;
+	int testcases[MAX];
+	ifstream inFile;
+	inFile.open("input.txt");
+	inFile >> numTestCases; 
+	
+if(inFile.is_open() == false) {cout << "파일을 열 수 없습니다" <<endl;}
+ 	
+	for(int i = 0 ; i < numTestCases ; i++) {
+		inFile >> n >> k;
+		for(int j = 0; j < n; j++) inFile >> testcases[j];	
+		quickSort(testcases, n);
+		TwoNumbers(testcases, k,n);
+	}
+}

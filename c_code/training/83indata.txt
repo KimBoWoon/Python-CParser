@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <stdlib.h>
+int main()
+{
+	FILE *in;
+	int i;
+	int testCases;
+	in=fopen("input.txt","r");
+	if(in==NULL) exit(1);
+	fscanf(in,"%d",&testCases);
+	while(testCases--) {
+		int n;
+		int res=1;
+		int div=0;
+		fscanf(in,"%d",&n);
+		for(div=2;div*div<=n;div++)
+		{
+			if(n%div == 0) {
+				res=0; 
+				break;
+			}
+		}
+		printf("%d\n",res);
+	}
+	fclose(in);
+}

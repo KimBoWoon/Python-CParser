@@ -1,0 +1,25 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int fn(int n, int max){
+	if (n >= max)
+		return n;
+	else
+		return n * fn(n + 1, max);
+}
+
+int main(){
+	ifstream fin("input.txt");
+
+	int nCase;
+	fin >> nCase;
+
+	for (int ci = 0; ci < nCase; ++ci)
+	{
+		int n;
+		fin >> n;
+		cout << fn(1, n) << endl;
+	}
+}

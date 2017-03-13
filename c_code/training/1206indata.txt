@@ -1,0 +1,64 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cmath>
+using namespace std;
+void goldbach(int num, int half);
+int primeNum(int num);
+
+int main()
+{
+	ifstream inFile("input.txt");
+	if (inFile.fail()){
+		return 0;
+	}
+	int testCases;
+	int num;
+	inFile >> testCases;
+	for (int i = 0; i < testCases; i++){
+		int half = 0;
+
+		inFile >> num;
+		half = num / 2;
+		goldbach(num, half);
+	}
+	return 0; 
+}
+void goldbach(int num, int half){
+	int anotherNum;					
+	
+	if (primeNum(half) == 1){
+		anotherNum = num - half;
+		if (primeNum(anotherNum) == 1)	
+		{
+			cout << half << " " << anotherNum << endl;
+		}
+		else return goldbach(num, half - 1);
+	}
+	else{
+		return goldbach(num, half - 1);
+	}
+}
+
+int primeNum(int num){
+	bool primeFlag = false;
+
+	if (num == 2 || num == 3){
+		return 1;
+	}
+	for (int div = 2; div <= sqrt(num); div++){
+		if (num > div){
+			if (num%div == 0){
+				return 0;
+			}
+			else{
+				primeFlag = true;
+			}
+		}
+	}
+	if (primeFlag == true){
+		return 1;
+	}
+	return -1;
+}

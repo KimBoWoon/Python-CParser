@@ -1,0 +1,99 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+
+using namespace std;
+
+
+void Ducci(int a, int *index);
+void iterate(int a,int *index);
+int IsZero(int *index, int a);
+
+int i;
+
+int sum_iter = 0;
+
+int main()
+{
+	ifstream infile;
+
+	infile.open("input.txt");
+	
+	int numTestCases = 0;
+	
+	infile >> numTestCases;
+	
+	
+	while(numTestCases--)
+	{
+		int a;
+		infile >> a;
+		int *ptr = new int[a];
+		for(int i = 0 ; i < a ; i++)
+		{
+			infile >> ptr[i];
+		}
+		sum_iter = 0;
+		Ducci(a, ptr);
+	}
+
+	return 0;
+}
+
+
+void Ducci(int a , int * index)
+{
+
+		iterate(a,index);
+		if(sum_iter == 1000)
+			cout<<"LOOP"<<endl;
+		else
+			cout<<"ZERO"<<endl;
+		
+	
+}
+void iterate(int a,int *index)
+{
+	sum_iter++;
+	i = 0;
+	int temp = index[0];
+	while( i+1 < a){
+		
+		if(index[i] >= index[i+1])
+			index[i] = index[i] - index[i+1];
+		else
+			index[i] = index[i+1] - index[i];
+		
+	i++;
+	}
+	if( i + 1 == a ){
+			if(index[i] >= temp)
+				index[i] = index[i] - temp;
+			else
+				index[i] = temp - index[i];
+	}
+
+	if(!IsZero(index,a) && sum_iter < 1000)
+			iterate(a,index);
+	else 
+		return;
+
+	
+}
+int IsZero(int *index, int a)
+{
+	int number[15] = {0,};
+	int sum = 0;
+	for(int i = 0 ; i < a ; i++)
+	{
+		if(index[i] != number[i])
+			sum++;
+	}
+	if(sum == 0)
+		return 1;
+	else
+		return 0;
+}
+
+
+

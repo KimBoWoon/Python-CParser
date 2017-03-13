@@ -1,0 +1,61 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <cstring>
+
+const char alpabat[] = "abcdefghijklmnopqrstuvwxyz";
+const int factorial[] = {1,1,2,6,24,120,720,5040,40320,362880,3628800,39916800,479001600};
+void sortedarray(int stringlength, int getnum);
+void permuteString(char *str, int strlength,int getnum);
+
+int main()
+{
+	std::fstream infile;
+	int testcase;
+	infile.open("input.txt");
+	if (infile.fail())
+	{
+		std::cerr << "file open error";
+		exit(1);
+	}
+	infile >> testcase;
+	for (int i = 0; i < testcase; i++)
+	{
+		int stringlength, getnum;
+		infile >> stringlength >> getnum;
+		sortedarray(stringlength, getnum);
+	}
+	return 0;
+}
+void sortedarray(int stringlength, int getnum)
+{
+	char getarray[26] = "";
+	int currentnum = 0;
+	strncpy(getarray, alpabat, stringlength);
+	permuteString(getarray, stringlength, getnum);
+	std::cout << std::endl;
+	
+}
+void permuteString(char *str, int strlength, int getnum)
+{
+	if (strlength <= 0) return;
+
+	int dividenum = factorial[strlength - 1];
+
+	int pos = getnum / dividenum - (getnum % dividenum == 0 ? 1 : 0);
+
+	std::cout << str[pos];
+	str[pos] = '-';
+	char *newstr = new char[strlength - 1];
+	int count = 0;
+	for (int i = 0; i < strlength; i++)
+	{
+		if (str[i] == '-') continue;
+
+		newstr[count++] = str[i];
+	}
+	permuteString(newstr, strlength - 1, getnum % dividenum + (getnum % dividenum == 0 ? dividenum : 0));
+	delete[]newstr;
+}

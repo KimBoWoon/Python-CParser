@@ -1,0 +1,63 @@
+
+
+#pragma warning(disable : 4996) 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int MergingFiles(int n);
+
+int dp[501][501];
+int s[501][501];
+int file[501];
+
+void main(void)
+{
+	FILE *inFile;
+	int i, j;
+	int numCases, numData;
+
+	inFile = fopen("input.txt", "r"); 	
+
+	if (inFile == NULL) exit(1);
+	fscanf(inFile, "%d", &numCases); 	
+	for (i = 0; i < numCases; i++)
+	{
+		fscanf(inFile, "%d", &numData); 
+
+		for (j = 1; j <= numData;j++)
+			fscanf(inFile, "%d", &file[j]);
+
+		printf("%d\n", MergingFiles(numData));
+	}
+
+	fclose(inFile); 			
+}
+
+int MergingFiles(int n)
+{
+	int i, j, k;
+	int min, tmp;
+
+	for (i = 1; i < n; i++)		
+	{
+		dp[i][i + 1] = file[i] + file[i + 1];
+		s[i][i] = file[i];
+		s[i][i + 1] = file[i] + file[i + 1];
+	}
+	s[n][n] = file[n];	
+	for (i = 1; i <= n; i++)		
+		for (j = 1; i + j + 1 <= n; j++)
+		{
+			min = 2000000000;
+			s[j][i + j + 1] = s[j][i + j] + file[i + j + 1];
+			for (k = j; k <= i + j; k++)	
+			{
+				tmp = dp[j][k] + dp[k + 1][i + j + 1];
+				if (tmp < min)
+					min = tmp;
+			}
+			dp[j][i + j + 1] = min + s[j][i + j + 1];
+		}
+	return dp[1][n];
+}

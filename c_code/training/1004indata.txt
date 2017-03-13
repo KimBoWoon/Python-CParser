@@ -1,0 +1,77 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <set>
+using namespace std;
+
+set<string> s;
+
+int AbsDifference(int a, int b){
+    if(a>b)
+        return a-b;
+    else
+        return b-a;
+}
+
+bool isArrayZero(int* iArr, int size){
+    for(int i=0; i<size; i++){
+       if(iArr[i] != 0)
+           return false;
+    }
+    return true;
+}
+
+int* getDucciSequence(int* iArr, int size){
+    int i, begin=iArr[0];
+    for(i=0; i<size-1; i++){
+        iArr[i] = AbsDifference(iArr[i], iArr[i+1]);
+    }
+    iArr[i] = AbsDifference(iArr[i], begin);
+    return iArr;
+}
+
+void Ducci(int* iArr, int size){
+    if(isArrayZero(iArr, size)){
+        cout << "ZERO" << endl;
+        return;
+    }
+    
+    ostringstream oStr;
+    for(int i=0; i<size; i++){
+        oStr << iArr[i];
+    }
+    string st = oStr.str();
+    set<string>::iterator f = s.find(st);
+    if(f != s.end()){
+        cout << "LOOP" << endl;
+        return;
+    }else{
+        s.insert(st);
+        Ducci(getDucciSequence(iArr, size), size);
+    }
+}
+
+int main(){
+    ifstream inStream;
+    inStream.open("input.txt");
+    int test_case;
+    inStream >> test_case;
+
+    for(int t=0; t<test_case; t++){
+        int size;
+        inStream >> size;
+        int* tuple = new int[size];
+        for(int i=0; i<size; i++){
+            inStream >> tuple[i];
+        }
+
+        Ducci(tuple, size);
+        s.clear();
+        delete[] tuple;
+        tuple = NULL;
+    }
+
+    inStream.close();
+    return 0;
+}

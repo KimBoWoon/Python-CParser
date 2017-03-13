@@ -1,0 +1,33 @@
+
+
+
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+int main(void){
+	ifstream inStream;
+	inStream.open("input.txt");
+	int numTestCases;
+	inStream >> numTestCases;
+
+	for (int i = 0; i < numTestCases; i++) {
+
+		int H,W,N;
+
+		inStream >> H >> W >> N;
+		
+		int floor = N%H;
+		int roomnumber = (N/H)+1;
+	
+		if (floor == 0) {
+			floor = H; roomnumber -= 1;
+		}
+		if(roomnumber<10)
+			cout << floor <<"0"<< roomnumber << endl;
+		else 
+			cout << floor  << roomnumber << endl;
+
+	}
+}

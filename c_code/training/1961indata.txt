@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MIN_M 2
+#define MAX_M 1000
+#define MIN_N (MIN_M + 1)
+#define MAX_N (MAX_M + 1)
+
+int compare(const void* a, const void* b);
+void game(FILE* fileDes);
+
+int main()
+{
+	FILE* fileDes;
+	int trialNum;
+	int i;
+
+	fileDes = fopen("input.txt", "r");
+
+	if(fileDes == NULL)
+		exit(1);
+
+	fscanf(fileDes, "%d", &trialNum);
+
+	for(i = 0; i < trialNum; i++)
+	{
+		game(fileDes);
+	}
+
+	fclose(fileDes);
+}
+
+void game(FILE* fileDes)
+{
+	int teamNum;	
+	int playNum;	
+
+	int teamA;		
+	int winA;		
+	int teamB;		
+	int winB;		
+
+	int* Sarr = NULL;			
+	int* Aarr = NULL;			
+	int* Earr = NULL;			
+
+	int i;
+
+	fscanf(fileDes, "%d", &teamNum);	
+	
+	Sarr = (int*)calloc(teamNum + 1, sizeof(int));
+	Aarr = (int*)calloc(teamNum + 1, sizeof(int));
+	Earr = (int*)calloc(teamNum + 1, sizeof(int));
+
+	fscanf(fileDes, "%d", &playNum); 
+
+
+	for(i = 0; i < playNum; i++)
+	{
+		fscanf(fileDes, "%d %d", &teamA, &teamB);
+
+		fscanf(fileDes, "%d %d", &winA, &winB);
+
+		Sarr[teamA] += winA;		Aarr[teamA] += winB;
+		Sarr[teamB] += winB;		Aarr[teamB] += winA;
+	}
+
+	for(i = 1; i <= teamNum; i++)
+	{
+		Earr[i] = ( (Sarr[i]*Sarr[i]*1000) / ( (Sarr[i]*Sarr[i]) + (Aarr[i]*Aarr[i]) ) );
+	}
+
+	qsort(&Earr[1], teamNum, sizeof(int), compare);
+
+	printf("%d\n%d\n", Earr[teamNum], Earr[1]);
+
+
+	free(Sarr);
+	free(Aarr);
+	free(Earr);
+
+}
+
+int compare(const void* a, const void* b)
+{
+	return *((int*)a) - *((int*)b);
+}

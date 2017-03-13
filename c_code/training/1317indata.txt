@@ -1,0 +1,57 @@
+
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <cstdlib>
+
+using namespace std;
+
+void doHenry(int a, int b);
+int gcd(int a, int b);
+
+int main(void) {
+
+	ifstream dataFile("input.txt");
+
+	int caseNum;
+	dataFile >> caseNum;
+	int a, b;
+
+	for (int i = 0; i < caseNum; i++) {
+
+		dataFile >> a >> b;
+		doHenry(a, b);
+
+	}
+
+
+	return 0;
+}
+
+void doHenry(int a, int b) {
+	while (a != 1) {
+		int x = b / a;
+		if (b % a != 0) x += 1;
+		a = a*x - b;
+		b = b*x;
+		int g = gcd(a, b);
+		a /= g;
+		b /= g;
+	}
+
+	cout << b << endl;
+	return;
+}
+
+int gcd(int a, int b) {
+	if (b == 0) {
+		return a;
+	}
+	return gcd(b, a%b);
+}
+

@@ -1,0 +1,54 @@
+
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+
+bool prime(int n){
+	bool chk = true;
+		for(int j=2;j<n;j++){
+			if(n%j == 0)
+				chk=0;
+		}
+		return chk;
+}
+void chk(int num, int k){
+		while(!prime(k)){  
+			k-=1;
+		}
+		if(prime(num-k) || k==3)
+			cout << k <<" "<<num-k<<endl;
+		else
+			chk(num,k-1);
+			
+}
+void gold(int num){
+	if(num % 2 == 1){
+		cout<<2<<" "<<num-2<<endl;
+	}
+	else{  
+		int s = num/2;
+		chk(num,s);
+	}
+	
+}
+
+int main(void){
+	ifstream infile;
+
+	infile.open("input.txt");
+	if(infile.fail()){
+		cerr << "input file error"<<endl;
+		exit(1);
+	}
+	
+	int num;
+	int n;
+	infile >> num;
+	for(int i=0;i<num;i++){
+		infile >> n;
+		gold(n);
+	}
+
+	return 0;
+}

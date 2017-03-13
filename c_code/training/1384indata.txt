@@ -1,0 +1,44 @@
+#include <iostream>
+#include <fstream>
+
+unsigned int gcd(unsigned int inputNum1, unsigned int inputNum2)
+{
+	if (inputNum2 == 0)
+		return inputNum1;
+	else
+		gcd(inputNum2, inputNum1%inputNum2);
+}
+
+unsigned int p(unsigned int a, unsigned int b)
+{
+	unsigned int c = b / a + 1,d,e;
+	if (a == 1)
+		return b;
+	if (c > b)
+		d = b*c / gcd(b, c);
+	else
+		d = b*c / gcd(c, b);
+
+	a = a*d / b;
+	a=a-d / c;
+	e = gcd(a, d);
+	a = a/e;
+	d = d / e;
+	return p(a, d);
+}
+
+int main()
+{
+	std::ifstream file("input.txt");
+	int testCase = 0;
+	file >> testCase;
+	while (testCase--)
+	{
+		unsigned int a, b, c;
+		file >> a >> b;
+		c = gcd(a, b);
+		a = a / c;
+		b = b / c;
+		std::cout << p(a, b) << std::endl;
+	}
+}

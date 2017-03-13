@@ -1,0 +1,61 @@
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+class T {
+public:
+	double win;
+	double lose;
+	T() {
+		win = 0; lose = 0;
+	}
+};
+
+int expectation(double twin, double tlose) {
+	double W;
+	if ((twin*twin + tlose*tlose) == 0)
+		return -1; 
+	else if (tlose == 0 && twin == 0) {
+		W = 0;
+		return W * 1000;
+	}
+	else {
+		W = twin*twin / (twin*twin + tlose*tlose);
+		return W * 1000;
+	}
+}
+int main() {
+	ifstream inStream;
+	inStream.open("input.txt");
+
+	int numCase;
+	int numTeam, totalGame;
+	int teamA; int teamB; int scoreA; int scoreB;
+	
+	inStream >> numCase;
+
+	for (int i = 0; i < numCase; i++) {
+		inStream >> numTeam >> totalGame;
+		T* TEAM = new T[numTeam]; 
+		double* result = new double[numTeam];
+
+		for (int j = 0; j < totalGame; j++) {
+			inStream >> teamA >> teamB >> scoreA >> scoreB;
+
+			TEAM[teamA - 1].win += scoreA;	TEAM[teamA - 1].lose += scoreB;
+			TEAM[teamB - 1].win += scoreB;	TEAM[teamB - 1].lose += scoreA;
+		}
+
+		int max;	int min;
+		for (int k = 0; k < numTeam; k++) {
+			result[k] = expectation(TEAM[k].win, TEAM[k].lose) ;
+			if (k == 0) {
+				max = result[0];	min = result[0];
+			}
+			if (max <= result[k])	max = result[k];
+			if (min >= result[k])	min = result[k];
+		}
+		cout << max << endl << min << endl;
+	}
+	inStream.close();
+}

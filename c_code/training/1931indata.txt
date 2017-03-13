@@ -1,0 +1,56 @@
+
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+int main(){
+	ifstream in;
+	in.open("input.txt");
+	if (!in) return 1;
+
+	int test_case;
+	in >> test_case;
+	while (test_case--){
+		int teamNum, caseNum;
+		in >> teamNum >> caseNum;
+		int **team = new int*[teamNum+1];
+		for (int i = 0; i <= teamNum; i++){
+			team[i] = new int[3];
+			team[i][0] = team[i][1] = team[i][2] = 0;
+		}
+		for (int i = 0; i < caseNum; i++){
+			int teamA, teamB, scoreA, scoreB;
+			in >> teamA >> teamB >> scoreA >> scoreB;
+			team[teamA][0] += scoreA;
+			team[teamA][1] += scoreB;
+			team[teamB][0] += scoreB;
+			team[teamB][1] += scoreA;
+		}
+		for (int i = 1; i <= teamNum; i++){
+			team[i][2] = (team[i][0] * team[i][0] * 1000) / (team[i][0] * team[i][0] + team[i][1] * team[i][1]);
+		}
+		for (int i = 1; i <= teamNum; i++){
+			for (int j = 1; j <= teamNum; j++){
+				if (team[i][2]>team[j][2]){
+					int temp = team[i][2];
+					team[i][2] = team[j][2];
+					team[j][2] = temp;
+				}
+			}
+		}
+		cout << team[1][2] << endl;
+		for (int i = teamNum; i >0; i--){
+			if (team[i][2] > 0){
+				cout << team[i][2] << endl;
+				break;
+			}
+		}
+		for (int i = 0; i <= teamNum; i++){
+			delete team[i];
+		}
+		delete team;
+	}
+	in.close();
+	return 0;
+}

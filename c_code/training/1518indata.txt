@@ -1,0 +1,60 @@
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+#define MARK 1
+#define UNMARK 0
+int board[9][9];
+int path[9][9];
+typedef struct Point {
+	int x, y;
+} point ;
+point direction[8] = {		
+	{1,-2},{2,-1},{2,1},{1,2},
+	{-1,2},{-2,1},{-2,-1},{-1,-2}
+};
+int KnightTour(int m, int n, point pos, int counter) {
+	point next;
+	if (counter == m*n) return 1;
+	for (int cnt1 = 0;cnt1 < 8;cnt1++) {
+		next.x = pos.x + direction[cnt1].x;	
+		next.y = pos.y + direction[cnt1].y;		
+		if (next.x > 0 && next.x <= n&&next.y > 0 && next.y <= m&&board[next.y][next.x] != MARK) {		
+			board[next.y][next.x] = MARK;
+			path[next.y][next.x] = counter + 1;
+			if (KnightTour(m, n, next, counter + 1)) return 1;
+
+			board[next.y][next.x] = UNMARK;
+		}
+	}
+	return 0;
+}
+int main() {
+	ifstream fin;
+	fin.open("input.txt");
+	int  m, n,i,j,num;
+	point start;
+	fin >> num;
+	for (int cnt = 0;cnt < num;cnt++) {
+		fin >> m >> n >> i >> j;
+		start.y = i;
+		start.x = j;
+		for (int cnt2 = 1;cnt2 <= m;cnt2++) {
+			for (int cnt3 = 1;cnt3 <=n;cnt3++) {
+				board[cnt2][cnt3] = UNMARK;
+			}
+		}
+		board[start.y][start.x]=MARK;
+		path[start.y][start.x] = 1;
+		int x = KnightTour(m, n, start, 1);	
+		cout<<x<<endl;
+		if (x == 1) {
+			for (int cnt2 = 1;cnt2 <= m;cnt2++) {
+				for (int cnt3 = 1; cnt3 <= n;cnt3++) {
+					cout << path[cnt2][cnt3] << " ";
+				}
+				cout << endl;
+			}
+		}
+	}
+}

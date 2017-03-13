@@ -1,0 +1,47 @@
+
+#include <iostream>
+#include <fstream>
+
+int henry(int a, int b);
+
+int main()
+{
+	std::ifstream infile("input.txt");
+	
+	int numCase;
+	int a, b;
+	infile >> numCase;
+	
+	for( int i=0; i< numCase; i++)
+	{
+		infile >> a >> b;
+
+		std::cout<<henry(a,b)<<std::endl;
+	}
+	return 0;
+}
+
+
+int henry(int a, int b)
+{
+	while( true )
+	{
+		for( int i =2 ; i<2e9; i++)
+		{
+			if( i*a - b == 1 )
+			{
+				return b*i;
+			}
+			else if( 0 <=  i*a - b  )
+			{
+				if( i*a-b ==0 )
+					return i;
+
+				a = i*a -b ;
+				b = i*b;
+
+				break;
+			}
+		}
+	}
+}

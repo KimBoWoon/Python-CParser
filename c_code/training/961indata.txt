@@ -1,0 +1,55 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+int H[101][101], V[101][101], D[101][101][2][201];
+
+void main(){
+
+	FILE *in_file;
+	int no_cases;
+
+	int m, n, l, g;
+	int  i, j, k, p;
+	int ans;
+	in_file = fopen("input.txt", "r");
+
+	if(in_file == NULL) exit(1);
+
+	fscanf(in_file,"%d", &no_cases);
+
+	while(no_cases--){
+		fscanf(in_file,"%d%d%d%d", &n, &m, &l, &g);
+
+		for (i=1;i<=n;i++)
+			for (j=1;j<m;j++)
+				fscanf(in_file,"%d", H[i]+j);
+		for (i=1;i<n;i++)
+			for (j=1;j<=m;j++)
+				fscanf(in_file,"%d", V[i]+j);
+		for (i=1;i<=n;i++)
+			for (j=1;j<=m;j++)
+				for (k=0;k<2;k++)
+					for (p=0;p<201;p++)
+						D[i][j][k][p] = g+1;
+		D[1][1][0][0] = 0;
+		D[1][1][1][0] = 0;
+		ans = 2e9;
+		for (i=1;i<=n;i++)
+			for (j=1;j<=m;j++)
+				for (p=0;p<201;p++)
+					for (k=0;k<2;k++)
+						if (D[i][j][k][p] <= g){
+							if (i == n && j == m && ans > p) ans = p;
+							if (p < 200 && D[i][j][!k][p+1] > D[i][j][k][p])
+								D[i][j][!k][p+1] = D[i][j][k][p];
+							if (k && j < m && D[i][j+1][k][p] > D[i][j][k][p]+H[i][j])
+								D[i][j+1][k][p] = D[i][j][k][p]+H[i][j];
+							else if (!k && i < n && D[i+1][j][k][p] > D[i][j][k][p]+V[i][j])
+								D[i+1][j][k][p] = D[i][j][k][p]+V[i][j];
+						}
+						if (ans < 2e9) printf("%d\n", (n+m-2)*l+ans);
+						else puts("-1");
+	}
+	fclose(in_file);
+}

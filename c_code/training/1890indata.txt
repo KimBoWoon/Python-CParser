@@ -1,0 +1,46 @@
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+using namespace std;
+
+int main() {
+	ifstream file;
+	int cases;
+	file.open("input.txt");
+	file >> cases;
+	while (cases--) {
+		int teams, matchs;
+		int teamGt[1001] = { 0 };
+		int teamLos[1001] = { 0 };
+		int teamA, teamB;
+		file >> teams >> matchs;
+
+		for (int i = 0; i < matchs; i++) {
+			int aScore, bScore;
+
+			file >> teamA >> teamB;
+			file >> aScore >> bScore;
+			teamGt[teamA] += aScore;
+			teamLos[teamA] += bScore;
+
+			teamGt[teamB] += bScore;
+			teamLos[teamB] += aScore;
+
+		}
+		int results = 0;
+		int maxis = 0, minis = 99999999;
+		for (int i = 1; i <= teams; i++) {
+			results = ((teamGt[i] * teamGt[i])) * 1000;
+			results = results / ((teamGt[i] * teamGt[i]) + (teamLos[i] * teamLos[i]));
+			if (maxis < results)
+				maxis = results;
+			if (minis > results)
+				minis = results;
+		}
+		cout << maxis << endl;
+		cout << minis << endl;
+
+	}
+	file.close();
+	return 0;
+}

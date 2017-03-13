@@ -1,0 +1,43 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+int palindrome(std::string str, int start, int end);
+
+int main(void){
+
+	std::ifstream inFile("input.txt");
+	if (inFile.fail()){
+		std::cout << "not file" << std::endl;
+		return 0;
+	}
+
+	int testCases = 0;
+	inFile >> testCases;
+	
+	std::string str = ""; 
+	int length = 0;
+
+	for (int i = 0; i < testCases; i++){
+		inFile >> str;
+		length = str.length();
+		std::cout << palindrome(str, 0, length-1) << std::endl;
+	}
+	return 0;
+}
+
+int palindrome(std::string str, int start, int end){
+
+	if (str.at(start) != str.at(end)){
+		return 0;
+	}
+	else{
+		if (end - start <= 1){
+			return 1;
+		}
+		else{
+			return palindrome(str, start + 1, end - 1);
+		}
+	}
+	
+}

@@ -1,0 +1,32 @@
+
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int M(int n)
+{
+	if(n>100)
+	{
+		return n-10;
+	}
+	else
+	{
+		return M(M(n+11));
+	}
+}
+
+int main()
+{
+	fstream in;
+	in.open("input.txt");
+	int numcases;
+	in>>numcases;
+	for(int i=0; i<numcases; i++){
+		int n,k;
+		in>>n;
+		k=M(n);
+		cout<<k<<endl;
+	}
+}

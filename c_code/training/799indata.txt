@@ -1,0 +1,38 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int getFibonacci_Rec(int n){
+    if(n==0)
+        return 0;
+    else if(n==1)
+        return 1;
+    else
+        return getFibonacci_Rec(n-1) + getFibonacci_Rec(n-2);
+}
+
+
+int FiboTailRec(int n, int before, int next){
+    if (n == 0)
+        return before;
+    else
+        return FiboTailRec(n - 1, next, before + next);
+}
+
+int FiboTail(int n){
+    return FiboTailRec(n, 0, 1);
+} 
+
+int main(){
+    ifstream inStream;
+    inStream.open("input.txt");
+    int test_case;
+    inStream >> test_case;
+
+    for(int i=0; i<test_case; i++){
+        int n;
+        inStream >> n;
+        cout << FiboTail(n) << endl;
+    }
+}

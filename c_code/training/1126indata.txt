@@ -1,0 +1,41 @@
+#include <iostream>
+#include <fstream>
+bool isTri(int num);
+int main()
+{
+	int numTestCases;
+	int num;
+
+	std::ifstream infile("input.txt");
+
+	infile >> numTestCases;
+	for(int i=0; i<numTestCases; i++)
+	{
+		infile >> num;
+		if( isTri(num))
+		{
+			std::cout<<'1'<<std::endl;	 
+		}
+		else
+			std::cout<<'0'<<std::endl;	 
+	}
+}
+
+bool isTri(int num)
+{
+	for(int i=1; i<44; i++)
+	{
+		for(int j = 1; j<44; j++)
+		{
+			for(int k=1; k<44; k++)
+			{
+				if( num == (i*i+i)/2 + 	(j*j+j)/2 + (k*k+k)/2)
+				{
+					return true;
+				}
+			}
+		}	
+	}
+
+	return false;
+}	

@@ -1,0 +1,54 @@
+
+#include<stdio.h>
+#include<stdlib.h>
+
+void main(void)
+{
+	FILE *in_file;
+
+	int nocase=0;
+	char no_data,data[100]={NULL};
+	int left=0,right=0;
+	int i=0,j=0;
+	int error=0;
+	in_file = fopen("input.txt","r");
+	if(in_file == NULL) exit(1);
+
+	fscanf(in_file, "%d", &nocase);
+	fscanf(in_file, "%c", &data);
+
+	for(i=0; i<nocase; i++)
+	{
+		left=0;
+		right=0;
+		
+		for(j=0; j<100; j++){
+			fscanf(in_file, "%c", &no_data);
+			data[j]=no_data;
+			if(data[j]==10)
+			{
+				break;
+			}
+		}
+		for(j=0; j<100; j++){
+			if(data[j]==10)
+			{
+				if(data[j-1]==40)
+					error++;
+				break;
+			}
+			if(data[j] == 40)
+				left++;
+			else if(data[j] == 41)
+				right++;
+			
+		}
+		if(left==right && error==0)
+			printf("YES\n");
+		else{
+			error=0;
+			printf("NO\n");
+		}
+	}
+	fclose(in_file);
+}

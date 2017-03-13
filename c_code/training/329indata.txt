@@ -1,0 +1,115 @@
+#include<iostream>
+#include<fstream>
+#define MAX 99
+
+using namespace std;
+
+void floodFill(char room[][MAX+1], int x, int y, char blank, char filled);
+void printArray(int x[], int size);
+void sortArray(int x[], int size);
+
+int count_room = 0; 
+int room_size[5000];
+int room_num = 0; 
+
+int main()
+{
+	ifstream inStream;
+	int testcase;
+
+	inStream.open("input.txt");
+	if (inStream.fail())
+	{
+		cerr << "input file open failed";
+		return 0;
+	}
+
+	inStream >> testcase;
+	char ch[MAX][MAX+1];
+
+
+	for (int i = 0; i < testcase; i++)
+	{
+		int height = 0;
+		int width = 0;
+
+		inStream >> width >> height;
+		for (int j = 0; j < height; j++)
+		{
+			for (int k = 0; k < width; k++)
+			{
+				inStream >> ch[j][k];
+			}
+		}
+		for (int j = 0; j < height; j++)
+		{
+			for (int k = 0; k < width; k++)
+			{
+				if (ch[j][k] == '.'){
+					floodFill(ch, j, k, '.', '+');
+					room_num++;
+				}
+			}
+
+		}
+
+		cout << room_num << endl;
+		sortArray(room_size, room_num);
+		printArray(room_size, room_num);
+		for (int k = 0; k < room_num; k++) room_size[k] = 0;
+		room_num = 0;
+	}
+}
+
+void floodFill(char room[][MAX + 1], int x, int y, char blank, char filled)
+{
+
+	if (room[x][y] != blank)
+	{
+		return;
+	}
+	else if (room[x][y] == filled){
+		return;
+	}
+	else
+	{
+		room[x][y] = filled;
+		room_size[room_num]++;   
+		floodFill(room, x - 1, y, blank, filled);
+		floodFill(room, x + 1, y, blank, filled);
+		floodFill(room, x, y - 1, blank, filled);
+		floodFill(room, x, y + 1, blank, filled);
+
+	}
+
+}
+
+void sortArray(int x[], int size)
+{
+	int temp = 0;
+
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			if (x[j] < x[j + 1])
+			{
+				temp = x[j + 1];
+				x[j + 1] = x[j];
+				x[j] = temp;
+			}
+		}
+	}
+}
+
+void printArray(int x[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		if (x[i] == NULL)
+			continue;
+		else
+		cout << x[i] << " ";
+	}
+	cout << endl;
+}

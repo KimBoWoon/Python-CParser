@@ -1,0 +1,38 @@
+
+
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+
+int macar(int num);
+
+int main()
+{
+	int numOfCase = 0;	
+	int num;
+
+	ifstream input("input.txt");
+	if (input.fail()){
+		cout << "파일을 여는 데 실패했습니다." << endl;
+	}
+	input >> numOfCase;
+
+	for (int i = 0; i < numOfCase; i++){
+		input >> num;
+		
+		cout << macar(num) << endl;
+
+	}
+	input.close();
+	return 0;
+}
+int macar(int num)
+{
+	if (num > 100){
+		return num - 10;
+	}
+	else{
+		return macar(macar(num + 11));
+	}
+}

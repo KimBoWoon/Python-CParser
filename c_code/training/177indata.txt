@@ -1,0 +1,23 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+int M(int num){
+	if (num > 100)
+		return num - 10;
+	else
+		return M(M(num + 11));
+}
+int main(){
+	ifstream instream("input.txt");
+	int numtestcases, num;
+	instream >> numtestcases;
+	for (int i = 0; i < numtestcases; i++){
+		instream >> num;
+		cout << M(num) << endl;
+	}
+	instream.close();
+}

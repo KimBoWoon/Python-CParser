@@ -1,0 +1,27 @@
+
+
+
+#include <stdio.h>
+
+void room(int H, int N){
+	if(N%H==0)													
+		printf("%d%02d\n", H, N/H);
+	else
+		printf("%d%02d\n", N%H, (N/H+1));
+}
+
+int main(){
+	int i,j,cases,H,W,N;
+
+	FILE *infile;
+	infile = fopen("input.txt","r");
+	fscanf(infile,"%d", &cases);
+
+	for(i=0; i<cases; i++){
+		fscanf(infile,"%d %d %d", &H, &W, &N);
+
+		room(H,N);		
+	}
+
+	return 0;
+}

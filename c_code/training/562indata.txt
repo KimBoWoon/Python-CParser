@@ -1,0 +1,67 @@
+
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+int factorial(int num);
+void printPer(char *str, int numOfAlp, int kth);
+
+int main()
+{
+	int count = 0;
+	ifstream file;
+	file.open("input.txt");
+	file >> count;
+
+	int numOfAlp = 0, kth = 0; 
+
+	for (int i = 0; i < count; i++)
+	{
+		file >> numOfAlp >> kth;
+
+		char Alp[12] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l' }; 
+		printPer(Alp, numOfAlp, kth);
+	}
+   return 0;
+}
+
+int factorial(int num)
+{
+	if (num == 0)
+		return 1;
+	else
+		return num*factorial(num - 1);
+}
+
+void printPer(char *Alp, int numOfAlp, int kth)
+{
+	char first;
+	int fac = 0, f = 0;
+
+	for (int j = 0; j < numOfAlp; j++) 
+	{
+		fac = factorial(numOfAlp - (j + 1));
+
+		f = kth / fac;
+		if (kth % fac == 0) 
+			f--;
+		for (int h = j + f; h>j; h--) 
+		{
+			first = Alp[h - 1];
+			Alp[h - 1] = Alp[h];
+			Alp[h] = first;
+		}
+
+		kth = kth - (fac*f);
+	}
+	if (kth == 2) 
+	{
+		first = Alp[numOfAlp - 2];
+		Alp[numOfAlp - 2] = Alp[numOfAlp - 1];
+		Alp[numOfAlp - 1] = first;
+	}
+	for (int j = 0; j<numOfAlp; j++) {
+		cout << Alp[j];
+	}
+	cout << endl;
+}

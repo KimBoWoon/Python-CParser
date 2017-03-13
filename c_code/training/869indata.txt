@@ -1,0 +1,33 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int fibonacci(int n) 
+{
+	if(n==0)
+		return 0;
+	else if(n==1)
+		return 1;
+	else
+		return fibonacci(n-1) + fibonacci(n-2);
+}
+
+void main()
+{
+	FILE *file;
+	int i;
+	int test;
+	int n;
+
+	file = fopen("input.txt", "r"); 
+	if(file==NULL) exit(1);
+
+	fscanf(file, "%d", &test); 
+	for(i=0; i<test; i++)
+	{
+		fscanf(file, "%d", &n);
+		printf("%d\n", fibonacci(n));
+	}
+	fclose(file); 
+}

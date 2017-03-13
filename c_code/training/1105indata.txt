@@ -1,0 +1,54 @@
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#pragma warning(disable : 4996)
+
+int triangleNumber(int number); 
+
+void main(void){
+	FILE* inFile;
+	int testCase = 0, value=0, numberCheck=0; 
+	int i = 0, j = 0, firstNum=0, secondNum=0, thirdNum=0; 
+	int triangleNum[44] = { 0 };
+	inFile = fopen("input.txt", "r");      
+	if (inFile == NULL) exit(1);
+	fscanf(inFile, "%d", &testCase);   
+	for (j = 1; j < 45; j++)
+	{
+		triangleNum[j-1] = triangleNumber(j);
+	}
+	for (i = 0; i < testCase; i++)   
+	{
+		fscanf(inFile, "%d", &value);
+		for (firstNum = 0; firstNum < 45; firstNum++)
+		{
+			for (secondNum = 0; secondNum < 45; secondNum++)
+			{
+				for (thirdNum = 0; thirdNum < 45; thirdNum++)
+				{
+					if ((triangleNum[firstNum] + triangleNum[secondNum] + triangleNum[thirdNum]) == value)  
+					{
+						numberCheck = 1;
+						break;
+
+					}
+					else if ((triangleNum[firstNum] + triangleNum[secondNum] + triangleNum[thirdNum]) > value) 
+						break;
+				}
+				if (numberCheck) break; 
+			}
+			if (numberCheck) break;
+		}
+		printf("%d\n", numberCheck); 
+		numberCheck = 0; 
+	}
+	fclose(inFile);
+}
+
+int triangleNumber(int number)
+{
+		return (number*(number + 1)) / 2;
+}

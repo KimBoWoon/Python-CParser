@@ -1,0 +1,46 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <algorithm>
+#include <functional>
+
+using namespace std;
+
+int fn(char d[110][110], int x, int y){
+	if (d[y][x] == '+')
+		return 0;
+	else{
+		d[y][x] = '+';
+		return 1 + fn(d, x + 1, y) + fn(d, x, y + 1) + fn(d, x - 1, y) + fn(d, x, y - 1);
+	}
+}
+
+int main(){
+	ifstream fin("input.txt");
+
+	int nCase;
+	fin >> nCase;
+
+	for (int ci = 0; ci < nCase; ++ci)
+	{
+		int n, m;
+		char d[110][110];
+		fin >> n >> m;
+		for (int i = 0; i < m; ++i)
+			fin >> d[i];
+
+		vector<int> r;
+		for (int i = 1; i < n-1; ++i){
+			for (int j = 1; j < m-1; ++j){
+				int num = fn(d, i, j);
+				if (num > 0)
+					r.push_back(num);
+			}
+		}
+		sort(r.begin(), r.end(), greater<int>());
+		cout << r.size() << endl;
+		for (int i = 0; i < r.size(); ++i)
+			cout << r[i] << ' ';
+		cout << endl;
+	}
+}

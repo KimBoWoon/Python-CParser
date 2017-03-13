@@ -1,0 +1,64 @@
+
+#include <iostream>
+#include <fstream>
+
+#define PRIME_NUMBER 1;	
+#define NON_PRIME_NUMBER 0;	
+
+using namespace std;
+
+void perform(ifstream &readFile);	
+
+int findPrimeNumber(int testData);	
+
+int main()
+{
+	int numTestData = 0;	
+
+	ifstream readFile;
+	readFile.open("input.txt");
+
+	readFile >> numTestData;
+	
+	for (int i = 0; i < numTestData; i++)	
+	{
+		perform(readFile);	
+	}
+
+	readFile.close();
+	return 0;
+}
+
+void perform(ifstream &readFile)
+{
+	int testData;	
+	readFile >> testData;
+
+	int result = findPrimeNumber(testData);	
+	cout << result << endl;	
+}
+
+int findPrimeNumber(int testData)
+{
+	if (testData == 2)	
+	{
+		return PRIME_NUMBER;	
+	}
+
+	else
+	{
+
+
+		int halfTestData = testData / 2 + 1;	
+
+		for (int i = 2; i <= halfTestData; i++)	
+		{
+			if (testData % i == 0)	
+				return NON_PRIME_NUMBER;		
+		}
+	}
+
+	return PRIME_NUMBER;	
+}
+
+

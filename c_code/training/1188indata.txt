@@ -1,0 +1,56 @@
+
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+int main(void)
+{
+	ifstream inStream;
+        int cases, value;
+        int triNum[50] = {0};
+	int sum=0;
+
+        inStream.open("input.txt");
+        if(inStream.fail())
+        {
+        cerr<<"Input file opening failed./n";
+        exit(1);
+        }
+
+        inStream>>cases;
+   for(int i=0; i<cases; i++)
+   {
+      inStream>>value;
+	for(int j=1; j<45; j++)
+	{
+		triNum[j] = (j*(j+1))/2;
+	}
+
+	for(int a=1; a<45; a++)
+	{
+		if(value==sum)
+			break;
+		for(int b=1; b<45; b++)
+		{
+			if(value==sum)
+				break;
+			for(int c=1; c<45; c++)
+			{
+ 				sum = triNum[a]+triNum[b]+triNum[c];
+				if(value==sum)
+				{
+				cout << "1" << endl;
+				break;
+				}
+			}
+		}
+	}
+	if(value!=sum)
+		cout << "0" << endl;
+   }
+}
+
+

@@ -1,0 +1,27 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <cstring>
+using namespace std;
+
+int palin(char data[], int s, int e){
+	if (e <= s)
+		return 1;
+	else if (data[s] != data[e])
+		return 0;
+	else
+		return palin(data, s + 1, e - 1);
+}
+int main(){
+	ifstream instream("input.txt");
+	int numtestcases;
+	char data[1000];
+	instream >> numtestcases;
+	for (int i = 0; i < numtestcases; i++){
+		instream >> data;
+		cout << palin(data, 0, strlen(data) - 1) << endl;
+	}
+	instream.close();
+}

@@ -1,0 +1,29 @@
+
+
+#include<iostream>
+#include<cmath>
+#include<fstream>
+using namespace std;
+
+int main()
+{
+	int testCase;
+	fstream instream("input.txt", ios::in);
+	instream >> testCase;
+
+	for (int i = 0; i<testCase; i++)
+	{
+		int num = 0, cnt = 0;
+		instream >> num;
+
+		for (int i = 2; i <= sqrt(num); i++) {		
+			if (num%i == 0)
+				cnt++;
+		}
+		if (cnt>0)
+			cout << "0" << endl;
+		else
+			cout << "1" << endl;
+	}
+	return 0;
+}

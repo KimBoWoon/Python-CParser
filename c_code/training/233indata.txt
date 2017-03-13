@@ -1,0 +1,37 @@
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+int gcd(int a, int b)
+{
+	if(b==0)	
+		return a;
+	else
+		gcd(b,a%b);	
+}
+
+void main(void)
+{
+	FILE *in_file;
+	int i;
+	int no_case;
+	int a, b, c, d;
+	int num1, num2;
+	int gcdNum;
+
+	in_file = fopen("input.txt" , "r");	
+	if(in_file == NULL) exit(1);
+
+	fscanf(in_file, "%d" ,&no_case);
+	for(i=0; i<no_case; i++)
+	{
+		fscanf(in_file, "%d %d %d %d" , &a, &b,&c,&d);
+
+		num1=(a*d)+(c*b);	
+		num2=(b*d);			
+		gcdNum=gcd(num1,num2);	
+		printf("%d %d\n",num1/gcdNum,num2/gcdNum);	
+	}
+	fclose(in_file);
+}

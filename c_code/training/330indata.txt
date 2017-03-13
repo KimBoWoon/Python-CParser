@@ -1,0 +1,52 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <algorithm>
+	
+using namespace std;
+char **arr;
+
+int floodFill(char **fig, int x, int y){
+	if (fig[x][y]!= '.') return 0;
+	else{
+		fig[x][y] = '*';
+		return 1 + floodFill(fig, x-1, y) + floodFill(fig, x+1, y) + floodFill(fig, x, y-1) + floodFill(fig, x, y+1);
+	}
+}
+void roomSize(char **arr, int m, int n){
+	vector<int> list;
+	for( int i=0; i<m;i++){
+		for( int j=0; j<n;j++){
+			int res= floodFill(arr, i, j);  
+			if( res > 0 ) list.push_back(res);
+		}
+	}
+	sort(list.begin(), list.end());  
+	cout<<list.size()<<endl;
+	for(int it=list.size()-1;it >= 0;it--)
+		cout<<list[it]<<" ";
+	cout<<endl;
+}
+int main(){
+ifstream instream;
+	int no_cases;
+
+	instream.open("input.txt");
+	if (instream.fail()) exit(1);
+
+	instream>>no_cases;
+
+	while(no_cases--){
+		int m,n;
+		instream>>n>>m;
+		arr =new char *[m];
+		for(int i = 0;i<m;i++){
+			arr[i] = new char [n];
+			for(int j=0;j<n;j++) instream>>arr[i][j];
+		}
+		roomSize(arr,m,n);
+	}
+	instream.close();
+}

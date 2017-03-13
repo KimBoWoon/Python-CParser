@@ -1,0 +1,97 @@
+
+
+#pragma warning(disable : 4996) 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct _point
+{
+	int x;
+	int y;
+}Point;
+
+static int compare(const void*, const void*);	
+static int compare2(const void*, const void*);	
+
+Point* MonotoneWalkway(Point*, int, int []);
+
+void main(void)
+{
+	FILE *inFile;
+	int i, j;
+	int numCases, numCafe, cafeNum;
+	int arrCafeNum[10];
+	Point* point;
+	Point* resultPoint;
+
+	inFile = fopen("input.txt", "r"); 	
+
+	if (inFile == NULL) exit(1);
+	fscanf(inFile, "%d", &numCases); 	
+	for (i = 0; i < numCases; i++)
+	{
+		fscanf(inFile, "%d", &numCafe); 
+		point = (Point*)malloc(sizeof(Point)*numCafe);
+		for (j = 0; j < numCafe; j++)
+			fscanf(inFile, "%d %d", &point[j].x, &point[j].y);
+
+		fscanf(inFile, "%d", &cafeNum);
+		for (j = 0; j < cafeNum; j++)
+			fscanf(inFile, "%d", &arrCafeNum[j]);
+
+		resultPoint = MonotoneWalkway(point, numCafe, arrCafeNum);
+
+		for (j = 0; j < cafeNum; j++)
+			printf("%d %d\n", resultPoint[arrCafeNum[j] - 1].x, resultPoint[arrCafeNum[j] - 1].y);
+
+		free(point);
+		free(resultPoint);
+	}
+	
+
+	fclose(inFile); 			
+}
+
+static int compare(const void* a, const void* b)
+{
+	if (((Point*)a)->x == ((Point*)b)->x)
+		return ((Point*)a)->y - ((Point*)b)->y;
+	return ((Point*)a)->x - ((Point*)b)->x;
+}
+
+static int compare2(const void* a, const void* b)
+{
+	if (((Point*)a)->x == ((Point*)b)->x)
+		return ((Point*)b)->y - ((Point*)a)->y;
+	return ((Point*)a)->x - ((Point*)b)->x;
+}
+
+Point* MonotoneWalkway(Point* point,  int numCafe, int arrCafeNum[])
+{
+	int i, x, cnt, idx;
+	Point* resultPoint = (Point*)malloc(sizeof(Point)*numCafe);
+
+	qsort(point, numCafe, sizeof(Point), compare);
+	if (point[0].y) { qsort(point, numCafe, sizeof(Point), compare2); }	
+	resultPoint[0] = point[0];	
+	for (i = 1, idx = 1; i < numCafe; i++, idx++)
+	{
+		if (point[i - 1].x == point[i].x)
+			resultPoint[idx] = point[i];
+		else if (point[i - 1].y == point[i].y)
+			resultPoint[idx] = point[i];
+		else	
+		{
+			cnt = 0;
+			x = point[i].x;
+			while (x == point[i].x) { i++; cnt++; }
+			--i;
+			while (x == point[i].x) resultPoint[idx++] = point[i--];
+			i += cnt;
+			idx--;
+			point[i].y = resultPoint[idx].y;
+		}
+	}
+	return resultPoint;
+}

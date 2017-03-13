@@ -1,0 +1,38 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+
+int fib(int n);
+
+void main(){
+
+	FILE *file;
+
+	int numCases;
+	int i;
+	int n;  
+
+
+	file = fopen("input.txt","r");
+	if(file == NULL) exit(1);
+
+	fscanf(file,"%d",&numCases);
+
+	for(i=0; i<numCases; i++){
+
+	fscanf(file, "%d", &n);
+
+	printf("%d\n",fib(n));
+	}
+
+	fclose(file);
+}
+
+
+int fib(int n)
+{
+if (n <= 1) 
+return n;
+else 
+return fib(n-1)+fib(n-2);
+}

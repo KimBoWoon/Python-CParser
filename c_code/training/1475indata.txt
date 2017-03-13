@@ -1,0 +1,47 @@
+
+
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+int main()
+{
+	ifstream infile;
+	int testCase, j;
+	int height, width, num; 
+	int floor = 0, roomNum = 0; 
+
+	infile.open("input.txt");
+	if (infile.fail())
+	{
+		cerr << "Input file opening failed. \n";
+	}
+
+	infile >> testCase;
+
+	for (int i = 0; i < testCase; i++)
+	{
+		infile >> height >> width >> num;
+		for (j = 1; j <= width; j++) 
+		{
+			if ((j - 1)*height <= num && num <= j*height) 
+			{
+				floor = num - (j - 1)*height; 
+				roomNum = j;
+				break;
+			}
+
+		}
+		if (roomNum < 10)
+		{
+			cout << floor << "0" << roomNum << endl;
+		}
+		else
+			cout << floor << roomNum << endl;
+
+		
+	}
+	infile.close();
+
+	return 0;
+}

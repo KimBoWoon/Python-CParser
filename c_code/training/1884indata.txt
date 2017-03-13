@@ -1,0 +1,85 @@
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+#define TEAMINFOCNT 3
+#define MULTIFLYCONSTANT 1000
+#define SQUARE(x) (x*x)
+#define EXPECTEDVALUE(s, a) ( ( s + a) == 0) ? (0) : ( ( SQUARE(s) * MULTIFLYCONSTANT ) / (SQUARE(s) + SQUARE(a) ) )
+
+enum teamState
+{
+	kGetScore = 0,
+	kLoseScore,
+	kExpectedValue,
+	kInvalid
+};
+
+int main(void)
+{
+	FILE *fp = NULL;
+	int testCase;
+
+	fp = fopen("input.txt", "r");
+	fscanf(fp, "%d", &testCase);
+	while(testCase--)
+	{
+		int i, a, b, n, m;
+		unsigned int min, max;
+		unsigned int aScore, bScore, **team = NULL;
+
+		fscanf(fp, "%d %d", &n, &m);
+		team = (unsigned int **) malloc (n * sizeof(unsigned int *));
+		for(i=0; i<n; i++)
+		{
+			team[i] = (unsigned int *) malloc (TEAMINFOCNT * sizeof(unsigned int));
+			team[i][kGetScore] = 0;
+			team[i][kLoseScore] = 0;
+			team[i][kExpectedValue] = 0;
+		}
+
+		for(i=0; i<m; i++)
+		{
+			fscanf(fp, "%d %d %u %u", &a, &b, &aScore, &bScore);
+			a = a - 1;
+			b = b - 1;
+			team[a][kGetScore] += aScore;
+			team[a][kLoseScore] += bScore;
+			team[b][kGetScore] += bScore;
+			team[b][kLoseScore] += aScore;
+		}
+
+		for(i=0; i<n; i++)
+		{
+			team[i][kExpectedValue] = EXPECTEDVALUE(team[i][kGetScore], team[i][kLoseScore]);
+		}
+
+		min = team[0][kExpectedValue];
+		max = team[0][kExpectedValue];
+		for(i=1; i<n; i++)
+		{
+			if(min > team[i][kExpectedValue])
+			{
+				min = team[i][kExpectedValue];
+			}
+
+			if(max < team[i][kExpectedValue])
+			{
+				max = team[i][kExpectedValue];
+			}
+		}
+
+		printf("%u\n", max);
+		printf("%u\n", min);
+
+		for(i=0; i<n; i++)
+		{
+			free(team[i]);
+		}
+		free(team);
+	}
+
+	return 0;
+}

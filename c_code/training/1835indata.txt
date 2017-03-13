@@ -1,0 +1,34 @@
+
+#include<iostream>
+#include<fstream>
+#define MAX 51
+
+using namespace std;
+int Parenthesis(char str[], int cnt = 0, int pos = 0){
+	if (cnt < 0) return 0;
+	if (str[pos] == '\0'){ 
+		if (cnt == 0) return 1;
+		else return 0;
+	}
+	if (str[pos] == '(') return Parenthesis(str, cnt + 1, pos + 1); 
+	else return Parenthesis(str, cnt - 1, pos + 1); 
+}
+
+int main(){
+	ifstream in;
+	in.open("input.txt");
+	if (!in) return 1;
+
+	int test_case;
+	in >> test_case;
+
+	char str[MAX] = {};
+	in.getline(str, MAX);
+	while (test_case--){
+		in.getline(str, MAX);
+		if (!Parenthesis(str)) cout << "NO" << endl;
+		else cout << "YES" << endl;
+	}
+	in.close();
+	return 0;
+}

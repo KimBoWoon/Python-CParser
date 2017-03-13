@@ -1,0 +1,102 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+char space[101][101]; 
+void flood_fill(int x, int y, char oldColor, int newColor);
+void insertion_sort(int *data, int size);
+void insert(int *data, int size, int value);
+
+int main() {
+	ifstream fin;
+	fin.open("input.txt");
+	if(!fin) {
+		cout << "Can't read file.";
+		return 0;
+	}	
+
+	int test_case = 0;
+	int row = 0, col = 0;
+	int room[101] = {0, };
+	
+	fin >> test_case; 
+	while(test_case--) {
+		int size = 1; 
+
+		fin >> col >> row; 
+		for(int i = 0; i < row; i++) {
+			for(int j = 0; j < col; j++) {
+				fin >> space[i][j];
+			}	
+		}
+		
+		for(int i = 1; i < (row - 1); i++) {
+			for(int j = 1; j < (col - 1); j++) {
+				if(space[i][j] == '.') {
+					flood_fill(i, j, '.', size);
+					size++;
+				}	
+			}
+		}
+
+		for(int i = 1; i < (row - 1); i++) {
+			for(int j = 1; j < (col - 1); j++) {
+				if(space[i][j] >= 48) {
+					room[space[i][j] - 48]++;
+				}
+			}
+		}
+
+		insertion_sort(room, size);
+		cout << (size - 1) << endl;
+		for(int i = 0; i < size - 1; i++) {
+			cout << room[i] << ' ';
+			room[i] = 0; 
+		}
+
+		cout << endl;
+	}
+	fin.close();
+}
+
+void flood_fill(int x, int y, char oldColor, int newColor)
+{
+	if(space[x][y] != oldColor) {
+		return;
+	}
+	else {
+		space[x][y] = newColor + 48;
+
+		flood_fill(x - 1, y, '.', newColor);
+		flood_fill(x + 1, y, '.', newColor);
+		flood_fill(x, y - 1, '.', newColor);
+		flood_fill(x, y + 1, '.', newColor);
+	}
+}
+
+void insertion_sort(int *data, int size) {
+	if (size == 0) {
+		return;
+	}
+	else {
+		insertion_sort(data, size - 1);
+		insert(data, size - 1, data[size - 1]);
+	}
+}
+
+void insert(int *data, int size, int value)
+{
+	if(size == 0) {
+		data[size] = value;
+	}
+	else {
+		if(data[size - 1] > value) {
+			data[size] = value;
+		}
+		else {
+			data[size] = data[size - 1];
+			insert(data, size - 1, value);
+		}
+	}
+}

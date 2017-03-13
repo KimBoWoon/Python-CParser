@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int GCD(int n1, int n2)	
+{
+	if(n2==0)
+		return n1;
+	else
+		GCD(n2, n1%n2);
+}
+
+void henry(int n1, int n2);	
+
+void main()
+{
+	FILE *f;
+	int count;
+	int i;
+	int a, b;
+
+	f = fopen("input.txt", "r");
+	if(f==NULL) exit(1);
+
+	fscanf(f, "%d", &count);
+
+	for(i=0; i<count; i++)
+	{
+		fscanf(f, "%d %d", &a, &b);
+		henry(a, b);
+	}
+	fclose(f);
+}
+void henry(int n1, int n2)
+{
+	int new_numerator, new_denominator;	
+	int denominator;	
+	int gcd;		
+
+	if(n1 == 1)			
+		denominator = n2;	
+	else				
+		denominator = n2/n1+1;	
+
+	new_numerator = n1*denominator - n2;		
+	new_denominator = n2*denominator;		
+
+	gcd = GCD(new_numerator, new_denominator);	
+	new_numerator /= gcd;		
+	new_denominator /= gcd;
+
+	if(new_numerator == 0)	
+		printf("%d\n", denominator);	
+	else						
+		henry(new_numerator,new_denominator);	
+}												

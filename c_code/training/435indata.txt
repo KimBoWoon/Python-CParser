@@ -1,0 +1,44 @@
+
+
+#include <iostream>
+#include <fstream>
+
+
+using namespace std;
+
+
+int gcd(int a,int b) 
+{
+    if(b==0)
+        return a;
+    else
+        return gcd(b,a%b);
+}
+
+int main()
+{
+
+    ifstream file;
+    
+    file.open("input.txt");
+    
+    if(file.is_open()==false) 
+        cout<<"입력파일이 없습니다."<<endl;
+    
+    else
+    {	
+        int case_num;
+        file>>case_num;
+        
+        for(int i=0; i<case_num; i++)
+        {   
+            int num1,num2;
+            file>>num1>>num2;
+            cout<<gcd(num1,num2)<<endl;
+        }
+
+    }
+
+        file.close();
+
+}

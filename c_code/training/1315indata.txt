@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int lastMo(int,int);
+
+int main()
+{
+	FILE* fp;
+	int i,numTestCases;
+	fp=fopen("input.txt","r");
+	if(fp==NULL) return ;
+
+	fscanf(fp,"%d",&numTestCases);
+	for(i=0; i<numTestCases; i++){
+		int de,mo;
+		fscanf(fp,"%d %d",&de,&mo); 
+
+		printf("%d\n",lastMo(de,mo));
+
+	}
+	fclose(fp);
+	return 0;
+}
+
+int lastMo(int son,int mom)
+{
+	int midMom,midSon;
+	int calMom,calSon;
+	midMom=mom/son+1;
+	if(son/gcd(son,mom)==1){
+		return mom;
+	}
+	else{
+		while(1){
+			calSon=son*midMom-mom;
+			calMom=mom*midMom;
+			midMom=calMom/calSon+1;
+			son=calSon/gcd(calSon,calMom);
+			mom=calMom/gcd(calSon,calMom);
+			if(calSon==1 || son==1)
+				break;
+		}	
+		return mom;
+	}
+}
+
+
+int gcd(int a,int b)
+{
+	if(b==0)
+		return a;
+	else
+		return gcd(b,a%b);
+}

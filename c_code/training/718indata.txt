@@ -1,0 +1,39 @@
+
+
+
+#include <iostream>
+#include <fstream>
+#include <cstring>
+#include <cstdlib>
+using namespace std;
+
+int check_pal(char * str, int first, int last)
+{
+	if (first >= last)
+		return 1;
+	else if (str[first] != str[last])
+		return 0;
+	else
+		return check_pal(str, first + 1, last - 1);
+}
+int main(void)
+{
+	ifstream inStream;
+	int numTestCases = 0;
+	
+	inStream.open("input.txt");
+	if (inStream.fail())
+	{
+		cerr << "Input file opening failed.\n";
+		exit(1);
+	}
+
+	inStream >> numTestCases;
+	for (int i = 0; i < numTestCases; i++)
+	{
+		char arr[1000] = { "", };
+		inStream >> arr;
+		cout << check_pal(arr,0,strlen(arr)-1) << endl;
+	}
+	return 0;
+}

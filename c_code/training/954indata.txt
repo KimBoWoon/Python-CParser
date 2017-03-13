@@ -1,0 +1,116 @@
+
+#include <fstream>
+#include <iostream>
+using namespace std;
+
+int m = 0, n = 0;
+
+class point{
+public:
+	int* gasRight;	
+	int* gasDown;	
+	point(){
+		gasRight = new int[m + n];
+		gasDown = new int[m + n];
+		for (int i = 0; i < m + n; i++){
+			gasRight[i] = 9999;
+			gasDown[i] = 9999;
+		}
+	}
+	~point(){
+		delete gasRight;
+		delete gasDown;
+	}
+
+};
+
+void init(ifstream& input, int **arr, int m, int n){
+	for (int i = 0; i < m; i++)
+		for (int j = 0; j < n; j++)
+			input >> arr[i][j];
+}
+
+int main(){
+
+	ifstream inputFile;
+	inputFile.open("input.txt");
+
+	int caseNum = 0;
+	int** arrRow, **arrCol;
+	inputFile >> caseNum;
+
+	for (int i = 0; i < caseNum; i++){
+
+		int l = 0, g = 0;
+		inputFile >> m >> n >> l >> g;
+
+		arrRow = new int*[m];
+		arrCol = new int*[m - 1];
+		for (int j = 0; j < m; j++){
+			arrRow[j] = new int[n - 1];
+		}
+		for (int i = 0; i < m - 1; i++){
+			arrCol[i] = new int[n];
+		}
+
+		init(inputFile, arrRow, m, n - 1);
+		init(inputFile, arrCol, m - 1, n);
+
+		point** arr;
+		arr = new point*[m];
+		for (int i = 0; i < m; i++)
+			arr[i] = new point[n];
+
+		arr[0][0].gasRight[0] = 0;
+		arr[0][0].gasDown[0] = 0;
+
+		for (int i = 1; i < n; i++)
+			arr[0][i].gasRight[0] = arr[0][i - 1].gasRight[0] + arrRow[0][i - 1];
+		for (int j = 1; j < m; j++)
+			arr[j][0].gasDown[0] = arr[j - 1][0].gasDown[0] + arrCol[j - 1][0];	
+
+		for (int i = 1; i < m; i++)
+			for (int j = 1; j < n; j++){
+				int turnNum = 0;			
+				if (i == j) turnNum = 2 * i - 1;
+				else if (i > j) turnNum = 2 * j;
+				else turnNum = 2 * i;
+				for (int turn = 1; turn <= turnNum; turn++){
+					if (arr[i - 1][j].gasDown[turn] > arr[i - 1][j].gasRight[turn - 1])
+						arr[i][j].gasDown[turn] = arr[i - 1][j].gasRight[turn - 1] + arrCol[i - 1][j];
+					else
+						arr[i][j].gasDown[turn] = arr[i - 1][j].gasDown[turn] + arrCol[i-1][j];
+
+					if (arr[i][j - 1].gasRight[turn] > arr[i][j - 1].gasDown[turn - 1])
+						arr[i][j].gasRight[turn] = arr[i][j - 1].gasDown[turn - 1] + arrRow[i][j - 1];
+					else
+						arr[i][j].gasRight[turn] = arr[i][j - 1].gasRight[turn] + arrRow[i][j - 1];
+				}
+			}
+
+		for (int i = 1; i < m + n; i++){
+			if (arr[m - 1][n - 1].gasDown[i] <= g || arr[m - 1][n - 1].gasRight[i] <= g){
+				cout << (m + n - 2)*l + i << endl;
+				break;
+			}
+			if (i == m + n - 1) cout << -1 << endl;
+		}
+
+		for (int i = 0; i < m - 1; i++)
+			delete arrCol[i];
+
+		for (int j = 0; j < m; j++)
+			delete arrRow[j];
+		
+		delete[] arrCol;
+		delete[] arrRow;
+
+		
+		for (int i = 0; i < m; i++)
+			delete[] arr[i];
+
+		delete[] arr;
+	}
+
+	return 0;
+}

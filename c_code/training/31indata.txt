@@ -1,0 +1,41 @@
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+int main(){
+
+	ifstream inStream;
+	int numTestCases;
+
+	inStream.open("input.txt");
+	if(inStream.fail()){
+		cerr<<"input.txt파일을 열 수 없음.\n";
+		exit(1);
+	}
+
+	inStream>>numTestCases;
+	for(int i=0; i<numTestCases; i++)
+	{
+		int value;
+		bool isPrime = true;
+
+		inStream>>value;
+
+		for(int divisor=2; divisor<=value; divisor++)
+		{
+			if(divisor != value)
+			{
+				if(value % divisor == 0) 
+				{
+					isPrime = false;
+					break;
+				}
+			}
+		}
+		cout<<isPrime<<endl; 
+	}
+	inStream.close(); 
+}

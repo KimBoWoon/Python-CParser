@@ -1,0 +1,41 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+int Euclid(int a, int b);		
+
+int main()
+{
+	ifstream instream;
+	instream.open("input.txt");
+
+	if(instream.fail())
+	{
+		cerr<<"Error"<<endl;
+		exit(1);
+	}
+
+	int no_case;
+	instream>>no_case;
+
+	for(int i=0; i<no_case; i++)		
+	{
+		int num1, num2;
+		instream>> num1>> num2;
+
+		cout<<Euclid(num1, num2)<<endl;		
+	}
+}
+
+int Euclid(int a, int b)		
+{
+	if(b == 0)
+		return a;
+	else
+		return Euclid(b, a%b);
+}
+

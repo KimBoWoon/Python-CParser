@@ -1,0 +1,62 @@
+
+
+
+
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+ifstream inFile("input.txt");
+
+int fac(int n)
+{
+	int i;
+	int sum=1;
+	for(i=1;i<=n;i++)
+	{
+		sum =sum*i;
+	}
+	return sum;
+}
+
+
+class Permu{
+private :
+	int n;
+	int m;
+	bool* string;
+public : 
+	Permu(){
+		inFile >> n >> m;
+		string = new bool[n];
+		for (int i = 0; i < n; i++){
+			string[i] = false;
+		}
+		trip(n);
+		cout << endl;
+	}
+	void trip(int k){
+		if (k == 0){
+			return;
+		}
+		int num = (m - 1) / fac(k - 1);
+		for (int i = 0; i <= num; i++){
+			if (string[i])
+				num++;
+		}
+		cout << (char)('a' + num);
+		string[num] = true;
+		m = (m - 1) % fac(k - 1)+1;
+		trip(k - 1);
+	}
+};
+
+int main(){
+	int cases;
+	inFile >> cases;
+	while (cases--){
+		Permu p;
+	}
+
+	return 1;
+}

@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
+#pragma warning(disable : 4996)
+
+int main()
+{
+	FILE *in_file;
+	int TestCases, i;
+	int height, width, customNum, H, W, CN, A;
+
+	in_file = fopen("input.txt", "r");
+	if (in_file == NULL) exit(1);
+
+	fscanf(in_file, "%d", &TestCases);
+
+	for (i = 0; i < TestCases; i++){
+		fscanf(in_file, "%d", &height);
+		fscanf(in_file, "%d", &width);
+		fscanf(in_file, "%d", &customNum);
+
+		printf("%d%02d\n", (customNum - 1) % height + 1, (customNum - 1) / height + 1);
+	
+	}
+
+}

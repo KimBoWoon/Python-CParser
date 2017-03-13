@@ -1,0 +1,44 @@
+
+
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+int main()
+{
+	int numOfCase = 0; 
+	int numOfFloor = 0;	
+	int numOfRoom = 0; 
+	int client = 0; 
+
+	int floorOfRoom = 0;	
+	int indexOfRoom = 0;		
+
+	ifstream input("input.txt");
+	if (input.fail()){
+		cout << "파일을 여는 데 실패했습니다." << endl;
+	}
+	input >> numOfCase;
+
+	for (int i = 0; i < numOfCase; i++){
+		input >> numOfFloor;	
+		input >> numOfRoom;
+		input >> client;
+
+		indexOfRoom = (client / numOfFloor) + 1; 
+		floorOfRoom = client % numOfFloor;		
+		if (floorOfRoom == 0){	
+			floorOfRoom = numOfFloor;	
+			indexOfRoom--; 
+		}
+		if (indexOfRoom < 10){
+			cout << floorOfRoom << "0" << indexOfRoom << endl;
+		}
+		else{
+			cout << floorOfRoom << indexOfRoom << endl;
+		}
+
+	}
+	input.close();
+	return 0;
+}

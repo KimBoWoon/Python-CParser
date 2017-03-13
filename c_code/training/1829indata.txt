@@ -1,0 +1,68 @@
+#include <iostream>
+#include <fstream>
+#include <cstring>
+bool checkParenthiesis(char p[], int& index, int length, int& count)
+{
+	if (count < 0)
+		return false;
+
+	if (index > length - 1)
+	{
+		if (count == 0)
+			return true;
+		else
+			return false;
+	}
+	else
+	{
+		if (p[index++] == '(')
+			count++;
+		else
+			count--;
+
+		return checkParenthiesis(p, index, length, count);
+	}
+	
+
+}
+void Parenthiesis(char p[])
+{
+	if ( p[0] == ')')
+	{
+		std::cout << "NO" << std::endl;
+		return;
+	}
+	else
+	{
+		int index = 0;
+		int length = strlen(p);
+		int count = 0;
+		if (checkParenthiesis(p, index, length, count))
+			std::cout << "YES" << std::endl;
+		else
+			std::cout << "NO" << std::endl;
+	}
+}
+
+
+int main()
+{
+	std::ifstream input;
+	input.open("input.txt");
+	if (input.fail())
+	{
+		std::cerr << "file open err" ;
+		return 1;
+	}
+
+	int caseNum;
+	input >> caseNum;
+	for (int i = 0; i < caseNum; i++)
+	{
+		char p[51];
+		input >> p;
+		Parenthiesis(p);
+	}
+	
+	return 0;
+}

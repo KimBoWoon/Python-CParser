@@ -1,0 +1,48 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int number=0;
+void change(char c[], int num, int base){			
+	
+	static char baseTable[]="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_*";
+
+	if(num>=base)
+		change(c, num/base, base);
+	c[number]=baseTable[num%base];
+	number++;
+
+}
+
+int Palindrome(char c[], int first, int last){			
+	if(last<=first)
+		return 1;
+	else if(c[first] != c[last])
+		return 0;
+	else
+		return Palindrome(c, first+1, last-1);
+}
+
+int main(){
+	FILE *infile;
+	int i, testCase;
+	infile=fopen("input.txt", "r");
+	fscanf(infile, "%d", &testCase);
+	for(i=0; i<testCase; i++){
+		int num, j, count=0;;
+		fscanf(infile, "%d", &num);
+
+		for(j=2; j<=64; j++){
+			char c[100]="";
+			change(c, num, j);
+			count=Palindrome(c, 0, strlen(c)-1);
+			number=0;
+			if(count==1)
+				break;
+		}
+		printf("%d\n", count);
+		
+	}
+	return 0;
+}

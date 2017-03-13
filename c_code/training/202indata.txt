@@ -1,0 +1,22 @@
+#include <iostream>
+#include <fstream>
+
+int M(int inputNum)
+{
+	if (inputNum > 100)
+		return inputNum - 10;
+	else
+		M(M(inputNum + 11));
+}
+
+int main()
+{
+	std::ifstream file("input.txt");
+	int inputNum = 0, testCase = 0;
+	file >> testCase;
+	while (testCase--)
+	{
+		file >> inputNum;
+		std::cout << M(inputNum) << std::endl;
+	}
+}

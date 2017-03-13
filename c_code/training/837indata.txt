@@ -1,0 +1,30 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int Fibo(int n){						
+	if(n==0)							
+		return 0;
+	else if(n==1)					
+		return 1;
+	else								
+		return Fibo(n-1)+Fibo(n-2);
+}
+
+int main(){
+	FILE *inFile;
+	int i;
+	int testCase;
+	inFile=fopen("input.txt", "r");						
+	fscanf(inFile, "%d", &testCase);
+	
+	for(i=0; i<testCase; i++){							
+		int n; 
+		fscanf(inFile, "%d", &n);
+
+		printf("%d\n", Fibo(n));
+	}
+
+	return 0;
+}

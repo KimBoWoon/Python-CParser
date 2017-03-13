@@ -1,0 +1,35 @@
+#include<iostream>
+#include<cstdlib>
+#include<fstream>
+using namespace std;
+ 
+int main()
+{
+	ifstream fs;
+	fs.open("input.txt");
+    int n;
+    fs>>n;
+    while(n--)
+    {
+        int k,l[15]={0},l2[15]={0};
+        bool f=false;
+        fs>>k;
+        for(int i=0;i<k;i++)fs>>l[i];
+        for(int i=0;i<1000;i++)
+        {
+            f=false;
+            for(int j=0;j<k;j++)
+                l2[j]=(j==k-1)?abs(l[j]-l[0]):abs(l[j]-l[j+1]);
+            for(int j=0;j<k;j++)
+                if(l2[j])
+                {
+                    f=true;
+                    break;
+                }
+            if(!f)break;
+            for(int j=0;j<k;j++)l[j]=l2[j];
+        }
+        if(!f)cout<<"ZERO\n";
+        else cout<<"LOOP\n";
+    }
+}

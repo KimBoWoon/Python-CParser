@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void Fraction (int numerator, int denominator);
+int Division (int a, int b);
+
+int main(int argc, const char*argv[])
+{
+    FILE* infile  = fopen("input.txt","r");
+    int i;
+    int tastcase;
+    
+    fscanf(infile,"%d",&tastcase);
+    for(i=0; i<tastcase; i++)
+    {
+        int num1, num2;
+        int deno1, deno2;
+        int var[2];
+        
+        fscanf(infile, "%d %d %d %d", &num1, &deno1 ,&num2, &deno2);
+        
+        var[0] = num1*deno2 + num2*deno1;
+        var[1] = deno1*deno2;
+        
+        Fraction(var[0], var[1]);
+    }
+    fclose(infile);
+    return 0;
+}
+
+void Fraction(int numerator, int denominator)
+{
+    int max = 1;
+    
+    if(numerator>denominator)
+        max = Division(numerator, denominator);
+    else
+        max = Division(denominator, numerator);
+
+    printf("%d %d\n", numerator/max, denominator/max);
+}
+
+int Division(int a, int b)
+{
+    if(a%b == 0)
+        return b;
+    else return Division(b, a%b);
+}

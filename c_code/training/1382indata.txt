@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define true 1
+#define false 0
+
+typedef int Boolean;
+
+
+unsigned long henry(unsigned long a, unsigned long b);
+unsigned long gcd(unsigned long a, unsigned long b);
+
+void main()
+{
+	FILE* fileDes = NULL;				
+	int trialNum;						
+
+	int i = 0;							
+	unsigned long a, b;					
+
+
+
+	fileDes = fopen("input.txt", "r");
+
+	if(fileDes == NULL)
+		exit(1);
+
+	fscanf(fileDes, "%d", &trialNum);
+
+	for(i = 0; i < trialNum; i++)
+	{
+		fscanf(fileDes, "%lu %lu", &a, &b);
+
+		printf("%lu\n", henry(a, b));		
+
+	}
+
+}
+
+unsigned long henry(unsigned long a, unsigned long b)
+{
+	
+	Boolean continuLoop = true;
+	unsigned long x = 2;	
+	unsigned ax;			
+	unsigned gcdValue;		
+
+	if(b%a == 0)
+	{
+		gcdValue = gcd(a, b);
+		a /= gcdValue; b /= gcdValue;
+	}
+
+	if(a == 1) return b;
+
+	while(continuLoop)
+	{
+		ax = a * x;
+
+		if(ax > b)
+		{
+			a = ax - b;
+			b *= x;
+
+			if(b%a == 0)
+			{
+				b = b/a;
+				continuLoop = false;
+			}
+		}
+		
+		else x++;
+	}
+
+	return b;
+}
+
+unsigned long gcd(unsigned long a, unsigned long b)
+{
+	if(b == 0)
+		return a;
+	else
+		return gcd(b, a%b);
+}
+

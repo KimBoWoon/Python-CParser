@@ -1,0 +1,46 @@
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int prime(int num){
+	int i;
+	for (i = 2; i < num; i++)
+		if (num%i == 0)
+			break;
+	if (i == num)
+		return 1;
+	else
+		return 0;
+}
+int getMaxInt(int* n, int size) {
+	int max = n[0];
+
+	for (int i = 1; i < size; i++)
+		if (n[i] > max) max = n[i];
+
+	return max;
+}
+
+int main(void){
+	ifstream in;
+	in.open("input.txt");
+	int testcases;
+	in >> testcases;
+	int arr[100];
+	int cnt;
+	for (int i = 0; i < testcases; i++){
+		int value;
+		in >> value;
+		cnt = 0;
+		for (int j = 2; j <= value/2; j++){
+			
+			if (prime(j))
+				if (prime(value - j)){
+					arr[cnt++] = j;
+				}
+		}
+		cout<<getMaxInt(arr, cnt)<<' '<<value-getMaxInt(arr,cnt)<<endl;
+	}
+}

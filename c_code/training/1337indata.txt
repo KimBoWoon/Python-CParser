@@ -1,0 +1,58 @@
+
+
+#pragma warning(disable : 4996) 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int HenryAlgorithm(int numerator, int denominator, int lastDenominator);
+int GreatestCommonDivision(int a, int b);			
+
+void main(void)
+{
+	FILE *inFile;
+	int i;
+	int numCases;
+	int numerator, denominator;
+	int lastDenominator;
+
+	inFile = fopen("input.txt", "r"); 
+
+	if (inFile == NULL) exit(1);
+	fscanf(inFile, "%d", &numCases); 
+	for (i = 0; i<numCases; i++)
+	{
+		fscanf(inFile, "%d %d", &numerator, &denominator); 
+
+		lastDenominator = 0;
+
+		printf("%d\n", HenryAlgorithm(numerator, denominator, lastDenominator));
+	}
+
+	fclose(inFile); 
+}
+
+int HenryAlgorithm(int numerator, int denominator, int lastDenominator)
+{
+	int resultOfNumerator, resultOfDenominator;
+
+	if (numerator == 1)						
+		return denominator;
+	else
+	{
+		while (lastDenominator*numerator <= denominator) lastDenominator++;
+		
+		
+		resultOfNumerator = (numerator*lastDenominator - denominator) / GreatestCommonDivision(numerator*lastDenominator - denominator, denominator*lastDenominator);
+		
+		resultOfDenominator = (denominator*lastDenominator) / GreatestCommonDivision(numerator*lastDenominator - denominator, denominator*lastDenominator);	
+
+		return HenryAlgorithm(resultOfNumerator, resultOfDenominator, lastDenominator);			
+	}
+}
+
+int GreatestCommonDivision(int a, int b)
+{
+	if (b == 0) return a;	
+	return GreatestCommonDivision(b, a%b);	
+}

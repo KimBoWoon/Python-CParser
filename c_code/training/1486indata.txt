@@ -1,0 +1,57 @@
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+
+class Hotel
+{
+private:
+	int W;		
+	int H;		
+	int N;		
+public:
+	Hotel(const int W, const int H, const int N)
+	{
+		this->W = W; this->H = H; this->N = N;
+	}
+	void compute()
+	{
+
+		int roomNum = 101;			
+
+		roomNum += ((N-1)%H * 100) + ((N-1)/H);
+
+		std::cout<<roomNum<<std::endl;
+
+
+
+	}
+
+
+};
+
+int main()
+{
+	int trialNum;				
+
+	std::ifstream fileDes;		
+	fileDes.open("input.txt");
+
+
+	fileDes>>trialNum;			
+
+	
+	for(int i = 0; i < trialNum; i++)
+	{
+		int W, H, N;
+		fileDes>>H>>W>>N;		
+
+		Hotel hotel(W, H, N);	
+
+		hotel.compute();		
+
+	}
+
+	fileDes.close();
+
+	return 0;
+}

@@ -1,0 +1,30 @@
+
+
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+int M(int i);
+
+int main(void)
+{
+	ifstream inStream;
+	inStream.open("input.txt");
+
+	int numTestCases;
+
+	inStream >> numTestCases;
+
+	for (int i = 0; i < numTestCases; i++) {
+		int num;
+		inStream >> num;
+		cout << M(num) << endl;
+	}
+	return 0;
+}
+
+int M(int i){
+	if (i > 100) return i-10;
+	else M(M(i + 11));
+}

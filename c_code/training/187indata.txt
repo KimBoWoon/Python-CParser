@@ -1,0 +1,24 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+int M(int n)
+{
+	if (n >100) return n-10;
+	else if (n<=100) return M(M(n+11));
+}
+int main()
+{
+	ifstream in;
+	in.open("input.txt");
+	int t;
+	in >> t;
+	while(t--)
+	{
+		int n;
+		in >> n;
+		cout<<M(n)<<endl;
+	}
+	in.close();
+}

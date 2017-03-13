@@ -1,0 +1,30 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int main(){
+	ifstream fin("input.txt");
+
+	int nCase;
+	fin >> nCase;
+
+	for (int ci = 0; ci < nCase; ++ci){
+		int h, w, n;
+		fin >> h >> w >> n;
+
+		if (n % h == 0)
+			cout << h;
+		else
+			cout << n % h;
+
+		int m = n / h + 1;
+		if (n % h == 0)
+			--m;
+
+		if (m < 10)
+			cout << 0 << m << endl;
+		else
+			cout << m << endl;
+	}
+}

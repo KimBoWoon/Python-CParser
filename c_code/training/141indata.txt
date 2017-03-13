@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int M(int n){
+    if( n>100 ) return n-10;
+    else            return M( M(n+11) );
+}
+
+int main(void){
+    FILE* file;
+    file = fopen("input.txt","r");
+    
+    int cases;
+    fscanf(file, "%d", &cases);
+    while(cases--){
+        int n;
+        fscanf(file, "%d", &n);
+        printf("%d\n", M(n));
+    }
+    return 0;
+}

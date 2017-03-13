@@ -1,0 +1,33 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int gcd(int a, int b){						
+	if(b==0)
+		return a;								
+	else
+		gcd(b, a%b);						
+}
+
+
+int main(){
+	FILE *infile;
+	int i;
+	int testCase;
+	infile=fopen("input.txt", "r");
+	fscanf(infile, "%d", &testCase);
+
+	for(i=0;i<testCase; i++){								
+		int m1, m2, s1, s2;
+		int upNum, downNum;
+		int g;
+		fscanf(infile, "%d %d %d %d", &s1, &m1, &s2, &m2);
+		upNum=s1*m2+s2*m1;							
+		downNum=m1*m2;								
+		g=gcd(upNum, downNum);
+		upNum/=g;											
+		downNum/=g;
+		printf("%d %d\n", upNum, downNum);
+	}
+	return 0;
+}

@@ -1,0 +1,80 @@
+#include <iostream>
+#include <fstream>
+
+void MergingFile(int* numbers, int* cumsum, int count);
+int min(int num1, int num2);
+
+int main(void) {
+
+	int testcase = 0;
+
+	std::ifstream inFile("input.txt");
+	inFile >> testcase;
+
+	for (int i = 0; i < testcase; i++) {
+		int count;
+		inFile >> count;
+
+		int* numbers = new int[count + 1];
+		int* cumsum = new int[count + 1];
+		
+		cumsum[0] = 0;
+		for (int j = 1; j < count + 1; j++){
+			inFile >> numbers[j];
+			cumsum[j] = cumsum[j - 1] + numbers[j];
+		}
+
+		MergingFile(numbers, cumsum, count);
+
+		delete numbers;
+		delete cumsum;
+		
+	}
+	return 0;
+}
+
+void MergingFile(int* numbers, int* cumsum, int count){
+
+	int i, j, k, d;
+	int** total = new int*[count + 1];
+
+	for (int i = 0; i < count + 1; i++){
+		total[i] = new int[count + 1];
+		for (int j = i; j < count + 1; j++){
+			total[i][j] = 0;
+		}
+	}
+	int ret;
+	int x = 0; int y = 0;
+	int min = 999999999;
+	for (int i = 0; i < count - 1; i++){
+		y = 0; x = i + 1;
+		for (int j = i + 1; j < count; j++){
+			min = 999999999;
+			if (y == x - 1){
+				min = numbers[x+1] + numbers[y+1];
+			}
+			else{
+				for (int k = y; k < x; k++){
+					ret = total[y][k] + total[k + 1][x] + cumsum[x+1] - cumsum[y];
+					if (ret < min){
+						min = ret;
+					}
+				}
+			}
+			total[y][x] = min;
+			y++; x++;
+		}
+	}
+	std::cout << min << std::endl;
+	
+	for (int i = 0; i < count + 1; i++){
+		delete total[i];
+	}
+	delete total;
+	
+}
+
+int min(int num1, int num2){
+	return num1 > num2 ? num2 : num1;
+}

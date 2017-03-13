@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define TRUE 1
+#define FALSE 0
+
+void Eureka(int a[],int Num);
+
+int main()
+{
+	FILE *in_file;
+	int no_cases;
+	int i;
+
+	in_file = fopen("input.txt","r");
+	if(in_file == NULL) exit(1);
+
+	fscanf(in_file, "%d",&no_cases);
+
+	for(i=0; i<no_cases; i++){
+		int number,p,q,r,s,D[45];
+		fscanf(in_file,"%d",&number);
+
+		for(p=1; p<45; p++){
+			D[p]=p*(p+1)/2;
+		}
+		Eureka(D,number);
+	}
+
+	fclose(in_file);
+	return 0;
+}
+
+void Eureka(int a[],int Num)
+{
+	int i,j,k;
+	int is_break=FALSE;
+
+	for(i=1; i<45; i++){
+		for(j=1; j<45; j++){
+			for(k=1; k<45; k++){
+				if(Num==a[i]+a[j]+a[k]){
+					is_break=TRUE;
+					printf("1\n");
+					return ;}
+			}
+		}
+	}
+	printf("0\n");
+}

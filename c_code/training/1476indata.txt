@@ -1,0 +1,29 @@
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    FILE *fp;
+    
+    int i, num_cases;
+    int fl, r, g;
+    
+    fp = fopen("input.txt", "r");
+    if(fp == NULL)  exit(1);
+    
+    fscanf(fp, "%d", &num_cases);
+    
+    for(i=0; i<num_cases; i++) {
+        fscanf(fp, "%d %d %d", &fl, &r, &g);
+        printf("%d%02d\n", (g-1)%fl+1, (g-1)/fl+1);
+    }
+    
+    fclose(fp);
+    
+    return 0;
+
+}
+

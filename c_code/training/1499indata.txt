@@ -1,0 +1,118 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAXSIZE 9
+
+#define MARK 1
+#define UNMARK 0
+
+typedef struct Point
+{
+	int x;
+	int y;
+} point;
+
+point direction[8] = { {1,-2},{2,-1},{2,1},{1,2},{-1,2},{-2,1},{-2,-1},{-1,-2} };
+
+int board[MAXSIZE][MAXSIZE];
+int path[MAXSIZE][MAXSIZE];
+
+int knightTour(int m, int n, point pos, int counter)
+{
+	int i;
+	point next;
+
+	if (counter == m*n)
+	{
+		return 1;
+	}
+	for (i = 0; i < 8; i++)
+	{
+		next.x = pos.x + direction[i].x;
+		next.y = pos.y + direction[i].y;
+
+		if (next.x > 0 && next.x <= n &&
+			next.y > 0 && next.y <= m &&
+			board[next.y][next.x] != MARK)
+		{
+			board[next.y][next.x] = MARK;
+			path[next.y][next.x] = counter + 1;
+
+			if (knightTour(m, n, next, counter + 1))
+			{
+				return 1;
+			}
+			board[next.y][next.x] = UNMARK;
+		}
+	}
+
+	return 0;
+}
+
+void main(void)
+{
+	FILE *in_file;
+	int k;
+	int i, j;
+	int gatsu;
+	int hang;
+	int yul;
+	int tempx;
+	int tempy;
+	int garo;
+	int sero;
+
+
+	point start;
+
+	in_file = fopen("input.txt", "r"); 
+
+	if (in_file == NULL) 
+		exit(1);
+	fscanf(in_file, "%d", &gatsu); 
+
+	for (k = 0; k<gatsu; k++)
+	{
+		fscanf(in_file, "%d", &hang);	
+		fscanf(in_file, "%d", &yul);	
+		fscanf(in_file, "%d", &tempx);	
+		fscanf(in_file, "%d", &tempy);	
+		start.y = tempx;
+		start.x = tempy;
+
+		for (i = 1; i <= hang; i++)
+		{
+			for (j = 1; j <= yul; j++)
+			{
+				board[i][j] = UNMARK;
+			}
+		}
+
+			board[start.y][start.x] = MARK;
+			path[start.y][start.x] = 1;
+
+			if (knightTour(hang, yul, start, 1))
+			{
+				printf("1\n");
+				for (garo = 1; garo <= hang; garo++)
+				{
+					for (sero = 1; sero <= yul; sero++)
+					{
+						if (path[garo][sero] < 10)
+						{
+							printf(" %d ", path[garo][sero]);
+						}
+						else
+						{
+							printf("%d ", path[garo][sero]);
+						}
+					}
+					printf("\n");
+				}
+			}
+			else
+				printf("0\n");
+		
+	}
+	fclose(in_file); 
+}

@@ -1,0 +1,40 @@
+
+#include <iostream>
+#include <fstream>
+
+const int MAX_SIZE = 102;
+
+using namespace std;
+
+int gcd(int a, int b) {
+	return (b > 0) ? gcd(b, a%b) : a;
+}
+
+int main(void) {
+	ifstream in("input.txt");
+
+	int t;
+
+	in >> t;
+
+	for (int testcase = 0; testcase < t; testcase++) {
+		int n1, n2, m1, m2;
+
+
+		in >> n1 >> n2 >> m1 >> m2;
+
+		int frac_son, frac_mom, frac_gcd;
+		frac_son = n1 * m2 + n2 * m1;
+		frac_mom = n2 * m2;
+		frac_gcd = gcd(frac_son, frac_mom);
+
+		int result_son, result_mom;
+		result_son = frac_son / frac_gcd;
+		result_mom = frac_mom / frac_gcd;
+
+
+		cout << result_son << " " << result_mom << endl;
+	}
+
+	return 0;
+}

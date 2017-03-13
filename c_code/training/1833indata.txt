@@ -1,0 +1,47 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+
+void parenthesis(std::string parent, int begin);
+
+int count = 0;
+
+int main() {
+	std::ifstream inFile;
+	inFile.open("input.txt");
+
+	int testCaseNum;
+
+	inFile >> testCaseNum;
+
+	for(int i = 0; i < testCaseNum; i++) {
+		std::string parent;
+
+		inFile >> parent;
+
+		parenthesis(parent, 0);
+
+		if (count != 0)
+			std::cout << "NO" << std::endl;
+		else
+			std::cout << "YES" << std::endl;
+
+		count = 0;
+	}
+}
+
+void parenthesis(std::string parent, int begin) {
+	if (parent[begin] == '(')
+		count++;
+	else if (parent[begin] == ')') {
+		count--;
+
+		if (count < 0)
+			return;
+	}
+	if (parent.size() == begin)
+		return;
+	else
+		parenthesis(parent, begin + 1);
+}

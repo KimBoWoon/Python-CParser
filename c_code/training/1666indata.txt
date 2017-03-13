@@ -1,0 +1,113 @@
+#include <stdio.h>
+#include <stdlib.h>
+ 
+typedef struct monot{
+    int x,y;
+}monot;
+ 
+typedef struct visit{
+    int x,y;
+}visit;
+ 
+int compare(const void *mono1, const void *mono2)		
+{
+    if(((monot*)mono1)->x == ((monot*)mono2)->x)
+        return ((monot*)mono1)->y - ((monot*)mono2)->y;
+    else
+        return ((monot*)mono1)->x - ((monot*)mono2)->x;
+}
+int main()
+{
+    int numcase;
+    int i, k;
+ 
+    int n_cafe;
+    int m_cafe, m_number;
+ 
+    int i_temp = 0;
+    int x_temp = 0;
+
+	monot* mono = NULL;
+    visit * visit_number = NULL;
+	
+	FILE * in_file;
+	in_file = fopen("input.txt", "r");
+	
+    fscanf(in_file, "%d", &numcase);
+ 
+    while(numcase--)
+    {
+        fscanf(in_file, "%d", &n_cafe);
+        mono = (monot *)malloc(n_cafe * sizeof(monot) +2);
+        visit_number = (visit *)malloc(n_cafe * sizeof(visit) +2);
+ 
+        for(i=0; i<n_cafe; i++)
+            fscanf(in_file, "%d %d", &mono[i].x, &mono[i].y);
+
+        qsort(mono, n_cafe, sizeof(monot), compare);				
+         
+        i=0;
+        i_temp = 0;
+ 
+        if((mono[i].x == 0) && (mono[i].y < 0))						
+        {
+            while((mono[i].x == 0) && (i < n_cafe))
+                i++;
+            while(i--)
+            {
+                visit_number[i_temp].x = mono[i].x;
+                visit_number[i_temp].y = mono[i].y;
+                i_temp++;
+            }
+        }
+        else														
+        {
+            while((mono[i].x == 0) && (i < n_cafe))
+                i++;
+            while(i--)
+            {
+                visit_number[i_temp].x = mono[i_temp].x;
+                visit_number[i_temp].y = mono[i_temp].y;
+                i_temp++;
+            }
+        }
+        i = i_temp;
+ 
+        for(i; i<n_cafe; )											
+        {
+            k = i;
+            x_temp = mono[k].x;
+             
+            while((mono[k].x == x_temp) && (k < n_cafe))
+                k++;
+ 
+            if((visit_number[i-1].y) != (mono[i].y))
+            {
+                while(-i+k--)
+                {
+                    visit_number[i_temp].x = mono[k].x;
+                    visit_number[i_temp].y = mono[k].y;
+                    i_temp++;
+                }
+            }
+            else
+            {
+                while(-i+k--)
+                {
+                    visit_number[i_temp].x = mono[i_temp].x;
+                    visit_number[i_temp].y = mono[i_temp].y;
+                    i_temp++;
+                }
+            }
+            i = i_temp;
+        }
+        fscanf(in_file, "%d", &m_cafe);
+        for(i=0; i<m_cafe; i++)
+        {
+            fscanf(in_file, "%d", &m_number);
+            printf("%d %d\n", visit_number[m_number-1].x, visit_number[m_number-1].y);
+        }
+        free(visit_number);
+        free(mono);
+    }
+}

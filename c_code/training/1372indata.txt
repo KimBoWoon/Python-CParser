@@ -1,0 +1,113 @@
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int X[1000];
+int henry_A(int x, int a , int b);
+int henry_B(int x, int a , int b);
+int gcd(int x,int y);
+int intcmp(const void* pa, const void* pb);
+
+
+void main(void)
+{
+	FILE *inFile;
+	int i,j;
+	int n,m;
+	int numCases;
+	int count ;
+	int save_n, save_m;
+
+	inFile = fopen("input.txt","r"); 
+	if(inFile ==NULL) exit(1);
+
+	fscanf(inFile, "%d", &numCases);
+
+	for(i=0;i<numCases;i++)
+	{
+		fscanf(inFile, "%d %d",&n,&m );
+		count =1;
+		save_n=0;
+		save_m=0;
+
+		if(n==1)
+		{
+			printf("%d \n",m);
+		}
+		else 
+		{
+			X[0] = m/n +1;
+			for(j=1;j<100;j++)
+			{
+
+					save_n = henry_A(X[j-1], n , m);
+					save_m = henry_B(X[j-1], n , m);
+				
+					n = save_n;
+					m = save_m;
+					if(n ==1)
+					{
+						X[j] =m;
+						break;
+					}
+					else
+					X[j] = m/n +1; 
+				
+			}
+
+			qsort(X,100,sizeof(int),intcmp);
+
+			printf("%d \n",X[0]);
+		}
+
+
+		for(j=0;j<1000;j++)
+		{
+			X[j] =0;
+		}
+		
+	}
+	fclose(inFile); 
+
+}
+
+int henry_A(int x, int a , int b)
+{
+	int num;
+	num = gcd(a*x-b,b*x);
+
+	return (a*x-b)/num;
+
+}
+
+int henry_B(int x, int a , int b)
+{
+	int num;
+	num = gcd(a*x-b,b*x);
+
+	return (b*x)/num;
+
+}
+int gcd(int x,int y)
+{
+	int save;
+	int k;
+
+	for(k=y;k>0 ; k=save%k)
+	{
+		save = x;
+		x =k;	
+	}
+
+		return x;	
+}
+
+int intcmp(const void* pa, const void* pb)
+{
+        return (*(int*)pb) - (*(int*)pa);
+
+
+}

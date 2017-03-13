@@ -1,0 +1,18 @@
+#include<iostream>
+#include<fstream>
+using namespace std;
+int Fact(int val);
+int main(){
+	ifstream fin;
+	fin.open("input.txt");
+	int num,val;
+	fin >> num;
+	for (int cnt = 0; cnt < num; cnt++){
+		fin >> val;
+		cout << Fact(val) << endl;
+	}
+}
+int Fact(int val){		
+	if (val <= 1) return 1;		
+	else return val*Fact(val - 1);		
+}

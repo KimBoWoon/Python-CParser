@@ -1,0 +1,88 @@
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#pragma warning(disable : 4996)
+int drivingTest[101][101][2][300];
+int main()
+{
+	FILE* inFile;
+	int testCase = 0, width, height, lineTime, totalFuel;
+	int widthFuel[101][101], heightFuel[101][101];
+	int i, j, k, l;
+	int count = 2000000000;
+	inFile = fopen("input.txt", "r");
+	if (inFile == NULL) exit(1);
+	fscanf(inFile, "%d", &testCase);
+	while (testCase--)
+	{
+		fscanf(inFile, "%d %d %d %d", &width, &height, &lineTime, &totalFuel);
+		for (i = 1; i <= width; i++)
+		{
+			for (j = 1; j < height; j++)
+			{
+				fscanf(inFile, "%d", widthFuel[i] + j);
+			}
+		}
+		for (i = 1; i < width; i++)
+		{
+			for (j = 1; j <= height; j++)
+			{
+				fscanf(inFile, "%d", heightFuel[i] + j);
+			}
+		}
+		for (i = 1; i <= width; i++)
+		{
+			for (j = 1; j <= height; j++)
+			{
+				for (k = 0; k < 2; k++)
+				{
+					for (l = 0; l < 201; l++)
+					{
+						drivingTest[i][j][k][l] = totalFuel + 1;
+					}
+				}
+			}
+
+		}
+		drivingTest[1][1][0][0] = drivingTest[1][1][1][0] = 0;
+		for (i = 1; i <= width; i++)
+		{
+			for (j = 1; j <= height; j++)
+			{
+				for (l = 0; l < 201; l++)
+				{
+					for (k = 0; k < 2; k++)
+					{
+						if (drivingTest[i][j][k][l] <= totalFuel){
+							if (i == width && j == height){
+								if (count > l) count = l;
+							}
+							if (l < 200 && drivingTest[i][j][!k][l + 1] > drivingTest[i][j][k][l])
+								drivingTest[i][j][!k][l + 1] = drivingTest[i][j][k][l];
+							if (k){
+								if (j < height && drivingTest[i][j + 1][k][l] > drivingTest[i][j][k][l] + widthFuel[i][j])
+									drivingTest[i][j + 1][k][l] = drivingTest[i][j][k][l] + widthFuel[i][j];
+							}
+							else{
+								if (i < width && drivingTest[i + 1][j][k][l] > drivingTest[i][j][k][l] + heightFuel[i][j])
+									drivingTest[i + 1][j][k][l] = drivingTest[i][j][k][l] + heightFuel[i][j];
+							}
+						}
+					}
+				}
+			}
+		}
+		if (count < 2e9)
+		{
+			printf("%d\n", (width + height - 2)*lineTime + count);
+			count = 2e9;
+		}
+		else
+		{
+			printf("-1\n");
+			count = 2e9;
+		}
+	}
+}

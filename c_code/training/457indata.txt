@@ -1,0 +1,33 @@
+
+
+
+
+
+#include <iostream>
+#include <fstream>
+
+int euclid(int x, int y);
+
+int main() {
+	std::ifstream inFile;
+	inFile.open("input.txt");
+
+	int testCaseNum;
+
+	inFile >> testCaseNum;
+
+	for(int i = 0; i < testCaseNum; i++) {
+		int a = 0, b = 0;
+
+		inFile >> a >> b;
+
+		std::cout << euclid(a, b) << std::endl;
+	}
+}
+
+int euclid(int a, int b) {
+	if (b == 0)
+		return a;
+	else
+		return euclid(b, a % b);
+}

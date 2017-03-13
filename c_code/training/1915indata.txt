@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void main()
+{
+	FILE *f;
+	int count;
+	int i;
+	f=fopen("input.txt", "r");
+
+	if(f==NULL)	exit(1);
+	fscanf(f, "%d", &count);
+
+	for(i=0; i<count; i++)	{
+		int teamCnt, matchCnt;	
+		int team1, team2;		
+		int team1Score, team2Score;	
+		int *score, *lossPoint, *w;	
+		int max, min;	
+		int j;
+
+		fscanf(f, "%d %d", &teamCnt, &matchCnt);	
+
+		score = (int *)malloc(sizeof(int)*teamCnt);	
+		lossPoint = (int *)malloc(sizeof(int)*teamCnt);	
+		w = (int *)malloc(sizeof(int)*teamCnt);	
+
+		for(j=0; j<teamCnt; j++)	{	
+			*(score+j) = 0;
+			*(lossPoint+j) = 0;
+		}
+
+		for(j=0; j<matchCnt; j++)	{
+			fscanf(f, "%d %d %d %d", &team1, &team2, &team1Score, &team2Score);
+			*(score+(team1-1)) += team1Score;	
+			*(score+(team2-1)) += team2Score;
+
+			*(lossPoint+(team1-1)) += team2Score;	
+			*(lossPoint+(team2-1)) += team1Score;
+		}
+
+		for(j=0; j<teamCnt; j++)	{	
+			*(w+j) = (*(score+j) * *(score+j) * 1000) / (*(score+j) * *(score+j) + *(lossPoint+j) * *(lossPoint+j));
+		}
+
+		max = *w;	
+		min = *w;
+
+		for(j=1; j<teamCnt; j++)	{	
+			if(max < *(w+j))
+				max = *(w+j);
+			else if(min > *(w+j))
+				min = *(w+j);
+		}
+		printf("%d\n%d\n", max, min);	
+		free(score);		
+		free(lossPoint);
+		free(w);
+	}
+	fclose(f);
+}

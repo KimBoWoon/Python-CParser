@@ -1,0 +1,29 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void main(void) 
+{
+	int test=0, i, j;
+	int h, w, n, room;
+	FILE *file = fopen("input.txt", "r"); 
+	if(NULL == file) exit(1);
+
+	fscanf(file, "%d", &test);
+
+	for(i=0; i<test; i++) 
+	{
+		fscanf(file, "%d %d %d", &h, &w, &n); 
+		room=0;
+		
+		if(n % h ==0) 
+			room = (h * 100) + (n/h);
+		
+		else 
+			room = (n % h * 100) + (n / h + 1);
+		printf("%d\n", room);			
+	}
+
+	fclose(file);
+}

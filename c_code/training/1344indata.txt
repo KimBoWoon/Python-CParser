@@ -1,0 +1,40 @@
+
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+int gcd(int a, int b){
+	if (b == 0) return a;
+	else return gcd(b, a%b);
+}
+
+void fra(int* a,int* b){
+	int t = gcd(*a, *b);
+	*a = *a / t;
+	*b = *b / t;
+}
+
+int main(){
+	ifstream in;
+	in.open("input.txt");
+	if (!in) return 1;
+
+	int test_case;
+	in >> test_case;
+	while (test_case--){
+		int a, b; 
+		in >> a >> b;
+		fra(&a, &b);
+		int c;
+		while (a > 0){
+			c = (b - 1) / a + 1;
+			a = a*c / gcd(b, c) - b / gcd(b, c);
+			b = b*c / gcd(b, c);
+			fra(&a, &b);
+		}
+		cout << c << endl;
+	}
+	in.close();
+	return 0;
+}

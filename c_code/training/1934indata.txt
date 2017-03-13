@@ -1,0 +1,72 @@
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+struct TeamGrade{
+	int goal;
+	int loss;
+};
+
+int Pita(int S, int A);
+
+int main(void){
+
+	ifstream inStream;
+	inStream.open("input.txt");
+
+	int numTestCases;
+	inStream >> numTestCases;
+
+	while (numTestCases--){
+	
+		int teamNum, playNum;
+		inStream >> teamNum >> playNum;
+		
+		TeamGrade* team = new TeamGrade[teamNum+1];
+
+		for (int i = 0; i < teamNum+1; i++){
+			team[i].goal = 0;
+			team[i].loss = 0;
+		}
+
+		for (int i = 1; i <= playNum; i++){
+			int a, b, p, q;  
+			inStream >> a >> b >> p >> q;
+			team[a].goal += p;
+			team[a].loss -= q;
+			team[b].goal += q;
+			team[b].loss -= p;
+		}
+		int Max = 0; int Min = 1000;
+		for (int i = 1; i <= teamNum; i++){
+			int P;
+			if (team[i].goal == 0 && team[i].loss == 0)
+				P = 0;
+			else
+				P = Pita(team[i].goal, team[i].loss);
+
+			if (Max < P) Max = P;
+			if (Min > P) Min = P;
+		}
+
+		cout << Max << endl;
+		cout << Min << endl;
+
+
+
+	}
+
+
+
+	return 0;
+}
+
+int Pita(int S, int A){
+
+	double W;
+	double S2 = S*S;
+	double A2 = A*A;
+	W = (double)((S2 / (S2 + A2))*1000);
+	return W;
+}

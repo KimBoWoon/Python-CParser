@@ -1,0 +1,42 @@
+
+
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+int gcd(int i, int j);
+
+int main(void)
+{
+	ifstream inStream;
+	inStream.open("input.txt");
+
+	int numTestCases;
+
+	inStream >> numTestCases;
+
+	for (int i = 0; i < numTestCases; i++) {
+
+		int a, b, c, d;
+		int na, nb,ng;
+		inStream >> a >> b >> c >> d;
+
+		if (b == d){
+			na = a + c;
+			nb = b;
+		}
+		else{
+			na = a*d + b*c;
+			nb = b*d;
+		}
+
+		ng = gcd(na, nb);
+		cout << na / ng <<" "<<nb / ng << endl;
+	}
+}
+
+int gcd(int i, int j){
+	if (j == 0) return i;
+	else gcd(j, i%j);
+}

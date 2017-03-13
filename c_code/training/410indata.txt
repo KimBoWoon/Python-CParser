@@ -1,0 +1,51 @@
+
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int uclid(int divisor, int remainder);
+
+void swap(int &smallNum, int &bigNum);
+
+int main()
+{
+	ifstream inFile;
+	inFile.open("input.txt");
+
+	int numTestCase;	
+	inFile >> numTestCase;
+
+	while (numTestCase--)	
+	{
+		int divisor, remainder;	
+		inFile >> divisor >> remainder;
+
+		if (divisor < remainder)	
+			swap(divisor, remainder);	
+		
+		cout << uclid(divisor, remainder) << endl;
+	}
+
+	inFile.close();
+	return 0;
+}
+
+int uclid(int divisor, int remainder)
+{
+
+	if (divisor == 0 || remainder == 0)
+		return divisor;
+	
+
+	else
+		return uclid(remainder, divisor % remainder);
+}
+
+void swap(int &smallNum, int &bigNum)	
+{
+	int temp;
+	temp = smallNum;
+	smallNum = bigNum;
+	bigNum = temp;
+}

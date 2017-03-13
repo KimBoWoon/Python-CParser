@@ -1,0 +1,78 @@
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+int main()
+{
+	ifstream instream;
+	int testcase;
+
+	instream.open("input.txt");
+	if (instream.fail())
+	{
+		cerr << "input file open failed";
+
+	}
+
+	instream >> testcase;
+
+	int sumarr[501];
+	int filearr[501];
+	int D[501][501];
+
+	for (int i = 0; i < testcase; i++)
+	{
+		int pagenum;
+		int sum;
+		instream >> pagenum;
+		sumarr[0] = 0;
+		filearr[0] = 0;
+		for (int j = 1; j <= pagenum; j++)
+		{
+			instream >> sum;
+			filearr[j] = sum;
+			sumarr[j] = sum + sumarr[j - 1];
+		}
+		for (int j = 0; j <= pagenum; j++)
+		{
+			for (int k = 0; k <= pagenum; k++)
+			{
+				D[j][k] = 0;
+			}
+		}
+
+		int h = 1;
+		for (int j = 1; j <= pagenum - 1; j++)
+		{
+			D[j][j + h] = filearr[j] + filearr[j + 1];
+		}
+	
+		int minnum=0;
+		int tempnum = 0;
+
+		for (h = 1; h <= pagenum - 1; h++)
+		{
+			for (int j = 1; j <= pagenum - h; j++)
+			{
+				for (int k = j; k < j + h; k++)
+				{
+					tempnum = D[j][k] + D[k + 1][j + h] + (sumarr[j + h] - sumarr[j - 1]);
+					if (minnum == 0 || minnum > tempnum)
+					{
+						minnum = tempnum;
+
+					}
+				}
+				D[j][j + h] = minnum;
+				minnum = 0;
+			}
+		}
+
+
+		cout << D[1][pagenum] << endl;
+
+	}
+	return 0;
+
+}

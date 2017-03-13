@@ -1,0 +1,103 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+void getroomnum(char *room[102], int room_horizon, int room_vertical);
+void floodFill(char *room[102], int x, int y, int &roomsize);
+int cmp(const void *a, const void *b);
+
+int main()
+{
+	std::fstream infile;
+	int testcase;
+	int room_horizon, room_vertical;
+	char **room = NULL;
+	infile.open("input.txt");
+	if (infile.fail())
+	{
+		std::cerr << "error";
+		exit(1);
+	}
+
+	infile >> testcase;
+	for (int i = 0; i < testcase; i++)
+	{
+		infile >> room_horizon >> room_vertical;
+		room = new char*[room_vertical + 2];
+		for (int i = 0; i < room_vertical + 2; i++)
+		{
+			room[i] = new char[room_horizon + 2];
+			for (int j = 0; j < room_horizon + 2; j++)
+			{
+				room[i][j] = '\0';
+			}
+		}
+		for (int i = 1; i < room_vertical+1 ; i++)
+		{
+			for (int j = 1; j < room_horizon+1; j++)
+			{
+				infile >> room[i][j];
+			}
+		}
+		getroomnum(room, room_horizon, room_vertical);
+	}
+
+	for (int i = 0; i < room_vertical + 2; i++)
+	{
+		delete[] room[i];
+	}
+	delete[] room;
+
+	return 0;
+}
+
+void getroomnum(char *room[102], int room_horizon, int room_vertical)
+{
+	int roomnumber = 0;
+	int getroom[100] = { 0, };
+	int roomsize = 0;
+	for (int i = 1; i < room_vertical + 1; i++)
+	{
+		for (int j = 1; j < room_horizon + 1; j++)
+		{
+			if (room[i][j] == '.' || room[i][j] == '+')
+			{
+				floodFill(room, i, j, roomsize);
+			}
+			else continue;
+
+			if (roomsize != 0)
+			{
+				getroom[roomnumber++] = roomsize;
+				roomsize = 0;
+			}	
+		}
+	}
+	qsort(getroom, roomnumber, sizeof(int), cmp);
+	std::cout << roomnumber << std::endl;
+	for (int i = 0; i < roomnumber; i++)
+	{
+		std::cout << getroom[i] << " ";
+	}
+	std::cout << std::endl;
+}
+
+void floodFill(char *room[102], int x, int y, int &roomsize)
+{
+	if (room[x][y] != '.') return;
+	else
+	{
+		roomsize++;
+		room[x][y] = 'x';
+		floodFill(room, x - 1, y, roomsize);
+		floodFill(room, x + 1, y, roomsize);
+		floodFill(room, x, y - 1, roomsize);
+		floodFill(room, x, y + 1, roomsize);
+	}
+}
+int cmp(const void *a, const void *b)
+{
+	int x = *(int*)a;
+	int y = *(int*)b;
+	return (x>y ? -1 : x<y ? 1 : 0);
+}

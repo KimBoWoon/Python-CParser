@@ -1,0 +1,24 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+int theGreatest(int a, int b){
+	if (b == 0)
+		return a;
+	else
+		return theGreatest(b, a%b);
+}
+int main(){
+	ifstream in;
+	in.open("input.txt");
+	int n,a1,b1,a2,b2,multipleA,multipleB,greatest;
+	in >> n;
+	for (int i = 0; i < n; i++){
+		in >> a1 >> b1 >> a2 >> b2;
+		multipleA = a1*b2+a2*b1;
+		multipleB = b1*b2;
+		greatest = theGreatest(multipleA, multipleB);
+		cout << multipleA / greatest << " " << multipleB / greatest << endl;
+	}
+	return 0;
+}

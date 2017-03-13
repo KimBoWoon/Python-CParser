@@ -1,0 +1,101 @@
+
+#pragma warning(disable:4996)
+
+#include <cstdio>
+#include <cstdlib>
+
+#define ABS(x) (((x) < 0) ? (-x) : (x))
+
+#define MAX_RANGE 1000000
+
+int numberArray[MAX_RANGE];
+int compare(const void* num1, const void* num2){
+	return *(int*)num1 - *(int*)num2;
+}
+
+void getTwoNumber(int arrayStart, int arrayEnd, int length, int targetNumber);
+
+int main(int argc, char* argv[]){
+
+	FILE* readStream = 0x00L;
+	readStream = fopen("input.txt", "r");
+
+	if(readStream == 0x00L){
+		fprintf(stderr, "Can`t open the file.\n");
+		return 2;
+	}
+	int testCases = 0,
+		numberOfNum = 0,
+		targetNumber = 0;
+	
+	fscanf(readStream, "%d", &testCases);
+
+	while(testCases--){
+
+		int leftFlag = 0,
+			rightFlag = 0,
+			currentSubstract = 0,
+			substractCounter = 1;
+
+		fscanf(readStream, "%d %d", &numberOfNum, &targetNumber);
+
+		for(int i = 0; i < numberOfNum; ++i) fscanf(readStream, "%d", &numberArray[i]);
+
+		qsort(numberArray, numberOfNum, sizeof(int), compare);
+
+		if((targetNumber <= (numberArray[0] + numberArray[1])) || (targetNumber >= (numberArray[numberOfNum-1] + numberArray[numberOfNum-2]))) puts("1");
+		else getTwoNumber(0, numberOfNum - 1, numberOfNum, targetNumber);
+		
+	}
+}
+void getTwoNumber(int arrayStart, int arrayEnd, int length, int targetNumber){
+
+	if(length >= 6){
+
+		int middle = (length / 2) - 1;
+		
+		if(((numberArray[arrayStart] + numberArray[arrayStart+1]) <= targetNumber) && (targetNumber <= (numberArray[arrayStart] + numberArray[arrayStart + middle]))) getTwoNumber(arrayStart, middle, (length/2), targetNumber);
+		else if(((numberArray[arrayStart + middle + 1] + numberArray[arrayStart + length - 1]) <= targetNumber) && (targetNumber <= (numberArray[arrayStart + length - 2] + numberArray[arrayStart + length - 1]))) getTwoNumber((arrayStart + middle + 1), arrayEnd, ((length%2 == 0) ? (length/2) : ((length/2) + 1)), targetNumber);
+		else{
+			int currentSub = 0,
+			countSub = 0,
+			rightFlag = arrayEnd;
+
+			currentSub = ABS((targetNumber - (numberArray[arrayStart] + numberArray[arrayEnd])));
+
+			for(int i = arrayStart; i < arrayEnd; ++i){
+				if(i >= rightFlag) break;
+
+				while(rightFlag != i){
+				
+					int sum = numberArray[i] + numberArray[rightFlag];
+					int absNum = ABS((targetNumber - sum));
+
+					if(absNum < currentSub){
+						currentSub = absNum;
+						countSub = 1;
+					}else if(absNum == currentSub) ++countSub;
+					
+					if(absNum < ABS((targetNumber - (numberArray[i] + numberArray[rightFlag-1])))) break;
+					--rightFlag;
+				}
+			}
+			printf("%d\n", countSub);
+		}
+	}else{
+		int currentSub = 0,
+			countSub = 0;
+
+		currentSub = ABS((targetNumber - (numberArray[arrayStart] + numberArray[arrayStart+1])));
+
+		for(int i = 0; i < (length-1); ++i){
+			for(int j = i + 1; j < length; ++j){
+				if(ABS((targetNumber - ( numberArray[arrayStart + i] + numberArray[arrayStart + j]))) < currentSub){
+					currentSub = ABS((targetNumber - (numberArray[arrayStart + i] + numberArray[arrayStart + j])));
+					countSub = 1;
+				}else if(ABS((targetNumber - ( numberArray[arrayStart + i] + numberArray[arrayStart + j]))) == currentSub) ++countSub;
+			}
+		}
+		printf("%d\n", countSub);
+	}
+}

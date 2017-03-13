@@ -1,0 +1,33 @@
+
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+int gcd(int a, int b){
+	if (b == 0)
+		return a;
+	else
+		return gcd(b, a%b);
+}
+
+void simpleFraction(int num, int deno){
+	int temp = gcd(num, deno);
+	if (temp == 1)
+		cout << num << ' ' << deno << endl;
+	else
+		simpleFraction(num / temp, deno / temp);
+}
+
+int main(){
+	ifstream File;
+	int numCase = 0;
+	int deno1 = 0, num1 = 0, deno2 = 0, num2 = 0;
+	File.open("input.txt");
+	File >> numCase;
+	for (int iter = 0; iter < numCase; iter++){
+		File >> num1 >> deno1 >> num2 >> deno2;
+		simpleFraction(num1*deno2 + num2*deno1, deno1*deno2);
+	}
+	File.close();
+	return 0;
+}

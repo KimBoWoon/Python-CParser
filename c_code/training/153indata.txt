@@ -1,0 +1,34 @@
+
+
+#pragma warning(disable : 4996) 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int McCarthy(int num);
+
+void main(void)
+{
+	FILE *inFile;
+	int i;
+	int numCases, numData;
+
+	inFile = fopen("input.txt", "r"); 
+
+	if (inFile == NULL) exit(1);
+	fscanf(inFile, "%d", &numCases); 
+	for (i = 0; i<numCases; i++)
+	{
+		fscanf(inFile, "%d", &numData); 
+
+		printf("%d\n", McCarthy(numData)); 
+	}
+
+	fclose(inFile); 
+}
+
+int McCarthy(int num)
+{
+	if (num > 100) return num - 10; 
+	return McCarthy(McCarthy(num + 11));
+}

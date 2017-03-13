@@ -1,0 +1,35 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int GCD(int a, int b);
+
+int main()
+{
+	ifstream infile;
+
+	infile.open("input.txt");
+	
+	int numTestCases;
+	int result = 0;
+	int result_two = 0;
+
+	infile >> numTestCases;
+
+	while(numTestCases--)
+	{
+		infile >> result >> result_two;
+		
+		cout<< GCD(result, result_two) << endl;
+	}
+
+	
+	return 0;
+}
+int GCD(int a, int b)
+{
+	if( b == 0)
+		return a;
+	else
+	GCD(b,a%b);
+}

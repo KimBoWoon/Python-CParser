@@ -1,0 +1,70 @@
+
+
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+
+void swap(char str[], int n1, int n2); 
+void permute(char str[], int begin, int end); 
+void ord(char str[], int begin, int end); 
+int fact(int n);
+int cnt, order,start=0;
+
+
+int main()
+{
+	int numOfCase = 0;	
+	char eng[12] = { 'a', 'b', 'c', 'd', 'e', 'f',
+					'g', 'h', 'i', 'j', 'k', 'l' };
+
+	int numOfStr; 
+
+	ifstream input("input.txt");
+	if (input.fail()){
+		cout << "파일을 여는 데 실패했습니다." << endl;
+	}
+	input >> numOfCase;
+
+	for (int i = 0; i < numOfCase; i++){
+		cnt = 0;
+		input >> numOfStr;
+		input >> order;
+
+		for (int i = 0; i < numOfStr; i++){
+			ord(eng, i, numOfStr);
+			int swi = ((order-1) / fact(numOfStr - 1 - i)); 
+			swap(eng, i, i+swi);
+			order -= swi*fact(numOfStr - 1 - i);
+		}
+
+		for (int i = 0; i < numOfStr; i++){
+			cout << eng[i];
+		}
+		cout << endl;
+	}
+	input.close();
+	return 0;
+}
+
+void swap(char str[],int n1,int n2){
+	char temp = str[n2];
+	str[n2] = str[n1];
+	str[n1] = temp;
+}
+int fact(int n){
+	int fac = 1;
+	for (int i = 1; i <= n; i++){
+		fac *= i;
+	}
+	return fac;
+}
+void ord(char str[], int begin, int end){
+	for (int i = begin; i < end; i++){
+		for (int j = begin; j < i; j++){
+			if (str[j]>str[i]){
+				swap(str, j, i);
+			}
+		}
+	}
+}

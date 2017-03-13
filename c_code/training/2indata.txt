@@ -1,0 +1,39 @@
+
+#include<stdio.h>
+
+int checkPrime(int _number)
+{
+	int i;
+	int halfVal = (int)(_number * 0.5f);
+
+	for(i=2; i<=halfVal; i++)
+	{
+		if(_number % i == 0)
+		{
+			return 0;
+		}
+	}
+
+	return 1;
+}
+
+int main(void)
+{
+	FILE *fp = NULL;
+	int testCase;
+
+	fp = fopen("input.txt", "r");
+
+	fscanf(fp, "%d", &testCase);
+	while(testCase--)
+	{
+		int number, result;
+		fscanf(fp, "%d", &number);
+
+		result = checkPrime(number);
+		printf("%d\n", result);
+	}
+
+	fclose(fp);
+	return 0;
+}

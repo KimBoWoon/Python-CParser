@@ -1,0 +1,29 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void main(void)
+{
+    FILE *in_file;
+    int i, j;
+    int no_cases, no_data;
+    int flag;
+    
+    in_file = fopen("input.txt", "r"); 
+    if(in_file == NULL) exit(1);
+    fscanf(in_file, "%d", &no_cases); 
+    
+    for(i = 0; i < no_cases; i++)
+    {
+        fscanf(in_file, "%d", &no_data);
+        flag = 1;
+        
+        for (j = 2; j*j <= no_data; j++)
+            if(no_data % j == 0) {flag = 0; break;}
+        
+        if(flag) printf("1\n");
+        else printf("0\n");
+    }
+    fclose(in_file); 
+}

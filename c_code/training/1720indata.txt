@@ -1,0 +1,44 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+bool checkPalindrone(int *str, int first, int last){
+	if(first>=last)
+		return true;
+	else if(str[first] != str[last])
+		return false;
+	else
+		return checkPalindrone(str, first+1, last-1);
+}
+
+int main(){
+	ifstream in;
+	in.open("input.txt");
+
+	int T;
+	in>>T;
+	while(T--){
+		int N;
+		in>>N;
+
+		int str[20];
+		
+		for(int i=2; i<=64; i++){ 
+			int temp=N, j=0;
+			while(temp != 0){ 
+				str[j++] = temp % i;
+				temp /= i;
+			}
+
+			if(checkPalindrone(str, 0, j-1)){ 
+				cout<<"1"<<endl;
+				break;
+			}else if(i == 64){
+				cout<<"0"<<endl; 
+			}
+		}
+	}
+	in.close();
+	return 0;
+}

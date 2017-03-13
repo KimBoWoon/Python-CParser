@@ -1,0 +1,41 @@
+#include<stdio.h>
+#include<string.h>
+
+int Conjecture(int a)
+{
+	int num=1, j;
+
+	for(j=2; j*j <= a; j++)
+		if(a%j == 0) num = 0;
+
+	return num;
+}
+
+void main()
+{
+	FILE* inFile = fopen("input.txt", "r");
+	int testcase, n;
+	int i, j;
+	int count;
+
+	fscanf(inFile, "%d", &testcase);
+	for(i=0; i<testcase; ++i)
+	{
+		count = 0;
+		fscanf(inFile, "%d", &n);
+		if(n==4) {
+		    printf("2 2\n"); continue;
+		}
+		for(j=3; j<=n/2; j+=2)
+		{
+			if(!Conjecture(j)) continue;
+			else if(!Conjecture(n-j)) continue;
+			else{
+				if((n-2*j)>=(n-2*count)) continue;
+				count = j;
+			}
+		}
+		printf("%d %d\n", count, n-count);
+	}
+	fclose(inFile);
+}

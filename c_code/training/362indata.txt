@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_SIZE 100
+
+void swap(int *a, int *b){
+    int temp=0;
+    temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void sort(int arr[MAX_SIZE], int first, int last){
+    int i, j=0;
+    for(i=first; i<last; i++)
+    for(j=i; j>=0; j--)
+        if(arr[j] < arr[j+1])
+            swap(&arr[j], &arr[j+1]);
+}
+
+int isOverflow(int i, int j){
+    if (i < 1 || i > 98 || j < 1 || j > 98) return 1;
+    return 0;
+}
+
+int getSize(char room[MAX_SIZE][MAX_SIZE], int i, int j){
+    if (isOverflow(i,j)) return 0;
+    if (room[i][j] == '.'){
+        room[i][j] = '+';
+        return 1 + getSize(room, i+1, j)
+            + getSize(room, i-1, j)
+            + getSize(room, i, j+1)
+            + getSize(room, i, j-1);
+    }
+    return 0;
+}
+
+void getRoomSize(FILE *fin){
+    int m, n = 0;
+    int i, j, index = 0;
+    char room[MAX_SIZE][MAX_SIZE] = {'\0'};
+    int totalRoomSize[MAX_SIZE] = {0};
+    
+    fscanf(fin, "%d %d", &m, &n);
+    
+    for(i=0; i<n; i++)
+        fscanf(fin, "%s", &room[i][0]);
+    
+    
+    for(i=0; i<n; i++)
+        for(j=0; j<m; j++)
+            if(room[i][j] == '.')
+                totalRoomSize[index++] = getSize(room, i, j);
+    
+        
+    sort(totalRoomSize, 0, index);
+        
+    printf("%d\n", index);  
+    for(i=0; i<index; i++)
+        printf("%d ", totalRoomSize[i]);    
+    printf("\n");
+}
+
+int main(){
+    int testCases, cases;
+    FILE* fin = fopen("input.txt", "r");    
+    
+    fscanf(fin, "%d", &testCases);      
+    
+    for(cases=0; cases<testCases; cases++)
+        getRoomSize(fin);        
+    
+    fclose(fin);            
+    
+    return 0;           
+}

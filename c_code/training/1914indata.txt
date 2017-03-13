@@ -1,0 +1,64 @@
+#include<iostream>
+#include<fstream>
+#include<cmath>
+#include<algorithm>
+
+#include<cstdio>
+#include<cstdlib>
+
+#define MAX 1001
+
+using namespace std;
+
+struct D{
+	int win;
+	int lose;
+
+	double expectValue;
+	int score;
+};
+
+bool cmp(struct D a, struct D b){
+	return a.score > b.score;
+}
+
+void calcExpectValue(struct D *myLog, int teamA){
+	myLog[teamA].expectValue = pow(myLog[teamA].win, 2) /
+		(pow(myLog[teamA].win, 2) + pow(myLog[teamA].lose, 2));
+
+}
+
+int main(){
+
+	int T;
+
+	ifstream file;
+	file.open("input.txt");
+
+	file >> T;
+	while (T--){
+		int numTeam, numMatch;
+		int teamA, teamB, scoreA, scoreB;
+		struct D myLog[MAX] = { 0 };
+
+		file >> numTeam >> numMatch;
+		while (numMatch--){
+			file >> teamA >> teamB >> scoreA >> scoreB;
+			myLog[teamA].win += scoreA;
+			myLog[teamA].lose += scoreB;
+			myLog[teamB].win += scoreB;
+			myLog[teamB].lose += scoreA;
+
+			calcExpectValue(myLog,teamA);
+			calcExpectValue(myLog,teamB);
+
+			myLog[teamA].score = int( myLog[teamA].expectValue * 1000 );
+			myLog[teamB].score = int( myLog[teamB].expectValue * 1000 );
+		}
+		sort(myLog + 1, myLog + numTeam + 1, cmp);
+		cout << myLog[1].score << endl;
+		cout << myLog[numTeam].score << endl;
+	}
+
+	return 0;
+}

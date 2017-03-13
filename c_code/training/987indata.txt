@@ -1,0 +1,48 @@
+
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+int dp[101][101][2][201]={0};
+int garo[101][101]={0};
+int sero[101][101]={0};
+int main()
+{
+	ifstream in;
+	in.open("input.txt");	
+	
+	int t;
+	in>>t;
+	while(t--)
+	{
+		int M,N,L,G;
+		int R =201; 
+		in>>M>>N>>L>>G;
+
+		for(int i=0;i<M;i++) for(int j=0;j<N-1;j++) in>>garo[i][j];  
+		for(int i=0;i<M-1;i++) for(int j=0;j<N;j++) in>>sero[i][j];  
+		fill(&dp[0][0][0][0],&dp[M][0][0][0],G+1); 
+		dp[0][0][0][0] = 0; 
+		dp[0][0][1][0] = 0; 
+
+		for(int i=0;i<M;i++) {
+			for(int j=0;j<N;j++) {
+				for(int l=0;l<=2*M;l++) { 
+					for(int k=0;k<2;k++) {
+						if (dp[i][j][k][l] <= G) {
+							if((i==M-1) && (j==N-1)) R = min(R,l);
+							if(l<2*M) dp[i][j][!k][l+1]=min(dp[i][j][!k][l+1],dp[i][j][k][l]);
+							if(k)dp[i][j+1][k][l] = min(dp[i][j+1][k][l],dp[i][j][k][l]+garo[i][j]);
+							else dp[i+1][j][k][l] = min(dp[i+1][j][k][l],dp[i][j][k][l]+sero[i][j]);
+						}
+					}
+				}
+			}
+		}
+		if(R==201) cout<<-1<<endl; 
+		else cout<<(M+N-2)*L+R<<endl; 
+	}
+	in.close();
+}

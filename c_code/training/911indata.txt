@@ -1,0 +1,64 @@
+#include <iostream>
+#include <cstdlib>
+#include <string.h>
+#include <fstream>
+using namespace std;
+
+int main(void)
+{
+	ifstream inStream;
+	int numTestCases = 0;
+	int num = 0, temp = 0, min = 0;
+	int *arr;
+	inStream.open("input.txt");
+	if (inStream.fail())
+	{
+		cerr << "Input file opening failed. \n";
+		exit(1);
+	}
+	inStream >> numTestCases;
+	for (int i = 0; i < numTestCases; i++)
+	{
+		inStream >> num; 
+		int **dms = new int*[num];
+		for (int j = 0; j < num; j++)
+		{
+			dms[j] = new int[num];
+			memset(dms[j],0,sizeof(int)*num);
+		}
+		arr = (int*)malloc(sizeof(int)*num); 
+		for (int j = 0; j < num; j++) inStream >> arr[j]; 
+		for (int j = 0, k = 0; j < num - 1; j++)
+		{
+			k = j + 1;
+			if (arr[j] > arr[k]) dms[j][k] = arr[j];
+			else dms[j][k] = arr[k];
+		}
+		for (int j = 0; j < num; j++)
+		{
+			temp = arr[j] + arr[j + 1];
+			for (int k = j + 2; k < num; k++)
+			{
+				temp += arr[k];
+				dms[j][k] = temp;
+			}
+		}
+		for (int j = 0, q = 0; q < num - 2; q++)
+		{
+			for (int k = q + 2, n = j; k < num; k++, n++)
+			{
+				if (dms[n][k - 1] > dms[n + 1][k]) dms[n][k] -= dms[n + 1][k];
+				else dms[n][k] -= dms[n][k - 1];
+			}
+		}
+		
+		cout << dms[0][num - 1] << endl;
+
+		
+		for (int j = 0; j < num; j++) delete[] dms[j];
+		delete[] dms;
+		delete[] arr; 
+	}
+	inStream.close();
+	return 0;
+}

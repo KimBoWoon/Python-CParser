@@ -1,0 +1,32 @@
+
+
+#include <iostream>
+#include <fstream>
+
+int roomNumber(int h, int g);
+int main()
+{
+	int numTestCases;
+	int h,w,g;
+
+	std::ifstream infile("input.txt");
+
+	infile >> numTestCases;
+
+	for(int i =0; i<numTestCases; i++)
+	{
+		infile >> h >> w >>g;
+		std::cout<<roomNumber(h,g)<<std::endl;
+	}
+}
+
+int roomNumber(int h, int g)
+{
+	int res;
+	if( g%h != 0 )
+		res = (g%h*100) + (g/h+1);
+	else
+		res = h*100 + g/h;
+
+	return res;
+}

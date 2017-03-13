@@ -1,0 +1,25 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int getFactorial_Rec(int n){
+    if(n==0)
+        return 1;
+    else
+        return n * getFactorial_Rec(n-1);
+}
+
+int main(){
+    ifstream inStream;
+    inStream.open("input.txt");
+    int test_case;
+    inStream >> test_case;
+
+    for(int i=0; i<test_case; i++){
+        int n;
+        inStream >> n;
+
+        cout << getFactorial_Rec(n) << endl;
+    }
+}

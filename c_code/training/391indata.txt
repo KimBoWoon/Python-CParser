@@ -1,0 +1,61 @@
+
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+
+int H, W;
+char sketchRoom[101][101];
+int roomList[101];
+
+int compare(const void *arg1, const void *arg2)
+{
+	return *(int*)arg2-*(int*)arg1;
+}
+
+int flood_room(int i, int j, int index)
+{
+	if(sketchRoom[i][j] != '.') return 0;
+	else{
+		sketchRoom[i][j] = index + 1;
+		return 1 + flood_room(i-1, j, index) + flood_room(i, j-1, index)\
+			+ flood_room(i+1, j, index) + flood_room(i, j+1, index);
+	}
+}
+
+int How_many_rooms(int index)
+{
+	int i = 0, j = 0;
+
+	for(i=0; i<H; ++i){
+		for(j=0; j<W; ++j){
+			if(i==H-1 && j==W-1) return index;
+			else if(sketchRoom[i][j] != '.') continue;
+
+			roomList[index] = flood_room(i, j, index);
+			index += 1;
+		}
+	}
+}
+
+void main()
+{
+	FILE* inFile = fopen("input.txt", "r");
+	int testNum, roomNum;
+	int i, j, k;
+
+	fscanf(inFile, "%d", &testNum);
+	for(i=0; i<testNum; ++i){
+		fscanf(inFile, "%d %d", &W, &H);
+
+		for(j=0; j<H; ++j) fscanf(inFile, "%s", &sketchRoom[j]);
+
+		roomNum = How_many_rooms(0);
+
+		printf("%d\n", roomNum);
+		qsort((void*)roomList, roomNum, sizeof(int), &compare);
+		for(j=0; j<roomNum; ++j) printf("%d ",roomList[j]);
+		printf("\n");
+	}
+	
+	fclose(inFile);
+}

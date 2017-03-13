@@ -1,0 +1,64 @@
+
+#include<iostream>
+#include<string>
+#include<fstream>
+
+using namespace std;
+
+string wordArray;
+int stringCount = 0;
+char strArr[] = "abcdefghijkl";
+int targetAp = 0, apNum = 0;
+
+int factorial(int _n)       
+{
+	int i;
+	int result = 1;
+	for (i = _n; i>0; i--)
+	{
+		result *= i;
+	}
+	return result;
+}
+
+void ord(char *strArr, int begin, int end){
+	for (int i = begin; i < end; i++){
+		for (int j = begin; j < i; j++){
+			if (strArr[j]>strArr[i]){
+				swap(strArr[j], strArr[i]);
+			}
+		}
+	}
+}
+
+void swap(char *bfArr, char *afArr){
+	char buff = *bfArr;
+	*bfArr = *afArr;
+	*afArr = buff;
+}
+
+
+int main(){
+	ifstream f;
+	f.open("input.txt");
+	int numCount = 0;
+
+	f >> numCount;
+	for (int i = 0;i<numCount;i++){
+		f >> targetAp >> apNum;
+
+		for (int i = 0; i < targetAp; i++){
+			ord(strArr, i, targetAp); 
+			int swi = ((apNum - 1) / factorial(targetAp - 1 - i)); 
+			swap(strArr[i], strArr[i + swi]);   
+			apNum -= swi*factorial(targetAp - 1 - i); 
+		}
+
+		for (int i = 0; i < targetAp; i++){
+			cout << strArr[i];
+		}
+		cout << endl;
+		wordArray = "";
+	}
+	return 0;
+}

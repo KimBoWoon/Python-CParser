@@ -1,0 +1,79 @@
+#include <fstream>
+#include <iostream>
+#define MAX_PAGE 500
+
+using namespace std;
+
+int main() {
+
+
+
+  ifstream in_file;
+	in_file.open("input.txt");
+
+	setbuf(stdout, NULL);
+
+	int T;
+	int test_case;
+
+  int M[MAX_PAGE][MAX_PAGE];
+  int files[MAX_PAGE];
+    
+	in_file>>T;	
+	
+	for(test_case = 1; test_case <= T; ++test_case) {
+		  
+      int fileNum;
+
+      in_file>>fileNum;
+
+      
+      for(int i=0; i<fileNum; i++)
+      {  int file; in_file>>file; files[i]=file;}
+
+      for(int j=0; j<fileNum; j++)
+        for(int i=0; i<fileNum-j; i++)
+        {
+
+          int diagonal=(i+j);
+          
+            if(i==diagonal)
+              { M[i][i]=0;}
+
+            else{
+
+              int sum=0;
+            
+                for(int t=i; t<=diagonal; t++)
+                    sum+=files[t];
+                
+              int total_merge=sum+M[i][i]+M[i+1][diagonal];
+              int min=total_merge;
+              int select_k=i;
+
+              for(int k=i+1; k<diagonal; k++)
+              {
+                total_merge=sum+M[i][k]+M[k+1][diagonal];
+
+                if(min>total_merge)
+                  { min=total_merge; select_k=k; }
+              }
+              M[i][diagonal]=sum+M[i][select_k]+M[select_k+1][diagonal];
+
+            }
+          
+
+        }
+
+
+         
+
+      cout<<M[0][fileNum-1]<<endl;
+          
+    	}
+
+
+	return 0;	
+}
+
+

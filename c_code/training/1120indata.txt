@@ -1,0 +1,43 @@
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+int main(){
+	ifstream inStream;
+	int numTestCases;
+
+	inStream.open("input.txt");
+	if(inStream.fail()){
+		cerr<<"input.txt파일을 열 수 없음.\n";
+		exit(1);
+	}
+
+	short T[45];
+	bool check[1001]={false,};
+
+	for(short i=0; i<45; i++)
+		T[i]=i*(i+1)/2;
+
+	for(short i=1; i<45; i++){ 
+		for(short j=i; j<45; j++){ 
+			for(short k=j; k<45; k++){ 
+				if(T[i]+T[j]+T[k] <= 1000)
+					check[T[i]+T[j]+T[k]]=true;
+			}
+		}
+	}
+	inStream>>numTestCases; 
+	for(int i=0; i<numTestCases; i++) 
+	{
+		short num; 
+		inStream>>num; 
+
+		if(check[num])
+			cout<<check[num]<<endl;
+		else
+			cout<<check[num]<<endl;
+	}
+	inStream.close(); 
+}

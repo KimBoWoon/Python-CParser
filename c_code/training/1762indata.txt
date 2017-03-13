@@ -1,0 +1,45 @@
+
+#include <iostream>
+#include <vector>
+#include <cstdio>
+using namespace std;
+int main()
+{
+	FILE *fp;
+	fp=fopen("input.txt","r");
+    int t=0;
+    vector<int> v;
+    fscanf(fp,"%d",&t);
+    for (int i = 0; i < t; i++)
+    {
+        int ans = 0,tmp=0;
+        fscanf(fp,"%d",&tmp);
+        for (int j = 2; j <= 64; j++)
+        {
+            vector<int> v1;
+            int div = 0, value=tmp; 
+            while (value >= j)
+            {
+                v1.push_back(value % j);
+                value = value / j;
+            }
+            v1.push_back(value);
+            int ans_tmp=0, m=0, n = v1.size()-1;
+            while (m <= n)
+            {
+                if (v1[m] != v1[n])
+                {
+                    ans_tmp = 1;
+                    break;
+                }
+                m++, n--;
+            }
+            if (ans_tmp == 0)
+            {
+                ans = 1;
+                break;
+            }
+        }
+        printf("%d\n",ans);
+    }
+}

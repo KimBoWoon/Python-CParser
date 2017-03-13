@@ -1,0 +1,60 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int factorial(unsigned int n) {
+	unsigned int result = 1;
+	for (unsigned int i = n; i > 1; i--) {
+		result *= i;
+	}
+	return result;
+}
+
+void permutation(string& str, unsigned int n) {
+
+	if (str.length() == 1) {
+		cout << str[0];
+		return;
+	}
+
+	unsigned int div = n / factorial(str.length() - 1);
+	unsigned int mod = n % factorial(str.length() - 1);
+
+	if (div == 0 && mod == 0) {
+		cout << str[str.length()-1];
+		str.erase(str.length() - 1, 1);
+		return permutation(str, mod);
+	}
+	else if(mod == 0)
+		div -= 1;
+	
+	cout << str[div];
+	str.erase(div, 1);
+	return permutation(str, mod);
+}
+
+int main() {
+	ifstream inStream;
+	inStream.open("input.txt");
+	int test_case;
+	inStream >> test_case;
+
+	for (int t = 0; t < test_case; t++) {
+		unsigned int numOfAlpa, n;
+		inStream >> numOfAlpa >> n;
+		
+		char* alpa = new char[numOfAlpa + 1];
+		int i;
+		for (i = 0; i < numOfAlpa; i++) {
+			alpa[i] = 'a' + i;
+		}
+		alpa[i] = '\0';
+		string str = string(alpa);
+		delete[] alpa;
+		alpa = NULL;
+
+		permutation(str, n);
+		cout << endl;
+	}
+}

@@ -1,0 +1,38 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int main(void) {
+	ifstream in("input.txt");
+	
+	int t;
+
+	in >> t;
+
+	for (int i = 0; i < t; i++) {
+		int n, m, k; 
+
+		in >> n >> m >> k;
+
+		int cnt = 0;
+		for (int i = 1; i <= m; i++) {
+			for (int j = 1; j <= n; j++) {
+				cnt++;
+
+				if (cnt == k) {
+					cout << j;
+					if (i < 10) cout << 0 << i;
+					else cout << i;
+
+					cout << endl;
+					break;
+				}
+			}
+
+			if (cnt == k) break;
+		}
+	}
+	
+	return 0;
+}

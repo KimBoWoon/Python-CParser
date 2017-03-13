@@ -1,0 +1,126 @@
+
+
+
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int ducci[15] ={0};
+int change[15] ={0};
+int count ;
+
+int D_S(int a, int b);
+int absol(int a, int b);
+void Ducci(int c);
+int isZero(int a);
+
+void main(void)
+{
+	FILE *inFile;
+	int i,j,k;
+	int numCases,num;
+	int a,b;
+	int sum;
+
+	inFile = fopen("input.txt","r"); 
+	if(inFile ==NULL) exit(1);
+
+	fscanf(inFile, "%d", &numCases);
+
+	for(i=0;i<numCases;i++)
+	{
+		
+		fscanf(inFile, "%d",&num);	
+
+		for(j=0;j<num;j++)
+		{
+			fscanf(inFile , "%d", &ducci[j]);
+		}
+		
+		
+		
+		
+		for(k=0;k<100;k++)
+		{
+			sum=0;
+
+			Ducci(num);
+
+			for(j=0;j<num;j++)
+			{
+				sum +=ducci[j];	
+			}
+
+		}
+		if(sum ==0)
+			printf("ZERO\n");
+		else
+			printf("LOOP\n");
+		
+
+
+		for(k=0;k<15;k++)
+		{
+			change[k] = 0;
+		}
+		count =0;
+
+	}
+
+		
+	fclose(inFile); 
+
+}
+
+
+int isZero(int a)
+{
+	int y;
+	int sum=0;
+	
+	for(y=0;y<a;y++)
+	{
+		sum +=ducci[y];
+	}
+
+	if(sum ==0)
+		return 0;
+	else
+		return 1;
+
+}
+
+void Ducci(int c)
+{
+	int x;
+
+		for(x=0;x<c;x++)
+		{
+			if(x==c-1)
+				change[x] = D_S(x,0);
+			else
+				change[x] = D_S(x,x+1);
+		}
+
+		for(x=0;x<c;x++)
+		{
+			ducci[x] = change[x];
+		}
+
+}
+
+int D_S(int a, int b)
+{
+	return absol(ducci[a],ducci[b]);
+}
+
+int absol(int a, int b)
+{
+	if(a-b> 0)
+		return a-b;
+	else
+		return b-a;
+}

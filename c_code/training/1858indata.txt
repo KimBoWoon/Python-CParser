@@ -1,0 +1,54 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstring>
+#include <cstdlib>
+using namespace std;
+
+int check(char *ch,int num,int *res)        
+{
+	int result=0;
+	for(int i= num+1;i<strlen(ch);i++)       
+	{
+		if(ch[i]=='(')
+			i=check(ch,i,res);
+		else if(ch[i]==')')      
+		{
+			result = 1;			
+			return i;			
+		}
+	}*res=result;      
+}
+
+int main()
+{
+	ifstream instream;
+	instream.open("input.txt");
+
+	int testcase;
+	instream >>testcase;
+
+	for(int i=0;i<testcase;i++)
+	{
+		char ch[50];
+		instream >>ch;
+
+		int res=1;
+		if(strlen(ch)%2==1||ch[0]!='(') 
+			res=0;
+		else{
+			for(int j=0;j<strlen(ch);j++)
+			{
+				if(ch[j]=='(') 
+					j=check(ch,j,&res);
+				else                   
+				{res=0;break;}
+			}
+		}
+		if(res==1) 
+			cout<<"YES"<<endl;
+		else
+			cout<<"NO"<<endl;
+	}
+}

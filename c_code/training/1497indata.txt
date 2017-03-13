@@ -1,0 +1,84 @@
+ 
+
+ 
+#include <stdio.h>
+
+#define MAXSIZE 9
+#define MARK 1
+#define UNMARK 0
+
+typedef struct Point {int x, y;} point;
+point direction[8] = {{1,-2},{2,-1},{2,1},{1,2},
+                    {-1,2},{-2,1},{-2,-1},{-1,-2}};
+
+int board[MAXSIZE][MAXSIZE], path[MAXSIZE][MAXSIZE];
+
+int knighttour(int m, int n, point pos, int counter);
+int main()
+{
+    int test;
+    FILE *fp;
+    fp = fopen("input.txt","r");
+    fscanf(fp,"%d",&test);
+    while(test--)
+    {
+        int i,j,m,n,y,x;
+        fscanf(fp,"%d %d",&m,&n);
+        fscanf(fp,"%d %d",&y,&x);
+        point pos;
+        pos.x = x;
+        pos.y = y;
+        for(i=1;i<=m;i++) 
+        {
+            for(j=1;j<=n;j++)
+            {
+                board[i][j] = UNMARK;
+            }
+        }
+        board[y][x] = MARK;
+        path[y][x] = 1;
+        if(knighttour(m,n,pos,1)) 
+        {
+            printf("1\n");
+            for(i=1;i<=m;i++)
+            {
+                for(j=1;j<=n;j++)
+                {
+                    printf("%2d ",path[i][j]);
+                }
+                printf("\n");
+            }
+        }
+        else 
+        {
+            printf("0\n");
+        }
+    }
+    fclose(fp);
+    return 0;
+}
+
+int knighttour(int m, int n, point pos, int counter)
+{
+    int i;
+    point next;
+    if(counter == m*n) 
+        return 1;
+    
+    for(i=0;i<8;i++)
+    {
+        next.x = pos.x+direction[i].x; 
+        next.y = pos.y+direction[i].y; 
+        if(next.x > 0 && next.x <= n &&
+          next.y > 0 && next.y <= m &&
+          board[next.y][next.x] != MARK) 
+        {
+            board[next.y][next.x] = MARK;
+            path[next.y][next.x] = counter+1;
+            if(knighttour(m,n,next,counter+1)) 
+                return 1;
+            board[next.y][next.x] = UNMARK; 
+        }
+    }
+    return 0;
+}

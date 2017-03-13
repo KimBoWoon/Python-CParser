@@ -1,0 +1,42 @@
+
+#include <cstdio>
+#include <cstdlib>
+
+int isPrime(int number){
+
+	bool prime = true;
+	for(int i = 2; i*i <= number; ++i)
+		if((number % i) == 0) prime = false;
+	
+	return prime;
+}
+
+int main(int argc, char* argv[]){
+
+	FILE* readStream = 0x00L;
+	readStream = fopen("input.txt", "r");
+
+	if(readStream == 0x00L){
+		fprintf(stderr, "Don`t open the file.\n");
+		return 2;
+	}
+
+	short testCases = 0,
+		  evenNumber = 0;
+
+	fscanf(readStream, "%hd", &testCases);
+
+	while(testCases--){
+
+		fscanf(readStream, "%hd", &evenNumber);
+
+		short loop = evenNumber / 2;
+		short primeNumber = 0;
+
+		for(int i = 2; i <= loop; ++i)
+			if(isPrime(i) && isPrime(evenNumber-i)) primeNumber = i;
+		
+		printf("%d %d\n", primeNumber, evenNumber - primeNumber);
+	}
+	fclose(readStream);
+}

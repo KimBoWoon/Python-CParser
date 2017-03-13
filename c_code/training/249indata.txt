@@ -1,0 +1,20 @@
+
+
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+int makegcd(int k, int l){ return l ? makegcd(l, k%l) : k; }
+int main(){
+	ifstream inFile("input.txt");
+	int cases;
+	inFile >> cases;
+	while (cases--){
+		int s1, s2, m1, m2;
+		int gcd;
+		inFile >> s1 >> m1 >> s2 >> m2;
+		gcd = makegcd(s1*m2 + s2*m1, m1*m2);
+		cout << (s1*m2 + s2*m1) / gcd << " " << (m1*m2) / gcd << endl;
+	}
+	return 1;
+}

@@ -1,0 +1,42 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cmath>
+using namespace std;
+int primeNum(int num);
+bool primeFlag=false;
+
+int main(){
+	ifstream inFile("input.txt");
+	if (inFile.fail()){
+		return 0;
+	}
+	int testCases = 0;
+	int num = 0;
+	inFile >> testCases;
+	for (int i = 0; i < testCases; i++){
+		inFile >> num;
+		cout << primeNum(num) << endl;
+		primeFlag = false;
+	}
+}
+int primeNum(int num){
+	if (num == 2 || num==3){
+		return 1;
+	}
+	for (int div = 2; div <= sqrt(num); div++){
+		if (num > div){
+			if (num%div == 0){
+				return 0;
+			}
+			else{
+				primeFlag = true;
+			}
+		}
+	}
+	if (primeFlag == true){
+		return 1;
+	}
+
+}

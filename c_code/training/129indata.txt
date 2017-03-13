@@ -1,0 +1,32 @@
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+int m(int n)
+{
+	if(n>100)	
+		return n-10;
+	else
+		m((m(n+11)));	
+}
+void main(void){
+	FILE *in_file;
+	int no_case;
+	int n;
+	int i;
+
+	in_file = fopen("input.txt","r");	
+	if(in_file == NULL) exit(1);
+
+	fscanf(in_file , "%d" , &no_case);
+
+	for(i=0; i<no_case; i++)
+	{
+		fscanf(in_file, "%d ",&n);
+		
+		printf("%d\n",m(n));	
+	}
+
+	fclose(in_file);
+}

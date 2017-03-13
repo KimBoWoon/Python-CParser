@@ -1,0 +1,56 @@
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int goRight[101][101], goDown[101][101], findLoad[101][101][2][201];
+
+ 
+int main()
+{
+	fstream in;
+	in.open("input.txt");
+	int numcases;
+	int M,N,L,G;
+	in >> numcases;
+    int i, j, k, l;
+	
+    for (int num=0; num<numcases; num++){
+        in>>N>>M>>L>>G;
+	
+		int minL = 2000000;
+        for (i=1;i<=N;i++) {
+			for (j=1;j<M;j++){
+				in>>goRight[i][j];
+			}
+		}
+        for (i=1;i<N;i++){
+			for (j=1;j<=M;j++)
+				{
+					in>>goDown[i][j];
+			}
+		}
+         for (i=1;i<=N;i++) for (j=1;j<=M;j++) for (k=0;k<2;k++) for (l=0;l<201;l++) findLoad[i][j][k][l] = G+1;
+        findLoad[1][1][0][0] = findLoad[1][1][1][0] = 0;
+        int ans = 2e9;
+        for (i=1;i<=N;i++) for (j=1;j<=M;j++) for (l=0;l<201;l++) for (k=0;k<2;k++) if (findLoad[i][j][k][l] <= G){
+            if (i == N && j == M){
+                if (ans > l) ans = l;
+            }
+            if (l < 200 && findLoad[i][j][!k][l+1] > findLoad[i][j][k][l])
+                findLoad[i][j][!k][l+1] = findLoad[i][j][k][l];
+            if (k){
+                if (j < M &&findLoad[i][j+1][k][l] > findLoad[i][j][k][l]+goRight[i][j])
+                    findLoad[i][j+1][k][l] = findLoad[i][j][k][l]+goRight[i][j];
+            }
+            else{
+                if (i < N && findLoad[i+1][j][k][l] > findLoad[i][j][k][l]+goDown[i][j])
+                    findLoad[i+1][j][k][l] = findLoad[i][j][k][l]+goDown[i][j];
+            }
+        }
+        if (ans < 2e9) cout<<(N+M-2)*L+ans<<endl;
+        else cout<<"-1"<<endl;
+    }
+    
+}

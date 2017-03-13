@@ -1,0 +1,34 @@
+
+#include <cstdio>
+#include <cstdlib>
+
+int GCD(int num1, int num2){
+	return (!num2) ? num1 : GCD(num2, num1%num2);
+}
+int main(int argc, char* argv[]){
+
+	FILE* readStream = 0x00L;
+	readStream = fopen("input.txt", "r");
+
+	if(readStream == 0x00L){
+		fprintf(stderr, "Don`t open the file.\n");
+		return 2;
+	}
+
+	int testCases = 0,
+		numeratorNum1 = 0,
+		denominatorNum1 = 0,
+		numeratorNum2 = 0,
+		denominatorNum2 = 0,
+		LCMNumber = 0;
+
+	fscanf(readStream, "%d", &testCases);
+
+	while(testCases--){
+		fscanf(readStream, "%d %d %d %d", &numeratorNum1, &denominatorNum1, &numeratorNum2, &denominatorNum2);
+		LCMNumber = (denominatorNum1 * denominatorNum2) / GCD(denominatorNum1, denominatorNum2);
+		int newNumerator = ((numeratorNum1 * (LCMNumber / denominatorNum1)) + ( numeratorNum2 * (LCMNumber / denominatorNum2)));
+		printf("%d %d\n", (newNumerator / GCD(newNumerator, LCMNumber)), (LCMNumber / GCD(newNumerator, LCMNumber)));
+	}
+	fclose(readStream);
+}

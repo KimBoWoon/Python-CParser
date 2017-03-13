@@ -1,0 +1,157 @@
+#include<iostream>
+#include<fstream>
+using namespace std;
+#define MAX_SIZE 100000
+typedef struct point {
+	int x;
+	int y;
+	int Number;
+}point;
+void Merge(point a[], int low, int mid, int high) {
+	int i, j, k;
+	point tmp[MAX_SIZE];
+	for (i = low;i <= high;i++) {
+		tmp[i] = a[i];
+	}
+	i = k = low;
+	j = mid + 1;
+	while (i <= mid&&j <= high) {
+		if (tmp[i].y <= tmp[j].y) {
+			a[k++] = tmp[i++];
+		}
+		else {
+			a[k++] = tmp[j++];
+		}
+	}
+	while (i <= mid) {
+		a[k++] = tmp[i++];
+	}
+	while (j <= high) {
+		a[k++] = tmp[j++];
+	}
+
+}
+void MergeA(point a[], int low, int mid, int high) {
+	int i, j, k;
+	point tmp[MAX_SIZE];
+	for (i = low;i <= high;i++) {
+		tmp[i] = a[i];
+	}
+	i = k = low;
+	j = mid + 1;
+	while (i <= mid&&j <= high) {
+		if (tmp[i].x <= tmp[j].x) {
+			a[k++] = tmp[i++];
+		}
+		else {
+			a[k++] = tmp[j++];
+		}
+	}
+	while (i <= mid) {
+		a[k++] = tmp[i++];
+	}
+	while (j <= high) {
+		a[k++] = tmp[j++];
+	}
+
+}
+void MergeSort(point a[], int low, int high, int mode) {
+	int mid;
+	if (low == high) return;
+	mid = (low + high) / 2;
+	if (mode == 1) {
+		MergeSort(a, low, mid, mode);
+		MergeSort(a, mid + 1, high, mode);
+		Merge(a, low, mid, high);
+	}
+	else if (mode == 2) {
+		MergeSort(a, low, mid, mode);
+		MergeSort(a, mid + 1, high, mode);
+		MergeA(a, low, mid, high);
+	}
+}
+
+int main() {
+	ifstream fin;
+	fin.open("input.txt");
+	point mono[MAX_SIZE];
+	int T;
+	fin >> T;
+	for (int i = 0;i < T;i++) {
+		int num, a, b;
+		fin >> num;
+		for (int j = 0;j < num;j++) {
+			fin >> a >> b;
+			mono[j].x = a;
+			mono[j].y = b;
+		}
+		fin >> a;
+		int res[10];
+		for (int k = 0;k < a;k++) {
+			fin >> b;
+			res[k] = b;
+		}
+		b = 0;
+		MergeSort(mono, 0, num - 1, 1);
+		MergeSort(mono, 0, num - 1, 2);
+		int number = 0;int j = 0;int q = 1;int state = 0;
+		while (j<num) {
+			while (mono[j].x == mono[q].x) {
+				q++;
+				state = 1;
+				if (mono[q].x == 0 && mono[q].y == 0 && mono[q + 1].x == 0 && mono[q + 1].y == 0&&mono[j].x==0) {
+					if (num!=2) {
+						q++;
+					}
+					break;
+				}
+			}
+			if (state == 1) {
+				int t = j - 1;
+				if (t == -1) t = 0;
+				while (t>0) {
+					if (number - 1 == mono[t].Number) break;
+					t--;
+				}
+				if (t == 0 && mono[t].y < 0) {
+					for (int k = q - 1;k >= j;k--) {
+						mono[k].Number = number++;
+					}
+				}
+				else if (mono[t].y == mono[j].y) {
+					for (int k = j;k < q;k++) {
+						mono[k].Number = number++;
+					}
+				}
+				else {
+					for (int k = q - 1;k >= j;k--) {
+						mono[k].Number = number++;
+					}
+				}
+				state = 0;
+				q++;
+				j = q - 1;
+			}
+			else {
+				mono[j++].Number = number++;
+				q = j + 1;
+			}
+
+		}
+		for (int k1 = 0;k1 < a;k1++) {
+			for (int k = 0;k < num;k++) {
+				if (mono[k].Number + 1 == res[b]) {
+					cout << mono[k].x << " " << mono[k].y << endl;
+					k = num;
+					b++;
+				}
+			}
+		}
+		for (int k = 0;k < num;k++) {
+			mono[k].x = 0;
+			mono[k].y = 0;
+			mono[k].Number = 0;
+		}
+	}
+
+}

@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int M[1001][1001], S[1001][1001];
+
+int minimum(int a, int b){
+	if(a>b)
+		return b;
+	return a;
+}
+void CardGame(FILE* file)
+{
+	int n,i,j;
+	fscanf(file, "%d", &n);
+	for(i=1; i<=n; i++)
+		fscanf(file, "%d", &S[i][i]);
+
+	for(i=1; i<=n; i++){
+		for(j=1; j<=n; j++){
+			if(i<=j){
+				S[i][j]=S[j][j]+S[i][j-1];
+				M[i][j] = S[i][j];
+			}
+		}
+	}
+	for(i=n; i>=1; i--){
+		for(j=1; j<=n; j++){
+			if(i<j){
+				M[i][j] = S[i][j] - minimum(M[i+1][j], M[i][j-1]);
+			}
+		}
+	}
+	printf("%d\n", M[1][n]);
+}
+ 
+int main(){
+	int testcase,i;
+	FILE *file = fopen("input.txt","r");
+	if(file ==NULL)
+		exit(1);
+	fscanf(file, "%d", &testcase);
+	for(i=0; i<testcase; i++)
+	{
+		CardGame(file);
+	}
+
+}

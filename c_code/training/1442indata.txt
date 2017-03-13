@@ -1,0 +1,28 @@
+
+
+#include <stdio.h>
+
+void hotel(FILE* fin){
+	int h,n;
+
+	fscanf(fin, "%d %d %d", &h, &n, &n);   
+
+    if(n%h==0) printf("%d%02d\n", h, n/h);
+    else printf("%d%02d\n", n%h, n/h+1);
+    
+	return;
+}
+
+int main(){
+	int testCases=0;
+    int cases;
+    
+	FILE *fin = fopen("input.txt", "r");	
+	
+	fscanf(fin, "%d", &testCases);		
+
+	for(cases=0; cases<testCases; cases++)	
+		hotel(fin);								
+
+	return 0;
+}

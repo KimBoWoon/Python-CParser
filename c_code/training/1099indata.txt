@@ -1,0 +1,62 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+
+using namespace std;
+
+int max_index;
+
+int eureka(int value, int count)
+{
+	int ret=0;
+	
+	if(value==0 && count==0)
+		return 1;
+	else if(count==0)
+		return 0;
+
+	for(int i=1;i<=max_index; i++)
+	{
+		int temp = (i*(i+1))/2;
+		if(!((value-temp)<0))
+			ret = eureka(value-temp,count-1);
+		if(ret==1)
+			break;
+	}
+
+	return ret;
+}
+
+int main()
+{
+	int test_case;
+	vector<int> triangle;
+
+	ifstream file("input.txt");
+	
+	if(!file)
+	{
+		cout<<"wrong file!"<<endl;
+	
+	}
+	
+	file>>test_case;
+
+	while(test_case--)
+	{
+		int number;
+		file >> number;
+
+		for(int i=1; (i*(i+1)/2)<number; i++)
+		{
+			max_index = i;	
+		}
+
+		cout<<eureka(number,3)<<endl;
+
+
+		
+	}
+
+	return 0;
+}

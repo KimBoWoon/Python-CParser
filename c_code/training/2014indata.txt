@@ -1,0 +1,78 @@
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+
+
+int getnum(int length, int target, int datanum[]);
+int compare(const void *first, const void *second);
+int datanum[1000000];
+int main()
+{
+	std::fstream infile;
+	infile.open("input.txt");
+	int testcase;
+	infile >> testcase;
+	for (int i = 0; i < testcase; i++)
+	{
+		int length, target;
+		infile >> length >> target;
+		for (int i = 0; i < length; i++)
+		{
+			infile >> datanum[i];
+		}
+		std::cout << getnum(length, target, datanum) << std::endl;
+	}
+	return 0;
+}
+int getnum(int length, int target, int datanum[])
+{
+	qsort(datanum, length, sizeof(int), compare);
+	int count = 0;
+	int startpoint = 0;
+	int endpoint = length - 1;
+	int maxdiffrec = 200000000;
+	while (startpoint<endpoint)
+	{
+		int temp = datanum[endpoint] + datanum[startpoint] - target;
+
+		if (abs(temp) <= maxdiffrec)
+		{
+			if (abs(temp) < maxdiffrec)
+			{
+				count = 0;
+				maxdiffrec = abs(temp);
+			}
+			count++;
+			if (temp < 0)
+			{
+				startpoint++;
+			}
+			else
+				endpoint--;
+		}
+		else
+		{
+			if (temp < 0)
+			{
+				startpoint++;
+			}
+			else
+				endpoint--;
+		}
+	}
+	for (int i = 0; i < length; i++)
+	{
+		datanum[i] = 0;
+	}
+	return count;
+}
+
+int compare(const void *first, const void *second)
+{
+	if (*(int*)first > *(int*)second)
+		return 1;
+	else if (*(int*)first < *(int*)second)
+		return -1;
+	else
+		return 0;
+}

@@ -1,0 +1,35 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+bool arr[1000] = { false };
+ 
+int main() {
+	FILE* file;
+    int cases, i, j;
+   
+	file = fopen("input.txt", "r");
+     
+    for (i = 2; i < 101; i++) {
+        if (arr[i]) continue;
+        for (j = i << 1; j < 1000; j += i) arr[j] = true;
+    }
+ 
+    fscanf(file, "%d", &cases);
+ 
+    while (cases--) {
+		int num;
+        fscanf(file, "%d", &num);
+ 
+        int tmp = num / 2;
+        if (!arr[tmp]) {
+            printf("%d %d\n", tmp, tmp);
+            continue;
+        }
+        for (i = 1; i < tmp; i++) {
+            if (!arr[tmp + i] && !arr[tmp - i]) {
+                printf("%d %d\n", tmp - i, tmp + i);
+                break;
+            }
+        }
+    }
+}

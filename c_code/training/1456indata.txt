@@ -1,0 +1,64 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+int floor(int a, int b);
+int roomnum(int a, int b, int c);
+
+int main()
+{
+	ifstream instream;
+	instream.open("input.txt");
+
+	if (instream.fail())
+	{
+		cerr << "Error";
+		exit(1);
+	}
+
+	int no_case;
+	instream >> no_case;
+
+	for (int i = 0; i<no_case; i++)
+	{
+		int H, W, N;
+		instream >> H >> W >> N;
+
+		int f, r;
+		f = floor(H, N);
+		r = roomnum(H, W, N);
+
+
+		if (r == 0)
+			cout << "-1"<<endl;
+		else if (r<10)
+			cout << f << "0" << r << endl;
+		else
+			cout << f << r << endl;
+	}
+	return 0;
+}
+int floor(int a, int b)
+{
+	int res;
+	res = b % a;
+
+	if (res == 0)
+		res = a;
+	return res;
+}
+int roomnum(int a, int b, int c)
+{
+	int res;
+	res = (c / a) +1;
+	if (res > b)
+		res = 0;
+	if ( c % a == 0)
+		res = c / a;
+	return res;
+}
+

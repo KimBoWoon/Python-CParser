@@ -1,0 +1,40 @@
+
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+int index = 0;
+int lcnt = 0;
+int rcnt = 0;
+int chechking(string a,int length,int index){
+	if (length == index){ return 0; }
+	else if (a[index] == '('){ lcnt++; return chechking(a,length ,++index); }
+	else if (a[index] == ')'){ rcnt++; return chechking(a,length, ++index); }
+}
+bool checkStartEnd(string a, int length){
+	if (a[0] == '(' && a[length - 1] == ')')
+		return true;
+	else
+		return false;
+}
+int main(void){
+	ifstream in;
+	in.open("input.txt");
+	int testcases;
+	in >> testcases;
+	string str;
+	for (int i = 0; i < testcases; i++){
+		in >> str;
+		chechking(str,str.length(),0);
+		
+		if (lcnt == rcnt){
+			if (checkStartEnd(str, str.length()))
+				cout << "YES" << endl;
+			else
+				cout << "NO" << endl;
+		}
+		else
+			cout << "NO" << endl;
+		lcnt = 0; rcnt = 0;
+	}
+}

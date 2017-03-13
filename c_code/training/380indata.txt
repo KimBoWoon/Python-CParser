@@ -1,0 +1,78 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+void room(char fig[][100],int x, int y,int cnt) { 
+
+	if (fig[x][y] == '.')
+		fig[x][y] = cnt;
+	if(fig[x - 1][y]== '.')
+		room(fig, x - 1, y, cnt);
+	if (fig[x + 1][y] == '.')
+		room(fig, x + 1, y, cnt);
+	if (fig[x][y - 1] == '.')
+		room(fig, x, y - 1, cnt);
+	if (fig[x][y + 1] == '.')
+		room(fig, x, y + 1, cnt);
+
+}
+
+int main() {
+	ifstream fp;
+	int i;
+	int numcases;
+
+	fp.open("input.txt"); 
+	fp>>numcases;
+
+	for (i = 0; i < numcases; i++) {
+		int m, n;
+		int cnt=48;
+		int i, j,temp;
+		char fig[100][100];
+		int roomsize[500] = {0};
+
+		fp>>m>>n;
+
+		for (i = 0; i < n; i++) {
+			for (j = 0; j < m; j++) {
+				fp>>fig[i][j];
+			}
+		}
+
+		for (i = 1; i < n; i++) {
+			for (j = 1; j < m; j++) {
+				if (fig[i][j] == '.') {
+					cnt++;
+					room(fig, i, j, cnt);
+				}
+			}
+		}
+
+		for (i = 0; i < n; i++) {
+			for (j = 0; j < m ; j++) {
+				if (fig[i][j] != '+') {
+					roomsize[fig[i][j] - 48]++;
+				}
+			}
+		}
+
+		for (i = 1; i <= cnt-48; i++) {
+			for (j = i; j <= cnt-48; j++) {
+				if (roomsize[i] < roomsize[j]) {
+					temp = roomsize[i];
+					roomsize[i] = roomsize[j];
+					roomsize[j] = temp;
+				}
+			}
+		}
+		printf("%d\n", cnt - 48);
+
+		for (i = 1; i <= cnt-48; i++) {
+			cout<<roomsize[i]<<" ";
+		}
+		cout<<"\n";
+	}
+	return 0;
+}

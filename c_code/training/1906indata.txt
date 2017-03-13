@@ -1,0 +1,47 @@
+#include<iostream>
+#include<fstream>
+#include<vector>
+using namespace std;
+vector <double> win_score;
+vector <double> lose_score;
+vector <double> expection;
+double PE(double win, double lose) {
+	double res = 0;
+	res = (win*win)/((win*win) + (lose*lose));
+	return res;
+}
+int main() {
+	ifstream fin;
+	fin.open("input.txt");
+	int T;
+	fin >> T;
+	for (int i = 0;i < T;i++) {
+		int Team_Num, Game,a,b,score1,score2;
+		double Max=-1, Min=1000;
+		fin >> Team_Num >> Game;
+		win_score.push_back(0);
+		lose_score.push_back(0);
+		expection.push_back(0);
+		for (int j = 0;j < Team_Num;j++) {	
+			win_score.push_back(0);
+			lose_score.push_back(0);
+			expection.push_back(0);
+		}
+		for (int j = 0;j < Game;j++) {		
+			fin >> a >> b>>score1>>score2;
+			win_score[a] += score1;
+			win_score[b] += score2;
+			lose_score[a] += score2;
+			lose_score[b] += score1;
+		}
+		for (int j = 0;j < Team_Num;j++) {
+			expection[j + 1] = PE(win_score[j+1],lose_score[j+1]);
+			if (Max < expection[j + 1]) Max = expection[j + 1];
+			if (Min > expection[j + 1]) Min = expection[j + 1];
+		}
+		cout << int(Max * 1000) << endl << int(Min * 1000) << endl;
+		win_score.clear();
+		lose_score.clear();
+		expection.clear();
+	}
+}

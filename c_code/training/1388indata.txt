@@ -1,0 +1,34 @@
+
+#include <cstdio>
+
+using namespace std;
+
+int gcd(int a, int b) {
+	return (b > 0) ? gcd(b, a%b) : a;
+}
+
+int getHenry(int m, int n) {
+	if (m == 1) return n;
+
+	int son = m * (n / m + 1) - 1 * n;
+	int mom = n * (n / m + 1);
+	int _gcd = gcd(son, mom);
+
+	return getHenry(son / _gcd, mom / _gcd);
+}
+
+int main(void) {
+	FILE *ip = fopen("input.txt", "r");
+
+	int t;
+
+	fscanf(ip, "%d", &t);
+
+	while(t--) {
+		int m, n;
+		fscanf(ip, "%d %d", &m, &n);
+		printf("%d\n", getHenry(m, n));
+	}
+
+	return 0;
+}

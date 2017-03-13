@@ -1,0 +1,51 @@
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+class Fibo{
+private :
+	int num[31];
+public : 
+	Fibo(){
+		num[0] = 0;
+		num[1] = 1;
+		for (int i = 2; i < 31; i++){
+			num[i] = -1;
+		}
+	}
+	int print(int a){
+		if (a == 0){
+			return 0;
+		}
+		if (a == 1){
+			return 1;
+		}
+		if (num[a-1] == -1)
+			num[a - 1] = calc(a - 1);
+		if (num[a - 2] == -1)
+			num[a - 2] = calc(a - 2);
+		num[a] = num[a-1] + num[a-2];
+		
+		return num[a];
+	}
+	int calc(int a){
+		if (a == 0)
+			return 0;
+		if (a == 1)
+			return 1;
+		return calc(a - 1) + calc(a - 2);
+	}
+};
+int main(){
+	ifstream inFile("input.txt");
+	int cases;
+	inFile >> cases;
+	Fibo box;
+	while (cases--){
+		int data;
+		inFile >> data;
+		cout<< box.print(data)<<endl;
+	}
+	return 1;
+}

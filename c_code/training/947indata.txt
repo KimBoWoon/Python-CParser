@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int getAliceSum(int **dp2D, int *card, int *cSum, int begin, int end);
+
+int main()
+{
+	FILE *fp = fopen("input.txt", "r");
+	int T = 0;
+	int n, i, j;
+	int *card, *cSum;
+	int **dp2D;
+
+	fscanf(fp, "%d", &T);
+	while (T--)
+	{
+		fscanf(fp, "%d", &n);
+		card = (int*)calloc((n + 1), sizeof(int));
+		cSum = (int*)calloc((n + 1), sizeof(int));
+		dp2D = (int**)calloc((n + 1), sizeof(int*));
+		for (i = 0; i <= n; i++)
+		{
+			dp2D[i] = (int*)calloc((n + 1), sizeof(int));
+		}
+
+		for (i = 1; i < n + 1; i++)
+		{
+			fscanf(fp, "%d", card + i);
+			cSum[i] = cSum[i - 1] + card[i];
+		}
+
+		for (i = 1; i < n + 1; i++)
+		{
+			for (j = i; j < n + 1; j++)
+			{
+				dp2D[i][j] = -1;
+			}
+		}			
+
+		printf("%d\n", getAliceSum(dp2D, card, cSum, 1, n));
+		
+		if ( card)
+		{
+			free(card);
+		}
+		if ( cSum)
+		{
+			free(cSum);
+		}
+		if ( dp2D)
+		{
+			for (i = 0; i < n + 1; i++)
+			{
+				if ( dp2D[i])
+				{
+					free(dp2D[i]);
+				}
+			}
+			free(dp2D);
+		}
+	}
+	fclose(fp);
+	return 0;
+}
+
+int getAliceSum(int **dp2D, int *card, int *cSum, int begin, int end)
+{
+	if (begin > end)
+	{
+		return 0;
+	}
+	else if (begin == end)
+	{
+		return card[begin];
+	}
+	else if (dp2D[begin][end] >= 0)
+	{
+		return dp2D[begin][end];
+	}
+	int tmp = cSum[end] - cSum[begin - 1];
+	dp2D[begin][end] = ( ((tmp - getAliceSum(dp2D, card, cSum, begin + 1, end)) > (tmp - getAliceSum(dp2D, card, cSum, begin, end - 1))) ?
+		(tmp - getAliceSum(dp2D, card, cSum, begin + 1, end)) : (tmp - getAliceSum(dp2D, card, cSum, begin, end - 1)) );
+	 
+	return dp2D[begin][end];
+}

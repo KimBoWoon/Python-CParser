@@ -1,0 +1,36 @@
+
+
+#include<stdio.h>
+#include<string.h>
+
+int count=0, point=0;
+
+void check(char par[51], int point){
+	if (count < 0) { printf("NO\n"); return; }
+	if (point >= strlen(par)){
+		if (count == 0) printf("YES\n");
+		else printf("NO\n");
+		return;
+	}
+	if (par[point] == ')') count--;
+	else if (par[point] == '(') count++;
+	check(par, ++point);
+}
+
+int main(){
+
+	FILE *inFile;
+	int circle;
+	char par[51];
+	inFile = fopen("input.txt", "r"); 
+	fscanf(inFile, "%d", &circle);
+	while (circle--)
+	{
+		fscanf(inFile, "%s", par);
+		count = 1;
+		if ((par[0] == '(') && (strlen(par) % 2 == 0)) check(par, 1);
+		else printf("NO\n");
+	}
+	return 0;
+}
+

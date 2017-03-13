@@ -1,0 +1,49 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+#define MAX 20
+
+bool isPalin(int* arr, int size){
+	for (int i = 0; i < size / 2 + 1; i++){
+		if (arr[i] != arr[size - i])
+			return false;
+	}
+	return true;
+}
+
+int main(){
+	int caseNum;
+	ifstream inputFile;
+	inputFile.open("input.txt");
+
+	inputFile >> caseNum;
+
+	for (int i = 0; i < caseNum; i++){
+		int testNum;
+		inputFile >> testNum;
+		bool isP = false;
+		for (int j = 2; j < 65; j++){
+
+			int palin[MAX] = { 0 };
+			int num = testNum;
+			int portion, rest, cnt = 0;
+
+			while (num != 0){
+				portion = num / j;
+				rest = num % j;
+				palin[cnt] = rest;
+				num = portion;
+				if (num != 0)
+					cnt++;
+			}
+
+			if (isPalin(palin, cnt)){
+				isP = true;
+				break;
+			}
+		}
+
+		cout << isP << endl;
+	}
+
+}

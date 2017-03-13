@@ -1,0 +1,31 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+int main()
+{
+	ifstream instream("input.txt");
+	int numtestcases, n, m, a, b, p, q, d;
+	instream >> numtestcases;
+	for (int i = 0; i < numtestcases; i++){
+		instream >> n >> m;
+		int arr1[1000] = { 0 }; 
+		int arr2[1000] = { 0 }; 
+		int res[1000] = { 0 }; 
+		for (int j = 0; j < m; j++) {
+			instream >> a >> b >> p >> q;
+			arr1[a - 1] += p; arr2[a - 1] += q;
+			arr1[b - 1] += q; arr2[b - 1] += p; 
+		}
+		for (int k = 0; k < n; k++){
+			res[k] = (pow(arr1[k], 2))*1000 / (pow(arr1[k], 2) + pow(arr2[k], 2));
+		}
+		sort(res, res+n);
+		cout <<	(int)res[n - 1]<< endl << (int)res[0]<< endl;
+	}
+	instream.close();
+}

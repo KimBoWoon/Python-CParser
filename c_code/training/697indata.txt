@@ -1,0 +1,28 @@
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int isPalindrome(string str, int c1, int c2){
+    if(str[c1] != str[c2])
+        return 0;
+    else if(c1>=c2)
+        return 1;
+    else
+        return isPalindrome(str, c1+1, c2-1);
+}
+
+int main(){
+    ifstream inStream;
+    inStream.open("input.txt");
+    int test_case;
+    inStream >> test_case;
+    string str;
+
+    for(int i=0; i<test_case; i++){
+        inStream >> str;
+        cout << isPalindrome(str, 0, str.size()-1) << endl;
+    }
+
+    inStream.close();
+}

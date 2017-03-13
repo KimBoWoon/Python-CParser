@@ -1,0 +1,49 @@
+
+#include<iostream>
+#include<fstream>
+#include<algorithm>
+using namespace std;
+
+int main(){
+	ifstream in_File("input.txt");
+	int cases;
+	in_File >> cases;
+	
+	while (cases--){
+		int size;
+		int target;
+		in_File >> size >> target;
+		int* num = new int[size];
+		
+		for (int i = 0; i < size; i++){
+			in_File >> num[i];
+		}
+		
+		sort(num, num + size);
+		
+		int* bottom,* top;
+		int sub, count;
+		bottom = num;
+		top = num + size-1;
+		sub = abs(*bottom + *top - target);
+		count = 0;
+		while (top != bottom){
+			int sum = *bottom + *top; 
+			
+			if (abs(sum - target) <= sub){
+				if (abs(sum - target) < sub)
+					count = 0;
+				sub = abs(sum - target);
+				count++;
+			}
+			
+			if (sum > target){
+				top--;
+			}
+			else{
+				bottom++;
+			}
+		}
+		cout << count << endl;
+	}
+}

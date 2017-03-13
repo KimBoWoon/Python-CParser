@@ -1,0 +1,124 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+#define MAX_PRIMES 1000
+#define MAX_GAP 10000
+#define ABS(x) (((x) < 0)? (-x) : (x))
+
+typedef int Boolean;
+#define true 1
+#define false 0
+
+void goldBach(int* primes, int count, int n);
+void comb_reputation(int* got, int* result, int n_chosen, int needed, int at, int max, int* primes, int n, int* gap);
+
+void main()
+{
+	FILE* fileDes = NULL;						
+	int trialNum;								
+
+	int i = 0, j = 0;							
+	int n;										
+
+	int primes[MAX_PRIMES] = { 0, };			
+	int count = 1;								
+	Boolean primeFound = false;					
+
+	primes[0] = 2;
+
+	for (i = 3; i < 1000; i++)
+	{
+		primeFound = true;
+
+		for (j = 2; (j * j) <= i; j++)
+		{
+			if (i%j == 0)
+			{
+				primeFound = false;
+				break;
+			}
+		}
+
+		if (primeFound == true)
+			primes[count++] = i;
+	}
+
+
+
+
+	fileDes = fopen("input.txt", "r");
+
+	if (fileDes == NULL)
+		exit(1);
+
+	fscanf(fileDes, "%d", &trialNum);
+
+	for (i = 0; i < trialNum; i++)
+	{
+		fscanf(fileDes, "%d", &n);
+		goldBach(primes, count, n);
+
+	}
+
+	fclose(fileDes);
+}
+
+void goldBach(int* primes, int count, int n)
+{
+	int i, j;
+	int maxIdx;			
+
+	int chosen[2] = {0, };		
+	int result[2] = {0, };		
+
+	int gap = MAX_GAP;			
+
+	for (maxIdx = 0; maxIdx < count; maxIdx++)
+	{
+		if (primes[maxIdx] >= n)
+		{
+			maxIdx--;
+			break;
+		}
+		
+		maxIdx++;
+	}
+
+
+	comb_reputation(chosen, result, 0, 2, 0, maxIdx, primes, n, &gap);
+
+	printf("%d %d\n", primes[result[0]], primes[result[1]]);
+
+}
+
+void comb_reputation(int* got, int* result, int n_chosen, int needed, int at, int max, int* primes, int n, int* gap)
+{
+	int i;
+
+	if(got[0] > got[1]) return;
+
+	if (n_chosen == needed)
+	{
+		if (n == (primes[got[0]] + primes[got[1]]))
+		{
+			if((*gap) > ABS((primes[got[0]] - primes[got[1]])))
+			{
+				(*gap) = ABS((primes[got[0]] - primes[got[1]]));
+				result[0] = got[0]; result[1] = got[1];
+			}
+
+			return;
+		}
+		return;
+
+	}
+	for (i = at; i <= max; i++)
+	{
+		if (got) got[n_chosen] = i;
+
+		comb_reputation(got, result, n_chosen + 1, needed, i, max, primes, n, gap);
+	}
+
+	return;
+}

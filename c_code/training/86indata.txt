@@ -1,0 +1,63 @@
+
+
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+
+
+void main(void)
+{
+	FILE *inFile;
+	int i;
+	int numCases;
+	
+	
+	inFile = fopen("input.txt","r"); 
+	if(inFile ==NULL) exit(1);
+
+	fscanf(inFile, "%d", &numCases);
+
+	for(i=0;i<numCases;i++)
+	{
+		int value;
+		int divisor,x;
+		int numDivisors =1;		
+		int sumDivisors =1;		
+
+		fscanf(inFile, "%d",&value);
+
+		for(divisor=2; divisor<value; divisor++)
+		{
+			if(value%divisor == 0)
+			{
+				x = value / divisor; 
+				sumDivisors = sumDivisors +x ; 
+				numDivisors = numDivisors +1;  
+			}
+
+		}
+
+		if(numDivisors ==1) 
+		{
+			printf("1\n");  
+		}
+		else				
+		{
+			printf("0\n");	
+		}
+
+
+		
+	}
+	
+	
+	fclose(inFile); 
+
+}
+
+

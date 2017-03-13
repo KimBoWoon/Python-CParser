@@ -1,0 +1,48 @@
+
+
+#include<iostream>
+#include<fstream>
+#include<cmath>
+using namespace std;
+
+int gcd(int a, int b){
+	if (b == 0)
+		return a;
+	else
+		return gcd(b, a%b);
+}
+
+void henry(double a, double b, int x){
+	int index = 2;
+	while (a != 1){
+		double origin = a / b;
+		double test = 1.0 / index;
+		if (test < origin){
+			a = a*index - b;
+			b *= index;
+			int n = gcd(a, b);
+			if (n != 1){
+				a /= n;
+				b /= n;
+			}
+		}
+		index++;
+	}
+	cout << (int)b << endl;
+}
+
+int main(){
+	ifstream File;
+	int numCase = 0;
+	double a = 0, b = 0;
+	int num = 0;
+
+	File.open("input.txt");
+	File >> numCase;
+	for (int iter = 0; iter < numCase; iter++){
+		File >> a >> b;
+		henry(a, b, 2);
+	}
+	File.close();
+	return 0;
+}
