@@ -110,7 +110,7 @@ def main():
 
         else:
             pass
-
+        # break
         statsSet.add(stats)
 
         if len(stats.classes) != 0:
